@@ -1,0 +1,54 @@
+name: iOS — IPA para instalação pessoal
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+permissions:
+  contents: read
+concurrency:
+  group: ios-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  CI: 'true'
+  FLUTTER_SUPPRESS_ANALYTICS: 'true'
+jobs:
+  ios:
+    runs-on: macos-15
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v5
+      - name: Flutter da versão do projeto
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.7'
+          channel: stable
+          cache: true
+      - name: Conteúdo pessoal fica no dispositivo
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          private=Path('assets/private')
+          if any(private.glob('*.biblepkg')) or any(private.glob('*.pdf')):
+              raise SystemExit('O fluxo compartilhável exige conteúdo privado fora do Git. Importe a RA pessoal depois da instalação.')
+          PY
+          python3 scripts/prepare_optional_content.py
+      - name: Dependências e validação
+        run: |
+          flutter --suppress-analytics config --no-enable-swift-package-manager
+          flutter --suppress-analytics pub get
+          flutter --suppress-analytics analyze --no-pub
+          flutter --suppress-analytics test --no-pub --reporter expanded
+      - name: Compilar para iPhone e empacotar IPA
+        run: bash scripts/build_ios.sh
+      - name: Guardar IPA e ZIP privado de entrega
+        uses: actions/upload-artifact@v4
+        with:
+          name: Biblia-Reformada-iOS-${{ github.run_number }}
+          path: |
+            dist/*iOS.zip
+            dist/*iOS-sem-assinatura.ipa
+            dist/VERIFICACAO-iOS.json
+            dist/iOS-SHA256.txt
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0

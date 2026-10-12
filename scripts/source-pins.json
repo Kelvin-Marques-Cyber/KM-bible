@@ -1,0 +1,122 @@
+{
+  "SpaRV.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/SpaRV.zip",
+    "sha256": "fc3b4b16268ff6f2155ea7bebaffe1d339387a4df85fa90b1bb2342348375460",
+    "bytes": 1516994
+  },
+  "ASV.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/ASV.zip",
+    "sha256": "8f3d708510f7122a947a1c3eaa775a03c8ef5b1d456833abf506b78e689fcf18",
+    "bytes": 3285762
+  },
+  "blivre-credits.md": {
+    "url": "https://raw.githubusercontent.com/blivre/BibliaLivre/2018.2.0/Contribuidores.md",
+    "sha256": "eb763b5761490ff50aa265e19a606694468e1b156e0cedb5743bd7f4cd766d27",
+    "bytes": 359
+  },
+  "blivre-license.md": {
+    "url": "https://raw.githubusercontent.com/blivre/BibliaLivre/2018.2.0/LICENCA.md",
+    "sha256": "6ff396843c629e408e3dbad8b16653acbfed6448fe4011bbde4e13baaae706b7",
+    "bytes": 16646
+  },
+  "MHCC.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/MHCC.zip",
+    "sha256": "e7c742e1c0154f52740e6e0af39dc506f77606bd7747e307303fd9933037dae7",
+    "bytes": 1773039
+  },
+  "Barnes.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/Barnes.zip",
+    "sha256": "9e8edc0333875c214124371b3862df118ad3a76ade7753cb2faeed3484615baf",
+    "bytes": 5812827
+  },
+  "WLC.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/WLC.zip",
+    "sha256": "0fabf910b3a66c78d8ed3bffeef9082efa81aee18a09b7e916611a2a3fb7c55f",
+    "bytes": 1576220
+  },
+  "TR.zip": {
+    "url": "https://www.crosswire.org/ftpmirror/pub/sword/packages/rawzip/TR.zip",
+    "sha256": "242e6bc6e2bcd13fd7087776facde97b6fdb6b300739aaf92204dd4ff48f3cec",
+    "bytes": 936134
+  },
+  "bln4.zip": {
+    "url": "https://github.com/blivre/BibliaLivre/releases/download/2018.2.0/bliv-n4_vpl.zip",
+    "sha256": "676e8d1efea3f576f1ae716fc0b3b7b37085c3d59c5e72daaea409ae083968e5",
+    "bytes": 1273217
+  },
+  "bltr.zip": {
+    "url": "https://github.com/blivre/BibliaLivre/releases/download/2018.2.0/bliv-tr_vpl.zip",
+    "sha256": "af8d9876919c4ca67195b8d8adcb9998a63f25ea4509750574ab6a7eedb9e2f1",
+    "bytes": 1275470
+  },
+  "creeds.xml": {
+    "url": "https://www.ccel.org/ccel/schaff/creeds3.xml",
+    "sha256": "756adf1ddd466d237221c76b99d25d55cab7e83d08914f28a289c3b90dccddf3",
+    "bytes": 6107301
+  },
+  "wsc.html": {
+    "url": "https://www.opc.org/sc.html",
+    "sha256": "67cb01c8dcedcb4ad2584d8e377afecab8260e69852be3f9279c3f0d3995fb00",
+    "bytes": 44537
+  },
+  "wlc.html": {
+    "url": "https://www.opc.org/lc.html",
+    "sha256": "aed700d4d266023c349d28a8588e6ecf9699b2757c48cec806163ad9bc8eaa69",
+    "bytes": 113557
+  },
+  "morphhb.zip": {
+    "url": "https://codeload.github.com/openscriptures/morphhb/zip/refs/heads/master",
+    "sha256": "91b48ce9a37bf131adcbf76eab66b592ca7030df181645c52028baa0c3283adb",
+    "bytes": 20860860
+  },
+  "strongs-greek.zip": {
+    "url": "https://codeload.github.com/morphgnt/strongs-dictionary-xml/zip/refs/heads/master",
+    "sha256": "e71ac0e53c72ae7b8ad71ab93ae441a3afe63a280058643e4df85c65b5f240bc",
+    "bytes": 439812
+  },
+  "tischendorf.zip": {
+    "url": "https://codeload.github.com/morphgnt/tischendorf/zip/refs/heads/master",
+    "sha256": "1c8aaea71e01165d4afcd71ffe7ed1591b45bf2c8d33cbb611d99cd07fed5c80",
+    "bytes": 4514230
+  },
+  "strongs.zip": {
+    "url": "https://codeload.github.com/openscriptures/strongs/zip/refs/heads/master",
+    "sha256": "b462cb85fd7e825f1ff57d676a8bfbe4eaac2065b657ea71a5e0d9e260cb8c3b",
+    "bytes": 5474241
+  },
+  "natural-earth.geojson": {
+    "url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson",
+    "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "bytes": 138160
+  },
+  "OrbitControls.js": {
+    "url": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js",
+    "sha256": "02bb4ade710f3e607329e37a21f098bc3ac70eb6e33daf8a65e79f4db785e7b2",
+    "bytes": 26375
+  },
+  "three.min.js": {
+    "url": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js",
+    "sha256": "9274bbcec8d96168626c732b5d31c775aa8cfb7eaa0599bec0c175908a2c1ce2",
+    "bytes": 603445
+  },
+  "THREE-LICENSE": {
+    "url": "https://raw.githubusercontent.com/mrdoob/three.js/r128/LICENSE",
+    "sha256": "7dddf7c5b8fd10ee654db8857d75d104b5557889aa5a91fc4ca545ea7c07062f",
+    "bytes": 1081
+  },
+  "GLTFLoader.js": {
+    "url": "https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js",
+    "sha256": "5c15967ba830918a9caea6338712c994c354bccd4edc4569bde411c3ec06a3e6",
+    "bytes": 96550
+  },
+  "GARAMOND-OFL.txt": {
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/OFL.txt",
+    "sha256": "0985066662eb755ed3683ae5482a81a9195b49ce3f7e165cc2388b3dbece7dd7",
+    "bytes": 4398
+  },
+  "EBGaramond.ttf": {
+    "url": "https://raw.githubusercontent.com/google/fonts/main/ofl/ebgaramond/EBGaramond%5Bwght%5D.ttf",
+    "sha256": "ef9512f92f6d579e5dc75af59a5a4b1b8b47d2eda89e00b954d44520e5369027",
+    "bytes": 851176
+  }
+}

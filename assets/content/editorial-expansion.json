@@ -1,0 +1,660 @@
+{
+  "version": "0.4.0",
+  "studies": [
+    {
+      "id": "comparative-orthodox",
+      "level": 2,
+      "target": "eastern_orthodox",
+      "topic": "salvation",
+      "title": "Ortodoxia: comunhão com Deus e salvação",
+      "exposition": "A tradição ortodoxa confessa a Trindade e a encarnação de Cristo. A salvação é frequentemente exposta como participação na vida divina, ou theosis, pela graça, em união com Cristo. Isso não significa que o ser humano se torne a essência de Deus. Liturgia, sacramentos, oração e a tradição da Igreja fazem parte dessa compreensão. Existem igrejas locais e diferentes apresentações teológicas: esta introdução utiliza a exposição da Orthodox Church in America.",
+      "response": "A perspectiva reformada também afirma união com Cristo, transformação e glorificação. A questão específica é a distinção entre o veredito da justificação e a renovação da santificação. Romanos 3:21–28 e 4:1–8 são lidos como fundamento da aceitação pela justiça de Cristo; Efésios 2:8–10 associa a graça à vida de boas obras. CFW 11 e 13 separam esses benefícios sem separá-los de Cristo. Uma comparação precisa examina essa distinção antes de chamar a outra tradição de salvação por esforço humano.",
+      "strongest": "Um interlocutor ortodoxo pode perguntar se uma ênfase jurídica reduz a salvação a uma declaração externa e enfraquece o chamado bíblico à comunhão e transformação.",
+      "rejoinder": "A réplica ortodoxa enfatizaria a unidade dos benefícios em Cristo e o caráter terapêutico da salvação. A resposta reformada deve mostrar como adoção, santificação e glorificação pertencem à mesma obra de graça, preservando a função específica da justificação. Compare as categorias, não apenas palavras isoladas.",
+      "refs": [
+        "45:3:24",
+        "45:4:5",
+        "49:2:8",
+        "61:1:4"
+      ],
+      "sources": [
+        {
+          "title": "OCA — The Orthodox Faith",
+          "url": "https://www.oca.org/orthodoxy/the-orthodox-faith/doctrine-scripture/the-symbol-of-faith"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-methodist",
+      "level": 2,
+      "target": "methodist",
+      "topic": "salvation",
+      "title": "Metodismo: graça, fé e perseverança",
+      "exposition": "Os Artigos de Religião metodistas confessam a Trindade, a encarnação, a ressurreição e a justificação pelo mérito de Cristo recebido pela fé. Também descrevem a incapacidade humana de voltar-se a Deus sem sua graça, e a possibilidade de afastar-se da graça. O metodismo reúne diferentes corpos e desenvolvimentos históricos; aqui a referência são os artigos apresentados pela United Methodist Church.",
+      "response": "A comparação reformada deve reconhecer a justificação pela fé que o próprio documento afirma. A divergência a estudar está na eficácia do chamado, na eleição e na perseverança. João 10:27–29 e Romanos 8:28–39 são lidos em conjunto com as advertências de Hebreus. CFW 17 associa perseverança à fidelidade de Deus e aos meios de graça, não à indiferença moral. Uma defesa cuidadosa considera as advertências como parte da preservação divina.",
+      "strongest": "Se a perseverança final é garantida, por que as Escrituras advertem cristãos sobre abandonar a fé? As advertências descrevem um risco real e responsabilidade humana.",
+      "rejoinder": "Uma resposta metodista pode considerar que a graça capacita uma resposta que pode ser abandonada. O reformado precisa explicar a relação entre promessa, perseverança visível e exortação, sem tratar toda profissão de fé como prova automática de regeneração.",
+      "refs": [
+        "43:10:27",
+        "45:8:30",
+        "58:3:12"
+      ],
+      "sources": [
+        {
+          "title": "UMC — Articles of Religion",
+          "url": "https://www.umc.org/en/content/articles-of-religion"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-pentecostal",
+      "level": 2,
+      "target": "pentecostal",
+      "topic": "scripture",
+      "title": "Pentecostalismo: Espírito, dons e discernimento",
+      "exposition": "O pentecostalismo clássico afirma a autoridade bíblica, a Trindade e a salvação em Cristo, e dá destaque ao batismo no Espírito e aos dons. A declaração das Assemblies of God norte-americanas associa o falar em línguas à evidência inicial desse batismo. Essa posição não representa automaticamente todas as igrejas pentecostais nem os movimentos neopentecostais.",
+      "response": "A análise reformada começa pelas afirmações cristãs compartilhadas e examina a leitura de Atos e 1 Coríntios 12–14. A variedade dos dons e a pergunta de 1 Coríntios 12:30 precisam ser comparadas à distinção pentecostal entre uso público de línguas e evidência inicial. Reformados divergem sobre a continuidade dos dons; a identidade presbiteriana não dispensa discernimento, ordem no culto e primazia da Escritura. CFW 1 orienta a suficiência da revelação normativa.",
+      "strongest": "A repetição de experiências com o Espírito em Atos poderia apontar para uma experiência distinta da conversão, e não apenas para a entrada de novos povos na Igreja.",
+      "rejoinder": "O interlocutor pentecostal ressaltaria o caráter experiencial e missionário dos relatos. A réplica reformada deve explicar a diferença entre descrição histórica e norma universal, sem negar previamente o texto nem reduzir experiências sinceras a fraude.",
+      "refs": [
+        "44:2:1",
+        "44:10:44",
+        "46:12:30",
+        "46:14:26"
+      ],
+      "sources": [
+        {
+          "title": "Assemblies of God — Fundamental Truths",
+          "url": "https://ag.org/Beliefs/Statement-of-Fundamental-truths"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-jw",
+      "level": 2,
+      "target": "jehovahs_witnesses",
+      "topic": "trinity",
+      "title": "Testemunhas de Jeová: Cristo e a Trindade",
+      "exposition": "As Testemunhas de Jeová afirmam seguir a Bíblia, distinguem Jeová como Deus supremo, reconhecem Jesus como Filho e Salvador e rejeitam a doutrina da Trindade. Sua compreensão de Cristo e do Espírito difere do cristianismo niceno. Estudar a posição exige consultar sua própria exposição, incluindo os textos bíblicos que utiliza; não basta aplicar um rótulo histórico.",
+      "response": "A defesa reformada combina a unidade divina com passagens que atribuem a Cristo preexistência, criação, honra e linguagem divina: João 1:1–3, João 20:28, Colossenses 1:15–20 e Hebreus 1. A distinção de Jesus em relação ao Pai não resolve, por si só, a questão de sua natureza. O argumento deve distinguir pessoa e essência e considerar os contextos dos textos invocados pelos dois lados. CFW 2.3 identifica a conclusão trinitária da tradição reformada.",
+      "strongest": "Por que Jesus ora ao Pai, diz que o Pai é maior e recebe autoridade, se possui a mesma natureza divina? A linguagem de primogenitura em Colossenses também parece estabelecer prioridade e subordinação.",
+      "rejoinder": "O interlocutor ressaltaria os textos de distinção e de autoridade recebida. A resposta trinitária precisa examinar encarnação, missão e o uso contextual de primogênito, mostrando por que não interpreta Colossenses como criação de Cristo. Não é suficiente responder com uma fórmula sem exegese.",
+      "refs": [
+        "43:1:1",
+        "43:20:28",
+        "51:1:15",
+        "58:1:8"
+      ],
+      "sources": [
+        {
+          "title": "JW.org — What Do Jehovah’s Witnesses Believe?",
+          "url": "https://www.jw.org/en/jehovahs-witnesses/faq/jehovah-witness-beliefs/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-lds",
+      "level": 2,
+      "target": "latter_day_saints",
+      "topic": "scripture",
+      "title": "Santos dos Últimos Dias: revelação e cânon",
+      "exposition": "A Igreja de Jesus Cristo dos Santos dos Últimos Dias afirma fé no Pai, em Jesus Cristo e no Espírito Santo. Suas Regras de Fé reconhecem a Bíblia quando corretamente traduzida, o Livro de Mórmon e revelação contínua. A tradição descreve uma restauração da autoridade apostólica e ordenanças próprias. O significado de suas categorias deve ser explicado por suas fontes, sem presumir equivalência com a confissão nicena ou com Westminster.",
+      "response": "A resposta reformada examina o critério para reconhecer uma revelação como divina e a suficiência do testemunho apostólico. Gálatas 1:6–9, Judas 3 e Hebreus 1:1–2 precisam ser lidos no contexto, e não usados como slogans. CFW 1 apresenta o cânon recebido e a suficiência das Escrituras. O ponto decisivo é se os escritos adicionais e a restauração proposta estão em continuidade doutrinária com a revelação apostólica que ambas as tradições invocam.",
+      "strongest": "Se Deus falou por profetas no passado, qual argumento bíblico impede que volte a revelar e restaurar uma Igreja que se afastou de seu propósito?",
+      "rejoinder": "A resposta restauracionista apontaria para a liberdade de Deus, a experiência religiosa e os textos de sua tradição. A réplica presbiteriana distingue a liberdade divina do reconhecimento de uma alegação particular: experiências devem ser examinadas à luz de conteúdo, história e do evangelho apostólico.",
+      "refs": [
+        "48:1:6",
+        "65:1:3",
+        "58:1:1"
+      ],
+      "sources": [
+        {
+          "title": "Regras de Fé — fonte oficial SUD",
+          "url": "https://www.churchofjesuschrist.org/study/scriptures/pgp/a-of-f/1?lang=por"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-judaism",
+      "level": 2,
+      "target": "judaism",
+      "topic": "resurrection",
+      "title": "Judaísmo: aliança e esperança messiânica",
+      "exposition": "O judaísmo possui correntes diferentes. Nesta introdução, a fonte é a apresentação ortodoxa dos princípios de Maimônides: unidade de Deus, autoridade da Torá, responsabilidade moral, esperança messiânica e ressurreição. A não aceitação de Jesus como Messias não deve ser descrita como ignorância das Escrituras judaicas. O estudo precisa considerar as interpretações judaicas e sua compreensão do que a era messiânica deve realizar.",
+      "response": "A leitura reformada afirma a continuidade da promessa a Israel e identifica seu cumprimento em Cristo. Lucas 24:25–27, Isaías 53 e Romanos 11 precisam ser examinados sem apagar seu contexto judaico. Uma defesa histórica da ressurreição distingue a proclamação cristã das conclusões que um interlocutor judeu aceita. O argumento é cristológico e exegético; não autoriza desprezo por judeus nem transforma o povo judeu numa caricatura uniforme.",
+      "strongest": "Se o Messias deveria estabelecer paz e reconhecimento universal de Deus, como a persistência de guerras e injustiça pode ser compatível com a alegação de que ele já veio?",
+      "rejoinder": "A posição judaica pode considerar a resposta cristã de duas vindas uma releitura das expectativas. O cristão deve demonstrar a base dessa leitura nas Escrituras e no testemunho sobre Cristo, reconhecendo a divergência acerca de cumprimento inicial e consumação.",
+      "refs": [
+        "23:53:1",
+        "42:24:25",
+        "45:11:1"
+      ],
+      "sources": [
+        {
+          "title": "Chabad — Treze Princípios",
+          "url": "https://pt.chabad.org/library/article_cdo/aid/666842/jewish/13-Princpios.htm"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-islam",
+      "level": 2,
+      "target": "islam",
+      "topic": "trinity",
+      "title": "Islã: unidade de Deus e identidade de Jesus",
+      "exposition": "O Islã confessa a unidade de Deus e a missão dos profetas. Jesus, filho de Maria, é reconhecido como Messias e mensageiro, mas a filiação divina e a Trindade são rejeitadas. Alcorão 4:171 é uma passagem central nesse diálogo. Existem diferenças entre tradições sunitas, xiitas e outras comunidades; este estudo aborda o ponto cristológico comum, sem atribuir a todos uma única escola de interpretação.",
+      "response": "A tradição reformada afirma um só Deus e três pessoas, distinguindo essa doutrina de três deuses. João 1:1–18, Colossenses 1 e Hebreus 1 fundamentam sua leitura da natureza e obra de Cristo. O debate inclui a confiabilidade dos testemunhos sobre Jesus e o significado de encarnação. A resposta deve apresentar uma tese que o interlocutor realmente contesta: a humanidade e divindade de Cristo e sua relação com o Pai, não uma suposta genealogia biológica de Deus.",
+      "strongest": "A absoluta unidade e transcendência divina parecem incompatíveis com encarnação e distinções pessoais. Por que a leitura trinitária seria necessária, em lugar de reconhecer Jesus como profeta honrado?",
+      "rejoinder": "A réplica muçulmana pode defender que honra e missão profética explicam os textos, ou questionar seu estado de transmissão. O reformado deve responder com exegese e investigação histórica, preservando a distinção entre argumento bíblico interno e argumento sobre a autoridade do próprio texto.",
+      "refs": [
+        "5:6:4",
+        "43:1:14",
+        "51:1:16",
+        "58:1:3"
+      ],
+      "sources": [
+        {
+          "title": "Alcorão 4:171 — Quran.com",
+          "url": "https://quran.com/pt/an-nisa/171"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-shia",
+      "level": 2,
+      "target": "shia_islam",
+      "topic": "scripture",
+      "title": "Islã xiita: profecia, justiça e autoridade",
+      "exposition": "A apresentação xiita duodecimana utilizada aqui organiza os princípios em unidade divina, justiça, profecia, imanato e ressurreição. O imanato tem um papel próprio na continuidade da orientação religiosa. Essa exposição não descreve automaticamente todos os ramos xiitas nem equivale à tradição sunita.",
+      "response": "O diálogo reformado examina o fundamento de uma autoridade religiosa e a maneira de testar suas interpretações. A diferença cristológica continua central: CFW 8 e Hebreus 1 apresentam Cristo como mediador e revelação culminante. Antes de criticar o imanato, é necessário compreender sua fundamentação na tradição escolhida e comparar os critérios de autoridade que cada comunidade adota.",
+      "strongest": "Se a comunidade precisa de orientação preservada, uma autoridade divinamente estabelecida não ofereceria uma resposta melhor às divergências de interpretação?",
+      "rejoinder": "O interlocutor xiita pode argumentar a partir da sucessão e da proteção da orientação verdadeira. A posição reformada deverá explicar sua própria relação entre Escritura, igreja, confissões e falibilidade dos intérpretes, sem fingir que não existem divergências internas.",
+      "refs": [
+        "58:1:1",
+        "55:3:16",
+        "44:17:11"
+      ],
+      "sources": [
+        {
+          "title": "Al-Islam.org — Principles of Religion",
+          "url": "https://al-islam.org/pt/islam-series-lectures-principles-religion-sayyid-saeed-akhtar-rizvi/foreword-sixth-edition"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-vedanta",
+      "level": 2,
+      "target": "hinduism_vedanta",
+      "topic": "creation",
+      "title": "Vedanta: realidade, pessoa e mundo",
+      "exposition": "O hinduísmo reúne escolas, textos e práticas diversos. Esta introdução usa a apresentação da Vedanta Society, de orientação associada à tradição de Ramakrishna, que enfatiza a realidade suprema e a busca de realização espiritual. Não é correto reduzir todo o hinduísmo a um único monismo: existem também escolas que distinguem o indivíduo, o mundo e Deus de formas diferentes.",
+      "response": "A perspectiva reformada distingue Criador e criação, afirma a realidade do mundo e a identidade pessoal dos seres humanos. Gênesis 1, Atos 17:24–28 e CFW 4 orientam essa leitura. O debate deve identificar o que uma escola específica entende por realidade, aparência e libertação. A crítica à dissolução da distinção Criador–criatura só é pertinente quando descreve a posição efetivamente adotada pelo interlocutor.",
+      "strongest": "A experiência de unidade e a multiplicidade de caminhos espirituais poderiam sugerir que nossas formulações pessoais sobre Deus são perspectivas limitadas de uma realidade maior.",
+      "rejoinder": "Um interlocutor vedântico pode enfatizar os limites conceituais e a prática espiritual. A réplica reformada examina se afirmações distintas sobre pessoa, criação e Cristo podem ser compatíveis e que critérios justificam a leitura dessas experiências.",
+      "refs": [
+        "1:1:1",
+        "44:17:24",
+        "43:1:3"
+      ],
+      "sources": [
+        {
+          "title": "Vedanta Society — What is Vedanta?",
+          "url": "https://vedanta.org/what-is-vedanta/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-theravada",
+      "level": 2,
+      "target": "buddhism_theravada",
+      "topic": "evil",
+      "title": "Budismo Theravada: sofrimento e libertação",
+      "exposition": "O Theravada organiza sua apresentação em torno do Buda, Dhamma e Sangha, e das quatro nobres verdades: sofrimento ou insatisfação, sua origem, cessação e caminho de prática. A libertação não é exposta como perdão concedido por um Deus criador. Também é inadequado chamar o budismo simplesmente de pessimismo: a análise do sofrimento é ligada a uma proposta de cessação.",
+      "response": "O cristianismo reformado reconhece a importância de enfrentar o sofrimento e de examinar o apego e a conduta. Sua explicação associa criação, queda e redenção, e identifica a reconciliação em Cristo como central. Romanos 8 e 1 Coríntios 15 apresentam esperança que inclui a renovação da criação e a ressurreição. A comparação deve distinguir culpa, sofrimento, impermanência e libertação, sem tratar conceitos diferentes como sinônimos.",
+      "strongest": "Uma prática verificável que reduza sofrimento e desejo não seria mais concreta que uma explicação dependente de criação, pecado e uma salvação futura?",
+      "rejoinder": "A réplica budista pode priorizar transformação experiencial e suspensão de questões que não contribuam à libertação. A resposta reformada deve relacionar sua visão da pessoa e da esperança à vida presente, mantendo distintos resultados de práticas e alegações sobre a realidade última.",
+      "refs": [
+        "45:8:18",
+        "46:15:20",
+        "66:21:4"
+      ],
+      "sources": [
+        {
+          "title": "Access to Insight — Four Noble Truths",
+          "url": "https://accesstoinsight.org/ptf/dhamma/sacca/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-sikhism",
+      "level": 2,
+      "target": "sikhism",
+      "topic": "salvation",
+      "title": "Sikhismo: Deus, serviço e vida espiritual",
+      "exposition": "O Sikhismo, ou Sikhi, é uma tradição própria originada no Punjab. A exposição da Sikh Coalition enfatiza a presença divina, igualdade humana, relação com o Criador e vida de serviço. O Guru Granth Sahib ocupa um papel central na tradição. Não deve ser descrito como simples mistura de hinduísmo e islamismo.",
+      "response": "A perspectiva reformada compartilha o reconhecimento da dignidade humana e da importância do serviço, mas entende reconciliação e conhecimento de Deus pela revelação em Cristo. Atos 17 e João 14:6 apresentam pontos para diálogo. A comparação examina o papel do mediador, a fonte da autoridade religiosa e a relação entre graça e prática espiritual, preservando o significado dos termos da tradição sikh.",
+      "strongest": "A vida de devoção e serviço, sem exclusão por origem ou condição, pode sugerir uma relação com Deus que não depende da formulação cristã sobre um mediador único.",
+      "rejoinder": "O interlocutor sikh pode apresentar o caminho vivido e a autoridade de seus Gurus. A réplica reformada precisa explicar por que suas afirmações sobre Cristo são verdadeiras, em vez de inferir que ações moralmente boas são impossíveis fora da Igreja.",
+      "refs": [
+        "1:1:27",
+        "44:17:26",
+        "43:14:6"
+      ],
+      "sources": [
+        {
+          "title": "Sikh Coalition — Beliefs",
+          "url": "https://www.sikhcoalition.org/about-sikhs/beliefs/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-bahai",
+      "level": 2,
+      "target": "bahai",
+      "topic": "scripture",
+      "title": "Fé Bahá’í: unidade e revelação progressiva",
+      "exposition": "A Fé Bahá’í apresenta a unidade da humanidade e a revelação de Deus por manifestações ao longo da história, com Bahá’u’lláh ocupando papel central. Sua leitura valoriza continuidade entre religiões e desenvolvimento da vida coletiva. Essa formulação não significa que todos os detalhes de todas as religiões sejam idênticos.",
+      "response": "A perspectiva reformada reconhece a unidade de origem e a dignidade da humanidade, mas identifica a revelação culminante e a mediação em Cristo. Hebreus 1:1–2 e João 14:6 devem ser comparados ao significado bahá’í de manifestações e progressão. A questão é se as diferenças acerca de encarnação, ressurreição e autoridade constituem desenvolvimentos compatíveis ou afirmações conflitantes.",
+      "strongest": "A sucessão de revelações pode explicar tanto a unidade moral das religiões quanto suas diferenças históricas, evitando restringir a ação de Deus a uma comunidade.",
+      "rejoinder": "Uma resposta bahá’í pode distinguir princípios espirituais duradouros de formas sociais variáveis. A réplica reformada examina quais alegações históricas e cristológicas poderiam ser relativizadas sem alterar o que o testemunho apostólico afirma.",
+      "refs": [
+        "58:1:1",
+        "43:14:6",
+        "44:17:26"
+      ],
+      "sources": [
+        {
+          "title": "Bahai.org — What Bahá’ís Believe",
+          "url": "https://www.bahai.org/beliefs"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-spiritism",
+      "level": 2,
+      "target": "spiritism",
+      "topic": "resurrection",
+      "title": "Espiritismo: reencarnação e esperança cristã",
+      "exposition": "A exposição kardecista apresentada pela Federação Espírita Brasileira reúne crença em Deus, imortalidade da alma, reencarnação, comunicabilidade dos espíritos e progresso moral. Jesus é uma referência central de ensino e exemplo. Essa posição deve ser distinguida das religiões de matriz africana e de usos populares da palavra espiritismo.",
+      "response": "A resposta reformada examina a distinção entre reencarnação e ressurreição. Hebreus 9:27, Lucas 16:19–31 e 1 Coríntios 15 precisam ser lidos em seu contexto. CFW 32 apresenta o estado após a morte e a ressurreição. O centro da divergência envolve como a culpa é tratada e como a esperança se relaciona à obra de Cristo, não apenas a possibilidade de experiências espirituais.",
+      "strongest": "A reencarnação poderia explicar diferenças nas condições de nascimento e oferecer oportunidades de progresso, em lugar de uma única vida seguida de juízo.",
+      "rejoinder": "A resposta espírita pode interpretar passagens cristãs à luz de seu quadro de progresso. A réplica reformada deve examinar a base textual dessa leitura e sua relação com a graça e a ressurreição, sem reduzir toda experiência narrada a mentira pessoal.",
+      "refs": [
+        "58:9:27",
+        "46:15:42",
+        "42:16:19"
+      ],
+      "sources": [
+        {
+          "title": "FEB — ESDE, Programa Fundamental",
+          "url": "https://www.febnet.org.br/wp-content/uploads/2012/06/ESDE-Programa-Fundamental-Tomo-I-18x25-Miolo-A.pdf"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "comparative-humanism",
+      "level": 2,
+      "target": "secular_humanism",
+      "topic": "morality",
+      "title": "Humanismo secular: ética e sentido",
+      "exposition": "A Declaração do Humanismo Moderno de 2022 apresenta uma ética voltada à dignidade e aos direitos humanos, responsabilidade, razão e investigação aberta. O humanismo secular não deve ser apresentado como ausência de valores ou incapacidade de compaixão. Existem diferenças entre humanistas e entre as razões filosóficas pelas quais rejeitam ou suspendem crenças sobrenaturais.",
+      "response": "A perspectiva reformada distingue a capacidade de reconhecer e praticar bens morais do fundamento último desses bens. Gênesis 1:27 e Romanos 2:14–16 são importantes nessa distinção. Um argumento moral a favor do teísmo precisa defender suas premissas: objetividade dos deveres, natureza do valor humano e suficiência de explicações rivais. A boa conduta de um ateu não refuta, por si, um argumento ontológico; igualmente, sua descrença não prova que seja moralmente deficiente.",
+      "strongest": "Dignidade, cooperação e bem-estar podem ser defendidos por razões humanas públicas, sem depender de uma autoridade divina cuja interpretação é disputada.",
+      "rejoinder": "O humanista pode invocar realismo moral, construtivismo ou outra teoria normativa. A réplica reformada deve comparar essas teorias em seus próprios termos e distinguir fundamento, conhecimento e motivação moral. A discordância filosófica não autoriza ataque à pessoa.",
+      "refs": [
+        "1:1:27",
+        "45:2:14",
+        "60:3:15"
+      ],
+      "sources": [
+        {
+          "title": "Humanists International — Declaration of Modern Humanism",
+          "url": "https://humanists.international/policy/declaration-of-modern-humanism/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "method-umbanda",
+      "level": 1,
+      "target": "umbanda",
+      "topic": "religion",
+      "title": "Umbanda: estudar a tradição de uma comunidade",
+      "exposition": "Esta categoria reúne comunidades que não podem ser explicadas por uma única confissão universal. Uma investigação deve identificar a comunidade, suas autoridades, língua, práticas e contexto histórico. O acervo ainda não contém uma exposição interna revisada que represente toda essa diversidade. Por isso, esta ficha oferece um método de estudo e não atribui uma crença uniforme a todos os participantes.",
+      "response": "A apologética presbiteriana só pode responder a uma afirmação que tenha sido apresentada corretamente. Registre primeiro o que a fonte da comunidade afirma, em seguida as diferenças acerca de Deus, criação, mediação e esperança. Atos 17 e 1 Pedro 3:15 orientam a clareza, o respeito e a responsabilidade na resposta. Ausência de material na biblioteca não é licença para fabricar uma refutação.",
+      "strongest": "Uma descrição externa pode distorcer práticas, impor categorias cristãs ou tratar relatos locais como uma religião uniforme. Como assegurar que o argumento está respondendo à posição real?",
+      "rejoinder": "Solicite uma fonte representativa, registre seu alcance e confronte a interpretação com o próprio testemunho da comunidade. Enquanto faltarem fontes suficientes, a conclusão descritiva deve permanecer limitada. O exercício é aprender a formular perguntas precisas e reconhecer lacunas.",
+      "refs": [
+        "44:17:22",
+        "60:3:15"
+      ],
+      "sources": [
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "method-candomble",
+      "level": 1,
+      "target": "candomble",
+      "topic": "religion",
+      "title": "Candomblé: nações, oralidade e cuidado descritivo",
+      "exposition": "Esta categoria reúne comunidades que não podem ser explicadas por uma única confissão universal. Uma investigação deve identificar a comunidade, suas autoridades, língua, práticas e contexto histórico. O acervo ainda não contém uma exposição interna revisada que represente toda essa diversidade. Por isso, esta ficha oferece um método de estudo e não atribui uma crença uniforme a todos os participantes.",
+      "response": "A apologética presbiteriana só pode responder a uma afirmação que tenha sido apresentada corretamente. Registre primeiro o que a fonte da comunidade afirma, em seguida as diferenças acerca de Deus, criação, mediação e esperança. Atos 17 e 1 Pedro 3:15 orientam a clareza, o respeito e a responsabilidade na resposta. Ausência de material na biblioteca não é licença para fabricar uma refutação.",
+      "strongest": "Uma descrição externa pode distorcer práticas, impor categorias cristãs ou tratar relatos locais como uma religião uniforme. Como assegurar que o argumento está respondendo à posição real?",
+      "rejoinder": "Solicite uma fonte representativa, registre seu alcance e confronte a interpretação com o próprio testemunho da comunidade. Enquanto faltarem fontes suficientes, a conclusão descritiva deve permanecer limitada. O exercício é aprender a formular perguntas precisas e reconhecer lacunas.",
+      "refs": [
+        "44:17:22",
+        "60:3:15"
+      ],
+      "sources": [
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "method-indigenous_traditions",
+      "level": 1,
+      "target": "indigenous_traditions",
+      "topic": "religion",
+      "title": "Tradições indígenas: povo, território e fonte",
+      "exposition": "Esta categoria reúne comunidades que não podem ser explicadas por uma única confissão universal. Uma investigação deve identificar a comunidade, suas autoridades, língua, práticas e contexto histórico. O acervo ainda não contém uma exposição interna revisada que represente toda essa diversidade. Por isso, esta ficha oferece um método de estudo e não atribui uma crença uniforme a todos os participantes.",
+      "response": "A apologética presbiteriana só pode responder a uma afirmação que tenha sido apresentada corretamente. Registre primeiro o que a fonte da comunidade afirma, em seguida as diferenças acerca de Deus, criação, mediação e esperança. Atos 17 e 1 Pedro 3:15 orientam a clareza, o respeito e a responsabilidade na resposta. Ausência de material na biblioteca não é licença para fabricar uma refutação.",
+      "strongest": "Uma descrição externa pode distorcer práticas, impor categorias cristãs ou tratar relatos locais como uma religião uniforme. Como assegurar que o argumento está respondendo à posição real?",
+      "rejoinder": "Solicite uma fonte representativa, registre seu alcance e confronte a interpretação com o próprio testemunho da comunidade. Enquanto faltarem fontes suficientes, a conclusão descritiva deve permanecer limitada. O exercício é aprender a formular perguntas precisas e reconhecer lacunas.",
+      "refs": [
+        "44:17:22",
+        "60:3:15"
+      ],
+      "sources": [
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-method",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Ciência, ateísmo e critérios de prova",
+      "exposition": "## O que está sendo estudado\n\nA ciência testa explicações de fenômenos por observação, previsão, comparação e revisão de modelos. O naturalismo metodológico é uma regra de investigação; afirmar que só a natureza existe é uma tese metafísica adicional. Ateísmo e agnosticismo também possuem formulações diferentes. Este laboratório utiliza perguntas filosóficas e estudos científicos para construir argumentos, sem transformar uma preferência religiosa num resultado experimental.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nCFW 1 e Romanos 1:19–20 distinguem revelação geral e conhecimento salvador. O apologista pode discutir inteligibilidade, ordem, contingência e experiência humana. Para isso, deve indicar a passagem do dado à inferência. O argumento cristão completo também considera a identidade de Cristo e o testemunho das Escrituras, não apenas a existência abstrata de uma causa.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Se uma hipótese não oferece uma previsão testável que a diferencie de suas alternativas, em que sentido poderia ser chamada de hipótese científica? A ausência de explicação atual não favorece automaticamente Deus.",
+      "rejoinder": "O interlocutor pode aceitar investigação científica e rejeitar a inferência metafísica. Uma resposta competente reconhece essa distinção e defende a premissa adicional explicitamente. Evite usar lacunas da pesquisa como prova automática. Compare a validade de cada argumento e as evidências pertinentes à sua categoria.",
+      "refs": [
+        "45:1:19",
+        "19:19:1",
+        "60:3:15"
+      ],
+      "sources": [
+        {
+          "title": "Stanford Encyclopedia of Philosophy — Atheism and Agnosticism",
+          "url": "https://plato.stanford.edu/entries/atheism-agnosticism/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-cosmos",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Cosmologia: universo quente, expansão e contingência",
+      "exposition": "## O que está sendo estudado\n\nA análise Planck de 2018 combina observações da radiação cósmica de fundo com modelos cosmológicos, particularmente ΛCDM. Os parâmetros estimados dependem do modelo e dos conjuntos de dados utilizados. Essa investigação descreve uma história física do universo observável; não estabelece sozinha a resposta a toda pergunta sobre por que existe uma realidade física.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nUm argumento de contingência pergunta por que existe uma realidade que não contém em si uma explicação necessária de sua existência. A inferência teísta propõe um fundamento não contingente. Ela precisa defender seu princípio explicativo e explicar por que esse fundamento corresponde a uma realidade divina. Gênesis 1:1 é uma afirmação teológica de criação, não uma tabela de parâmetros cosmológicos.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Por que exigir uma explicação para o universo inteiro? Uma realidade física básica ou uma descrição mais fundamental poderia ser suficiente. A causalidade observada dentro do universo pode não se aplicar à totalidade.",
+      "rejoinder": "A resposta reformada distingue uma relação causal temporal de uma relação de dependência. O debate examina se um fato bruto, uma cadeia de dependências ou um fundamento necessário oferece a melhor explicação. O modelo cosmológico, sozinho, não decide essa comparação.",
+      "refs": [
+        "1:1:1",
+        "44:17:24",
+        "51:1:16"
+      ],
+      "sources": [
+        {
+          "title": "Planck Collaboration (2020), Planck 2018 results VI — parâmetros cosmológicos",
+          "url": "https://arxiv.org/abs/1807.06209"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-finetuning",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Ajuste fino: dados, hipóteses e limites",
+      "exposition": "## O que está sendo estudado\n\nCertos parâmetros físicos são discutidos em relação à possibilidade de estruturas complexas e observadores. Um argumento de ajuste fino exige especificar parâmetros, variações, medidas de probabilidade e alternativas. Não há licença para inventar uma porcentagem universal de chance de vida ou de existência de Deus.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nUma inferência de design pode comparar a inteligibilidade e a possibilidade de vida com expectativas de propostas rivais. Essa comparação é filosófica e depende das probabilidades justificadas, não apenas do espanto diante da natureza. A fé reformada identifica propósito na criação, mas o argumento de ajuste fino não substitui a revelação de Cristo nem identifica sozinho todos os atributos do Deus bíblico.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Efeitos de seleção dos observadores, leis mais profundas ou propostas de múltiplos universos podem alterar a comparação. Por que presumir que uma variação matemática representa possibilidades físicas equiprováveis?",
+      "rejoinder": "A réplica precisa justificar a medida usada, avaliar se as alternativas possuem suporte independente e distinguir explicação de mecanismo e de propósito. Não despreze a seleção observacional, nem trate qualquer hipótese de multiverso como fato confirmado.",
+      "refs": [
+        "19:19:1",
+        "45:1:20",
+        "51:1:16"
+      ],
+      "sources": [
+        {
+          "title": "SEP — Fine-Tuning",
+          "url": "https://plato.stanford.edu/entries/fine-tuning/"
+        },
+        {
+          "title": "Planck Collaboration (2020), Planck 2018 results VI — parâmetros cosmológicos",
+          "url": "https://arxiv.org/abs/1807.06209"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-biology",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Evolução, criação e níveis de explicação",
+      "exposition": "## O que está sendo estudado\n\nA investigação biológica examina variação, herança, seleção e história de organismos. Uma discussão teológica precisa distinguir esses mecanismos da pergunta sobre criação e sustentação da natureza. Explicações naturais não são, por definição, afirmações de ausência de Deus. Cristãos e reformados possuem divergências sobre a interpretação da história natural e de Gênesis.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nCFW 4 e 5 afirmam criação e providência. Uma defesa reformada deve explicitar sua leitura de Gênesis, distinguir uma tese exegética de um mecanismo científico e examinar as evidências relevantes. Não conclua que a biologia demonstra Deus, nem que descrever um processo natural elimina automaticamente a providência. A pergunta metafísica envolve por que existe uma natureza capaz de tais processos.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Se processos naturais explicam diversidade e adaptação, por que acrescentar uma explicação divina? E por que uma interpretação religiosa deveria decidir um resultado biológico?",
+      "rejoinder": "O interlocutor pode defender a suficiência explicativa dos mecanismos para as questões biológicas. A réplica teísta precisa mostrar quando está discutindo fundamento ou propósito, sem competir com uma explicação de mecanismo usando uma lacuna artificial. Uma controvérsia específica exige fontes científicas específicas.",
+      "refs": [
+        "1:1:1",
+        "51:1:17",
+        "45:8:19"
+      ],
+      "sources": [
+        {
+          "title": "Darwin — On the Origin of Species, edição histórica em domínio público",
+          "url": "https://darwin-online.org.uk/EditorialIntroductions/Freeman_OntheOriginofSpecies.html"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-consciousness",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Consciência, cérebro e pessoa",
+      "exposition": "## O que está sendo estudado\n\nO estudo da consciência reúne observações sobre cérebro, experiência e comportamento, além de teorias concorrentes. Correlações e dependência funcional são relevantes, mas a interpretação sobre o que a consciência é também envolve argumentos filosóficos. Uma discussão rigorosa não transforma a falta de consenso numa demonstração imediata de uma alma imaterial.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nA visão reformada da pessoa considera criação à imagem de Deus, dimensão corporal, responsabilidade e esperança de ressurreição. O apologista pode examinar experiência subjetiva, intencionalidade e razão, defendendo por que uma explicação estritamente física seria suficiente ou insuficiente. Deve igualmente explicar como sua visão lida com as dependências observadas entre vida mental e cérebro.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Mudanças cerebrais que alteram memória, personalidade e consciência oferecem uma forte razão para procurar explicações físicas. O dualismo precisa explicar a interação e suas próprias dificuldades.",
+      "rejoinder": "Uma réplica teísta deve reconhecer esses dados, comparar teorias e evitar inferir que algo sem explicação estabelecida é necessariamente sobrenatural. A ressurreição cristã não descreve o corpo como irrelevante; a compreensão da pessoa precisa considerar esse compromisso.",
+      "refs": [
+        "1:1:27",
+        "46:15:42",
+        "40:22:32"
+      ],
+      "sources": [
+        {
+          "title": "Seth e Bayne (2022), Theories of consciousness — Nature Reviews Neuroscience",
+          "url": "https://doi.org/10.1038/s41583-022-00587-4"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-morality",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Valor humano e argumento moral",
+      "exposition": "## O que está sendo estudado\n\nA investigação sobre comportamento moral pode estudar cooperação, desenvolvimento e decisões. A origem de um comportamento e a justificação de um dever são perguntas diferentes. Ateus podem defender deveres objetivos e viver de forma moralmente responsável; o debate sobre fundamento deve examinar suas teorias reais.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nO argumento reformado relaciona dignidade à imagem de Deus e dever moral ao caráter e à autoridade do Criador. Ele precisa explicar por que esse fundamento é objetivo e responder à pergunta se algo é bom porque Deus ordena ou se Deus ordena porque é bom. Uma formulação cuidadosa relaciona mandamentos ao caráter divino, em vez de simples arbitrariedade.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Realismo moral não teísta, bem-estar e razões práticas podem oferecer justificações normativas. Acrescentar Deus não resolve automaticamente como conhecemos e interpretamos seus mandamentos.",
+      "rejoinder": "A réplica compara teorias e distingue existência dos valores, acesso ao conhecimento moral e motivação. Não confunda desacordo filosófico com acusação de mau caráter. O exercício é avaliar qual explicação sustenta melhor suas premissas.",
+      "refs": [
+        "1:1:27",
+        "45:2:14",
+        "33:6:8"
+      ],
+      "sources": [
+        {
+          "title": "Humanists International — Humanismo Moderno",
+          "url": "https://humanists.international/policy/declaration-of-modern-humanism/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-suffering",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Sofrimento natural e o problema do mal",
+      "exposition": "## O que está sendo estudado\n\nDoenças, desastres e sofrimento animal levantam perguntas que não se limitam a decisões humanas. Explicar mecanismos físicos de um desastre e justificar a existência de sofrimento numa criação governada por Deus são questões diferentes. A resposta deve considerar a dimensão existencial e o argumento filosófico.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nA perspectiva reformada afirma bondade divina, queda, providência, redenção e consumação. Jó não apresenta uma lista de causas particulares para todo sofrimento. Romanos 8 relaciona a criação à esperança, e a cruz coloca a resposta cristã no centro da história da redenção. CFW 5 não autoriza chamar Deus de autor do pecado. Limites do conhecimento devem ser usados com consistência, não para imunizar toda afirmação contra exame.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "A quantidade e a distribuição do sofrimento parecem maiores que o necessário para liberdade, virtude ou algum bem reconhecível. Apelar a razões desconhecidas pode tornar a tese impossível de avaliar.",
+      "rejoinder": "A objeção evidencial merece tratamento próprio. A réplica deve avaliar o conjunto da visão teísta, admitir o peso da dificuldade e mostrar quais premissas sustentam esperança e confiança. Uma resposta pastoral não substitui a avaliação do argumento, e vice-versa.",
+      "refs": [
+        "18:38:1",
+        "45:8:18",
+        "1:50:20"
+      ],
+      "sources": [
+        {
+          "title": "SEP — Problem of Evil",
+          "url": "https://plato.stanford.edu/entries/evil/"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    },
+    {
+      "id": "science-history",
+      "level": 3,
+      "target": "atheism",
+      "topic": "science",
+      "title": "Ressurreição: testemunho histórico e explicação",
+      "exposition": "## O que está sendo estudado\n\nA investigação histórica trabalha com fontes, contexto, transmissão e comparação de explicações. Os relatos da ressurreição são testemunhos históricos e teológicos. Identificar uma crença antiga não basta, por si, para estabelecer a causa dos acontecimentos; igualmente, a presença de interpretação religiosa não torna a fonte automaticamente inútil.\n\n## Como avaliar\n\nDistinguir observação, modelo científico, premissa filosófica e interpretação teológica. Uma conclusão recebe a força das premissas que realmente foram justificadas.",
+      "response": "## Argumento na perspectiva reformada\n\nA defesa reformada examina 1 Coríntios 15:3–8, os relatos evangélicos e sua relação com o contexto judaico. Precisa distinguir dados sobre a proclamação, avaliações de testemunhas e a conclusão de que Deus ressuscitou Cristo. A interpretação sobrenatural depende também de argumentos sobre a possibilidade de ação divina; história e filosofia devem ser relacionadas sem confundir seus métodos.\n\n## Reflexão\n\nEscreva as premissas e a conclusão. Marque quais dependem de dados, quais são filosóficas e quais procedem da revelação. Leia as referências no contexto e apresente a melhor resposta do interlocutor.",
+      "strongest": "Experiências religiosas, tradições desenvolvidas e limitações dos documentos podem oferecer explicações alternativas. Como comparar uma alegação de milagre com essas hipóteses sem presumir de início o que se deseja concluir?",
+      "rejoinder": "A réplica avalia o poder explicativo, o custo das hipóteses adicionais e as pressuposições metodológicas. Evite alegar independência completa de fontes sem investigar suas relações. A conclusão deve refletir o grau de confiança que as fontes sustentam.",
+      "refs": [
+        "46:15:3",
+        "43:20:1",
+        "42:24:1"
+      ],
+      "sources": [
+        {
+          "title": "Textos históricos primários — Evangelhos e 1 Coríntios 15; edições instaladas",
+          "url": "https://www.crosswire.org/sword/modules/ModInfo.jsp?modName=ASV"
+        },
+        {
+          "title": "Westminster — Confissão de Fé, capítulos 1, 2, 7, 8 e 11; originais no aplicativo",
+          "url": "https://opc.org/confessions.html"
+        }
+      ]
+    }
+  ],
+  "science_ids": [
+    "science-method",
+    "science-cosmos",
+    "science-finetuning",
+    "science-biology",
+    "science-consciousness",
+    "science-morality",
+    "science-suffering",
+    "science-history"
+  ],
+  "scope": "Catálogo em expansão. Tradições e posições específicas são identificadas; não pretende conter toda religião existente.",
+  "documents": []
+}
