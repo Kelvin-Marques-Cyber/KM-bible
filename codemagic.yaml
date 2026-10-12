@@ -1,0 +1,32 @@
+workflows:
+  ios-unsigned:
+    name: Biblia Reformada iOS - IPA sem assinatura
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+    environment:
+      flutter: stable
+      xcode: latest
+      cocoapods: default
+    scripts:
+      - name: Conferir Flutter e instalar dependencias
+        script: |
+          flutter --version
+          flutter pub get
+
+      - name: Compilar iOS sem assinatura
+        script: |
+          flutter build ios --release --no-codesign
+
+      - name: Empacotar IPA de teste
+        script: |
+          set -e
+          test -d build/ios/iphoneos/Runner.app
+          mkdir -p build/ios/ipa/Payload
+          cp -R build/ios/iphoneos/Runner.app build/ios/ipa/Payload/
+          cd build/ios/ipa
+          zip -qry BibliaReformada-0.5.3-unsigned.ipa Payload
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - build/ios/iphoneos/*.app
+      - /tmp/xcodebuild_logs/*.log
