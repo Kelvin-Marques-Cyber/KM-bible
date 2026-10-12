@@ -123,6 +123,12 @@ class _ReaderPageState extends State<ReaderPage> {
                 sheet(context, a.t('models'), ModelsPage(reference: a.passage)),
             icon: const Icon(Icons.view_in_ar),
           ),
+          IconButton(
+            key: const ValueKey('reader-context'),
+            tooltip: 'Contexto, temas e teologia',
+            onPressed: () => openVerseStudy(context, a.passage),
+            icon: const Icon(Icons.history_edu),
+          ),
           PopupMenuButton<String>(
             tooltip: a.t('translation'),
             onSelected: (e) {
@@ -396,7 +402,7 @@ class _ReaderPageState extends State<ReaderPage> {
             ),
             Text('${selected.length} ${a.t('selected')}'),
             action(
-              'Estudo conectado',
+              'Contexto e estudo',
               Icons.hub,
               () => openVerseStudy(context, r),
             ),

@@ -107,55 +107,169 @@ String morphology(String raw) {
   return '${decoded.join(' · ')}\nCódigo Robinson: $raw';
 }
 
-class OriginalPage extends StatelessWidget {
+class OriginalPage extends StatefulWidget {
   final Reference reference;
   const OriginalPage(this.reference, {super.key});
   @override
+  State<OriginalPage> createState() => _OriginalPageState();
+}
+
+class _OriginalPageState extends State<OriginalPage> {
+  bool compact = true;
+  int? selected;
+  String gloss(RecordRow word) {
+    final id = context.app.store.strongId(word['lexeme'] as String? ?? '');
+    final translated = context.app.store.translatedEntry('lexeme', id);
+    if (translated != null &&
+        (translated['gloss'] as String).trim().isNotEmpty) {
+      return translated['gloss'] as String;
+    }
+    return id.isEmpty
+        ? 'Partícula ou sufixo · consulte a análise'
+        : 'Glosa em português indisponível';
+  }
+
+  Widget detail(RecordRow word) => Card(
+    child: Padding(
+      padding: const EdgeInsets.all(18),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            '${word['surface']} · ${word['transliteration'] ?? ''}',
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
+          Text(gloss(word)),
+          const SizedBox(height: 8),
+          Text(
+            'Lema: ${word['lemma'] ?? 'não identificado'} · ${word['lexeme']}',
+          ),
+          Text(morphology(word['morphology'] as String)),
+          if ((word['lexeme'] as String? ?? '').isNotEmpty)
+            action(
+              'Abrir dicionário e ocorrências',
+              Icons.menu_book,
+              () => sheet(
+                context,
+                'Dicionário do original',
+                LexemePage(word['lexeme'] as String),
+              ),
+            ),
+        ],
+      ),
+    ),
+  );
+  @override
   Widget build(BuildContext context) {
     final a = context.app,
-        words = a.store.wordsAt(reference, sourceTranslation: a.translation);
+        r = widget.reference,
+        words = a.store.wordsAt(r, sourceTranslation: a.translation);
+    final edition =
+        words.firstOrNull?['edition'] ?? (r.book < 40 ? 'WLC/OSHB' : 'TIS');
     return ListView(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(18),
       children: [
         Text(
-          a.t('addressWarning'),
-          style: Theme.of(context).textTheme.bodySmall,
+          r.label(a.language),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
+        Text(
+          '$edition · original com glosas em português',
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        const SizedBox(height: 8),
+        Wrap(
+          spacing: 8,
+          children: [
+            ChoiceChip(
+              label: const Text('Interlinear'),
+              selected: compact,
+              onSelected: (_) => setState(() => compact = true),
+            ),
+            ChoiceChip(
+              label: const Text('Análise palavra por palavra'),
+              selected: !compact,
+              onSelected: (_) => setState(() => compact = false),
+            ),
+          ],
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(vertical: 12),
+          child: Text(
+            'Toque em uma palavra para ver lema, morfologia e outras ocorrências. As glosas auxiliam o estudo; não formam uma tradução corrida nem um alinhamento automático com a RA.',
+          ),
+        ),
+        if (words.isEmpty) Text(a.t('noContent')),
+        if (compact)
+          Wrap(
+            spacing: 6,
+            runSpacing: 8,
+            textDirection: r.book < 40 ? TextDirection.rtl : TextDirection.ltr,
+            children: [
+              for (var i = 0; i < words.length; i++)
+                SizedBox(
+                  width: 146,
+                  child: Semantics(
+                    button: true,
+                    label: '${words[i]['surface']}, ${gloss(words[i])}',
+                    child: Card(
+                      color: selected == i
+                          ? Theme.of(context).colorScheme.secondaryContainer
+                          : null,
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        onTap: () =>
+                            setState(() => selected = selected == i ? null : i),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Column(
+                            children: [
+                              Text(
+                                words[i]['surface'] as String,
+                                textDirection: r.book < 40
+                                    ? TextDirection.rtl
+                                    : TextDirection.ltr,
+                                style: const TextStyle(fontSize: 25),
+                              ),
+                              Text(
+                                words[i]['transliteration'] as String? ?? '',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              const Divider(height: 14),
+                              Text(
+                                gloss(words[i]),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                              Text(
+                                words[i]['lexeme'] as String? ?? '',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        if (compact && selected != null && selected! < words.length)
+          detail(words[selected!]),
+        if (!compact) ...words.map(detail),
+        const SizedBox(height: 16),
         Text(
           a.t('lexicalWarning'),
           style: Theme.of(context).textTheme.bodySmall,
         ),
-        const SizedBox(height: 18),
         Text(
-          reference.label(a.language),
-          style: Theme.of(context).textTheme.titleLarge,
-        ),
-        if (words.isEmpty) Text(a.t('noContent')),
-        ...words.map(
-          (w) => Card(
-            child: ListTile(
-              title: Text(
-                w['surface'] as String,
-                textDirection: reference.book < 40
-                    ? TextDirection.rtl
-                    : TextDirection.ltr,
-                style: const TextStyle(fontSize: 25),
-              ),
-              subtitle: Text(
-                '${w['edition']} ${Reference.fromId(w['reference'] as String)!.label(a.language)} · ${w['lexeme']} · ${w['transliteration'] ?? ''}\n${a.store.translatedEntry('lexeme', w['lexeme'] as String)?['gloss'] ?? w['gloss'] ?? ''}\n${morphology(w['morphology'] as String)}',
-              ),
-              onTap: () => sheet(
-                context,
-                '${w['lexeme']} · ${w['lemma'] ?? ''}',
-                LexemePage(w['lexeme'] as String),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 12),
-        Text(
-          'OSHB: WLC, AT hebraico/aramaico. TIS: Tischendorf 8, NT grego. Glosas em português para estudo; definições históricas originais disponíveis para conferência. Estes corpora podem diferir textualmente e na numeração da edição em leitura.',
+          a.t('addressWarning'),
           style: Theme.of(context).textTheme.bodySmall,
+        ),
+        const Text(
+          'AT: WLC e morfologia OSHB. NT: Tischendorf 8 e códigos Robinson/Strong. Textos de origem preservados; glosas de estudo em português com revisão especializada pendente.',
         ),
       ],
     );

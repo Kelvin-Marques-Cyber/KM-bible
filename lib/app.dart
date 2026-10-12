@@ -202,20 +202,10 @@ const labels = <String, List<String>>{
     'Arena y laboratorio',
   ],
   'apologists': ['Grandes apologistas', 'Apologists', 'Apologistas'],
-  'assistant': [
-    'Assistente de navegação offline',
-    'Offline navigation assistant',
-    'Asistente de navegación offline',
-  ],
   'noStudy': [
     'Este estudo não está registrado na biblioteca.',
     'This study is not registered in the library.',
     'Este estudio no está registrado en la biblioteca.',
-  ],
-  'confirmIntent': [
-    'Confira a interpretação antes de abrir o estudo',
-    'Review the interpretation before opening the study',
-    'Revise la interpretación antes de abrir el estudio',
   ],
   'response': ['Sua resposta', 'Your response', 'Tu respuesta'],
   'feedback': [

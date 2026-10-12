@@ -9,6 +9,7 @@ import 'studies.dart';
 import 'linguistics.dart';
 import 'reader.dart';
 import 'explore.dart';
+import 'bible_topics.dart';
 
 Future<void> openSearch(BuildContext context) =>
     sheet(context, context.app.t('search'), const SearchPage());
@@ -55,6 +56,8 @@ class _SearchPageState extends State<SearchPage> {
   Future<void> open(RecordRow hit) async {
     final a = context.app;
     switch (hit['category']) {
+      case 'topic':
+        sheet(context, hit['title'] as String, TopicPage(hit['id'] as String));
       case 'bible':
         showPassage(context, Reference.fromId(hit['id'] as String)!);
       case 'notes':

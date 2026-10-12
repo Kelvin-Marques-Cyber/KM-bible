@@ -10,6 +10,7 @@ import 'linguistics.dart';
 import 'reader.dart' show CommentariesPage;
 import 'studies.dart';
 import 'store.dart';
+import 'bible_topics.dart';
 
 Future<List<Map<String, dynamic>>>? _books;
 Future<List<Map<String, dynamic>>> bookBackgrounds() => _books ??= (() async =>
@@ -70,6 +71,13 @@ class _VerseStudyPageState extends State<VerseStudyPage> {
         )
         .toList();
     final allStudies = a.store.studies();
+    final themes = a.store.topics(reference: r, limit: 16);
+    final classic = a.store
+        .commentaries(r, moduleId: 'MHCC', sourceTranslation: a.translation)
+        .firstOrNull;
+    final classicPt = classic == null
+        ? null
+        : a.store.translatedEntry('commentary', classic['id'] as String);
     final direct = allStudies
         .where((s) => jsonList(s['refs']).any((id) => id == r.id))
         .toList();
@@ -87,6 +95,34 @@ class _VerseStudyPageState extends State<VerseStudyPage> {
         Text(
           r.label(a.language),
           style: Theme.of(context).textTheme.headlineSmall,
+        ),
+        if (themes.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          Text(
+            'Temas ligados à passagem',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          Wrap(
+            spacing: 6,
+            runSpacing: 4,
+            children: themes
+                .map(
+                  (t) => ActionChip(
+                    label: Text(t['title'] as String),
+                    onPressed: () => sheet(
+                      context,
+                      t['title'] as String,
+                      TopicPage(t['id'] as String),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+        action(
+          'Explorar todos os temas',
+          Icons.label_outline,
+          () => sheet(context, 'Temas bíblicos', BibleTopicsPage(reference: r)),
         ),
         const SizedBox(height: 10),
         Wrap(
@@ -162,6 +198,33 @@ class _VerseStudyPageState extends State<VerseStudyPage> {
             }).toList(),
           ),
         ],
+        if (classicPt != null)
+          ExpansionTile(
+            initiallyExpanded: true,
+            title: const Text('Contexto literário do trecho'),
+            subtitle: const Text(
+              'Comentário clássico de Matthew Henry · leitura da passagem',
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: MarkdownText(
+                  (classicPt['body'] as String).length > 1800
+                      ? '${(classicPt['body'] as String).substring(0, 1800)}…'
+                      : classicPt['body'] as String,
+                ),
+              ),
+              action(
+                'Ler comentário completo e fontes',
+                Icons.article,
+                () => sheet(
+                  context,
+                  'Comentário da passagem',
+                  CommentariesPage(r),
+                ),
+              ),
+            ],
+          ),
         if (events.isNotEmpty)
           ...events.map(
             (event) => Card(

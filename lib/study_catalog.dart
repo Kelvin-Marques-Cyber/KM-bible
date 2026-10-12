@@ -1,5 +1,13 @@
 // Curated labels for registered study topics and traditions.
 const expandedTraditionTitles = {
+  'lutheran': 'Luterana confessional',
+  'anglican': 'Anglicana histórica',
+  'buddhism_mahayana': 'Budismo Mahayana',
+  'jainism': 'Jainismo',
+  'shinto': 'Xintoísmo',
+  'daoism': 'Taoismo / Daoismo',
+  'confucianism': 'Confucionismo',
+  'zoroastrianism': 'Zoroastrismo',
   'eastern_orthodox': 'Ortodoxa oriental',
   'methodist': 'Metodista',
   'pentecostal': 'Pentecostal clássico',
@@ -19,6 +27,12 @@ const expandedTraditionTitles = {
   'indigenous_traditions': 'Tradições indígenas (método de estudo)',
 };
 const expandedTopicTitles = {
+  'origins': 'Introdução e história',
+  'sacred_texts': 'Textos sagrados e autoridade',
+  'ultimate_reality': 'Deus e realidade última',
+  'human_condition': 'O ser humano e sua condição',
+  'worship': 'Culto, ritos e comunidade',
+  'afterlife': 'Morte, juízo e esperança',
   'creation': 'Criação e realidade',
   'morality': 'Ética e valor humano',
   'religion': 'Estudo das tradições',

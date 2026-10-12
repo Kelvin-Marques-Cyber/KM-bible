@@ -31,6 +31,7 @@ class Store {
   final String directory;
   Database? _connections;
   Database? _portuguese;
+  Database? _topics;
   Store(
     this.content,
     this.personal,
@@ -49,9 +50,11 @@ class Store {
       'library',
       'connections',
       'portuguese',
+      'topics',
     ]) {
       final target = File(p.join(dir.path, '$name.sqlite'));
-      final updateable = name == 'connections' || name == 'portuguese';
+      final updateable =
+          name == 'connections' || name == 'portuguese' || name == 'topics';
       final expected = (await rootBundle.loadString(
         'assets/content/$name.sha256',
       )).trim();
@@ -208,6 +211,50 @@ class Store {
         ? sqlite3.open(file.path, mode: OpenMode.readOnly)
         : null;
   }
+
+  Database? get topical {
+    final file = File(p.join(directory, 'topics.sqlite'));
+    return _topics ??= file.existsSync()
+        ? sqlite3.open(file.path, mode: OpenMode.readOnly)
+        : null;
+  }
+
+  List<RecordRow> topics({
+    String search = '',
+    Reference? reference,
+    int limit = 80,
+  }) {
+    final db = topical;
+    if (db == null) return [];
+    if (reference != null) {
+      return query(
+        db,
+        'SELECT t.* FROM topics t JOIN topic_verses v ON v.topic_id=t.id WHERE v.reference=? ORDER BY t.title LIMIT ?',
+        [reference.id, limit],
+      );
+    }
+    final text = fts(search);
+    if (text.isNotEmpty) {
+      return query(
+        db,
+        'SELECT t.* FROM topic_search f JOIN topics t ON t.id=f.id WHERE topic_search MATCH ? ORDER BY rank LIMIT ?',
+        [text, limit],
+      );
+    }
+    return query(db, 'SELECT * FROM topics ORDER BY title LIMIT ?', [limit]);
+  }
+
+  RecordRow? topic(String id) => topical == null
+      ? null
+      : query(topical!, 'SELECT * FROM topics WHERE id=?', [id]).firstOrNull;
+  List<RecordRow> topicReferences(String id, {int limit = 80}) =>
+      topical == null
+      ? []
+      : query(
+          topical!,
+          'SELECT reference FROM topic_verses WHERE topic_id=? ORDER BY reference LIMIT ?',
+          [id, limit],
+        );
 
   List<RecordRow> crossReferences(
     Reference reference, {
@@ -698,6 +745,15 @@ CREATE VIRTUAL TABLE IF NOT EXISTS note_search USING fts5(id UNINDEXED,title,bod
     final q = fts(queryText);
     if (q.isEmpty) return [];
     final hits = <RecordRow>[];
+    for (final item in topics(search: queryText, limit: 30)) {
+      hits.add({
+        'category': 'topic',
+        'id': item['id'],
+        'title': item['title'],
+        'body': item['body'],
+        'source': item['source'],
+      });
+    }
     final pt = portuguese;
     if (pt != null &&
         pt
@@ -888,5 +944,6 @@ CREATE VIRTUAL TABLE IF NOT EXISTS note_search USING fts5(id UNINDEXED,title,bod
     library.dispose();
     _connections?.dispose();
     _portuguese?.dispose();
+    _topics?.dispose();
   }
 }

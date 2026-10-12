@@ -1,12 +1,11 @@
 import 'study_catalog.dart';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'app.dart';
 import 'common.dart';
 import 'domain.dart';
 import 'store.dart';
 import 'notes.dart';
-import 'needle.dart';
+import 'religion_curricula.dart';
 
 const topicTitles = {
   ...expandedTopicTitles,
@@ -147,14 +146,18 @@ class _StudiesBrowserState extends State<StudiesBrowser> {
           spacing: 8,
           children: [
             action(
+              'Religiões por categoria',
+              Icons.public,
+              () => sheet(
+                context,
+                'Religiões e cosmovisões',
+                ReligionCurriculaPage(apologetic: widget.apologetic),
+              ),
+            ),
+            action(
               'Ciência e ateísmo',
               Icons.science_outlined,
               () => sheet(context, 'Ciência e ateísmo', const SciencePage()),
-            ),
-            action(
-              a.t('assistant'),
-              Icons.explore_outlined,
-              () => sheet(context, a.t('assistant'), const AssistantPage()),
             ),
             action(
               a.t('apologists'),
@@ -573,114 +576,6 @@ class _ArenaPageState extends State<ArenaPage> {
           a.refresh();
           message(context, a.t('success'));
         }),
-      ],
-    );
-  }
-}
-
-class AssistantPage extends StatefulWidget {
-  const AssistantPage({super.key});
-  @override
-  State<AssistantPage> createState() => _AssistantPageState();
-}
-
-class _AssistantPageState extends State<AssistantPage> {
-  final prompt = TextEditingController();
-  Map<String, String>? intent;
-  String status = '';
-  bool busy = false;
-  @override
-  void dispose() {
-    prompt.dispose();
-    super.dispose();
-  }
-
-  Future<void> interpret() async {
-    setState(() => busy = true);
-    try {
-      final result = await NeedleInterpreter.interpret(prompt.text);
-      final fallback = traditionalIntent(prompt.text);
-      setState(() {
-        intent = result.intent ?? fallback;
-        status = result.intent != null
-            ? 'Needle 2 · interpretação local validada'
-            : fallback != null
-            ? 'Pesquisa tradicional local · confira a interpretação'
-            : context.app.t('noStudy');
-      });
-    } catch (e) {
-      setState(() {
-        intent = traditionalIntent(prompt.text);
-        status = 'Pesquisa tradicional local';
-      });
-    } finally {
-      if (mounted) setState(() => busy = false);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final a = context.app;
-    return ListView(
-      padding: const EdgeInsets.all(22),
-      children: [
-        Text(
-          'O interpretador seleciona uma consulta. A resposta vem dos estudos registrados e de suas fontes.',
-        ),
-        const SizedBox(height: 16),
-        TextField(
-          controller: prompt,
-          minLines: 3,
-          maxLines: 6,
-          decoration: const InputDecoration(
-            hintText:
-                'Como os presbiterianos respondem aos adventistas sobre o sábado?',
-          ),
-        ),
-        const SizedBox(height: 16),
-        FilledButton(
-          onPressed: busy ? null : interpret,
-          child: Text(a.t('start')),
-        ),
-        if (busy) const LinearProgressIndicator(),
-        Text(status),
-        if (intent != null) ...[
-          const SizedBox(height: 20),
-          Text(a.t('confirmIntent')),
-          SelectableText(const JsonEncoder.withIndent('  ').convert(intent)),
-          const SizedBox(height: 16),
-          FilledButton(
-            onPressed: () {
-              final rows = a.store.studies(
-                topic: intent!['topic'],
-                target: intent!['target'],
-              );
-              if (rows.isEmpty) {
-                message(context, a.t('noStudy'));
-                return;
-              }
-              sheet(
-                context,
-                rows.first['title'] as String,
-                StudyPage(
-                  rows.first,
-                  apologetic: intent!['mode'] == 'presbyterian_apologetics',
-                ),
-              );
-            },
-            child: Text(a.t('start')),
-          ),
-        ],
-        const SizedBox(height: 24),
-        action(
-          a.t('desk'),
-          Icons.table_chart,
-          () => sheet(
-            context,
-            a.t('desk'),
-            const StudiesBrowser(apologetic: false),
-          ),
-        ),
       ],
     );
   }

@@ -13,14 +13,14 @@ Aplicativo Flutter para leitura bíblica e estudo presbiteriano local. Nenhuma c
 - Comparação de edições e comentários sincronizados por referências. Quando falta um mapeamento textual, a comparação numérica é explicitamente identificada.
 - Notas Markdown, cadernos, etiquetas, links entre notas e passagens, backlinks, anexos locais e exportação/restauração com verificação de integridade. Backup opcional com AES-256-GCM.
 - Confissão de Fé: 33 capítulos; Breve Catecismo: 107 perguntas; Catecismo Maior: 196 perguntas. Originais históricos completos em inglês e guias próprios em português. Guias **não são uma tradução oficial da IPB**. A Confissão de 1647 é distinguida das revisões posteriores.
-- Doze estudos em três níveis, exposição da posição interlocutora, defesa reformada, objeção forte, réplica e comparação. Laboratório com exercícios e verificação da estrutura da resposta; a ferramenta não certifica a verdade de uma resposta teológica.
+- 253 estudos, incluindo 27 trilhas com oito assuntos por tradição, em três níveis, exposição da posição interlocutora, defesa reformada, objeção forte, réplica e comparação. Laboratório com exercícios e verificação da estrutura da resposta; a ferramenta não certifica a verdade de uma resposta teológica.
 - Catálogo de Van Til, Bahnsen, Schaeffer, Calvino, Bavinck e Plantinga, com distinção metodológica e bibliografias.
-- Needle 2 local: interpretação estruturada com esquema fixo, confiança mínima e validação. A aplicação só apresenta estudos registrados. Pesquisa tradicional permanece disponível. O desempenho e a precisão em português no aparelho ainda precisam de avaliação ampla.
 - Atlas local Natural Earth, 38 lugares, três sequências de viagens e 24 acontecimentos. Datas alternativas, lugares discutidos e trechos sem dados são identificados. Linhas no mapa não representam distâncias reais de estradas. Comparação cronológica exclui ano zero.
 - 136 modelos GLB originais, com camadas e referências, associados a 321 blocos de até quatro capítulos nos 66 livros. O leitor abre diretamente os recursos do bloco atual; a galeria oferece pesquisa e categorias. Inclui santuários, arquitetura, instrumentos, navegação, utensílios, trabalho, plantas e animais. Objetos, contexto cultural, metáforas e visões são identificados. Rotação, zoom e alternativa textual. São esquemas interpretativos, não levantamentos arqueológicos ou modelos fotorrealistas.
-- Léxico histórico Strong e corpora OSHB/Tischendorf, com consulta por lema, forma, Strong e morfologia. Glosas históricas em inglês; original não é artificialmente alinhado palavra por palavra à tradução.
+- Léxico histórico Strong e corpora OSHB/Tischendorf, com consulta por lema, forma, Strong e morfologia. Glosas e consultas prioritárias em português, com acesso separado aos originais; original não é artificialmente alinhado palavra por palavra à tradução.
 - Cinco modos de flashcard, repetição espaçada local e lembrete diário opcional.
-- Pesquisa local FTS5 em Bíblia, notas, documentos, estudos, comentários e léxico. Importação de módulos validada por manifesto e hashes.
+- Índice de 628 temas bíblicos em português com 52.211 ligações a passagens, a partir de Torrey (domínio público), com fonte e revisão pendente identificadas.
+- Pesquisa local FTS5 em Bíblia, notas, documentos, estudos, comentários, temas e léxico. Importação de módulos validada por manifesto e hashes.
 
 ## Edições e licenças
 
@@ -43,7 +43,7 @@ A **RA fornecida pelo usuário** foi convertida em pacote pessoal: 66 livros, 1.
 
 ## Compilação
 
-Requisitos: Flutter 3.47.7 / Dart 3.13.5, Android SDK 36, JDK 17 com compilador, NDK 28.2.13676358, CMake 3.22.1. Android mínimo 24; biblioteca Needle incluída para ARM64. Interfaces e fontes suportam outras plataformas, mas a rotina de compilação pessoal gera Android ARM64.
+Requisitos: Flutter 3.47.7 / Dart 3.13.5, Android SDK 36, JDK 17 com compilador, NDK 28.2.13676358, CMake 3.22.1. Android mínimo 24; esta compilação gera APK ARM64. Interfaces e fontes suportam outras plataformas, mas a rotina de compilação pessoal gera Android ARM64.
 
 ```sh
 flutter pub get
@@ -59,7 +59,7 @@ Configure `android/key.properties` com sua chave pessoal. As chaves e senhas nã
 
 ## Validação e limites
 
-Os testes em `test/core_test.dart` verificam referências, conteúdos reais, remoção/atualização sem perda de notas, arquivos inválidos, backups, criptografia, datas, revisão, intenções, cobertura 3D de todos os capítulos e fluxos de interface. A compilação não substitui testes em aparelhos reais, análise de acessibilidade com leitores de tela nem revisão pastoral do conteúdo. O atlas é uma base inicial limitada: não contém uma coleção completa de fronteiras históricas de todas as épocas. Conteúdos teológicos originais e glosas não são traduzidos automaticamente ao trocar o idioma da interface.
+Os testes em `test/core_test.dart` verificam referências, conteúdos reais, remoção/atualização sem perda de notas, arquivos inválidos, backups, criptografia, datas, revisão, cobertura 3D de todos os capítulos e fluxos de interface. A compilação não substitui testes em aparelhos reais, análise de acessibilidade com leitores de tela nem revisão pastoral do conteúdo. O atlas é uma base inicial limitada: não contém uma coleção completa de fronteiras históricas de todas as épocas. O conteúdo prioriza português brasileiro. Versões de estudo traduzidas são identificadas e precisam de revisão editorial; os originais ficam disponíveis.
 
 ## Arquitetura e portabilidade
 

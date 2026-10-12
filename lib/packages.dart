@@ -81,7 +81,7 @@ class ContentPackage {
         throw const FormatException('Invalid minimum app version');
       }
       final required = min.split('.').map(int.parse).toList(),
-          current = [0, 4, 0];
+          current = [0, 5, 0];
       for (var i = 0; i < 3; i++) {
         if (required[i] > current[i]) {
           throw const FormatException('Package needs a newer application');

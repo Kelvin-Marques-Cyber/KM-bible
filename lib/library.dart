@@ -2,6 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'app.dart';
+import 'domain.dart';
 import 'common.dart';
 import 'store.dart';
 import 'packages.dart';
@@ -22,6 +23,12 @@ class _LibraryPageState extends State<LibraryPage> {
     final a = context.app;
     final picked = await FilePicker.platform.pickFiles(withData: true);
     if (picked == null || !mounted) return;
+    if (picked.files.single.name.toLowerCase().endsWith('.pdf')) {
+      setState(() => status = a.store.installed('ARA')
+          ? 'PDF não pode ser importado diretamente. A ARA já está instalada; para outros textos, use .biblepkg.'
+          : 'PDF não pode ser importado diretamente. Converta sua cópia autorizada em .biblepkg no computador e importe o módulo.');
+      return;
+    }
     final bytes = picked.files.single.bytes;
     if (bytes == null) return;
     setState(() => busy = true);
@@ -33,7 +40,9 @@ class _LibraryPageState extends State<LibraryPage> {
         builder: (ctx) => LicenseDialog(package.manifest),
       );
       if (accepted != true) return;
-      package.install(a.store);
+      // Importação pesada em isolate: a interface continua responsiva.
+      await installContentPackageOffline(a.store, bytes);
+      if (!mounted) return;
       a.refresh();
       status = a.t('success');
     } catch (e) {
@@ -50,10 +59,68 @@ class _LibraryPageState extends State<LibraryPage> {
     return ListView(
       padding: const EdgeInsets.all(18),
       children: [
+        // A ARA é opcional: instalações pessoais podem incluí-la, e as
+        // distribuições públicas permitem que cada usuário importe seu módulo.
+        if (a.store.installed('ARA'))
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Almeida Revista e Atualizada (ARA)',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  const Text('Edição instalada para leitura offline. '
+                      'Conteúdo protegido da Sociedade Bíblica do Brasil; não redistribua.'),
+                  const SizedBox(height: 10),
+                  FilledButton.icon(
+                    onPressed: () {
+                      a.store.setPref('edition_chosen', true);
+                      final ref = a.store.verse('ARA', a.passage) == null
+                          ? const Reference(1, 1, 1)
+                          : a.passage;
+                      a.navigate(ref, edition: 'ARA');
+                    },
+                    icon: const Icon(Icons.menu_book_outlined),
+                    label: const Text('Ler Bíblia ARA'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        if (!a.store.installed('ARA'))
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Almeida Revista e Atualizada (ARA)',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 6),
+                  const Text('Ainda não instalada. Se você possui uma cópia autorizada, '
+                      'importe seu módulo .biblepkg para ler offline.'),
+                  const SizedBox(height: 10),
+                  OutlinedButton.icon(
+                    onPressed: busy ? null : install,
+                    icon: const Icon(Icons.file_open_outlined),
+                    label: const Text('Importar ARA'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        const SizedBox(height: 8),
         FilledButton.icon(
           onPressed: busy ? null : install,
           icon: const Icon(Icons.add_box_outlined),
-          label: Text(a.t('install')),
+          label: const Text('Importar módulo (.biblepkg)'),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(top: 7, bottom: 10),
+          child: Text('PDF não é importado diretamente nesta versão. '
+              'Use um pacote .biblepkg de uma edição que tenha direito de usar.'),
         ),
         if (busy) ...[const LinearProgressIndicator(), Text(a.t('importing'))],
         if (status != null) SelectableText(status!),

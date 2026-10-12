@@ -6,6 +6,7 @@ import 'domain.dart';
 import 'explore.dart' show loadContext, loadRelations, eventsAt;
 import 'notes.dart';
 import 'passage_picker.dart';
+import 'bible_topics.dart';
 
 const relationLabels = {
   'editorial': 'Referência editorial',
@@ -14,6 +15,7 @@ const relationLabels = {
   'personal': 'Anotação pessoal',
   'history': 'Acontecimento',
   'place': 'Lugar',
+  'topic': 'Tema editorial',
 };
 
 class GraphNode {
@@ -35,9 +37,25 @@ class GraphPage extends StatefulWidget {
   State<GraphPage> createState() => _GraphPageState();
 }
 
-class _GraphPageState extends State<GraphPage> {
+class _GraphPageState extends State<GraphPage>
+    with SingleTickerProviderStateMixin {
   final transform = TransformationController();
-  final trail = <Reference>[];
+  final trail = <({Reference reference, String? topicId})>[];
+  late final AnimationController motion;
+  @override
+  void initState() {
+    super.initState();
+    motion = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 360),
+    );
+  }
+
+  String? topicId;
+  bool animating = false;
+  bool _needsFit = true;
+  Size _viewport = Size.zero;
+  Size _scene = Size.zero;
   Reference? root;
   List<Map<String, dynamic>> curated = [];
   Map<String, dynamic>? history;
@@ -62,24 +80,123 @@ class _GraphPageState extends State<GraphPage> {
 
   @override
   void dispose() {
+    motion.dispose();
     transform.dispose();
     super.dispose();
   }
 
-  void focus(Reference ref, {bool remember = true}) {
-    if (remember && root != null) trail.add(root!);
+  String get centerId => topicId ?? root!.id;
+  String get centerTitle => topicId == null
+      ? root!.label(context.app.language)
+      : context.app.store.topic(topicId!)?['title'] as String? ?? 'Tema';
+  void focus(Reference ref, {bool remember = true, String? topic}) {
+    if (root != null && remember) {
+      trail.add((reference: root!, topicId: topicId));
+    }
+    motion.stop();
     setState(() {
       root = ref;
+      topicId = topic;
+      kind = 'all';
       selected = null;
-      transform.value = Matrix4.identity();
+      _needsFit = true;
     });
+  }
+
+  Matrix4 _fitMatrix() {
+    if (_viewport == Size.zero || _scene == Size.zero) {
+      return Matrix4.identity();
+    }
+    final scale = math.min(
+      _viewport.width / _scene.width,
+      _viewport.height / _scene.height,
+    ) * .94;
+    return Matrix4.diagonal3Values(scale, scale, 1)
+      ..setTranslationRaw(
+        (_viewport.width - _scene.width * scale) / 2,
+        (_viewport.height - _scene.height * scale) / 2,
+        0,
+      );
+  }
+
+  void _fitGraph() {
+    transform.value = _fitMatrix();
+  }
+
+  void _zoom(double factor) {
+    final current = transform.value;
+    final oldScale = current.getMaxScaleOnAxis();
+    if (oldScale <= 0 || _viewport == Size.zero) return;
+    final nextScale = (oldScale * factor).clamp(.2, 4.5).toDouble();
+    final ratio = nextScale / oldScale;
+    final oldTranslation = current.getTranslation();
+    final pivot = Offset(_viewport.width / 2, _viewport.height / 2);
+    transform.value = Matrix4.diagonal3Values(nextScale, nextScale, 1)
+      ..setTranslationRaw(
+        pivot.dx - (pivot.dx - oldTranslation.x) * ratio,
+        pivot.dy - (pivot.dy - oldTranslation.y) * ratio,
+        0,
+      );
+  }
+
+  Future<void> selectNode(GraphNode node, Offset position) async {
+    if (animating) return;
+    setState(() => selected = node);
+    if (context.app.store.pref('reduced_motion', false)) return;
+    animating = true;
+    final scale = math.max(
+      .85,
+      transform.value.getMaxScaleOnAxis(),
+    ).clamp(.2, 2.0).toDouble();
+    final target = Matrix4.diagonal3Values(scale, scale, 1)
+      ..setTranslationRaw(
+        _viewport.width / 2 - position.dx * scale,
+        _viewport.height / 2 - position.dy * scale,
+        0,
+      );
+    final tween = Matrix4Tween(begin: transform.value.clone(), end: target);
+    final curve = CurvedAnimation(parent: motion, curve: Curves.easeInOutCubic);
+    void tick() => transform.value = tween.evaluate(curve);
+    motion.addListener(tick);
+    try {
+      await motion.forward(from: 0).orCancel;
+    } catch (_) {
+      // The animation may be cancelled by navigation or closing this page.
+    } finally {
+      motion.removeListener(tick);
+      curve.dispose();
+      animating = false;
+    }
   }
 
   List<GraphNode> neighbors() {
     final a = context.app, r = root!, nodes = <String, GraphNode>{};
+    if (topicId != null) {
+      if (kind != 'all' && kind != 'editorial') return [];
+      return a.store.topicReferences(topicId!, limit: density)
+          .map((row) => Reference.fromId('${row['reference']}'))
+          .whereType<Reference>()
+          .map((ref) => GraphNode(
+                ref.id,
+                ref.label(a.language),
+                'editorial',
+                'Passagem associada ao tema no índice histórico de Torrey; relação editorial, não equivalência exegética.',
+                ref,
+              ))
+          .toList();
+    }
+    for (final theme in a.store.topics(reference: r, limit: 3)) {
+      nodes['topic:${theme['id']}'] = GraphNode(
+        'topic:${theme['id']}',
+        theme['title'] as String,
+        'topic',
+        'Tema associado pelo índice histórico de R. A. Torrey. Expanda para explorar suas passagens.',
+      );
+    }
     for (final edge in a.store.crossReferences(r, limit: 60)) {
-      final target = Reference.fromId(edge['target'] as String)!;
-      final end = Reference.fromId(edge['end_reference'] as String)!;
+      final target = Reference.fromId('${edge['target']}');
+      if (target == null) continue;
+      final end = Reference.fromId('${edge['end_reference']}') ?? target;
       nodes[target.id] = GraphNode(
         target.id,
         target.label(a.language),
@@ -94,7 +211,7 @@ class _GraphPageState extends State<GraphPage> {
           : edge['to'] == r.id
           ? edge['from']
           : null;
-      final target = id == null ? null : Reference.fromId(id as String);
+      final target = id == null ? null : Reference.fromId('$id');
       if (target != null) {
         nodes[target.id] = GraphNode(
           target.id,
@@ -178,6 +295,21 @@ class _GraphPageState extends State<GraphPage> {
                   Icons.hub,
                   () => focus(node.reference!),
                 ),
+              ] else if (node.kind == 'topic') ...[
+                action(
+                  'Abrir estudo do tema',
+                  Icons.label_outline,
+                  () => sheet(
+                    context,
+                    node.title,
+                    TopicPage(node.id.substring('topic:'.length)),
+                  ),
+                ),
+                action(
+                  'Expandir passagens do tema',
+                  Icons.hub,
+                  () => focus(root!, topic: node.id.substring('topic:'.length)),
+                ),
               ] else if (node.kind == 'personal')
                 action('Abrir anotação', Icons.edit_note, () {
                   final n = context.app.store.note(node.id);
@@ -200,12 +332,22 @@ class _GraphPageState extends State<GraphPage> {
       children: [
         Row(
           children: [
+            if (topicId == null)
+              action(
+                'Ler passagem',
+                Icons.menu_book,
+                () => showPassage(context, r, sourceEdition: 'BLN4'),
+              ),
             if (trail.isNotEmpty)
               IconButton(
                 tooltip: 'Voltar à conexão anterior',
                 onPressed: () {
                   final previous = trail.removeLast();
-                  focus(previous, remember: false);
+                  focus(
+                    previous.reference,
+                    topic: previous.topicId,
+                    remember: false,
+                  );
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
@@ -217,13 +359,15 @@ class _GraphPageState extends State<GraphPage> {
                   PassagePicker(initial: r, onSelect: focus),
                 ),
                 icon: const Icon(Icons.menu_book),
-                label: Text(r.label(a.language)),
+                label: Text(centerTitle),
               ),
             ),
           ],
         ),
         Text(
-          '${a.store.crossReferenceCount(r)} referências diretas na base. Toque em um nó para ler ou expandir.',
+          topicId == null
+              ? '${a.store.crossReferenceCount(r)} referências diretas na base. Toque para ampliar a conexão.'
+              : 'Rede do tema · toque numa passagem para explorar suas conexões.',
           style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 12),
@@ -244,6 +388,7 @@ class _GraphPageState extends State<GraphPage> {
                 onChanged: (v) => setState(() {
                   kind = v!;
                   selected = null;
+                  _needsFit = true;
                 }),
               ),
             ),
@@ -254,7 +399,11 @@ class _GraphPageState extends State<GraphPage> {
                 for (final n in [8, 12, 20])
                   DropdownMenuItem(value: n, child: Text('$n nós')),
               ],
-              onChanged: (v) => setState(() => density = v!),
+              onChanged: (v) => setState(() {
+                density = v!;
+                selected = null;
+                _needsFit = true;
+              }),
             ),
           ],
         ),
@@ -267,8 +416,18 @@ class _GraphPageState extends State<GraphPage> {
             ),
             const Spacer(),
             IconButton(
-              tooltip: 'Redefinir zoom',
-              onPressed: () => transform.value = Matrix4.identity(),
+              tooltip: 'Aproximar rede',
+              icon: const Icon(Icons.add),
+              onPressed: () => _zoom(1.35),
+            ),
+            IconButton(
+              tooltip: 'Afastar rede',
+              icon: const Icon(Icons.remove),
+              onPressed: () => _zoom(1 / 1.35),
+            ),
+            IconButton(
+              tooltip: 'Enquadrar toda a galáxia',
+              onPressed: _fitGraph,
               icon: const Icon(Icons.center_focus_strong),
             ),
           ],
@@ -288,68 +447,102 @@ class _GraphPageState extends State<GraphPage> {
               subtitle: Text(relationLabels[node.kind] ?? node.kind),
               selected: selected?.id == node.id,
               onTap: () => setState(() => selected = node),
+              trailing: node.reference != null || node.kind == 'topic'
+                  ? IconButton(
+                      icon: const Icon(Icons.hub),
+                      tooltip: 'Expandir conexões',
+                      onPressed: () => focus(node.reference ?? root!,
+                          topic: node.kind == 'topic'
+                              ? node.id.substring('topic:'.length)
+                              : null),
+                    )
+                  : null,
             ),
           )
         else if (nodes.isNotEmpty)
           LayoutBuilder(
             builder: (ctx, constraints) {
-              final size = Size(
-                    constraints.maxWidth,
-                    math.max(420, ((nodes.length + 1) ~/ 2) * 64.0 + 90),
-                  ),
-                  positions = <String, Offset>{
-                    r.id: Offset(
-                      constraints.maxWidth / 2,
-                      math.max(420, ((nodes.length + 1) ~/ 2) * 64.0 + 90) / 2,
-                    ),
-                  };
-              final rows = (nodes.length + 1) ~/ 2;
+              final viewport = Size(
+                constraints.maxWidth,
+                math.min(
+                  550.0,
+                  math.max(390.0, MediaQuery.sizeOf(ctx).height * .56),
+                ),
+              );
+              // A consistent scene allows full zoom/pan without overlapping
+              // labels on small devices. There are 8 nodes in the first ring
+              // and up to 12 in the second.
+              final scene = Size(
+                nodes.length <= 8 ? 730 : 900,
+                nodes.length <= 8 ? 670 : 830,
+              );
+              final center = Offset(scene.width / 2, scene.height / 2);
+              final positions = <String, Offset>{centerId: center};
               for (var i = 0; i < nodes.length; i++) {
-                positions[nodes[i].id] = Offset(
-                  size.width * (i.isEven ? .17 : .83),
-                  55 + (i ~/ 2 + .5) * (size.height - 100) / rows,
-                );
+                final outer = i >= 8;
+                final index = outer ? i - 8 : i;
+                final count = outer ? nodes.length - 8 : math.min(nodes.length, 8);
+                final angle = -math.pi / 2 + 2 * math.pi * index / count +
+                    (outer ? math.pi / count : 0);
+                final radius = outer
+                    ? 295.0
+                    : (nodes.length <= 8 ? 208.0 : 175.0);
+                positions[nodes[i].id] = center +
+                    Offset(radius * math.cos(angle), radius * math.sin(angle));
+              }
+              final layoutChanged = _viewport != viewport || _scene != scene;
+              _viewport = viewport;
+              _scene = scene;
+              if (_needsFit || layoutChanged) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (!mounted) return;
+                  _fitGraph();
+                  _needsFit = false;
+                });
               }
               return ClipRRect(
                 borderRadius: BorderRadius.circular(16),
                 child: ColoredBox(
                   color: color.surfaceContainerLow,
                   child: SizedBox(
-                    height: size.height,
+                    height: viewport.height,
                     child: InteractiveViewer(
                       transformationController: transform,
-                      minScale: .65,
-                      maxScale: 4,
-                      boundaryMargin: const EdgeInsets.all(160),
-                      child: GestureDetector(
-                        onTapUp: (tap) {
-                          final point = tap.localPosition;
-                          GraphNode? hit;
-                          for (final n in nodes) {
-                            final center = positions[n.id]!;
-                            final label = Rect.fromLTWH(
-                              center.dx < size.width / 2 ? 4 : size.width - 108,
-                              center.dy + 17,
-                              104,
-                              40,
-                            ).inflate(8);
-                            if ((center - point).distance < 32 ||
-                                label.contains(point)) {
-                              hit = n;
-                              break;
+                      minScale: .2,
+                      maxScale: 4.5,
+                      boundaryMargin: const EdgeInsets.all(900),
+                      constrained: false,
+                      child: SizedBox(
+                        width: scene.width,
+                        height: scene.height,
+                        child: GestureDetector(
+                          behavior: HitTestBehavior.opaque,
+                          onTapUp: (tap) {
+                            final point = tap.localPosition;
+                            for (final n in nodes.reversed) {
+                              final position = positions[n.id]!;
+                              final label = StudyGraphPainter.labelBounds(
+                                position,
+                                center,
+                                scene,
+                              ).inflate(7);
+                              if ((position - point).distance <= 23 ||
+                                  label.contains(point)) {
+                                selectNode(n, position);
+                                return;
+                              }
                             }
-                          }
-                          if (hit != null) setState(() => selected = hit);
-                        },
-                        child: CustomPaint(
-                          size: size,
-                          painter: StudyGraphPainter(
-                            r.label(a.language),
-                            r.id,
-                            nodes,
-                            positions,
-                            selected?.id,
-                            color,
+                          },
+                          child: CustomPaint(
+                            size: scene,
+                            painter: StudyGraphPainter(
+                              centerTitle,
+                              centerId,
+                              nodes,
+                              positions,
+                              selected?.id,
+                              color,
+                            ),
                           ),
                         ),
                       ),
@@ -365,7 +558,7 @@ class _GraphPageState extends State<GraphPage> {
           const Padding(
             padding: EdgeInsets.symmetric(vertical: 12),
             child: Text(
-              'O zoom e o deslocamento exploram a rede. A lista oferece as mesmas ações para teclado e leitor de tela.',
+              'Toque em uma estrela para ver os detalhes e ampliar sua conexão. Use dois dedos ou +/− para o zoom. A lista é acessível por teclado.',
             ),
           ),
         Text(
@@ -383,6 +576,7 @@ class StudyGraphPainter extends CustomPainter {
   final Map<String, Offset> positions;
   final String? selected;
   final ColorScheme colors;
+
   StudyGraphPainter(
     this.title,
     this.root,
@@ -391,84 +585,104 @@ class StudyGraphPainter extends CustomPainter {
     this.selected,
     this.colors,
   );
+
   Color color(String kind) => switch (kind) {
     'textual' => colors.primary,
     'theological' => colors.tertiary,
     'personal' => Colors.amber.shade700,
     'history' => Colors.blue.shade400,
     'place' => Colors.teal.shade400,
+    'topic' => Colors.purple.shade400,
     _ => colors.secondary,
   };
+
+  // Shared by painter and hit test: labels stay clickable after zooming.
+  static Rect labelBounds(Offset p, Offset center, Size size) {
+    const w = 138.0;
+    final right = p.dx >= center.dx;
+    final x = (right ? p.dx + 13 : p.dx - w - 13)
+        .clamp(8.0, size.width - w - 8);
+    final y = (p.dy - 22).clamp(8.0, size.height - 48.0);
+    return Rect.fromLTWH(x.toDouble(), y.toDouble(), w, 44);
+  }
+
   @override
   void paint(Canvas canvas, Size size) {
     final center = positions[root]!;
+    // Deterministic star field: no timers or continuous GPU/CPU use.
+    final seed = math.Random(1729);
+    for (var i = 0; i < 115; i++) {
+      final point = Offset(seed.nextDouble() * size.width,
+          seed.nextDouble() * size.height);
+      canvas.drawCircle(point, i % 9 == 0 ? 1.5 : .7,
+          Paint()..color = colors.primary.withValues(alpha: .10 + .15 * seed.nextDouble()));
+    }
     for (final node in nodes) {
       final p = positions[node.id]!, c = color(node.kind);
+      final highlighted = node.id == selected;
       canvas.drawLine(
         center,
         p,
         Paint()
-          ..color = c.withValues(alpha: node.id == selected ? .8 : .24)
-          ..strokeWidth = node.id == selected ? 2.5 : 1.2,
+          ..color = c.withValues(alpha: highlighted ? .83 : .31)
+          ..strokeWidth = highlighted ? 3.0 : 1.5,
       );
     }
-    canvas.drawCircle(center, 16, Paint()..color = colors.primary);
-    label(
-      canvas,
-      title,
-      Offset(center.dx - 45, center.dy - 64),
-      90,
-      colors.onSurface,
-    );
+    canvas.drawCircle(center, 25,
+        Paint()..color = colors.primary.withValues(alpha: .16));
+    canvas.drawCircle(center, 15, Paint()..color = colors.primary);
+    final centerLabel = Rect.fromCenter(
+        center: center + const Offset(0, -47), width: 162, height: 43);
+    label(canvas, title, centerLabel, colors.onSurface,
+        emphasized: true);
+
     for (final node in nodes) {
       final p = positions[node.id]!, c = color(node.kind);
-      if (node.id == selected) {
-        canvas.drawCircle(p, 18, Paint()..color = c.withValues(alpha: .2));
+      final highlighted = node.id == selected;
+      if (highlighted) {
+        canvas.drawCircle(p, 23,
+            Paint()..color = c.withValues(alpha: .25));
       }
-      canvas.drawCircle(p, 10, Paint()..color = c);
-      final left = p.dx < size.width / 2;
-      label(
-        canvas,
-        node.title,
-        Offset(left ? 4 : size.width - 108, p.dy + 17),
-        104,
-        colors.onSurface,
-      );
+      canvas.drawCircle(p, highlighted ? 12 : 10,
+          Paint()..color = c);
+      final rect = labelBounds(p, center, size);
+      label(canvas, node.title, rect, colors.onSurface,
+          emphasized: highlighted);
     }
   }
 
-  void label(
-    Canvas canvas,
-    String text,
-    Offset position,
-    double width,
-    Color color,
-  ) {
+  void label(Canvas canvas, String text, Rect rect, Color color,
+      {bool emphasized = false}) {
     final tp = TextPainter(
       text: TextSpan(
         text: text,
         style: TextStyle(
-          fontSize: 13,
+          fontSize: emphasized ? 14 : 13,
           color: color,
           height: 1.15,
-          fontWeight: FontWeight.w500,
+          fontWeight: emphasized ? FontWeight.w700 : FontWeight.w500,
         ),
       ),
       maxLines: 2,
       ellipsis: '…',
       textDirection: TextDirection.ltr,
       textAlign: TextAlign.center,
-    )..layout(maxWidth: width);
+    )..layout(maxWidth: rect.width - 8);
     canvas.drawRRect(
-      RRect.fromRectAndRadius(
-        Rect.fromLTWH(position.dx, position.dy, width, tp.height + 6),
-        const Radius.circular(4),
-      ),
-      Paint()..color = colors.surfaceContainerLow.withValues(alpha: .92),
+      RRect.fromRectAndRadius(rect, const Radius.circular(9)),
+      Paint()
+        ..color = colors.surfaceContainerLow.withValues(
+            alpha: emphasized ? .98 : .93),
     );
-    tp.paint(canvas, position + const Offset(0, 3));
+    final baseline = rect.top + (rect.height - tp.height) / 2;
+    tp.paint(canvas,
+        Offset(rect.left + (rect.width - tp.width) / 2, baseline));
+    tp.dispose();
   }
 
   @override
-  bool shouldRepaint(covariant StudyGraphPainter old) => true;
+  bool shouldRepaint(covariant StudyGraphPainter old) =>
+      old.title != title || old.selected != selected ||
+      old.nodes.length != nodes.length || old.colors != colors ||
+      old.positions != positions;
 }

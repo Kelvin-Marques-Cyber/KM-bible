@@ -267,16 +267,6 @@ void main() {
     expect(fail.interval, 1);
     expect(fail.ease, greaterThanOrEqualTo(1.3));
   });
-  test('Intent validation permits only the fixed query schema', () {
-    final valid = traditionalIntent(
-      'Como os presbiterianos refutam o sábado dos adventistas?',
-    );
-    expect(validateIntent(valid), isNotNull);
-    expect(valid!['target'], 'seventh_day_adventist');
-    expect(validateIntent({...valid, 'sql': 'DROP TABLE notes'}), isNull);
-    expect(traditionalIntent('sábado e batismo'), isNull);
-    expect(validateIntent({...valid, 'action': 'delete'}), isNull);
-  });
   test(
     'Complete model collection has embedded safe buffers and textual descriptions',
     () {

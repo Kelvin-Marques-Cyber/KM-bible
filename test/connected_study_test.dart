@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqlite3/sqlite3.dart';
 import 'package:biblia_reformada/app.dart';
@@ -26,6 +24,7 @@ void main() {
       'library',
       'connections',
       'portuguese',
+      'topics',
     ]) {
       await File(
         'assets/content/$resource.sqlite',
@@ -227,6 +226,7 @@ void main() {
       await tester.tap(find.text('3'));
       await tester.pumpAndSettle();
       await tester.ensureVisible(find.text('16'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('16'));
       await tester.pumpAndSettle();
       expect(selection?.id, '43:3:16');

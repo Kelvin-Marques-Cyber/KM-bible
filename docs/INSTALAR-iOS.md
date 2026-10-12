@@ -26,7 +26,7 @@ bash scripts/build_ios.sh
 4. Transfira o IPA para o aplicativo Arquivos do iPhone. No SideStore, use a opção de adicionar aplicativo e selecione esse IPA. O SideStore reassina e instala usando sua conta.
 5. A conta gratuita normalmente exige renovação em até sete dias e admite três aplicativos ativos, incluindo o SideStore. Mantenha o mecanismo de renovação configurado. O aplicativo bíblico funciona offline após instalado; a renovação da assinatura é uma exigência do método de instalação, separada da leitura.
 
-A versão mínima deste aplicativo é iOS 15. A documentação do SideStore pode mudar: confira seu guia para a versão do seu iPhone. Este projeto ainda precisa de teste de instalação, leitura, SQLite, modelos 3D, notificações e Needle em um iPhone físico. A execução bem-sucedida do workflow comprova compilação, não todos os fluxos no aparelho. Não se depende de jailbreak nem de JIT para a versão Flutter release.
+A versão mínima deste aplicativo é iOS 15. A documentação do SideStore pode mudar: confira seu guia para a versão do seu iPhone. Este projeto ainda precisa de teste de instalação, leitura, SQLite, modelos 3D, notificações em um iPhone físico. A execução bem-sucedida do workflow comprova compilação, não todos os fluxos no aparelho. Não se depende de jailbreak nem de JIT para a versão Flutter release.
 
 ## Sua RA pessoal
 

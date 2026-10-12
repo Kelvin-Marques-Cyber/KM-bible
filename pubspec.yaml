@@ -1,12 +1,10 @@
 name: biblia_reformada
 description: Leitura bíblica e estudos presbiterianos offline.
 publish_to: none
-version: 0.4.0+40
+version: 0.5.3+53
 environment:
   sdk: '>=3.10.0 <4.0.0'
 dependencies:
-  needle_runtime:
-    path: packages/needle_runtime
   flutter:
     sdk: flutter
   flutter_localizations:

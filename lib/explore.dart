@@ -1048,19 +1048,45 @@ class _ModelPageState extends State<ModelPage> {
                   ? NavigationDecision.navigate
                   : NavigationDecision.prevent,
               onPageFinished: (_) async {
-                final bytes = widget.model['local_file'] is String
-                    ? ByteData.sublistView(
-                        await File(
-                          widget.model['local_file'] as String,
-                        ).readAsBytes(),
-                      )
-                    : await rootBundle.load(
-                        'assets/3d/${widget.model['file']}',
-                      );
-                if (!mounted) return;
-                await web!.runJavaScript(
-                  'reduceMotion(${context.app.store.pref('reduced_motion', false)});setup(${jsonEncode(base64Encode(bytes.buffer.asUint8List(bytes.offsetInBytes, bytes.lengthInBytes)))});',
-                );
+                try {
+                  final List<int> bytes;
+                  if (widget.model['local_file'] is String) {
+                    bytes = await File(widget.model['local_file'] as String)
+                        .readAsBytes();
+                  } else {
+                    final data = await rootBundle.load(
+                      'assets/3d/${widget.model['file']}',
+                    );
+                    bytes = data.buffer.asUint8List(
+                      data.offsetInBytes,
+                      data.lengthInBytes,
+                    );
+                  }
+                  if (!mounted) return;
+                  // Enviar em blocos: alguns WebViews rejeitam um comando JS
+                  // único contendo vários MB de GLB codificado em base64.
+                  final encoded = base64Encode(bytes);
+                  await web!.runJavaScript('window.__modelBase64 = "";');
+                  const chunkSize = 128 * 1024;
+                  for (var i = 0; i < encoded.length; i += chunkSize) {
+                    if (!mounted) return;
+                    final end = i + chunkSize > encoded.length
+                        ? encoded.length
+                        : i + chunkSize;
+                    await web!.runJavaScript(
+                      'window.__modelBase64 += ${jsonEncode(encoded.substring(i, end))};',
+                    );
+                  }
+                  if (!mounted) return;
+                  final reduceMotion = context.app.store.pref('reduced_motion', false);
+                  await web!.runJavaScript(
+                    'reduceMotion($reduceMotion);setup(window.__modelBase64);window.__modelBase64=null;',
+                  );
+                } catch (e) {
+                  if (mounted) {
+                    setState(() => selected = 'Erro ao carregar arquivo 3D: $e');
+                  }
+                }
               },
             ),
           )
