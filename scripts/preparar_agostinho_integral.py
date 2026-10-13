@@ -113,7 +113,10 @@ def recover_missing_chapters(lines, chapter_headers, book_count):
             line = lines[i].strip()
             if not line:
                 continue
-            m = bare_number.fullmatch(line)
+            # O PDF impresso traz o capitulo 07 como "O7" (letra O).
+            # Corrigimos somente este formato de marcador, nao o texto.
+            heading = ('0' + line[1:]) if re.fullmatch(r'[Oo][1-9]', line) else line
+            m = bare_number.fullmatch(heading)
             if not m:
                 continue
             try:
@@ -153,8 +156,9 @@ def chapters_from_book(lines, index, book_count):
         # seguidos de um titulo breve. So aceitar quando a sequencia for completa.
         chapters = []
         for i, line in enumerate(lines):
-            if re.fullmatch(r"(?:[IVXLCDM]+|\d{1,2})[.)]?", line, re.I):
-                n = number(line.rstrip(".)"))
+            heading = ('0' + line[1:]) if re.fullmatch(r'[Oo][1-9]', line) else line
+            if re.fullmatch(r"(?:[IVXLCDM]+|\d{1,2})[.)]?", heading, re.I):
+                n = number(heading.rstrip(".)"))
                 if 1 <= n <= book_count:
                     chapters.append((i, n))
     chapters = recover_missing_chapters(lines, chapters, book_count)
