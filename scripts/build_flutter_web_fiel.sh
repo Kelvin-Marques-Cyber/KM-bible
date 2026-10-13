@@ -24,6 +24,8 @@ else
 fi
 python3 scripts/preparar_calvino_por_livro.py
 bash scripts/preparar_agostinho_integral.sh
+# Gera perfis das tradicoes com minimo de 5000 caracteres no modo impessoal.
+python3 scripts/gerar_panorama_apologetica.py
 flutter pub get
 # Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
 python3 scripts/otimizar_acervo_sqlite.py
