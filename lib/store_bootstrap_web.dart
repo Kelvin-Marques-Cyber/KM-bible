@@ -44,7 +44,9 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
       file.xTruncate(0);
       const chunkSize = 256 * 1024;
       for (var offset = 0; offset < bytes.length; offset += chunkSize) {
-        final end = (offset + chunkSize).clamp(0, bytes.length);
+        final end = offset + chunkSize < bytes.length
+            ? offset + chunkSize
+            : bytes.length;
         file.xWrite(Uint8List.sublistView(bytes, offset, end), offset);
       }
       file.xSync(0);
