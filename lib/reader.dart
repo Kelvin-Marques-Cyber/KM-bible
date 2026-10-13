@@ -1,3 +1,4 @@
+import 'library.dart';
 import 'verse_study.dart';
 import 'portuguese_resources.dart';
 import 'cross_references.dart';
@@ -593,6 +594,38 @@ class _CommentariesPageState extends State<CommentariesPage> {
           widget.reference.label(a.language),
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        if (a.language == 'pt') ...[
+          const SizedBox(height: 10),
+          Text(
+            'Guias em português e comentários autorizados',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+          for (final moduleId in const [
+            'HDL-GUIA-FONTES',
+            'JOSEMAR-GUIA-FONTES',
+            'EXP2-CALV-PT',
+          ])
+            if (a.store.installed(moduleId))
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                title: Text(a.store.module(moduleId)?['title'] as String? ?? moduleId),
+                subtitle: const Text(
+                  'Material editorial ou bibliográfico; não é o comentário integral do autor.',
+                ),
+                trailing: const Icon(Icons.chevron_right),
+                onTap: () => sheet(
+                  context,
+                  a.store.module(moduleId)?['title'] as String? ?? moduleId,
+                  ModulePage(a.store.module(moduleId)!),
+                ),
+              ),
+          action(
+            'Biblioteca / importar comentários (.biblepkg)',
+            Icons.library_books_outlined,
+            () => sheet(context, 'Biblioteca', const LibraryPage()),
+          ),
+        ],
+
         Wrap(
           spacing: 8,
           children: all
