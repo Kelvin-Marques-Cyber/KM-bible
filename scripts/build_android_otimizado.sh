@@ -10,6 +10,7 @@ if [[ -d assets/private ]] && find assets/private -type f \( -iname '*.biblepkg'
  echo 'Conteudo privado em assets/private; o build publico foi bloqueado.' >&2
  exit 4
 fi
+python3 scripts/preparar_calvino_por_livro.py
 flutter pub get
 python3 scripts/otimizar_acervo_sqlite.py
 flutter build apk --release --target-platform android-arm64 --build-name=0.5.4 --build-number=54
