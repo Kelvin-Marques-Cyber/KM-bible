@@ -159,7 +159,10 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
                   sheet(
                     context,
                     'Agostinho · Livro ' + (entry.bookIndex + 1).toString(),
-                    const AugustineConfessionsPage(),
+                    AugustineConfessionsPage(
+                      initialBook: entry.bookIndex,
+                      initialChapter: entry.chapter - 1,
+                    ),
                   );
                 },
               ),
