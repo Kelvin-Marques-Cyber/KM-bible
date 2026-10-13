@@ -162,8 +162,8 @@ SPECIAL = {
             "Não existe religião indígena brasileira única, nem livro, conselho ou fundador "
             "comum a todos. Estudos responsáveis começam identificando o povo, "
             "a língua, o território e os próprios autores indígenas. "
-            "Esta apresentação é um roteiro de diversidade, não uma doutrina "
-            "atribuição genérica a centenas de sociedades."
+            "Esta apresentação é um roteiro de diversidade, não uma doutrina única "
+            "atribuível a centenas de sociedades."
         ),
         "topics": [
             "A história de cada povo precede em muitos casos a formação do Estado brasileiro. Contato, deslocamentos, missões religiosas e transformações territoriais afetam sua memória histórica, mas não anulam sua agência. Ao estudar origens, busque narrativas produzidas por pessoas do povo em questão e diferencie tradição ancestral de relatos escritos por agentes externos em épocas coloniais.",
