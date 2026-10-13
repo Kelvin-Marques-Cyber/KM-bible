@@ -34,6 +34,10 @@ python3 scripts/embutir_modulos_bundled.py
 python3 scripts/otimizar_acervo_sqlite.py
 python3 scripts/verificar_modulos_embutidos.py
 
+# Os fragmentos sao exclusivos do Flutter Web; no Android usamos SQLite
+# integral e removemos shards temporarios para nao dobrar o tamanho do APK.
+rm -f assets/content/*.sqlite.part*.bin assets/content/sqlite-web-parts.json
+
 # Permite ajustar para builds posteriores mantendo incremento do versionCode.
 flutter build apk --release --target-platform android-arm64 \
   --build-name="${APK_VERSION_NAME:-0.5.4}" \
