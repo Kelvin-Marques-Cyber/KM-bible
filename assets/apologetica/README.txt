@@ -1,0 +1,1 @@
+Panoramas impessoais de cada tradicao (>=5000 caracteres) sao gerados por python3 scripts/gerar_panorama_apologetica.py antes do build Flutter. Usam sinteses editoriais pt-BR, sem copiar fontes protegidas. Nao misturar com textos de Agostinho ou a biblioteca biblica.
