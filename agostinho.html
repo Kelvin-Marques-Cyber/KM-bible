@@ -29,9 +29,9 @@ ul{line-height:1.8}
 <body>
 <a href="./">← Voltar ao aplicativo</a>
 <h1>Confissões de Santo Agostinho</h1>
-<p>Texto integral por livro e capítulo, sem resumos ou recontagens.</p>
+<p>Leitura integral por livro e capítulo, dentro do aplicativo, sem resumos.</p>
 <div class="info">
-<strong>Sobre a edição:</strong> a leitura utiliza uma fonte externa em português, com o texto latino para comparação. Os 13 livros são de Santo Agostinho; as traduções preservam os créditos de seus tradutores. O acesso aos textos completos requer internet.
+<strong>Sobre a edição:</strong> a leitura utiliza a tradução portuguesa incluída nos arquivos do aplicativo, sem pedir abertura de sites externos. Os 13 livros são de Santo Agostinho; as traduções preservam os créditos de seus tradutores. O acesso aos textos completos requer internet.
 </div>
 <main class="panel">
 <div class="controls">
@@ -40,12 +40,12 @@ ul{line-height:1.8}
 </div>
 <h2 id="heading">Livro I — Capítulo I</h2>
 <p>Ao abrir o capítulo, você lerá o texto completo escrito por Agostinho, em tradução portuguesa, sem simplificações inventadas.</p>
+<p id="loadstatus" class="muted" role="status">Preparando leitura integral…</p>
+<article id="fulltext" aria-label="Texto integral da tradução portuguesa" style="white-space:pre-wrap;line-height:1.85;font-family:Georgia,serif;font-size:1.18rem;padding:18px 0"></article>
 <div class="actions">
-<a class="btn primary" id="open" target="_blank" rel="noopener noreferrer">Ler capítulo integral ↗</a>
-<button class="btn secondary" id="embed" type="button">Ler nesta página</button>
+<button class="btn secondary" id="font" type="button">Aumentar fonte</button>
+<a class="btn secondary" href="https://www.solusagape.com.br/obras-milenares/confiss%C3%B5es" target="_blank" rel="noopener noreferrer">Conferir edição</a>
 </div>
-<p class="muted" id="help">A opção “Ler nesta página” pode ser bloqueada pelo site de origem; se isso ocorrer, use “Ler capítulo integral”.</p>
-<iframe id="reader" title="Texto integral do capítulo de Santo Agostinho" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-same-origin allow-scripts allow-popups allow-forms"></iframe>
 <div class="actions">
 <button class="btn secondary" id="prev" type="button">← Capítulo anterior</button>
 <button class="btn secondary" id="next" type="button">Próximo capítulo →</button>
@@ -58,57 +58,69 @@ Edição integral portuguesa alternativa: <a href="https://www.solusagape.com.br
 <p class="muted"><a href="./atualizar.html">Atualizar aplicativo sem apagar minhas anotações</a></p>
 <script>
 'use strict';
-const books=[
-['A infância e o coração inquieto',20],['A adolescência e o roubo das peras',10],
-['Cartago, ambições e falsas respostas',12],['A amizade, a perda e a dor',16],
-['De Cartago a Milão',14],['Entre a verdade e a indecisão',16],
-['A verdade, a alma e a origem do mal',21],['A conversão no jardim',12],
-['O batismo e a despedida de Mônica',13],['Memória, desejo e conhecimento de si',43],
-['O tempo e a eternidade',31],['Como interpretar a criação',32],
-['A criação e o descanso em Deus',38]];
+const counts=[20,10,12,16,14,16,21,12,13,43,31,32,38];
 const $=id=>document.getElementById(id);
 const read=(k,d)=>{try{return localStorage.getItem(k)??d}catch(_){return d}};
 const save=(k,v)=>{try{localStorage.setItem(k,String(v))}catch(_){}};
-let book=0,chapter=1;
-function sourceUrl(){
- return 'https://www.liriocatolico.com.br/santo_agostinho/obras/autobiografia/confissoes/livro-'+(book+1)+'/capitulo-'+chapter+'/';
+let book=0,chapter=1,font=1.18;
+const cache=new Map();
+async function loadBook(bookNo){
+ if(!cache.has(bookNo)){
+  const url='./assets/assets/agostinho/'+bookNo+'.json';
+  cache.set(bookNo,fetch(url,{cache:'default'}).then(r=>{
+   if(!r.ok)throw new Error('Livro '+bookNo+' não encontrado no acervo. HTTP '+r.status);
+   return r.json();
+  }).then(data=>{
+   if(data.book!==bookNo||!data.chapters||data.chapters.length!==counts[bookNo-1]){
+    throw new Error('Arquivo de capítulo incompleto.');
+   }
+   return data;
+  }));
+ }
+ return cache.get(bookNo);
 }
-function render(){
+async function render(){
  const options=$('chapter');options.replaceChildren();
- for(let i=1;i<=books[book][1];i++){
+ for(let i=1;i<=counts[book];i++){
   const option=document.createElement('option');option.value=i;option.textContent='Capítulo '+i;options.append(option);
  }
  $('book').value=book;$('chapter').value=chapter;
  $('heading').textContent='Livro '+(book+1)+' — Capítulo '+chapter;
- $('open').href=sourceUrl();
  $('prev').disabled=book===0&&chapter===1;
- $('next').disabled=book===books.length-1&&chapter===books[book][1];
- $('reader').style.display='none';$('reader').removeAttribute('src');
- $('embed').textContent='Ler nesta página';
+ $('next').disabled=book===counts.length-1&&chapter===counts[book];
  save('augustine-book',book);save('augustine-chapter',chapter);
+ $('loadstatus').textContent='Abrindo tradução integral…';
+ $('fulltext').textContent='';
+ const expectedBook=book,expectedChapter=chapter;
+ try{
+  const data=await loadBook(book+1);
+  if(expectedBook!==book||expectedChapter!==chapter)return;
+  const entry=data.chapters[chapter-1];
+  if(entry.chapter!==chapter||!entry.body||entry.body.length<300){
+   throw new Error('Capítulo sem texto integral válido.');
+  }
+  $('fulltext').textContent=entry.body;
+  $('fulltext').style.fontSize=font+'rem';
+  $('loadstatus').textContent='Tradução de J. Oliveira Santos e A. Ambrósio de Pina; edição Solus Ágape. Disponível offline quando instalada.';
+ }catch(error){
+  $('loadstatus').textContent='Não foi possível carregar o texto integral: '+error.message+'. Aguarde a próxima compilação do KM-bible.';
+ }
 }
 function go(b,c){
- book=Math.max(0,Math.min(b,books.length-1));
- chapter=Math.max(1,Math.min(c,books[book][1]));
+ book=Math.max(0,Math.min(b,counts.length-1));
+ chapter=Math.max(1,Math.min(c,counts[book]));
  render();
 }
-books.forEach(([title,count],i)=>{
- const option=document.createElement('option');
- option.value=i;option.textContent='Livro '+(i+1)+' · '+title+' ('+count+' capítulos)';
+counts.forEach((count,i)=>{
+ const option=document.createElement('option');option.value=i;
+ option.textContent='Livro '+(i+1)+' ('+count+' capítulos)';
  $('book').append(option);
 });
 $('book').addEventListener('change',e=>go(Number(e.target.value),1));
 $('chapter').addEventListener('change',e=>go(book,Number(e.target.value)));
-$('prev').addEventListener('click',()=>chapter>1?go(book,chapter-1):go(book-1,books[book-1][1]));
-$('next').addEventListener('click',()=>chapter<books[book][1]?go(book,chapter+1):go(book+1,1));
-$('embed').addEventListener('click',()=>{
- const iframe=$('reader');
- if(iframe.style.display==='block'){
-  iframe.style.display='none';iframe.removeAttribute('src');$('embed').textContent='Ler nesta página';
- }else{
-  iframe.src=sourceUrl();iframe.style.display='block';$('embed').textContent='Fechar leitor';
- }
-});
+$('prev').addEventListener('click',()=>chapter>1?go(book,chapter-1):go(book-1,counts[book-1]));
+$('next').addEventListener('click',()=>chapter<counts[book]?go(book,chapter+1):go(book+1,1));
+$('font').addEventListener('click',()=>{font=font<1.6?font+.12:1.18;$('fulltext').style.fontSize=font+'rem';});
 go(Number(read('augustine-book',0))||0,Number(read('augustine-chapter',1))||1);
 </script>
 </body>
