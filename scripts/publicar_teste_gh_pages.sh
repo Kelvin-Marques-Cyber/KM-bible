@@ -12,6 +12,36 @@ for name in index.html flutter_bootstrap.js main.dart.js sqlite3.wasm assets/ass
     exit 2
   fi
 done
+# Protege contra publicação de assets incompletos ou da ARA apenas
+# como nome no catálogo, em vez de texto realmente pronto para leitura.
+python3 - <<'PY'
+import json,sqlite3
+from pathlib import Path
+root=Path('build/web/assets/assets')
+for folder,count in [('apologetica',30),
+                     ('apologetica_extra',30),
+                     ('apologetica_reformada',30)]:
+    files=list((root/folder).glob('*.md'))
+    if len(files)!=count:
+        raise SystemExit(f'Publicacao interrompida: {folder} tem {len(files)}/{count} textos.')
+for i in range(1,14):
+    if not (root/'agostinho'/f'{i}.json').exists():
+        raise SystemExit(f'Publicacao interrompida: Agostinho livro {i} ausente.')
+manifest=json.loads((root/'agostinho'/'manifest.json').read_text())
+if manifest['chapterCount']!=278:
+    raise SystemExit('Publicacao interrompida: indice de Agostinho incompleto.')
+db=sqlite3.connect(root/'content'/'catalogue.sqlite')
+try:
+    row=db.execute("SELECT count(*),count(distinct book),count(distinct book||':'||chapter) FROM verses WHERE translation='ARA'").fetchone()
+    if tuple(row)!=(31104,66,1189):
+        raise SystemExit(f'Publicacao interrompida: ARA invalida {row}.')
+    count=db.execute("SELECT count(*) FROM content_modules WHERE builtin=1 AND installed=1").fetchone()[0]
+    if count<17:
+        raise SystemExit(f'Publicacao interrompida: apenas {count} modulos ativos.')
+finally:
+    db.close()
+print('Publicacao validada: ARA, modulos, Agostinho e 60 suplementos.')
+PY
 if find build/web/assets/assets/private -type f \( -iname '*.biblepkg' -o -iname '*.sqlite' -o -iname '*.pdf' \) -print -quit 2>/dev/null | grep -q .; then
   echo 'FALHA: conteudo pessoal detectado na publicacao.' >&2
   exit 3
