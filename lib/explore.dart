@@ -4,6 +4,8 @@ import 'passage_picker.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'model3d_browser.dart';
 import 'package:flutter/services.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'app.dart';
@@ -1022,13 +1024,30 @@ class ModelPage extends StatefulWidget {
 
 class _ModelPageState extends State<ModelPage> {
   WebViewController? web;
+  final Browser3D browser3d = Browser3D();
   Set<String> hidden = {};
+
+  void modelCommand(String action, [Object? value]) {
+    if (kIsWeb) {
+      browser3d.send(action, value);
+      return;
+    }
+    // O controlador nativo é mantido no Android e iOS.
+    web?.runJavaScript('$action(${value == null ? '' : jsonEncode(value)})');
+  }
+
+  @override
+  void dispose() {
+    browser3d.dispose();
+    super.dispose();
+  }
+
   bool text = false, spin = false, cool = false;
   String selected = '';
   @override
   void initState() {
     super.initState();
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       try {
         web = WebViewController()
           ..setJavaScriptMode(JavaScriptMode.unrestricted)
@@ -1108,37 +1127,37 @@ class _ModelPageState extends State<ModelPage> {
             action(
               a.t('reset'),
               Icons.restart_alt,
-              () => web?.runJavaScript('reset()'),
+              () => modelCommand('reset'),
             ),
             action(
               '${a.t('rotate')} ←',
               Icons.rotate_left,
-              () => web?.runJavaScript('rotate(-15)'),
+              () => modelCommand('rotate', -15),
             ),
             action(
               '${a.t('rotate')} →',
               Icons.rotate_right,
-              () => web?.runJavaScript('rotate(15)'),
+              () => modelCommand('rotate', 15),
             ),
             action(
               a.t('zoomIn'),
               Icons.add,
-              () => web?.runJavaScript('zoom(.8)'),
+              () => modelCommand('zoom', .8),
             ),
             action(
               a.t('zoomOut'),
               Icons.remove,
-              () => web?.runJavaScript('zoom(1.25)'),
+              () => modelCommand('zoom', 1.25),
             ),
             action(
               'Vista superior',
               Icons.vertical_align_top,
-              () => web?.runJavaScript('viewpoint("top")'),
+              () => modelCommand('viewpoint', 'top'),
             ),
             action(
               'Vista frontal',
               Icons.crop_portrait,
-              () => web?.runJavaScript('viewpoint("front")'),
+              () => modelCommand('viewpoint', 'front'),
             ),
             FilterChip(
               label: const Text('Giro automático'),
@@ -1147,7 +1166,7 @@ class _ModelPageState extends State<ModelPage> {
                   ? null
                   : (v) {
                       setState(() => spin = v);
-                      web?.runJavaScript('turntable($v)');
+                      modelCommand('turntable', v);
                     },
             ),
             FilterChip(
@@ -1155,9 +1174,7 @@ class _ModelPageState extends State<ModelPage> {
               selected: cool,
               onSelected: (v) {
                 setState(() => cool = v);
-                web?.runJavaScript(
-                  'atmosphere(${jsonEncode(v ? 'cool' : 'warm')})',
-                );
+                modelCommand('atmosphere', v ? 'cool' : 'warm');
               },
             ),
             FilterChip(
@@ -1167,7 +1184,26 @@ class _ModelPageState extends State<ModelPage> {
             ),
           ],
         ),
-        if (!text && web != null)
+        if (!text && kIsWeb && m['local_file'] == null && m['file'] is String)
+          Expanded(
+            flex: 7,
+            child: browser3d.view(
+              m['file'] as String,
+              status: (value) {
+                if (mounted && value != 'ready') {
+                  setState(() => selected = value);
+                }
+              },
+            ),
+          )
+        else if (!text && kIsWeb && m['local_file'] != null)
+          const Expanded(
+            flex: 7,
+            child: Center(child: Text(
+              'Modelo importado: a visualização 3D via navegador ainda não é compatível com este arquivo.',
+            )),
+          )
+        else if (!text && web != null)
           Expanded(flex: 7, child: WebViewWidget(controller: web!)),
         Expanded(
           flex: 2,
@@ -1210,7 +1246,9 @@ class _ModelPageState extends State<ModelPage> {
                     setState(() {
                       v == true ? hidden.remove(l) : hidden.add(l);
                     });
-                    web?.runJavaScript('layer(${jsonEncode(l)},${v == true})');
+                    kIsWeb
+                        ? browser3d.send('layer', {'name': l, 'visible': v == true})
+                        : web?.runJavaScript('layer(${jsonEncode(l)},${v == true})');
                   },
                 ),
               ),
