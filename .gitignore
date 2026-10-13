@@ -22,3 +22,7 @@ assets/private/ara-verification.json
 dist/
 __pycache__/
 .rsync-tmp/
+
+# Fragmentos SQLite temporarios gerados apenas durante o Flutter Web build.
+assets/content/*.sqlite.part*.bin
+assets/content/sqlite-web-parts.json
