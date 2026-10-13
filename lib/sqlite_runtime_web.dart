@@ -44,3 +44,13 @@ IndexedDbFileSystem resourceFileSystem(String name) {
   if (result == null) throw StateError('Banco nao carregado: $name');
   return result;
 }
+
+///// Persiste alterações pendentes dos bancos da PWA antes de concluir a
+///// inicialização. Dados pessoais são mantidos; não exclui nenhuma VFS.
+Future<void> flushBrowserCache() async {
+  await initializeSqliteRuntime();
+  await sqliteFileSystem.flush();
+  for (final vfs in _resources.values) {
+    await vfs.flush();
+  }
+}
