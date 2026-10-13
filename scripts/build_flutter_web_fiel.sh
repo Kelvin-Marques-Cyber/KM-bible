@@ -15,6 +15,21 @@ flutter --version
 flutter config --enable-web
 flutter create --platforms=web --project-name biblia_reformada .
 flutter pub get
+# O sqlite3 2.9.4 exige o modulo WebAssembly do mesmo release na plataforma Web.
+if [[ ! -s web/sqlite3.wasm ]]; then
+  echo 'Baixando modulo oficial SQLite WebAssembly 2.9.4...'
+  curl --fail --location --silent --show-error --retry 3 \
+    'https://github.com/simolus3/sqlite3.dart/releases/download/sqlite3-2.9.4/sqlite3.wasm' \
+    --output web/sqlite3.wasm.download
+  mv web/sqlite3.wasm.download web/sqlite3.wasm
+fi
+python3 - <<'PY'
+from pathlib import Path
+file = Path('web/sqlite3.wasm')
+if file.read_bytes()[:4] != b'\\x00asm'.decode('unicode_escape').encode('latin1'):
+    raise SystemExit('ERRO: modulo sqlite3.wasm nao e valido')
+print('SQLite WASM presente:', file.stat().st_size, 'bytes')
+PY
 python3 scripts/diagnosticar_web.py | tee flutter-web-dependencias.txt
 # Falhar explicitamente se codigo nativo ainda nao foi adaptado.
 if ! flutter build web --release --base-href /KM-bible/ 2>&1 | tee flutter-web-build.log; then
