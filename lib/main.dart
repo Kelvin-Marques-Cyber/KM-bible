@@ -69,18 +69,27 @@ class _StartupState extends State<Startup> {
                   store.pref('private_imported_$id', false))) {
             continue;
           }
-          final data = await rootBundle.load('assets/$directory/$name');
-          await installContentPackageOffline(
-            store,
-            data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
-          );
-          store.content.execute(
-            'UPDATE content_modules SET builtin=1 WHERE id=?',
-            [id],
-          );
-          store.setPref(imported, true);
-          if (id == 'ARA' && !store.pref('edition_chosen', false)) {
-            store.setPref('translation', 'ARA');
+          try {
+            final data = await rootBundle.load('assets/$directory/$name');
+            await installContentPackageOffline(
+              store,
+              data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes),
+            );
+            store.content.execute(
+              'UPDATE content_modules SET builtin=1 WHERE id=?',
+              [id],
+            );
+            store.setPref(imported, true);
+            store.setPref('bundled_error_$id', '');
+            if (id == 'ARA' && !store.pref('edition_chosen', false)) {
+              store.setPref('translation', 'ARA');
+            }
+          } catch (e) {
+            // Falha em um modulo opcional nao deve bloquear a leitura biblica
+            // nem impedir os outros pacotes de carregar. Continua disponivel
+            // a importacao manual pela Biblioteca.
+            debugPrint('Falha ao importar modulo $id: $e');
+            store.setPref('bundled_error_$id', '$e');
           }
         }
       }
