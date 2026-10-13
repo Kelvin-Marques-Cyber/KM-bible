@@ -566,6 +566,7 @@ class CommentariesPage extends StatefulWidget {
 
 class _CommentariesPageState extends State<CommentariesPage> {
   Set<String> authors = {};
+  bool showEnglishOriginals = false;
   @override
   Widget build(BuildContext context) {
     final a = context.app,
@@ -582,6 +583,15 @@ class _CommentariesPageState extends State<CommentariesPage> {
           : 2;
       return rank(x).compareTo(rank(y));
     });
+    // Prioriza traducao persistida no banco e comentarios originais em pt-BR.
+    final localized = a.language != 'pt' || showEnglishOriginals
+        ? all
+        : all.where((entry) {
+            final module = a.store.module(entry['module_id'] as String);
+            final language = (module?['language'] ?? '').toString().toLowerCase();
+            return language.startsWith('pt') ||
+                a.store.translatedEntry('commentary', entry['id'] as String) != null;
+          }).toList();
     return ListView(
       padding: const EdgeInsets.all(18),
       children: [
@@ -593,9 +603,20 @@ class _CommentariesPageState extends State<CommentariesPage> {
           widget.reference.label(a.language),
           style: Theme.of(context).textTheme.titleLarge,
         ),
+        if (a.language == 'pt')
+          SwitchListTile.adaptive(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Mostrar textos originais em inglês'),
+            subtitle: const Text('Entradas traduzidas aparecem automaticamente quando disponíveis.'),
+            value: showEnglishOriginals,
+            onChanged: (v) => setState(() => showEnglishOriginals = v),
+          ),
+        if (all.isNotEmpty && localized.isEmpty)
+          const Text('Nenhuma tradução instalada para esta passagem. '
+              'Ative a opção acima para consultar os originais.'),
         Wrap(
           spacing: 8,
-          children: all
+          children: localized
               .map((r) => r['module_id'] as String)
               .toSet()
               .map(
@@ -614,7 +635,7 @@ class _CommentariesPageState extends State<CommentariesPage> {
               .toList(),
         ),
         if (all.isEmpty) Text(a.t('noContent')),
-        ...all.where((r) => authors.isEmpty || authors.contains(r['module_id'])).map((
+        ...localized.where((r) => authors.isEmpty || authors.contains(r['module_id'])).map((
           r,
         ) {
           final m = a.store.module(r['module_id'] as String)!;
