@@ -102,6 +102,10 @@ class _StartupState extends State<Startup> {
           }
         }
       }
+      // IndexedDB pode adiar escritas. Aguarde a persistencia de flags de
+      // módulos importados antes de exibir a página inicial; nas próximas
+      // visitas, os módulos já instalados não serão reprocessados.
+      await store.persistStartupCache();
       if (mounted) setState(() => controller = AppController(store));
     } catch (e) {
       if (mounted) setState(() => error = e);
