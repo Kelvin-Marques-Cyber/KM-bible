@@ -2,225 +2,243 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import 'app.dart';
 
-/// Texto integral: fonte externa em português, não resumo nem paráfrase.
-/// As traduções modernas mantêm créditos e permissões de seus editores.
-const augustineChapterBase =
-    'https://www.liriocatolico.com.br/santo_agostinho/'
-    'obras/autobiografia/confissoes/';
 const augustineFullEdition =
     'https://www.solusagape.com.br/obras-milenares/confiss%C3%B5es';
 
-String augustineChapterUrl(int book, int chapter) =>
-    '${augustineChapterBase}livro-$book/capitulo-$chapter/';
-
-Future<void> openAugustineSource(
-  BuildContext context,
-  String url,
-) async {
-  final uri = Uri.parse(url);
+Future<void> openAugustineSource(BuildContext context, String url) async {
   try {
-    if (await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+    if (await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication)) {
       return;
     }
-  } catch (_) {
-    // Alguns navegadores bloqueiam a abertura de uma nova aba.
-  }
+  } catch (_) {}
   await Clipboard.setData(ClipboardData(text: url));
   if (context.mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Não foi possível abrir a fonte. O endereço foi copiado.',
-        ),
-      ),
+      const SnackBar(content: Text('Link da fonte copiado para consulta.')),
     );
   }
 }
 
+/// Leitor original integral, sem resumos, com textos previamente embutidos.
 class AugustineConfessionsPage extends StatefulWidget {
   const AugustineConfessionsPage({super.key});
-
   @override
   State<AugustineConfessionsPage> createState() =>
       _AugustineConfessionsPageState();
 }
 
 class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
-  late final Future<List<Map<String, dynamic>>> _books = rootBundle
-      .loadString('assets/content/agostinho-confissoes-facil.json')
-      .then((raw) => (jsonDecode(raw) as Map<String, dynamic>)['books'] as List)
-      .then((list) => list
-          .map((book) => Map<String, dynamic>.from(book as Map))
-          .toList());
+  late final Future<Map<String, dynamic>> manifest = rootBundle
+      .loadString('assets/agostinho/manifest.json')
+      .then((s) => Map<String, dynamic>.from(jsonDecode(s) as Map));
+  final books = <int, Future<Map<String, dynamic>>>{};
+  final scrollController = ScrollController();
+  int? bookIndex, chapterIndex;
+  double fontSize = 19;
 
-  int? selectedBook;
-  int? selectedChapter;
+  Future<Map<String, dynamic>> book(int number) =>
+      books.putIfAbsent(number, () => rootBundle
+          .loadString('assets/agostinho/' + number.toString() + '.json')
+          .then((s) => Map<String, dynamic>.from(jsonDecode(s) as Map)));
 
-  void select(int bookIndex, int chapterIndex) {
-    context.app.store.setPref('agostinho_livro', bookIndex);
-    context.app.store.setPref('agostinho_capitulo', chapterIndex);
+  void select(int bookNumber, int chapterNumber) {
+    final store = context.app.store;
+    store.setPref('agostinho_livro', bookNumber);
+    store.setPref('agostinho_capitulo', chapterNumber);
     setState(() {
-      selectedBook = bookIndex;
-      selectedChapter = chapterIndex;
+      bookIndex = bookNumber;
+      chapterIndex = chapterNumber;
     });
+    if (scrollController.hasClients) scrollController.jumpTo(0);
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _books,
+    return FutureBuilder<Map<String, dynamic>>(
+      future: manifest,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Center(child: Text(
-              'Não foi possível abrir o índice dos livros: ${snapshot.error}'));
+          return Center(child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: SelectableText(
+              'Edição integral ausente deste build. ' +
+              snapshot.error.toString(),
+            ),
+          ));
         }
         if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
         }
-        final books = snapshot.data!;
-        if (books.isEmpty) return const Center(child: Text('Acervo vazio.'));
+        final meta = snapshot.data!;
+        final counts = List<int>.from(meta['chapterCounts'] as List);
+        if (counts.length != 13 || meta['chapterCount'] != 278) {
+          return const Center(child: Text('Índice integral inválido.'));
+        }
         final store = context.app.store;
-        final bookIndex = (selectedBook ??
-                (store.pref('agostinho_livro', 0) as int? ?? 0))
-            .clamp(0, books.length - 1)
-            .toInt();
-        final book = books[bookIndex];
-        final chapterCount = book['chapterCount'] as int;
-        final chapterIndex = (selectedChapter ??
-                (store.pref('agostinho_capitulo', 0) as int? ?? 0))
-            .clamp(0, chapterCount - 1)
-            .toInt();
-        final currentUrl = augustineChapterUrl(bookIndex + 1, chapterIndex + 1);
+        final savedBook = store.pref('agostinho_livro', 0);
+        final b = (bookIndex ?? (savedBook is int ? savedBook : 0))
+            .clamp(0, 12).toInt();
+        final savedChapter = store.pref('agostinho_capitulo', 0);
+        final c = (chapterIndex ??
+                (savedChapter is int ? savedChapter : 0))
+            .clamp(0, counts[b] - 1).toInt();
 
-        return ListView(
-          padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
-          children: [
-            Text(
-              'Confissões de Santo Agostinho — texto integral',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Aqui você escolhe o livro e o capítulo para ler '
-              'as palavras de Agostinho em tradução portuguesa completa. '
-              'Não são resumos. A leitura abre a edição textual da fonte.',
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<int>(
-              key: ValueKey('original-agostinho-livro-$bookIndex'),
-              isExpanded: true,
-              initialValue: bookIndex,
-              decoration: const InputDecoration(
-                labelText: 'Livro (1 a 13)',
-              ),
-              items: [
-                for (var i = 0; i < books.length; i++)
-                  DropdownMenuItem(
-                    value: i,
-                    child: Text(
-                      'Livro ${books[i]['number']} · '
-                      '${books[i]['title']}',
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-              ],
-              onChanged: (n) {
-                if (n != null) select(n, 0);
-              },
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<int>(
-              key: ValueKey('original-agostinho-cap-$bookIndex-$chapterIndex'),
-              isExpanded: true,
-              initialValue: chapterIndex,
-              decoration: const InputDecoration(
-                labelText: 'Capítulo integral',
-              ),
-              items: [
-                for (var i = 0; i < chapterCount; i++)
-                  DropdownMenuItem(
-                    value: i,
-                    child: Text('Capítulo ${i + 1}'),
-                  ),
-              ],
-              onChanged: (n) {
-                if (n != null) select(bookIndex, n);
-              },
-            ),
-            const SizedBox(height: 18),
-            Text('Livro ${book['number']} · Capítulo ${chapterIndex + 1}',
-                style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 8),
-            const Text(
-              'Fonte disponível em português, com comparação '
-              'em latim. Toque abaixo para ler o capítulo inteiro.',
-            ),
-            const SizedBox(height: 16),
-            FilledButton.icon(
-              onPressed: () => openAugustineSource(context, currentUrl),
-              icon: const Icon(Icons.menu_book),
-              label: const Text('Ler as palavras de Agostinho'),
-            ),
-            const SizedBox(height: 10),
-            OutlinedButton.icon(
-              onPressed: () =>
-                  openAugustineSource(context, augustineFullEdition),
-              icon: const Icon(Icons.open_in_new),
-              label: const Text('Consultar edição portuguesa integral'),
-            ),
-            const SizedBox(height: 20),
-            Row(
+        return FutureBuilder<Map<String, dynamic>>(
+          future: book(b + 1),
+          builder: (context, page) {
+            if (page.hasError) {
+              return Center(child: SelectableText(
+                'Não foi possível ler o livro: ' + page.error.toString(),
+              ));
+            }
+            if (!page.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            final entries = (page.data!['chapters'] as List)
+                .map((item) => Map<String, dynamic>.from(item as Map))
+                .toList();
+            if (entries.length != counts[b]) {
+              return const Center(child: Text('Livro incompleto.'));
+            }
+            final body = entries[c]['body'] as String;
+            final bookmark = 'agostinho_favorito_' +
+                (b + 1).toString() + '_' + (c + 1).toString();
+            final marked = store.pref(bookmark, false) == true;
+            return ListView(
+              controller: scrollController,
+              padding: const EdgeInsets.fromLTRB(18, 12, 18, 32),
               children: [
-                Expanded(
-                  child: OutlinedButton(
-                    onPressed: chapterIndex == 0 && bookIndex == 0
-                        ? null
-                        : () {
-                            if (chapterIndex > 0) {
-                              select(bookIndex, chapterIndex - 1);
-                            } else {
-                              select(
-                                bookIndex - 1,
-                                (books[bookIndex - 1]['chapterCount'] as int) -
-                                    1,
-                              );
-                            }
-                          },
-                    child: const Text('Anterior'),
+                Text('Confissões de Santo Agostinho',
+                    style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(height: 6),
+                const Text(
+                  'Texto integral em português. Leitura offline, sem resumos.',
+                ),
+                const SizedBox(height: 16),
+                DropdownButtonFormField<int>(
+                  key: ValueKey('aug-book-' + b.toString()),
+                  isExpanded: true,
+                  initialValue: b,
+                  decoration: const InputDecoration(labelText: 'Livro'),
+                  items: [
+                    for (var i = 0; i < counts.length; i++)
+                      DropdownMenuItem(
+                        value: i,
+                        child: Text('Livro ' + (i + 1).toString()),
+                      ),
+                  ],
+                  onChanged: (n) { if (n != null) select(n, 0); },
+                ),
+                const SizedBox(height: 12),
+                DropdownButtonFormField<int>(
+                  key: ValueKey('aug-chapter-$b-$c'),
+                  isExpanded: true,
+                  initialValue: c,
+                  decoration: const InputDecoration(labelText: 'Capítulo'),
+                  items: [
+                    for (var i = 0; i < counts[b]; i++)
+                      DropdownMenuItem(
+                        value: i,
+                        child: Text('Capítulo ' + (i + 1).toString()),
+                      ),
+                  ],
+                  onChanged: (n) { if (n != null) select(b, n); },
+                ),
+                const SizedBox(height: 18),
+                Text(
+                  'Livro ' + (b + 1).toString() +
+                      ' · Capítulo ' + (c + 1).toString(),
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(height: 16),
+                SelectableText(
+                  body,
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontFamily: 'EBGaramond',
+                    fontSize: fontSize,
+                    height: 1.55,
                   ),
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: FilledButton(
-                    onPressed: chapterIndex == chapterCount - 1 &&
-                            bookIndex == books.length - 1
-                        ? null
-                        : () {
-                            if (chapterIndex + 1 < chapterCount) {
-                              select(bookIndex, chapterIndex + 1);
-                            } else {
-                              select(bookIndex + 1, 0);
-                            }
-                          },
-                    child: const Text('Próximo'),
-                  ),
+                const SizedBox(height: 16),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    TextButton.icon(
+                      icon: Icon(marked ? Icons.bookmark : Icons.bookmark_border),
+                      label: Text(marked ? 'Marcado' : 'Marcar leitura'),
+                      onPressed: () {
+                        store.setPref(bookmark, !marked);
+                        setState(() {});
+                      },
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.copy),
+                      label: const Text('Copiar capítulo'),
+                      onPressed: () async {
+                        await Clipboard.setData(ClipboardData(
+                          text: 'Confissões de Santo Agostinho — Livro ' +
+                              (b + 1).toString() + ', capítulo ' +
+                              (c + 1).toString() + '\n\n' + body +
+                              '\n\nTradução: J. Oliveira Santos e ' +
+                              'A. Ambrósio de Pina. Fonte: Solus Ágape.',
+                        ));
+                      },
+                    ),
+                    TextButton.icon(
+                      icon: const Icon(Icons.text_increase),
+                      label: const Text('Fonte maior'),
+                      onPressed: () => setState(
+                        () => fontSize = fontSize < 30 ? fontSize + 2 : 19,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(child: OutlinedButton.icon(
+                      onPressed: b == 0 && c == 0 ? null
+                          : () => c > 0
+                              ? select(b, c - 1)
+                              : select(b - 1, counts[b - 1] - 1),
+                      icon: const Icon(Icons.arrow_back),
+                      label: const Text('Anterior'),
+                    )),
+                    const SizedBox(width: 8),
+                    Expanded(child: FilledButton.icon(
+                      onPressed: b == 12 && c == counts[b] - 1 ? null
+                          : () => c + 1 < counts[b]
+                              ? select(b, c + 1)
+                              : select(b + 1, 0),
+                      icon: const Icon(Icons.arrow_forward),
+                      label: const Text('Próximo'),
+                    )),
+                  ],
+                ),
+                const Divider(height: 32),
+                SelectableText(
+                  'Fonte: ' + meta['source'].toString() + '\n' +
+                  'Tradução: ' + meta['translator'].toString() + '\n' +
+                  'Edição: ' + meta['edition'].toString() + '\n' +
+                  meta['license'].toString(),
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                TextButton.icon(
+                  onPressed: () =>
+                      openAugustineSource(context, augustineFullEdition),
+                  icon: const Icon(Icons.open_in_new),
+                  label: const Text('Conferir edição e créditos'),
                 ),
               ],
-            ),
-            const SizedBox(height: 18),
-            const Text(
-              'Fonte de leitura por capítulos: Lírio Católico. '
-              'Edição portuguesa integral para consulta: Solus Ágape, '
-              'tradução de J. Oliveira Santos e A. Ambrósio de Pina, '
-              'revisão e edição de E. L. de Souza Campos (2024). '
-              'A leitura dos textos integrais requer internet; '
-              'este aplicativo não reproduz traduções sem verificar '
-              'as respectivas condições de distribuição.',
-            ),
-          ],
+            );
+          },
         );
       },
     );
