@@ -6,6 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:sqlite3/common.dart';
 import 'sqlite_runtime_web.dart' as runtime;
 
+// Digest incremental: evita juntar arquivos SQLite de mais de 100 MB em RAM.
+class _Sha256Result implements Sink<Digest> {
+  Digest? value;
+  @override
+  void add(Digest data) { value = data; }
+  @override
+  void close() {}
+}
+
+
 /// Inicializa os bancos disponibilizados no APK original na VFS do navegador.
 /// Copias pessoais (como ARA) NAO fazem parte desse processo.
 Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
@@ -13,6 +23,17 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
   await runtime.initializeSqliteRuntime();
 
   final vfs = runtime.sqliteFileSystem;
+  // Os bancos grandes são enviados em partes de 16 MiB pela hospedagem Web.
+  // Os bancos pequenos continuam no formato SQLite original.
+  final rawParts = jsonDecode(
+    await rootBundle.loadString('assets/content/sqlite-web-parts.json'),
+  ) as Map<String, dynamic>;
+  if (rawParts['format'] != 1) {
+    throw StateError('Manifest das partes SQLite Web inválido.');
+  }
+  final splitDatabases = Map<String, dynamic>.from(
+    rawParts['partitioned'] as Map,
+  );
   // Estas preferências já existem no armazenamento persistente do usuário.
   // Guardamos apenas os hashes de distribuição, sem copiar, apagar ou
   // modificar as anotações e os dados de leitura.
@@ -73,12 +94,6 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
         current.xClose();
       }
     }
-    final data = await rootBundle.load(bundlePath);
-    final bytes =
-        data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
-    if (sha256.convert(bytes).toString() != expected) {
-      throw StateError('Falha de integridade no banco $name');
-    }
     final opened = vfs.xOpen(
       Sqlite3Filename(path),
       SqlFlag.SQLITE_OPEN_READWRITE |
@@ -88,12 +103,56 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
     final file = opened.file;
     try {
       file.xTruncate(0);
-      const chunkSize = 256 * 1024;
-      for (var offset = 0; offset < bytes.length; offset += chunkSize) {
-        final end = offset + chunkSize < bytes.length
-            ? offset + chunkSize
-            : bytes.length;
-        file.xWrite(Uint8List.sublistView(bytes, offset, end), offset);
+      const writeChunk = 256 * 1024;
+      final split = splitDatabases[name];
+      if (split != null) {
+        final spec = Map<String, dynamic>.from(split as Map);
+        if (spec['sha256'] != expected) {
+          throw StateError('SHA-256 do manifesto incorreto: $name');
+        }
+        final digestResult = _Sha256Result();
+        final digestInput = sha256.startChunkedConversion(digestResult);
+        var written = 0;
+        for (final item in spec['chunks'] as List) {
+          final part = Map<String, dynamic>.from(item as Map);
+          final partName = part['file'] as String;
+          final data = await rootBundle.load('assets/content/$partName');
+          final bytes = data.buffer.asUint8List(
+            data.offsetInBytes,
+            data.lengthInBytes,
+          );
+          if (bytes.length != part['size'] ||
+              sha256.convert(bytes).toString() != part['sha256']) {
+            throw StateError('Parte SQLite corrompida: $partName');
+          }
+          digestInput.add(bytes);
+          for (var offset = 0; offset < bytes.length; offset += writeChunk) {
+            final end = offset + writeChunk < bytes.length
+                ? offset + writeChunk : bytes.length;
+            file.xWrite(Uint8List.sublistView(bytes, offset, end),
+                written + offset);
+          }
+          written += bytes.length;
+        }
+        digestInput.close();
+        if (written != spec['size'] ||
+            digestResult.value.toString() != expected) {
+          throw StateError('Banco SQLite reconstruído incorretamente: $name');
+        }
+      } else {
+        final data = await rootBundle.load(bundlePath);
+        final bytes = data.buffer.asUint8List(
+          data.offsetInBytes,
+          data.lengthInBytes,
+        );
+        if (sha256.convert(bytes).toString() != expected) {
+          throw StateError('Falha de integridade no banco $name');
+        }
+        for (var offset = 0; offset < bytes.length; offset += writeChunk) {
+          final end = offset + writeChunk < bytes.length
+              ? offset + writeChunk : bytes.length;
+          file.xWrite(Uint8List.sublistView(bytes, offset, end), offset);
+        }
       }
       file.xSync(0);
     } finally {
