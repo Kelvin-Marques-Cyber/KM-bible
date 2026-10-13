@@ -653,35 +653,48 @@ class _CommentariesPageState extends State<CommentariesPage> {
           style: Theme.of(context).textTheme.titleLarge,
         ),
         if (a.language == 'pt') ...[
-          const SizedBox(height: 10),
-          Text(
-            'Guias em português e comentários autorizados',
-            style: Theme.of(context).textTheme.titleMedium,
+          const SizedBox(height: 12),
+          // Guias de fontes e catálogos não são comentários exegéticos
+          // integrais. Mantê-los disponíveis, mas fora do corpo de comentários.
+          ExpansionTile(
+            tilePadding: EdgeInsets.zero,
+            title: const Text('Guias de leitura e referências'),
+            subtitle: const Text(
+              'Material de apoio, separado dos comentários bíblicos integrais.',
+            ),
+            children: [
+              for (final moduleId in const [
+                'HDL-GUIA-FONTES',
+                'JOSEMAR-GUIA-FONTES',
+                'EXP2-CALV-PT',
+              ])
+                if (a.store.installed(moduleId))
+                  ListTile(
+                    title: Text(
+                      a.store.module(moduleId)?['title'] as String? ?? moduleId,
+                    ),
+                    subtitle: const Text(
+                      'Guia editorial e referências; não reproduz a obra integral.',
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => sheet(
+                      context,
+                      a.store.module(moduleId)?['title'] as String? ?? moduleId,
+                      ModulePage(a.store.module(moduleId)!),
+                    ),
+                  ),
+            ],
           ),
-          for (final moduleId in const [
-            'HDL-GUIA-FONTES',
-            'JOSEMAR-GUIA-FONTES',
-            'EXP2-CALV-PT',
-          ])
-            if (a.store.installed(moduleId))
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text(a.store.module(moduleId)?['title'] as String? ?? moduleId),
-                subtitle: const Text(
-                  'Material editorial ou bibliográfico; não é o comentário integral do autor.',
-                ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () => sheet(
-                  context,
-                  a.store.module(moduleId)?['title'] as String? ?? moduleId,
-                  ModulePage(a.store.module(moduleId)!),
-                ),
+          if (!all.any((r) =>
+              (r['module_id'] as String).startsWith('HDL')))
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                'Os comentários integrais de Hernandes Dias Lopes ainda não '
+                'constam desta edição. O guia de fontes disponível acima '
+                'é um material diferente.',
               ),
-          action(
-            'Biblioteca / importar comentários (.biblepkg)',
-            Icons.library_books_outlined,
-            () => sheet(context, 'Biblioteca', const LibraryPage()),
-          ),
+            ),
         ],
 
         if (a.language == 'pt')
