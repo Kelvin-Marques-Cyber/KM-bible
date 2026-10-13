@@ -406,16 +406,12 @@ class StudyPage extends StatefulWidget {
 
 class _StudyPageState extends State<StudyPage> {
   late bool apologetic;
-  late final Future<String> _impersonalDeepReading;
+  Future<String>? _impersonalDeepReading;
   bool strongest = false, rejoinder = false;
   @override
   void initState() {
     super.initState();
     apologetic = widget.apologetic;
-    final target = widget.study['target'] as String;
-    _impersonalDeepReading = rootBundle.loadString(
-      'assets/apologetica/$target.md',
-    );
   }
 
   @override
@@ -455,7 +451,9 @@ class _StudyPageState extends State<StudyPage> {
           MarkdownText(s['exposition'] as String)
         else
           FutureBuilder<String>(
-            future: _impersonalDeepReading,
+            future: _impersonalDeepReading ??= rootBundle.loadString(
+              "assets/apologetica/${s['target']}.md",
+            ),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Column(
