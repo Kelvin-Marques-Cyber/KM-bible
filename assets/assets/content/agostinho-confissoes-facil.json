@@ -1,76 +1,426 @@
 {
-  "id": "AGOSTINHO-CONFISSOES-INTEGRAL",
-  "title": "Confissões de Santo Agostinho — índice de leitura integral",
+  "id": "AGOSTINHO-CONFISSOES-FACIL",
+  "title": "Confissões de Agostinho — leitura em linguagem simples",
   "author": "Agostinho de Hipona",
-  "type": "indice_texto_integral_externo",
-  "notice": "Índice dos 278 capítulos da obra histórica em português. Para ler as palavras de Agostinho, abra o capítulo na fonte externa; não há resumos ou paráfrases neste catálogo. Necessita internet.",
-  "source": "https://www.liriocatolico.com.br/santo_agostinho/obras/autobiografia/confissoes/",
-  "sourceEdition": "https://www.solusagape.com.br/obras-milenares/confiss%C3%B5es",
+  "type": "adaptacao_didatica",
+  "notice": "Adaptação explicativa original em português simples. Cada leitura resume um grupo de capítulos do livro histórico; não é a tradução integral nem texto literal atribuído a Agostinho.",
+  "source": "https://www.newadvent.org/fathers/1101.htm",
   "books": [
     {
       "number": 1,
       "title": "A infância e o coração inquieto",
-      "chapterCount": 20
+      "summary": "O início da vida, a linguagem, a escola e o desejo de encontrar descanso em Deus.",
+      "chapterCount": 20,
+      "sections": [
+        {
+          "from": 1,
+          "to": 5,
+          "title": "Um coração que procura descanso",
+          "body": "Agostinho inicia sua história falando com Deus. Ele percebe que as pessoas procuram segurança, alegria e reconhecimento, mas nenhuma dessas coisas é suficiente para preencher toda a vida. Mesmo sem compreender completamente quem Deus é, deseja conhecê-lo. Sua oração faz uma pergunta simples: onde encontrar descanso verdadeiro? A resposta que começa a descobrir é que o coração humano precisa de algo maior do que elogios e conquistas.\n\nEle não está contando a própria história para parecer melhor. Quer reconhecer o bem recebido, admitir seus erros e mostrar como a busca por Deus atravessou todas as etapas de sua vida."
+        },
+        {
+          "from": 6,
+          "to": 8,
+          "title": "Os primeiros cuidados e as primeiras palavras",
+          "body": "Quando era bebê, Agostinho dependia inteiramente de outras pessoas. Recebia alimento, cuidado e proteção antes mesmo de saber agradecer. Ao crescer, aprendeu a falar observando gestos e palavras à sua volta. Agora reconhece esses cuidados como presentes que não produziu sozinho.\n\nAo mesmo tempo, lembra que mesmo uma criança pode querer tudo do seu jeito, ficar irritada e invejar outras pessoas. A infância não é apresentada como uma época sem desejos difíceis, mas como o começo de uma vida que precisa aprender a amar corretamente."
+        },
+        {
+          "from": 9,
+          "to": 13,
+          "title": "Medo da escola e vontade de brincar",
+          "body": "O menino Agostinho gostava de brincar, assistir a espetáculos e fugir das tarefas difíceis. Os castigos na escola o assustavam, enquanto os adultos valorizavam sobretudo as boas notas e a fama. Ele percebe que muitos problemas da infância repetem problemas dos mais velhos: desejo de vencer a qualquer preço e vergonha de parecer inferior.\n\nAprender a ler e escrever foi importante, mas ele questiona quando a educação passa a servir apenas à vaidade. Uma pessoa pode saber muitas palavras e ainda assim não saber viver com justiça."
+        },
+        {
+          "from": 14,
+          "to": 20,
+          "title": "Histórias bonitas e escolhas ruins",
+          "body": "Agostinho gostava de certas histórias e detestava estudar grego. Com o tempo, compreendeu que a facilidade para aprender depende também do interesse e da liberdade de experimentar. Algumas narrativas o emocionavam profundamente, mas ele nem sempre percebia sua própria dificuldade em amar o bem.\n\nAo terminar essas lembranças, agradece pelos dons recebidos e reconhece que os utilizou de maneira imperfeita. Saber falar bem, por exemplo, não vale muito se a pessoa usa palavras bonitas para esconder a verdade.\n\nNos capítulos finais do primeiro livro, ele lembra outras atitudes egoístas da infância e reconhece que nem os bons dons que recebeu — como a memória, a linguagem e a capacidade de aprender — nasceram somente de seu esforço. Agradece por esses presentes e admite que nem sempre os usou bem. Para ele, reconhecer o que recebeu é o começo de uma vida menos dominada pelo orgulho."
+        }
+      ]
     },
     {
       "number": 2,
       "title": "A adolescência e o roubo das peras",
-      "chapterCount": 10
+      "summary": "Desejo de aceitação, amizades e a pergunta sobre por que escolhemos fazer o que sabemos ser errado.",
+      "chapterCount": 10,
+      "sections": [
+        {
+          "from": 1,
+          "to": 3,
+          "title": "A vontade de agradar aos outros",
+          "body": "Na adolescência, Agostinho queria ser notado e amado. Suas emoções eram intensas, mas faltava direção para lidar com elas. Ele buscava aprovação entre os colegas e desejava parecer experiente. O problema não era simplesmente sentir desejos, mas deixar que eles decidissem por ele.\n\nOlhando para trás, percebe que a pressão de um grupo pode tornar um comportamento errado aparentemente normal. Nem toda escolha feita em conjunto é uma escolha boa."
+        },
+        {
+          "from": 4,
+          "to": 5,
+          "title": "Por que roubar peras?",
+          "body": "Ele conta que, certa noite, roubou peras com amigos. Não estava passando fome e havia frutas melhores em casa. O roubo não trouxe benefício verdadeiro; grande parte das peras foi desperdiçada. O episódio parece pequeno, mas revela algo que Agostinho considera importante: às vezes a pessoa quer apenas experimentar o prazer de desobedecer.\n\nSua pergunta é difícil e honesta: o que realmente buscamos quando fazemos algo que não precisamos fazer?"
+        },
+        {
+          "from": 6,
+          "to": 8,
+          "title": "O erro fica mais fácil em grupo",
+          "body": "Agostinho percebe que provavelmente não teria roubado as peras sozinho. A companhia tornou a atitude mais atraente, pois todos riam e compartilhavam o desafio. A amizade, que poderia incentivar coisas boas, acabou servindo para justificar uma escolha ruim.\n\nIsso não significa que os amigos sejam sempre culpados pelos nossos atos. Significa reconhecer que a vontade de pertencer a um grupo pode enfraquecer nossa responsabilidade pessoal."
+        },
+        {
+          "from": 9,
+          "to": 10,
+          "title": "O que o coração estava procurando?",
+          "body": "Ao examinar a própria atitude, Agostinho entende que os desejos humanos procuram algum tipo de bem, mas podem se confundir e escolher caminhos que ferem a vida. Quem rouba pode desejar emoção ou aceitação; quem se exibe, reconhecimento. O objeto do desejo nem sempre é o verdadeiro problema.\n\nEle encerra essa reflexão pedindo misericórdia e reconhecendo que compreender o próprio erro é um passo importante para mudar de vida."
+        }
+      ]
     },
     {
       "number": 3,
       "title": "Cartago, ambições e falsas respostas",
-      "chapterCount": 12
+      "summary": "O jovem estudante, sua descoberta da filosofia e a adesão às ideias maniqueístas.",
+      "chapterCount": 12,
+      "sections": [
+        {
+          "from": 1,
+          "to": 3,
+          "title": "Uma cidade cheia de distrações",
+          "body": "Agostinho chega a Cartago e encontra um ambiente movimentado. Deseja amar, ser admirado e viver experiências intensas. Ao mesmo tempo, é levado pelas emoções de espetáculos que o fazem sofrer por histórias inventadas enquanto deixa de prestar atenção à própria vida.\n\nEle começa a distinguir a emoção passageira da compaixão verdadeira: sentir algo diante de uma tragédia não é o mesmo que ajudar uma pessoa real."
+        },
+        {
+          "from": 4,
+          "to": 6,
+          "title": "Um livro desperta a busca da verdade",
+          "body": "A leitura de uma obra filosófica de Cícero desperta em Agostinho um desejo novo: não quer apenas se destacar, mas encontrar sabedoria. Esse desejo o aproxima da pergunta sobre Deus. Ao procurar respostas, encontra também textos bíblicos, mas os considera simples quando comparados ao estilo refinado a que estava acostumado.\n\nSua experiência mostra um risco: rejeitar uma ideia pela linguagem utilizada antes de entender o que ela realmente diz."
+        },
+        {
+          "from": 7,
+          "to": 9,
+          "title": "As promessas dos maniqueístas",
+          "body": "Agostinho se aproxima de um grupo que prometia explicar facilmente a origem do mal e o funcionamento do mundo. As respostas pareciam inteligentes e seguras, mas depois ele perceberia problemas em suas explicações. Naquele momento, porém, sentiu que havia encontrado pessoas capazes de responder a todas as perguntas.\n\nUma explicação convincente não é necessariamente verdadeira. É preciso examinar suas bases, seus limites e sua coerência."
+        },
+        {
+          "from": 10,
+          "to": 12,
+          "title": "As lágrimas de Mônica",
+          "body": "Mônica, mãe de Agostinho, sofre ao vê-lo afastado da fé que ela professa. Ele descreve suas orações e sua persistência, sem esconder os conflitos familiares. A preocupação materna não muda imediatamente o rumo do filho, mas permanece como uma presença importante em sua história.\n\nAgostinho aprende depois que a transformação de alguém raramente acontece no momento em que outra pessoa deseja. Há caminhos demorados, encontros inesperados e mudanças que não podem ser forçadas."
+        }
+      ]
     },
     {
       "number": 4,
       "title": "A amizade, a perda e a dor",
-      "chapterCount": 16
+      "summary": "O luto de Agostinho, sua vida como professor e a fragilidade dos afetos humanos.",
+      "chapterCount": 16,
+      "sections": [
+        {
+          "from": 1,
+          "to": 4,
+          "title": "O professor que ainda procurava certezas",
+          "body": "Agostinho começa a ensinar e a construir uma carreira. Continua ligado aos maniqueístas e confia bastante na própria inteligência. Seus interesses incluem retórica, prestígio e o desejo de ser reconhecido por suas capacidades.\n\nAo recordar esse tempo, identifica uma diferença entre usar o conhecimento para parecer superior e usá-lo para aproximar-se da verdade."
+        },
+        {
+          "from": 5,
+          "to": 8,
+          "title": "A morte de um amigo querido",
+          "body": "Um amigo próximo adoece e morre. Agostinho sente uma tristeza tão forte que os lugares conhecidos passam a parecer vazios. Tudo lhe recorda a ausência da pessoa amada. Ele descobre que a amizade pode ser uma alegria profunda, mas também nos torna vulneráveis à perda.\n\nSeu luto não é tratado como fraqueza. A pergunta que surge é como amar intensamente sem esperar que coisas passageiras permaneçam para sempre."
+        },
+        {
+          "from": 9,
+          "to": 12,
+          "title": "O amor precisa de uma base firme",
+          "body": "A dor leva Agostinho a refletir sobre aquilo que permanece e aquilo que muda. Ele não conclui que devemos evitar as pessoas por medo de perdê-las. Começa, porém, a perceber que pedir a outro ser humano a segurança absoluta que ele não pode oferecer pode tornar o amor pesado demais.\n\nAprender a amar inclui reconhecer a fragilidade humana e não transformar um relacionamento em substituto de tudo o mais."
+        },
+        {
+          "from": 13,
+          "to": 16,
+          "title": "A beleza, os livros e o orgulho",
+          "body": "Agostinho escreve sobre beleza, proporção e harmonia. Também se dedica a obras difíceis e percebe que consegue compreender assuntos complexos. O êxito intelectual, entretanto, alimenta seu orgulho. Mais tarde, ele dirá que conhecer categorias e conceitos não é o mesmo que ter um coração sábio.\n\nA verdadeira compreensão muda nossa forma de viver, não apenas a maneira como nos apresentamos aos outros."
+        }
+      ]
     },
     {
       "number": 5,
       "title": "De Cartago a Milão",
-      "chapterCount": 14
+      "summary": "Dúvidas sobre o maniqueísmo, encontros com professores e a influência de Ambrósio.",
+      "chapterCount": 14,
+      "sections": [
+        {
+          "from": 1,
+          "to": 3,
+          "title": "Crescem as dúvidas",
+          "body": "Agostinho observa contradições entre as explicações de seu grupo religioso e aquilo que aprende sobre a natureza. Começa a desconfiar de quem fala com grande certeza sobre assuntos que não conhece. Sua inquietação não desaparece, mas agora é acompanhada de um senso crítico maior.\n\nPessoas sinceras também podem estar enganadas. A honestidade da busca exige disposição para rever conclusões antigas."
+        },
+        {
+          "from": 4,
+          "to": 6,
+          "title": "O encontro com Fausto",
+          "body": "Ele espera muito de Fausto, um mestre maniqueísta conhecido pela eloquência. Quando conversam, percebe que Fausto fala bem, mas não consegue responder às dúvidas mais importantes. Essa experiência o ajuda a separar duas coisas: uma apresentação bonita e uma explicação verdadeira.\n\nO estilo de alguém pode impressionar, mas argumentos precisam ser avaliados pelo conteúdo."
+        },
+        {
+          "from": 7,
+          "to": 10,
+          "title": "Da África para Roma",
+          "body": "Cansado de alguns conflitos e esperançoso de encontrar melhores oportunidades, Agostinho viaja para Roma. A mudança de cidade não resolve suas perguntas. Ele leva consigo a mesma busca por reconhecimento e as mesmas dúvidas religiosas.\n\nUma nova situação pode oferecer oportunidades, mas não transforma automaticamente nossa maneira de pensar e agir."
+        },
+        {
+          "from": 11,
+          "to": 14,
+          "title": "Milão e a pregação de Ambrósio",
+          "body": "Em Milão, Agostinho ouve o bispo Ambrósio, inicialmente interessado na qualidade de seus discursos. Aos poucos, percebe que as Escrituras podem ser interpretadas de modo mais profundo do que imaginava. Começa a reconsiderar a fé cristã que havia desprezado.\n\nO encontro não produz uma conversão instantânea. Ele abre espaço para escutar, comparar ideias e admitir que certas críticas antigas talvez tenham sido injustas."
+        }
+      ]
     },
     {
       "number": 6,
       "title": "Entre a verdade e a indecisão",
-      "chapterCount": 16
+      "summary": "Vida em Milão, conversas com amigos, ambições e dificuldade de mudar.",
+      "chapterCount": 16,
+      "sections": [
+        {
+          "from": 1,
+          "to": 4,
+          "title": "Uma fé que já não parecia impossível",
+          "body": "Agostinho abandona gradualmente certezas antigas. Observa Mônica, escuta Ambrósio e passa a considerar seriamente a fé cristã. Ainda não sabe responder a todas as questões, mas entende que não precisa rejeitar algo simplesmente porque não consegue prová-lo de imediato.\n\nA dúvida pode ser uma etapa honesta de amadurecimento quando conduz a investigação em vez de apenas ao desinteresse."
+        },
+        {
+          "from": 5,
+          "to": 8,
+          "title": "Ambição, cansaço e vazio",
+          "body": "Agostinho trabalha com discursos e sonha com uma carreira admirada. Apesar do esforço, não encontra a paz que esperava. Ao ver pessoas simples aparentemente satisfeitas, questiona o preço de sua busca por prestígio.\n\nNem toda conquista é ruim. O problema surge quando o sucesso passa a determinar o valor de uma pessoa e a governar todas as suas decisões."
+        },
+        {
+          "from": 9,
+          "to": 12,
+          "title": "Conversas com Alípio e outros amigos",
+          "body": "As amizades continuam centrais em sua história. Agostinho e seus companheiros discutem vida pública, estudo, casamento e o desejo de viver de maneira mais tranquila. Muitos planos parecem bons enquanto permanecem apenas no campo das ideias.\n\nA dificuldade surge quando precisam escolher de verdade. Pensar em mudar e mudar são experiências diferentes."
+        },
+        {
+          "from": 13,
+          "to": 16,
+          "title": "Saber o bem ainda não basta",
+          "body": "Agostinho começa a perceber que o principal obstáculo não é sempre a falta de informação. Mesmo entendendo a direção que considera melhor, continua preso a hábitos e desejos anteriores. Isso o leva a examinar a vontade humana, a responsabilidade e a necessidade de ajuda.\n\nA mudança interior exige mais do que um argumento correto: exige que nossos afetos e decisões sejam transformados."
+        }
+      ]
     },
     {
       "number": 7,
       "title": "A verdade, a alma e a origem do mal",
-      "chapterCount": 21
+      "summary": "Reflexões filosóficas que ajudam Agostinho a abandonar a ideia de Deus como matéria.",
+      "chapterCount": 21,
+      "sections": [
+        {
+          "from": 1,
+          "to": 5,
+          "title": "Deus não é uma coisa entre outras coisas",
+          "body": "Agostinho tenta imaginar Deus como se fosse um objeto muito grande, espalhado pelo universo. Aos poucos, entende que essa imagem não corresponde ao Deus que procura. Se Deus é o Criador de tudo, não pode ser apenas mais uma parte do mundo.\n\nEssa mudança o ajuda a pensar de maneira menos limitada. Nem tudo o que é real pode ser pesado, medido ou visto pelos olhos."
+        },
+        {
+          "from": 6,
+          "to": 10,
+          "title": "Uma nova maneira de entender o mal",
+          "body": "Durante anos, o mal lhe pareceu uma força independente em luta contra o bem. Agora ele começa a compreender o mal como corrupção ou privação de um bem que deveria existir. Assim, algo criado e bom pode ser danificado, desordenado ou usado de maneira errada.\n\nEssa explicação não faz o sofrimento desaparecer. Ela procura evitar que o mal seja tratado como um segundo deus com poder equivalente ao do Criador."
+        },
+        {
+          "from": 11,
+          "to": 15,
+          "title": "Olhar para dentro não é encontrar tudo em si",
+          "body": "Agostinho descobre que a mente pode reconhecer verdades que não mudam conforme suas emoções. Ele procura acima de si a fonte dessas verdades e reconhece a própria dependência.\n\nA reflexão interior é importante, mas não significa que a pessoa seja autossuficiente. Ao contrário, revela limites, desejos e uma necessidade de luz que não se fabrica por vontade própria."
+        },
+        {
+          "from": 16,
+          "to": 21,
+          "title": "Da filosofia à necessidade de Cristo",
+          "body": "Alguns livros filosóficos ajudam Agostinho a abandonar ideias equivocadas, mas ele percebe que ainda lhe falta força para viver conforme a verdade que reconhece. Encontra, então, um lugar decisivo para Cristo e para a humildade da encarnação.\n\nConhecer o caminho não significa já ter percorrido o caminho. Para Agostinho, a graça não é apenas uma informação nova, mas uma ajuda indispensável para o coração."
+        }
+      ]
     },
     {
       "number": 8,
       "title": "A conversão no jardim",
-      "chapterCount": 12
+      "summary": "O conflito da vontade, exemplos de mudança e a decisão de seguir a Cristo.",
+      "chapterCount": 12,
+      "sections": [
+        {
+          "from": 1,
+          "to": 3,
+          "title": "Quero mudar, mas ainda não quero",
+          "body": "Agostinho relata o sofrimento de reconhecer o que considera certo e, mesmo assim, adiar a decisão. Parte dele deseja uma vida diferente; outra parte teme perder hábitos que lhe dão prazer e segurança.\n\nEle entende que não possui duas almas em guerra, mas uma vontade dividida por afetos contraditórios. A experiência parece familiar: às vezes sabemos o que fazer, mas continuamos adiando."
+        },
+        {
+          "from": 4,
+          "to": 6,
+          "title": "Histórias de pessoas que mudaram",
+          "body": "Ao ouvir relatos de homens e mulheres que deixaram antigas ambições para dedicar-se a Deus, Agostinho fica perturbado. Não é apenas admiração. Ele se pergunta por que outras pessoas conseguem dar o passo que ele continua evitando.\n\nComparações podem gerar inveja, mas também podem revelar que uma mudança considerada impossível talvez seja possível."
+        },
+        {
+          "from": 7,
+          "to": 9,
+          "title": "O choro e o conflito interior",
+          "body": "No jardim, Agostinho se afasta dos amigos e chora. Sente vergonha dos próprios adiamentos e cansaço das desculpas. Quer começar uma nova vida, mas ainda está assustado com o que precisará deixar para trás.\n\nA cena não retrata alguém que resolveu tudo racionalmente. Mostra o momento em que sua luta deixa de ser apenas teórica e se torna uma decisão pessoal."
+        },
+        {
+          "from": 10,
+          "to": 12,
+          "title": "Uma leitura e uma decisão",
+          "body": "Agostinho ouve uma voz infantil repetindo palavras que interpreta como um convite para abrir e ler um texto. Lê uma passagem da carta aos Romanos que o confronta com a vida que deseja abandonar. Conta que, naquele instante, a indecisão perdeu força.\n\nA experiência não apaga todos os desafios futuros. Marca o início de uma nova orientação, compartilhada com seu amigo Alípio e recebida com alegria por Mônica."
+        }
+      ]
     },
     {
       "number": 9,
       "title": "O batismo e a despedida de Mônica",
-      "chapterCount": 13
+      "summary": "Uma vida reorientada, o batismo e a memória amorosa de sua mãe.",
+      "chapterCount": 13,
+      "sections": [
+        {
+          "from": 1,
+          "to": 3,
+          "title": "Uma nova etapa",
+          "body": "Depois da decisão, Agostinho reorganiza sua vida. Deixa a atividade de professor e procura um período de descanso, oração e aprendizado. Sabe que mudanças profundas precisam ser acompanhadas de práticas concretas.\n\nO passado não desaparece, mas já não precisa controlar todas as escolhas. Ele começa a aprender como viver de outra maneira."
+        },
+        {
+          "from": 4,
+          "to": 6,
+          "title": "Leitura, oração e batismo",
+          "body": "Agostinho dedica-se à leitura dos Salmos e descreve como certos textos tocam suas emoções. Mais tarde, recebe o batismo ao lado de companheiros. Para ele, esse momento expressa a graça de Deus e a entrada numa vida cristã assumida publicamente.\n\nA alegria da fé aparece junto da consciência de que ainda está aprendendo."
+        },
+        {
+          "from": 7,
+          "to": 10,
+          "title": "Mônica e a conversa sobre a eternidade",
+          "body": "Mônica e Agostinho conversam sobre Deus e a vida que não termina. Perto do fim de sua vida, ela expressa serenidade e gratidão por ter visto o filho abraçar a fé cristã. Em seguida adoece.\n\nAgostinho recorda a mãe como uma pessoa real, com sua história e suas limitações, e não apenas como símbolo de um ideal. O amor entre ambos atravessa toda a obra."
+        },
+        {
+          "from": 11,
+          "to": 13,
+          "title": "O luto e a esperança",
+          "body": "Com a morte de Mônica, Agostinho sente uma tristeza profunda. Tenta controlar as lágrimas, mas entende depois que chorar não é falta de fé. Seu amor pela mãe continua, embora sua presença física tenha terminado.\n\nEle ora por ela e entrega sua memória a Deus. A esperança cristã não elimina a dor da separação, mas oferece uma perspectiva maior do que a própria morte."
+        }
+      ]
     },
     {
       "number": 10,
       "title": "Memória, desejo e conhecimento de si",
-      "chapterCount": 43
+      "summary": "Depois da conversão, Agostinho investiga a memória, a tentação e o amor a Deus no presente.",
+      "chapterCount": 43,
+      "sections": [
+        {
+          "from": 1,
+          "to": 9,
+          "title": "Por que continuar confessando?",
+          "body": "Agostinho já contou muitos episódios de sua vida, mas agora pergunta quem ele é no presente. Não quer apenas recordar o passado. Deseja examinar sua maneira atual de pensar, desejar e agir.\n\nUma pessoa pode mudar profundamente e, ainda assim, continuar vulnerável ao orgulho e à distração. Por isso, conhecer a si mesmo é uma tarefa que não termina na juventude."
+        },
+        {
+          "from": 10,
+          "to": 19,
+          "title": "Os caminhos da memória",
+          "body": "Ele investiga a memória, essa capacidade surpreendente de guardar lugares, palavras, conhecimentos, emoções e acontecimentos. Algumas lembranças surgem rapidamente; outras parecem escondidas. Também somos capazes de reconhecer algo que havíamos esquecido.\n\nA memória é poderosa, mas não contém a vida inteira de modo perfeito. Ela ajuda Agostinho a perguntar como podemos buscar aquilo que ainda não conseguimos nomear."
+        },
+        {
+          "from": 20,
+          "to": 30,
+          "title": "O que significa ser feliz?",
+          "body": "Agostinho observa que todas as pessoas desejam felicidade, embora discordem sobre onde encontrá-la. Algumas a procuram em prazeres, outras em poder ou reconhecimento. Ele associa a alegria verdadeira a uma relação correta com a verdade e com Deus.\n\nO desejo de ser feliz não garante que escolheremos aquilo que realmente faz bem. Por isso, é necessário examinar não apenas nossos objetivos, mas também nossos hábitos e amores."
+        },
+        {
+          "from": 31,
+          "to": 43,
+          "title": "Tentação, orgulho e necessidade de ajuda",
+          "body": "Agostinho descreve tentações ligadas aos sentidos, à curiosidade e ao desejo de receber elogios. Não se apresenta como alguém que venceu tudo. Reconhece o quanto é fácil usar até boas ações para alimentar a própria vaidade.\n\nA confissão torna-se, assim, uma prática contínua de honestidade diante de Deus. Para ele, Cristo é o mediador que torna possível aproximar-se do Pai sem depender da perfeição humana."
+        }
+      ]
     },
     {
       "number": 11,
       "title": "O tempo e a eternidade",
-      "chapterCount": 31
+      "summary": "A criação, a Palavra de Deus e a pergunta sobre como o tempo existe.",
+      "chapterCount": 31,
+      "sections": [
+        {
+          "from": 1,
+          "to": 8,
+          "title": "No princípio",
+          "body": "Agostinho medita sobre a abertura de Gênesis. Se Deus criou todas as coisas, inclusive o tempo, não faz sentido imaginá-lo como alguém esperando durante muitos anos antes de começar a criar.\n\nA pergunta não é simplesmente quando tudo aconteceu. Ele deseja entender a diferença entre o Criador eterno e um mundo em que tudo nasce, muda e termina."
+        },
+        {
+          "from": 9,
+          "to": 16,
+          "title": "O que era antes da criação?",
+          "body": "Ele responde a uma pergunta conhecida: o que Deus fazia antes de criar o universo? Sua reflexão sugere que não havia um 'antes' no mesmo sentido humano, porque o tempo faz parte da criação.\n\nIsso não significa que todas as dificuldades estejam resolvidas. Agostinho reconhece a distância entre nossas palavras e a realidade de uma existência que não está presa à sucessão de dias."
+        },
+        {
+          "from": 17,
+          "to": 24,
+          "title": "Passado, presente e futuro",
+          "body": "Agostinho percebe uma dificuldade curiosa: o passado já não está aqui e o futuro ainda não chegou. O presente, quando tentamos segurá-lo, já está passando. Mesmo assim, falamos do tempo e conseguimos medi-lo.\n\nEle explora como a memória conserva o passado, a atenção percebe o presente e a expectativa olha para o futuro. O tempo vivido está profundamente ligado à experiência humana."
+        },
+        {
+          "from": 25,
+          "to": 31,
+          "title": "A alma mede o tempo",
+          "body": "Ao cantar uma música, Agostinho sabe qual parte terminou, qual está soando e qual ainda virá. Usa essa experiência para pensar na relação entre duração, memória e expectativa.\n\nSua conclusão não é uma fórmula científica sobre relógios, mas uma reflexão sobre a vida: nossa atenção se espalha por momentos que passam, enquanto buscamos em Deus um descanso que não passe."
+        }
+      ]
     },
     {
       "number": 12,
       "title": "Como interpretar a criação",
-      "chapterCount": 32
+      "summary": "As primeiras palavras de Gênesis e o cuidado com interpretações diferentes.",
+      "chapterCount": 32,
+      "sections": [
+        {
+          "from": 1,
+          "to": 8,
+          "title": "O céu, a terra e o mistério do começo",
+          "body": "Agostinho volta a Gênesis e pergunta o que significam as primeiras expressões do relato da criação. Investiga a ideia de uma realidade ainda sem forma e a dependência de tudo em relação a Deus.\n\nEle reconhece que a linguagem humana encontra limites quando tenta descrever a origem do mundo. A humildade é parte importante da interpretação."
+        },
+        {
+          "from": 9,
+          "to": 16,
+          "title": "A matéria e a forma",
+          "body": "Ao pensar na criação, Agostinho distingue aquilo que existe da forma organizada que percebemos. Não imagina a matéria como um poder independente que competiria com Deus. Tudo depende do Criador.\n\nSeu objetivo é mostrar que a criação é boa, embora seja limitada e mutável. Essa visão também responde a antigas dúvidas que tivera sobre a origem do mal."
+        },
+        {
+          "from": 17,
+          "to": 24,
+          "title": "Por que existem leituras diferentes?",
+          "body": "Agostinho nota que pessoas sinceras podem entender de modos diversos uma mesma passagem difícil. Não conclui que todas as interpretações estejam corretas, mas insiste que precisamos buscar a verdade com paciência e respeito.\n\nUma interpretação não se torna verdadeira apenas porque foi defendida com confiança. É preciso examinar o texto, seu sentido e sua relação com o restante das Escrituras."
+        },
+        {
+          "from": 25,
+          "to": 32,
+          "title": "A caridade e a verdade na leitura",
+          "body": "Ele considera que uma leitura da Bíblia não deve servir apenas para vencer discussões. Quem interpreta precisa amar a verdade e tratar as outras pessoas com caridade. Agostinho reconhece que Moisés poderia ter expressado verdades que leitores diferentes percebem sob aspectos distintos.\n\nA humildade não elimina a busca pelo sentido do texto. Ela impede que o orgulho se apresente como fidelidade a Deus."
+        }
+      ]
     },
     {
       "number": 13,
       "title": "A criação e o descanso em Deus",
-      "chapterCount": 38
+      "summary": "Uma leitura espiritual de Gênesis que termina na esperança do descanso eterno.",
+      "chapterCount": 38,
+      "sections": [
+        {
+          "from": 1,
+          "to": 9,
+          "title": "Tudo existe por bondade, não por necessidade",
+          "body": "Agostinho louva a Deus pela criação. O mundo não existe porque Deus precisava de algo ou porque lhe faltava companhia. A criação é apresentada como expressão livre de bondade.\n\nEle encontra no relato de Gênesis motivos para falar do Espírito Santo e da vida que Deus comunica às criaturas. Sua leitura busca o significado espiritual sem negar que está diante de um texto antigo."
+        },
+        {
+          "from": 10,
+          "to": 19,
+          "title": "A luz e a ordem",
+          "body": "Ao meditar sobre luz, céu, terra e águas, Agostinho vê imagens de ordem e de vida recebida. A criação se torna ocasião para refletir sobre a obra de Deus na comunidade dos fiéis.\n\nO objetivo não é transformar cada detalhe do texto em uma regra científica, mas perguntar o que essa narrativa ensina sobre dependência, bondade e direção."
+        },
+        {
+          "from": 20,
+          "to": 29,
+          "title": "A vida que cresce e produz frutos",
+          "body": "Plantas, animais e seres humanos aparecem na sequência de Gênesis. Agostinho interpreta essa fecundidade também como uma imagem de crescimento espiritual e de frutos que beneficiam outras pessoas.\n\nA criatura não é Deus e não produz vida por poder próprio. Tudo o que recebe deve ser reconhecido com gratidão e usado com responsabilidade."
+        },
+        {
+          "from": 30,
+          "to": 38,
+          "title": "O descanso para o qual caminhamos",
+          "body": "Agostinho termina olhando para o descanso de Deus no sétimo dia. Ele não o entende como cansaço divino, mas como sinal de uma paz que ultrapassa o trabalho e as mudanças da vida presente.\n\nA obra termina onde começou: no desejo de encontrar descanso em Deus. Para Agostinho, a história humana ganha sentido quando o amor deixa de girar apenas em torno de si e encontra seu fim maior."
+        }
+      ]
     }
   ]
 }
