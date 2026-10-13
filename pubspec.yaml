@@ -39,6 +39,7 @@ flutter:
     - assets/3d/previews/
     - assets/private/
     - assets/bundled/
+    - assets/agostinho/
   fonts:
     - family: EBGaramond
       fonts:
