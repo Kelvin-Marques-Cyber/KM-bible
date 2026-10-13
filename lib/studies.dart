@@ -88,9 +88,9 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
           children: [
             const Text(
-              '278 capítulos com o texto integral em português, '
-              'e não resumos. Escolha um capítulo para abrir a '
-              'edição textual. É necessária conexão à internet.',
+              '13 livros e 278 capítulos em português integral, '
+              'sem resumos e disponíveis offline. '
+              'Selecione um capítulo para ler aqui no aplicativo.',
             ),
             const SizedBox(height: 12),
             DropdownButtonFormField<int>(
@@ -156,22 +156,19 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
                     'agostinho_capitulo',
                     entry.chapter - 1,
                   );
-                  openAugustineSource(
+                  sheet(
                     context,
-                    augustineChapterUrl(
-                      entry.bookIndex + 1,
-                      entry.chapter,
-                    ),
+                    'Agostinho · Livro ' + (entry.bookIndex + 1).toString(),
+                    const AugustineConfessionsPage(),
                   );
                 },
               ),
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                'A edição em português é oferecida por fonte externa. '
-                'O latim original está disponível no mesmo endereço. '
-                'Os textos não são reproduzidos aqui sem verificar '
-                'as condições de cada edição.',
+                'Tradução de J. Oliveira Santos e A. Ambrósio de Pina. '
+                'Edição Solus Ágape / Valdemar Teodoro Editor (2024), '
+                'distribuída com atribuição conforme os créditos.',
               ),
             ),
           ],
@@ -208,7 +205,7 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
               Text(
                 code == 'AUG'
                     ? 'Confissões de Santo Agostinho: texto integral em português '
-                      'acessível por livro e capítulo, sem resumos. '
+                      'por livro e capítulo, sem resumos, disponível offline. '
                       'Obra distinta dos padrões de Westminster.'
                     : 'Escrituras como regra suprema. Westminster como '
                       'padrão subordinado. Textos em português para estudo, '
