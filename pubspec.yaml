@@ -42,6 +42,8 @@ flutter:
     - assets/calvino-por-livro/
     - assets/agostinho/
     - assets/apologetica/
+    - assets/apologetica_extra/
+    - assets/apologetica_reformada/
   fonts:
     - family: EBGaramond
       fonts:
