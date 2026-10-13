@@ -55,6 +55,37 @@ Uint8List pack({
   return Uint8List.fromList(ZipEncoder().encode(archive));
 }
 
+Uint8List packCommentaryForRecovery() {
+  final rows = utf8.encode(jsonEncode([
+    {
+      'id': 'joao316',
+      'reference': '43:3:16',
+      'end_reference': '43:3:16',
+      'title': 'Comentario recuperado',
+      'body': 'A graça da salvação é central neste texto.',
+    },
+  ]));
+  final manifest = {
+    'format_version': 1,
+    'id': 'RECOVERY-TEST',
+    'title': 'Teste de comentarios',
+    'version': '1.0',
+    'language': 'pt',
+    'author': 'Teste',
+    'license': 'CC0',
+    'license_text': 'Conteudo de teste',
+    'source': 'Teste local',
+    'kind': 'commentary',
+    'dependencies': [],
+    'files': {'data.json': sha256.convert(rows).toString()},
+  };
+  final encoded = utf8.encode(jsonEncode(manifest));
+  final archive = Archive()
+    ..addFile(ArchiveFile('manifest.json', encoded.length, encoded))
+    ..addFile(ArchiveFile('data.json', rows.length, rows));
+  return Uint8List.fromList(ZipEncoder().encode(archive));
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   late Directory dir;
@@ -166,6 +197,27 @@ void main() {
     final p = ContentPackage.parse(pack());
     p.install(s);
     expect(s.mapped('BLN4', const Reference(43, 3, 16), 'TEST'), isNull);
+  });
+  test('Importacao recupera commentary_search ausente e preserva anotacoes', () {
+    final note = s.saveNote(title: 'Nao apagar', body: 'Joao 3:16');
+    s.library.execute('DROP TABLE IF EXISTS commentary_search');
+    final pack = ContentPackage.parse(packCommentaryForRecovery());
+    pack.install(s);
+    expect(
+      s.library.select(
+        "SELECT id FROM commentary_search WHERE commentary_search MATCH 'graca'",
+      ).length,
+      greaterThan(0),
+    );
+    pack.install(s);
+    expect(
+      s.library.select(
+        "SELECT count(*) AS n FROM commentary_entries WHERE module_id='RECOVERY-TEST'",
+      ).first['n'],
+      1,
+    );
+    expect(s.note(note), isNotNull);
+    expect(s.library.select('PRAGMA integrity_check').first.values.first, 'ok');
   });
   test('Reject corrupted and path traversal content before installation', () {
     expect(
