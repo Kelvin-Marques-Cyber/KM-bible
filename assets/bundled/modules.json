@@ -1,5 +1,9 @@
 [
   {
+    "id": "ARA",
+    "file": "ARA.biblepkg"
+  },
+  {
     "id": "Darby",
     "file": "Darby.biblepkg"
   },
