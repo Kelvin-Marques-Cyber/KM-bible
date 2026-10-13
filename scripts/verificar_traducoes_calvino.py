@@ -23,12 +23,17 @@ with zipfile.ZipFile(original) as archive:
 expected = {"CalvinCommentaries:" + str(row["id"]) for row in rows
             if str(row.get("body", "")).strip()}
 with sqlite3.connect(f"file:{translated}?mode=ro", uri=True) as db:
-    present = {id for (id,) in db.execute(
-        "SELECT id FROM translations WHERE type='commentary' "
+    translations = dict(db.execute(
+        "SELECT id,body FROM translations WHERE type='commentary' "
         "AND id LIKE 'CalvinCommentaries:%' AND length(trim(body))>0"
-    )}
+    ))
+originals = {"CalvinCommentaries:" + str(row["id"]): str(row.get("body", "")).strip()
+             for row in rows if str(row.get("body", "")).strip()}
+present = {id for id, body in translations.items()
+           if id in expected and body.strip()
+           and body.strip() != originals[id] and '⁇' not in body}
 missing = expected - present
-print(f"Traducoes de Calvino: {len(expected) - len(missing)}/{len(expected)}")
+print(f"Traducoes de Calvino validadas: {len(expected) - len(missing)}/{len(expected)}")
 if missing:
     print("Primeiras entradas sem traducao:", ", ".join(sorted(missing)[:5]))
     sys.exit("Acervo de Calvino ainda sem traducao integral; compilacao bloqueada.")
