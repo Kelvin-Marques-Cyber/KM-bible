@@ -196,6 +196,20 @@ class ContentPackage {
 
   void install(Store s) {
     final id = manifest['id'] as String, kind = manifest['kind'] as String;
+    // Os builds novos usam FTS5 external-content + gatilhos. Bancos antigos
+    // mantidos em dispositivos existentes continuam com FTS independente.
+    bool ftsUsesTriggers(CommonDatabase db, String table, String contentTable) {
+      final rows = db.select(
+        "SELECT sql FROM sqlite_master WHERE name=?", [table],
+      );
+      return rows.isNotEmpty &&
+          (rows.first['sql'] as String? ?? '')
+              .contains("content='$contentTable'");
+    }
+    final externalVerse = ftsUsesTriggers(s.content, 'verse_search', 'verses');
+    final externalComment = ftsUsesTriggers(
+      s.library, 'commentary_search', 'commentary_entries');
+    final externalLexicon = ftsUsesTriggers(s.lexical, 'lexical_search', 'lexemes');
     for (final dep in manifest['dependencies']) {
       if (!s.installed(dep as String)) {
         throw FormatException('Missing dependency: $dep');
@@ -251,7 +265,9 @@ class ContentPackage {
       );
       if (kind == 'bible') {
         s.content.execute('DELETE FROM verses WHERE translation=?', [id]);
-        s.content.execute('DELETE FROM verse_search WHERE translation=?', [id]);
+        if (!externalVerse) {
+          s.content.execute('DELETE FROM verse_search WHERE translation=?', [id]);
+        }
         s.content.execute(
           'DELETE FROM verse_mappings WHERE source_translation=? OR target_translation=?',
           [id, id],
@@ -267,11 +283,13 @@ class ContentPackage {
             row['text'],
             jsonEncode(row['metadata'] ?? {}),
           ]);
-          s.content.execute('INSERT INTO verse_search VALUES(?,?,?)', [
-            id,
-            r.id,
-            row['text'],
-          ]);
+          if (!externalVerse) {
+            s.content.execute('INSERT INTO verse_search VALUES(?,?,?)', [
+              id,
+              r.id,
+              row['text'],
+            ]);
+          }
         }
         for (final row in manifest['mappings'] ?? []) {
           final a = Reference.fromId(row['source_reference'] ?? ''),
@@ -289,10 +307,12 @@ class ContentPackage {
           ]);
         }
       } else if (kind == 'commentary') {
-        s.content.execute(
-          'DELETE FROM library.commentary_search WHERE module_id=?',
-          [id],
-        );
+        if (!externalComment) {
+          s.content.execute(
+            'DELETE FROM library.commentary_search WHERE module_id=?',
+            [id],
+          );
+        }
         s.content.execute(
           'DELETE FROM library.commentary_entries WHERE module_id=?',
           [id],
@@ -316,10 +336,12 @@ class ContentPackage {
               row['bibliography'] ?? manifest['title'],
             ],
           );
-          s.content.execute(
-            'INSERT INTO library.commentary_search VALUES(?,?,?,?)',
-            [rid, id, row['title'] ?? r.label(), row['body']],
-          );
+          if (!externalComment) {
+            s.content.execute(
+              'INSERT INTO library.commentary_search VALUES(?,?,?,?)',
+              [rid, id, row['title'] ?? r.label(), row['body']],
+            );
+          }
         }
       } else if (kind == 'lexicon') {
         s.content.execute('DELETE FROM linguistic.words WHERE module_id=?', [
@@ -333,10 +355,12 @@ class ContentPackage {
           s.content.execute('DELETE FROM linguistic.lexemes WHERE id=?', [
             old['lexeme_id'],
           ]);
-          s.content.execute(
-            'DELETE FROM linguistic.lexical_search WHERE id=?',
-            [old['lexeme_id']],
-          );
+          if (!externalLexicon) {
+            s.content.execute(
+              'DELETE FROM linguistic.lexical_search WHERE id=?',
+              [old['lexeme_id']],
+            );
+          }
         }
         s.content.execute('DELETE FROM lexicon_ownership WHERE module_id=?', [
           id,
@@ -353,16 +377,18 @@ class ContentPackage {
                 row['language'] ?? manifest['language'],
                 manifest['source'],
               ]);
-          s.content.execute(
-            'INSERT INTO linguistic.lexical_search VALUES(?,?,?,?,?)',
-            [
-              lid,
-              row['lemma'],
-              row['transliteration'] ?? '',
-              row['gloss'],
-              row['definition'] ?? '',
-            ],
-          );
+          if (!externalLexicon) {
+            s.content.execute(
+              'INSERT INTO linguistic.lexical_search VALUES(?,?,?,?,?)',
+              [
+                lid,
+                row['lemma'],
+                row['transliteration'] ?? '',
+                row['gloss'],
+                row['definition'] ?? '',
+              ],
+            );
+          }
           s.content.execute('INSERT INTO lexicon_ownership VALUES(?,?)', [
             id,
             lid,
