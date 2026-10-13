@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#795839">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bíblia Reformada">
+<link rel="apple-touch-icon" href="./icons/Icon-192.png">
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" href="./icons/Icon-192.png">
+<title>Instalar Bíblia Reformada</title>
+<style>
+:root{font-family:system-ui,-apple-system,Arial,sans-serif;color:#34271c;background:#f4efdf}
+body{max-width:550px;margin:0 auto;padding:36px 20px;line-height:1.5}
+h1{font-size:1.6rem}button{background:#795839;color:#fff;padding:14px 22px;border:0;border-radius:12px;font-size:1rem;font-weight:600}
+a{color:#5d432d} .muted{color:#665950}
+</style></head><body>
+<h1>Bíblia Reformada</h1>
+<p>Instale o aplicativo bíblico na tela inicial do Android ou iPhone. Esta página é leve e não abre os bancos SQLite.</p>
+<p><button id="install" disabled>Verificando instalação…</button></p>
+<p id="status" class="muted">No Chrome Android, toque em ⋮ → <strong>Instalar app</strong> ou <strong>Adicionar à tela inicial</strong>. No Safari do iPhone, toque em Compartilhar → <strong>Adicionar à Tela de Início</strong>.</p>
+<p><a href="./">Abrir Bíblia Reformada</a></p>
+<script>
+let deferred=null;
+const btn=document.getElementById('install'),status=document.getElementById('status');
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();deferred=e;
+  btn.disabled=false;btn.textContent='Instalar Bíblia Reformada';
+  status.textContent='Instalação disponível no seu navegador.';
+});
+btn.addEventListener('click',async()=>{
+  if(!deferred)return;
+  const p=deferred;deferred=null;btn.disabled=true;
+  try{await p.prompt();const r=await p.userChoice;status.textContent=r.outcome==='accepted'?'Instalação solicitada.':'Use o menu ⋮ do Chrome para instalar.';}
+  catch(e){status.textContent='Abra o menu ⋮ do Chrome e escolha Instalar app.';}
+});
+window.addEventListener('appinstalled',()=>{btn.textContent='Aplicativo instalado';btn.disabled=true;});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js',{scope:'./'}).catch(()=>{});
+setTimeout(()=>{if(!deferred&&btn.disabled)btn.textContent='Instalar pelo menu do navegador';},3500);
+</script>
+</body></html>
