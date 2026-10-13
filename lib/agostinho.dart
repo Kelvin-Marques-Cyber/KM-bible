@@ -23,7 +23,13 @@ Future<void> openAugustineSource(BuildContext context, String url) async {
 
 /// Leitor original integral, sem resumos, com textos previamente embutidos.
 class AugustineConfessionsPage extends StatefulWidget {
-  const AugustineConfessionsPage({super.key});
+  final int? initialBook;
+  final int? initialChapter;
+  const AugustineConfessionsPage({
+    super.key,
+    this.initialBook,
+    this.initialChapter,
+  });
   @override
   State<AugustineConfessionsPage> createState() =>
       _AugustineConfessionsPageState();
@@ -37,6 +43,13 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
   final scrollController = ScrollController();
   int? bookIndex, chapterIndex;
   double fontSize = 19;
+
+  @override
+  void initState() {
+    super.initState();
+    bookIndex = widget.initialBook;
+    chapterIndex = widget.initialChapter;
+  }
 
   Future<Map<String, dynamic>> book(int number) =>
       books.putIfAbsent(number, () => rootBundle
@@ -108,7 +121,12 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
             if (entries.length != counts[b]) {
               return const Center(child: Text('Livro incompleto.'));
             }
-            final body = entries[c]['body'] as String;
+            final chapter = entries[c];
+            final body = chapter['body'] as String;
+            final title = chapter['title'] as String?;
+            final footnotes = (chapter['footnotes'] as List<dynamic>? ?? [])
+                .map((item) => Map<String, dynamic>.from(item as Map))
+                .toList();
             final bookmark = 'agostinho_favorito_' +
                 (b + 1).toString() + '_' + (c + 1).toString();
             final marked = store.pref(bookmark, false) == true;
@@ -127,7 +145,15 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
                   key: ValueKey('aug-book-' + b.toString()),
                   isExpanded: true,
                   initialValue: b,
-                  decoration: const InputDecoration(labelText: 'Livro'),
+                  decoration: const InputDecoration(
+                    labelText: 'Livro',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 18,
+                    ),
+                  ),
                   items: [
                     for (var i = 0; i < counts.length; i++)
                       DropdownMenuItem(
@@ -142,7 +168,15 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
                   key: ValueKey('aug-chapter-$b-$c'),
                   isExpanded: true,
                   initialValue: c,
-                  decoration: const InputDecoration(labelText: 'Capítulo'),
+                  decoration: const InputDecoration(
+                    labelText: 'Capítulo',
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                    border: OutlineInputBorder(),
+                    contentPadding: EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 18,
+                    ),
+                  ),
                   items: [
                     for (var i = 0; i < counts[b]; i++)
                       DropdownMenuItem(
@@ -158,16 +192,47 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
                       ' · Capítulo ' + (c + 1).toString(),
                   style: Theme.of(context).textTheme.titleLarge,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 14),
+                if (title != null && title.trim().isNotEmpty) ...[
+                  SelectableText(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontFamily: 'EBGaramond',
+                      fontWeight: FontWeight.w600,
+                      height: 1.35,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
                 SelectableText(
                   body,
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     fontFamily: 'EBGaramond',
                     fontSize: fontSize,
-                    height: 1.55,
+                    height: 1.78,
                   ),
                 ),
-                const SizedBox(height: 16),
+                if (footnotes.isNotEmpty) ...[
+                  const Divider(height: 38),
+                  Text(
+                    'Notas da edição',
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 10),
+                  for (final note in footnotes)
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: SelectableText(
+                        '${note['number']}. ${note['text']}',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'EBGaramond',
+                          fontSize: fontSize - 3,
+                          height: 1.5,
+                        ),
+                      ),
+                    ),
+                ],
+                const SizedBox(height: 20),
                 Wrap(
                   spacing: 8,
                   children: [
