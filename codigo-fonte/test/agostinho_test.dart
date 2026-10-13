@@ -4,35 +4,28 @@ import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Confissoes de Agostinho incluem 13 livros e capitulos completos', () {
-    final data = jsonDecode(
-      File('assets/content/agostinho-confissoes-facil.json')
-          .readAsStringSync(),
-    ) as Map<String, dynamic>;
+  test('Agostinho: indice dos 13 livros e 278 capitulos integrais', () {
+    final source = File('assets/content/agostinho-confissoes-facil.json')
+        .readAsStringSync();
+    final data = jsonDecode(source) as Map<String, dynamic>;
     final books = data['books'] as List;
     expect(books.length, 13);
-    expect(data['type'], 'adaptacao_didatica');
+    expect(data['type'], 'indice_texto_integral_externo');
+    expect((data['source'] as String), startsWith('https://'));
     expect((data['notice'] as String).toLowerCase(),
-        contains('não é a tradução integral'));
+        contains('não há resumos'));
 
-    var readings = 0;
-    for (var number = 1; number <= 13; number++) {
+    var chapterCount = 0;
+    for (var number = 1; number <= books.length; number++) {
       final book = books[number - 1] as Map<String, dynamic>;
       expect(book['number'], number);
-      final sections = book['sections'] as List;
-      expect(sections, isNotEmpty);
-      var nextChapter = 1;
-      for (final raw in sections) {
-        final section = raw as Map<String, dynamic>;
-        expect(section['from'], nextChapter);
-        expect(section['to'] as int, greaterThanOrEqualTo(nextChapter));
-        expect((section['title'] as String).trim().length, greaterThan(5));
-        expect((section['body'] as String).trim().length, greaterThan(200));
-        nextChapter = (section['to'] as int) + 1;
-        readings++;
-      }
-      expect(nextChapter, (book['chapterCount'] as int) + 1);
+      expect((book['title'] as String).trim(), isNotEmpty);
+      final chapters = book['chapterCount'] as int;
+      expect(chapters, greaterThan(0));
+      chapterCount += chapters;
+      expect(book.containsKey('sections'), isFalse,
+          reason: 'O indice nao pode conter antigos resumos.');
     }
-    expect(readings, 52);
+    expect(chapterCount, 278);
   });
 }
