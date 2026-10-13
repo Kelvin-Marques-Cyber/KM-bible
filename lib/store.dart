@@ -1,4 +1,5 @@
 import 'scripture_links.dart';
+import 'torrey_titles_pt.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
@@ -241,6 +242,12 @@ class Store {
         : null;
   }
 
+  RecordRow _localizeTorreyTitle(RecordRow topic) {
+    final original = topic['original_title'] as String?;
+    final title = original == null ? null : torreyPtTitles[original];
+    return title == null ? topic : {...topic, 'title': title};
+  }
+
   List<RecordRow> topics({
     String search = '',
     Reference? reference,
@@ -253,7 +260,7 @@ class Store {
         db,
         'SELECT t.* FROM topics t JOIN topic_verses v ON v.topic_id=t.id WHERE v.reference=? ORDER BY t.title LIMIT ?',
         [reference.id, limit],
-      );
+      ).map(_localizeTorreyTitle).toList();
     }
     final text = fts(search);
     if (text.isNotEmpty) {
@@ -261,14 +268,16 @@ class Store {
         db,
         'SELECT t.* FROM topic_search f JOIN topics t ON t.id=f.id WHERE topic_search MATCH ? ORDER BY rank LIMIT ?',
         [text, limit],
-      );
+      ).map(_localizeTorreyTitle).toList();
     }
-    return query(db, 'SELECT * FROM topics ORDER BY title LIMIT ?', [limit]);
+    return query(db, 'SELECT * FROM topics ORDER BY title LIMIT ?', [limit])
+        .map(_localizeTorreyTitle).toList();
   }
 
   RecordRow? topic(String id) => topical == null
       ? null
-      : query(topical!, 'SELECT * FROM topics WHERE id=?', [id]).firstOrNull;
+      : query(topical!, 'SELECT * FROM topics WHERE id=?', [id])
+          .map(_localizeTorreyTitle).firstOrNull;
   List<RecordRow> topicReferences(String id, {int limit = 80}) =>
       topical == null
       ? []
