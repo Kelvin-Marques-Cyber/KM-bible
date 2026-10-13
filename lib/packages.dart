@@ -199,7 +199,10 @@ class ContentPackage {
         throw FormatException('Missing dependency: $dep');
       }
     }
-    var externalComment = false;
+    var externalComment = s.library.select(
+      "SELECT sql FROM sqlite_master WHERE name='commentary_search'",
+    ).any((row) => (row['sql'] as String? ?? '')
+        .contains("content='commentary_entries'"));
     final libPath =
             s.library.select('PRAGMA database_list').first['file'] as String,
         lexPath =
