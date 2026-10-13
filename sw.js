@@ -1,5 +1,5 @@
 'use strict';
-const VERSION='biblia-flutter-web-20261013-favicon-app-1';
+const VERSION='biblia-flutter-web-20261013132917';
 const CORE=['./','./index.html','./flutter_bootstrap.js','./main.dart.js','./sqlite3.wasm','./manifest.json'];
 self.addEventListener('install', event=>{
   event.waitUntil(caches.open(VERSION)
