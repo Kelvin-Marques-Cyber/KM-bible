@@ -14,7 +14,14 @@ fi
 flutter --version
 flutter config --enable-web
 flutter create --platforms=web --project-name biblia_reformada .
-bash scripts/preparar_calvino_ptbr.sh
+# BUILD_RAPIDO=1: compila as melhorias sem esperar a traducao de
+# 11 mil textos de Calvino. Preserva o acervo que ja estava disponivel.
+# Nunca marca textos ingleses como traducoes pt-BR.
+if [[ "${BUILD_RAPIDO:-0}" == "1" ]]; then
+  echo 'Build rapido: traducao completa de Calvino sera feita separadamente.'
+else
+  bash scripts/preparar_calvino_ptbr.sh
+fi
 python3 scripts/preparar_calvino_por_livro.py
 flutter pub get
 # Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
