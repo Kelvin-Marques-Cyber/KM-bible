@@ -407,7 +407,8 @@ class StudyPage extends StatefulWidget {
 class _StudyPageState extends State<StudyPage> {
   late bool apologetic;
   Future<String>? _impersonalDeepReading;
-  bool strongest = false, rejoinder = false;
+  Future<String>? _reformedDeepReading;
+  bool strongest = false, rejoinder = false, showExtendedReformed = false;
   @override
   void initState() {
     super.initState();
@@ -451,9 +452,10 @@ class _StudyPageState extends State<StudyPage> {
           MarkdownText(s['exposition'] as String)
         else
           FutureBuilder<String>(
-            future: _impersonalDeepReading ??= rootBundle.loadString(
-              "assets/apologetica/${s['target']}.md",
-            ),
+            future: _impersonalDeepReading ??= Future.wait([
+              rootBundle.loadString("assets/apologetica/${s['target']}.md"),
+              rootBundle.loadString("assets/apologetica_extra/${s['target']}.md"),
+            ]).then((parts) => parts.join('\n\n---\n\n')),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return Column(
@@ -481,6 +483,38 @@ class _StudyPageState extends State<StudyPage> {
           ),
           const SizedBox(height: 10),
           MarkdownText(s['response'] as String),
+          const SizedBox(height: 20),
+          OutlinedButton.icon(
+            icon: Icon(showExtendedReformed
+                ? Icons.expand_less : Icons.auto_stories_outlined),
+            label: Text(showExtendedReformed
+                ? 'Recolher fundamentação presbiteriana'
+                : 'Ler argumentação presbiteriana aprofundada'),
+            onPressed: () =>
+                setState(() => showExtendedReformed = !showExtendedReformed),
+          ),
+          if (showExtendedReformed)
+            FutureBuilder<String>(
+              future: _reformedDeepReading ??= rootBundle.loadString(
+                "assets/apologetica_reformada/${s['target']}.md",
+              ),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) {
+                  return const Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Text('Fundamentação estendida não disponível. '
+                        'Atualize o aplicativo.'),
+                  );
+                }
+                if (!snapshot.hasData) {
+                  return const LinearProgressIndicator();
+                }
+                return Padding(
+                  padding: const EdgeInsets.only(top: 12, bottom: 18),
+                  child: MarkdownText(snapshot.data!),
+                );
+              },
+            ),
           const SizedBox(height: 20),
           OutlinedButton.icon(
             onPressed: () => setState(() => strongest = !strongest),
