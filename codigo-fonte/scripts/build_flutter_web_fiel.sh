@@ -23,6 +23,7 @@ else
   bash scripts/preparar_calvino_ptbr.sh
 fi
 python3 scripts/preparar_calvino_por_livro.py
+bash scripts/preparar_agostinho_integral.sh
 flutter pub get
 # Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
 python3 scripts/otimizar_acervo_sqlite.py
