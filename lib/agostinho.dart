@@ -123,6 +123,7 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
                 style: Theme.of(context).textTheme.bodySmall),
             const SizedBox(height: 20),
             DropdownButtonFormField<int>(
+              key: ValueKey('agostinho-livro-$currentBook'),
               isExpanded: true,
               initialValue: currentBook,
               decoration: const InputDecoration(
