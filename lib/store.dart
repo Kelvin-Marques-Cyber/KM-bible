@@ -102,6 +102,12 @@ class Store {
     return store;
   }
 
+  // Chamado após a instalação inicial de módulos no navegador: garante
+  // que estado de leitura, módulos e versões sobrevivam ao F5.
+  Future<void> persistStartupCache() async {
+    if (kIsWeb) await runtime.flushBrowserCache();
+  }
+
   Future<void> refreshEditorial() async {
     final raw = await rootBundle.loadString(
       'assets/content/editorial-expansion.json',
