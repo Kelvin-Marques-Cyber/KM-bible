@@ -446,7 +446,8 @@ class _StudyPageState extends State<StudyPage> {
         ),
         const SizedBox(height: 20),
         Text(
-          '${a.t('impersonal')} · ${traditionTitles[s['target']]}',
+          '${apologetic ? a.t('apologetics') : a.t('impersonal')}'
+          ' · ${traditionTitles[s['target']]}',
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 10),
