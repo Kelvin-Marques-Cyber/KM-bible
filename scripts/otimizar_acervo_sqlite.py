@@ -36,13 +36,13 @@ def prepare(name: str) -> None:
     db = sqlite3.connect(path)
     try:
         old = db.execute("SELECT sql FROM sqlite_master WHERE name=?", (index,)).fetchone()
-        if not old:
-            raise SystemExit(f"Indice esperado nao existe: {index} em {name}")
-        if f"content='{content}'" not in old[0]:
-            # O FTS de vocabulário depende do índice de versículos.
+        if not old or f"content='{content}'" not in old[0]:
+            # Reconstrói índices FTS5 ausentes (inclusive commentary_search).
+            # Não apaga o conteúdo fonte nem as anotações pessoais.
             if name == "catalogue":
                 db.execute("DROP TABLE IF EXISTS verse_vocab")
-            db.execute(f"DROP TABLE {index}")
+            if old:
+                db.execute(f"DROP TABLE {index}")
             terms = ",".join(f"{column} UNINDEXED" if column in unindexed else column
                              for column in columns)
             db.execute(f"CREATE VIRTUAL TABLE {index} USING fts5("
