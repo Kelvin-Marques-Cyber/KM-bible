@@ -114,11 +114,13 @@ def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
             "SELECT body FROM translations WHERE type='commentary' AND id=?",
             (id,),
         ).fetchone()
-        if existing and existing[0] and (
-            not retry_broken or '⁇' not in existing[0]
-        ):
-            skipped += 1
-            continue
+        if existing and existing[0]:
+            old_translation = existing[0].strip()
+            unchanged_english = old_translation == body.strip()
+            corrupted = '⁇' in old_translation
+            if not retry_broken or (not corrupted and not unchanged_english):
+                skipped += 1
+                continue
         parts = []
         for part in chunks(body):
             parts.append(engine.translate(part) if part.strip() else part)
