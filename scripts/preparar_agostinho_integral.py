@@ -85,6 +85,67 @@ def positions(lines, pattern):
             found.append((i, n))
     return found
 
+def recover_missing_chapters(lines, chapter_headers, book_count):
+    """Recupera somente marcadores impressos, nunca inventa texto/capitulos.
+
+    Algumas paginas deixam "VII" sozinho, ou quebram "CAPITULO" e "7"
+    em linhas diferentes. Busca unicamente entre os titulos 6 e 8.
+    """
+    markers = list(chapter_headers)
+    bare_number = re.compile(
+        r"^\s*(?:CAP[IÍ]TULO|CAP\.?)?\s*"
+        r"(?P<num>[IVXLCDM]{1,6}|\d{1,2})"
+        r"\s*(?:[.)\]:—–-]\s*[^\n]{0,90})?\s*$", re.I
+    )
+    split_heading = re.compile(
+        r"^\s*(?:CAP[IÍ]TULO|CAP\.?)\s*[:. -]*$", re.I
+    )
+    for missing in range(1, book_count + 1):
+        if any(n == missing for _, n in markers):
+            continue
+        left = max((pos for pos, n in markers if n == missing - 1), default=-1)
+        right = min((pos for pos, n in markers if n == missing + 1),
+                    default=len(lines))
+        if left < 0 or right == len(lines) or right - left < 5:
+            continue
+        matches = []
+        for i in range(left + 1, right):
+            line = lines[i].strip()
+            if not line:
+                continue
+            m = bare_number.fullmatch(line)
+            if not m:
+                continue
+            try:
+                n = number(m.group("num"))
+            except ValueError:
+                continue
+            if n != missing:
+                continue
+            # Rejeita numeros de pagina e de notas de rodape que aparecem
+            # repetidamente: marcadores de capitulo devem ter corpo dos dois lados.
+            before = len("\n".join(lines[left + 1:i]).strip())
+            after = len("\n".join(lines[i + 1:right]).strip())
+            if before < 300 or after < 300:
+                continue
+            score = 5 if line.upper().startswith(("CAP",)) else (
+                4 if i and split_heading.fullmatch(lines[i-1].strip()) else (
+                    3 if re.fullmatch(r"[IVXLCDM]{1,6}", line, re.I) else 2
+                )
+            )
+            # Favorece titulos centralizados no intervalo, sem presumir
+            # que todos os capitulos tenham o mesmo tamanho.
+            balance = min(before, after) / max(before, after)
+            matches.append((score, balance, i))
+        if matches:
+            matches.sort(reverse=True)
+            _, _, selected = matches[0]
+            markers.append((selected, missing))
+            print(f"Livro {book_count} capitulos: recuperado "
+                  f"marcador impresso {missing} na linha {selected}.")
+    return sorted(markers)
+
+
 def chapters_from_book(lines, index, book_count):
     chapters = positions(lines, CHAPTER_LINE)
     if not chapters:
@@ -96,6 +157,7 @@ def chapters_from_book(lines, index, book_count):
                 n = number(line.rstrip(".)"))
                 if 1 <= n <= book_count:
                     chapters.append((i, n))
+    chapters = recover_missing_chapters(lines, chapters, book_count)
     # Titulos de sumario repetidos sao descartados escolhendo a sequencia
     # de 1..N que contem mais texto, com minimo razoavel por capitulo.
     possible = []
