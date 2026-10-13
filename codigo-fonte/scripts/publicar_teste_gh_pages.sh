@@ -41,16 +41,23 @@ PY
 
 git fetch origin gh-pages
 tmp="$(mktemp -d)"
+icon_backup="$(mktemp -d)"
 cleanup(){
   git worktree remove --force "$tmp" >/dev/null 2>&1 || true
-  rm -rf -- "$tmp"
+  rm -rf -- "$tmp" "$icon_backup"
 }
 trap cleanup EXIT
 git worktree add --detach "$tmp" origin/gh-pages
-# Preserva as paginas auxiliares de instalacao e diagnostico, sem apagar dados.
+# Mantem os icones personalizados usados no Android/PWA, nao os defaults Flutter.
+for item in favicon.png icons; do
+  if [[ -e "$tmp/$item" ]]; then cp -a "$tmp/$item" "$icon_backup/"; fi
+done
+# Preserva as paginas auxiliares e a biblioteca de modulos do site.
 find "$tmp" -mindepth 1 -maxdepth 1 ! -name .git \
-  ! -name diagnostico.html ! -name instalar.html ! -name codigo-fonte -exec rm -rf -- {} +
+  ! -name diagnostico.html ! -name instalar.html ! -name modulos.html \
+  ! -name codigo-fonte -exec rm -rf -- {} +
 cp -a build/web/. "$tmp/"
+cp -a "$icon_backup/." "$tmp/"
 touch "$tmp/.nojekyll"
 git -C "$tmp" add -A
 if git -C "$tmp" diff --cached --quiet; then
