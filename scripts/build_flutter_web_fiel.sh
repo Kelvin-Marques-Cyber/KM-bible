@@ -31,7 +31,10 @@ python3 scripts/gerar_panorama_apologetica.py
 python3 scripts/ampliar_apologetica.py
 python3 scripts/verificar_apologetica.py
 flutter pub get
-# Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
+# Importa os pacotes reais no computador de build. Na PWA já estarão instalados:
+# não há descompactação de guias/Calvino/obras na primeira abertura.
+python3 scripts/embutir_modulos_bundled.py
+# Reconstroi FTS5 e SHA-256 DEPOIS da pre-instalacao, garantindo busca coerente.
 python3 scripts/otimizar_acervo_sqlite.py
 # O sqlite3 2.9.4 exige o modulo WebAssembly do mesmo release na plataforma Web.
 if [[ ! -s web/sqlite3.wasm ]]; then
