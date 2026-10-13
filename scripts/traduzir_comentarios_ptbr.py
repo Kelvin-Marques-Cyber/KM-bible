@@ -166,7 +166,7 @@ def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
         'sha256': digest,
         'review': 'Tradução automática de estudo; revisão especializada pendente',
         'scope': 'Somente entradas realmente traduzidas; originais preservados',
-    }, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
+    }, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print(f'Calvino traduzido: {translated_calvin} entradas.', flush=True)
     print(f'Terminou: {processed} traducao(oes); {skipped} preexistentes. SHA256 atualizada.')
     print('Recompile Android e Web. Confirme licencas antes de redistribuir.')
