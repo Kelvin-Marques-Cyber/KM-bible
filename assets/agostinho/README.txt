@@ -1,0 +1,1 @@
+Textos integrais em portugues gerados a partir da edicao autorizada de Confissoes (Solus Agape, 2024). Execute `bash scripts/preparar_agostinho_integral.sh` no ambiente de build. O processo escreve manifest.json e 1.json ate 13.json; nao inclua resumos nesses arquivos.
