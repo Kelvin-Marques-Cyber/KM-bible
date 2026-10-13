@@ -1,4 +1,5 @@
 import 'dart:isolate';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:sqlite3/common.dart';
 import 'sqlite_runtime.dart' as runtime;
 import 'dart:convert';
@@ -488,6 +489,12 @@ void validateGlb(Uint8List bytes) {
 }
 
 Future<void> installContentPackageOffline(Store store, Uint8List bytes) async {
+  if (kIsWeb) {
+    // Isolate.run nao compartilha a VFS IndexedDB da aba atual.
+    // Mantem todos os INSERTs e validacoes no banco SQLite WASM ativo.
+    ContentPackage.parse(bytes).install(store);
+    return;
+  }
   final directory = store.directory;
   final transfer = TransferableTypedData.fromList([bytes]);
   await Isolate.run(() {
