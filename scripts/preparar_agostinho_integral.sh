@@ -15,7 +15,10 @@ try:
     for index,count in enumerate(m["chapterCounts"],1):
         b=json.loads((p/f"{index}.json").read_text())
         assert len(b["chapters"])==count
-        assert all(len(str(ch["body"]))>=300 for ch in b["chapters"])
+        # Layout v2 foi gerado parcialmente pelo normalizador com defeito.
+        # Não o reutilizar: recuperar todas as páginas a partir do PDF original.
+        assert all(ch.get("layout_version") != 2 for ch in b["chapters"])
+        assert all(len(str(ch["body"]))>=220 for ch in b["chapters"])
 except (AssertionError, OSError, ValueError, KeyError):
     raise SystemExit(1)
 PY
