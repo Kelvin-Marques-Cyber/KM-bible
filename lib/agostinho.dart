@@ -85,12 +85,14 @@ class _AugustineConfessionsPageState extends State<AugustineConfessionsPage> {
         final store = context.app.store;
         final bookIndex = (selectedBook ??
                 (store.pref('agostinho_livro', 0) as int? ?? 0))
-            .clamp(0, books.length - 1);
+            .clamp(0, books.length - 1)
+            .toInt();
         final book = books[bookIndex];
         final chapterCount = book['chapterCount'] as int;
         final chapterIndex = (selectedChapter ??
                 (store.pref('agostinho_capitulo', 0) as int? ?? 0))
-            .clamp(0, chapterCount - 1);
+            .clamp(0, chapterCount - 1)
+            .toInt();
         final currentUrl = augustineChapterUrl(bookIndex + 1, chapterIndex + 1);
 
         return ListView(
