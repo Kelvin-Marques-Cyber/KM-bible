@@ -179,6 +179,29 @@ def chapters_from_book(lines, index, book_count):
             )
             possible.append((score, seq))
     if not possible:
+        # Salva trechos de diagnostico para cabecalhos ilegíveis do PDF.
+        # Não preenche capítulos ausentes nem publica texto inventado.
+        folder = ROOT / ".cache" / "agostinho"
+        folder.mkdir(parents=True, exist_ok=True)
+        problem = folder / f"diagnostico-livro-{index}.txt"
+        traces = []
+        for item, (line_number, number_) in enumerate(chapters[:-1]):
+            next_line, next_number = chapters[item + 1]
+            if next_number > number_ + 1:
+                traces.append(
+                    f"Faltando {number_+1} entre {number_} e {next_number} "
+                    f"(linhas {line_number}-{next_line})"
+                )
+                for pos in range(line_number, min(next_line + 1, line_number + 180)):
+                    traces.append(f"{pos}: {lines[pos][:140]}")
+        if not chapters:
+            traces = [
+                f"{pos}: {line[:140]}"
+                for pos, line in enumerate(lines[:180])
+            ]
+        if traces:
+            problem.write_text("\n".join(traces), encoding="utf-8")
+            print(f"Diagnostico salvo: {problem}", file=sys.stderr)
         raise ValueError(
             f"Livro {index}: cabecalhos de capitulos incompletos: "
             f"{[n for _, n in chapters[:55]]}; esperado 1..{book_count}"
