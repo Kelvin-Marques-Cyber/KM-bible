@@ -38,6 +38,7 @@ flutter:
     - assets/3d/previews/
     - assets/private/
     - assets/bundled/
+    - assets/calvino-por-livro/
   fonts:
     - family: EBGaramond
       fonts:
