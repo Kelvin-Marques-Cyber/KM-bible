@@ -199,6 +199,7 @@ class ContentPackage {
         throw FormatException('Missing dependency: $dep');
       }
     }
+    var externalComment = false;
     final libPath =
             s.library.select('PRAGMA database_list').first['file'] as String,
         lexPath =
@@ -225,6 +226,61 @@ class ContentPackage {
           .select('PRAGMA database_list')
           .any((r) => r['name'] == 'linguistic')) {
         s.content.execute('ATTACH DATABASE ? AS linguistic', [lexPath]);
+      }
+    }
+    // Bancos antigos ou migracoes interrompidas podem conservar os textos
+    // sem o indice FTS5. Recupera o indice sem tocar nas anotacoes pessoais.
+    if (kind == 'commentary' && !memory) {
+      final hasCommentaries = s.content.select(
+        "SELECT 1 FROM library.sqlite_master WHERE type='table' "
+        "AND name='commentary_entries'",
+      ).isNotEmpty;
+      if (!hasCommentaries) {
+        throw StateError('Banco da biblioteca sem tabela de comentarios.');
+      }
+      final hasIndex = s.content.select(
+        "SELECT 1 FROM library.sqlite_master WHERE type='table' "
+        "AND name='commentary_search'",
+      ).isNotEmpty;
+      if (!hasIndex) {
+        s.content.execute('''
+          CREATE VIRTUAL TABLE library.commentary_search USING fts5(
+            id UNINDEXED, module_id UNINDEXED, title, body,
+            content='commentary_entries', content_rowid='rowid',
+            tokenize='unicode61 remove_diacritics 2'
+          )
+        ''');
+        s.content.execute(
+          "INSERT INTO library.commentary_search(commentary_search) "
+          "VALUES('rebuild')",
+        );
+        externalComment = true;
+      }
+      if (externalComment) {
+        // Indice externo: os gatilhos sincronizam buscas e alteracoes.
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_ai
+          AFTER INSERT ON commentary_entries BEGIN
+            INSERT INTO commentary_search(rowid,id,module_id,title,body)
+            VALUES(new.rowid,new.id,new.module_id,new.title,new.body);
+          END
+        ''');
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_ad
+          AFTER DELETE ON commentary_entries BEGIN
+            INSERT INTO commentary_search(commentary_search,rowid,id,module_id,title,body)
+            VALUES('delete',old.rowid,old.id,old.module_id,old.title,old.body);
+          END
+        ''');
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_au
+          AFTER UPDATE ON commentary_entries BEGIN
+            INSERT INTO commentary_search(commentary_search,rowid,id,module_id,title,body)
+            VALUES('delete',old.rowid,old.id,old.module_id,old.title,old.body);
+            INSERT INTO commentary_search(rowid,id,module_id,title,body)
+            VALUES(new.rowid,new.id,new.module_id,new.title,new.body);
+          END
+        ''');
       }
     }
     final written = <File>[];
@@ -287,10 +343,12 @@ class ContentPackage {
           ]);
         }
       } else if (kind == 'commentary') {
-        s.content.execute(
-          'DELETE FROM library.commentary_search WHERE module_id=?',
-          [id],
-        );
+        if (!externalComment) {
+          s.content.execute(
+            'DELETE FROM library.commentary_search WHERE module_id=?',
+            [id],
+          );
+        }
         s.content.execute(
           'DELETE FROM library.commentary_entries WHERE module_id=?',
           [id],
@@ -314,10 +372,12 @@ class ContentPackage {
               row['bibliography'] ?? manifest['title'],
             ],
           );
-          s.content.execute(
-            'INSERT INTO library.commentary_search VALUES(?,?,?,?)',
-            [rid, id, row['title'] ?? r.label(), row['body']],
-          );
+          if (!externalComment) {
+            s.content.execute(
+              'INSERT INTO library.commentary_search VALUES(?,?,?,?)',
+              [rid, id, row['title'] ?? r.label(), row['body']],
+            );
+          }
         }
       } else if (kind == 'lexicon') {
         s.content.execute('DELETE FROM linguistic.words WHERE module_id=?', [
