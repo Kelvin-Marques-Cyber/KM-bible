@@ -232,17 +232,64 @@ class ModulePage extends StatelessWidget {
     return ListView(
       padding: const EdgeInsets.all(22),
       children: [
-        SelectableText(
-          '${m['author']}\n${m['language']} · ${m['version']}\n${m['license']}\n${m['source']}',
+        Text(
+          m['title'] as String,
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
+        const SizedBox(height: 6),
+        Text(
+          '${m['author']} · ${m['language']}',
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 14),
-        SelectableText(
-          metadata.entries.map((e) => '${e.key}: ${e.value}').join('\n'),
+        if (const [
+          'HDL-GUIA-FONTES',
+          'EXP2-HDL-CAT',
+          'JOSEMAR-GUIA-FONTES',
+        ].contains(m['id']))
+          const Padding(
+            padding: EdgeInsets.only(bottom: 12),
+            child: Text(
+              'Este é um guia de fontes e leitura, não uma edição '
+              'integral dos comentários do autor.',
+            ),
+          ),
+        Text(
+          'Conteúdo disponível · ${docs.length} ${docs.length == 1 ? 'texto' : 'textos'}',
+          style: Theme.of(context).textTheme.titleMedium,
         ),
-        const Divider(),
-        Text(a.t('license'), style: Theme.of(context).textTheme.titleMedium),
-        SelectableText(m['license_text'] as String),
-        const SizedBox(height: 18),
+        const SizedBox(height: 8),
+        if (docs.isEmpty)
+          const Text('Este módulo não contém textos disponíveis para leitura.'),
+        for (final d in docs)
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(d['title'] as String),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: () => sheet(
+              context, d['title'] as String, DocumentPage(d),
+            ),
+          ),
+        const Divider(height: 32),
+        ExpansionTile(
+          tilePadding: EdgeInsets.zero,
+          title: const Text('Licença, fonte e informações técnicas'),
+          children: [
+            SelectableText(
+              '${m['language']} · versão ${m['version']}\n'
+              '${m['license']}\n${m['source']}',
+            ),
+            const SizedBox(height: 10),
+            SelectableText(m['license_text'] as String),
+            if (metadata.isNotEmpty) ...[
+              const SizedBox(height: 12),
+              SelectableText(
+                metadata.entries.map((e) => '${e.key}: ${e.value}').join('\n'),
+              ),
+            ],
+          ],
+        ),
+        const SizedBox(height: 12),
         if (m['installed'] == 1)
           OutlinedButton.icon(
             onPressed: () {
@@ -276,12 +323,7 @@ class ModulePage extends StatelessWidget {
             icon: const Icon(Icons.restore),
             label: Text(a.t('restore')),
           ),
-        ...docs.map(
-          (d) => ListTile(
-            title: Text(d['title'] as String),
-            onTap: () => sheet(context, d['title'] as String, DocumentPage(d)),
-          ),
-        ),
+
       ],
     );
   }
