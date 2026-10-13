@@ -1,0 +1,1005 @@
+{
+  "locations": [
+    {
+      "id": "jerusalem",
+      "ancient": "Jerusalém",
+      "modern": "Jerusalem",
+      "lat": 31.778,
+      "lon": 35.235,
+      "uncertainty": "Cidade antiga; coordenada de referência aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "bethlehem",
+      "ancient": "Belém",
+      "modern": "Bethlehem",
+      "lat": 31.705,
+      "lon": 35.202,
+      "uncertainty": "Identificação tradicional da cidade.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "nazareth",
+      "ancient": "Nazaré",
+      "modern": "Nazareth",
+      "lat": 32.703,
+      "lon": 35.299,
+      "uncertainty": "Cidade; não identifica cada casa ou sinagoga.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "capernaum",
+      "ancient": "Cafarnaum",
+      "modern": "Kfar Nahum",
+      "lat": 32.881,
+      "lon": 35.576,
+      "uncertainty": "Sítio arqueológico tradicionalmente identificado.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "jericho",
+      "ancient": "Jericó",
+      "modern": "Tell es-Sultan",
+      "lat": 31.871,
+      "lon": 35.444,
+      "uncertainty": "Centro do sítio; fases de ocupação diferentes.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "babylon",
+      "ancient": "Babilônia",
+      "modern": "Babylon / Hillah",
+      "lat": 32.536,
+      "lon": 44.421,
+      "uncertainty": "Área aproximada do sítio arqueológico.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "ur",
+      "ancient": "Ur",
+      "modern": "Tell el-Muqayyar",
+      "lat": 30.963,
+      "lon": 46.103,
+      "uncertainty": "Identificação de Ur dos caldeus discutida; esta é a proposta mesopotâmica meridional.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "haran",
+      "ancient": "Harã",
+      "modern": "Harran",
+      "lat": 36.865,
+      "lon": 39.029,
+      "uncertainty": "Sítio histórico; coordenada urbana aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "nineveh",
+      "ancient": "Nínive",
+      "modern": "Mosul / Kuyunjik",
+      "lat": 36.361,
+      "lon": 43.153,
+      "uncertainty": "Área arqueológica aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "damascus",
+      "ancient": "Damasco",
+      "modern": "Damascus",
+      "lat": 33.513,
+      "lon": 36.292,
+      "uncertainty": "Centro urbano; não identifica o local de cada acontecimento.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "antioch",
+      "ancient": "Antioquia da Síria",
+      "modern": "Antakya",
+      "lat": 36.202,
+      "lon": 36.161,
+      "uncertainty": "Cidade antiga, localização aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "tarsus",
+      "ancient": "Tarso",
+      "modern": "Tarsus",
+      "lat": 36.917,
+      "lon": 34.892,
+      "uncertainty": "Centro urbano aproximado.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "ephesus",
+      "ancient": "Éfeso",
+      "modern": "Selçuk / Ephesus",
+      "lat": 37.939,
+      "lon": 27.341,
+      "uncertainty": "Sítio arqueológico antigo.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "corinth",
+      "ancient": "Corinto",
+      "modern": "Archaia Korinthos",
+      "lat": 37.906,
+      "lon": 22.879,
+      "uncertainty": "Corinto antiga; não a cidade moderna.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "athens",
+      "ancient": "Atenas",
+      "modern": "Athens",
+      "lat": 37.974,
+      "lon": 23.726,
+      "uncertainty": "Coordenada de referência próxima à Ágora.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "philippi",
+      "ancient": "Filipos",
+      "modern": "Philippi",
+      "lat": 41.011,
+      "lon": 24.286,
+      "uncertainty": "Sítio arqueológico.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "thessalonica",
+      "ancient": "Tessalônica",
+      "modern": "Thessaloniki",
+      "lat": 40.64,
+      "lon": 22.944,
+      "uncertainty": "Centro urbano aproximado.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "rome",
+      "ancient": "Roma",
+      "modern": "Rome",
+      "lat": 41.893,
+      "lon": 12.486,
+      "uncertainty": "Coordenada de referência; não endereço de Paulo.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "caesarea",
+      "ancient": "Cesareia Marítima",
+      "modern": "Caesarea",
+      "lat": 32.5,
+      "lon": 34.892,
+      "uncertainty": "Cidade portuária antiga.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "joppa",
+      "ancient": "Jope",
+      "modern": "Jaffa",
+      "lat": 32.053,
+      "lon": 34.751,
+      "uncertainty": "Porto histórico.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "samaria",
+      "ancient": "Samaria",
+      "modern": "Sebastia",
+      "lat": 32.276,
+      "lon": 35.189,
+      "uncertainty": "Sítio antigo; limites regionais variaram.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "shechem",
+      "ancient": "Siquém",
+      "modern": "Tell Balata / Nablus",
+      "lat": 32.213,
+      "lon": 35.281,
+      "uncertainty": "Identificação arqueológica tradicional.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "hebron",
+      "ancient": "Hebrom",
+      "modern": "Hebron",
+      "lat": 31.532,
+      "lon": 35.099,
+      "uncertainty": "Área urbana; locais particulares têm tradições diversas.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "beersheba",
+      "ancient": "Berseba",
+      "modern": "Tel Beer Sheva",
+      "lat": 31.245,
+      "lon": 34.841,
+      "uncertainty": "Sítio arqueológico aproximado.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "tyre",
+      "ancient": "Tiro",
+      "modern": "Tyre",
+      "lat": 33.27,
+      "lon": 35.203,
+      "uncertainty": "Área urbana antiga alterada ao longo do tempo.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "sidon",
+      "ancient": "Sidom",
+      "modern": "Sidon",
+      "lat": 33.561,
+      "lon": 35.373,
+      "uncertainty": "Porto urbano aproximado.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "salamis",
+      "ancient": "Salamina",
+      "modern": "Salamis / Cyprus",
+      "lat": 35.185,
+      "lon": 33.899,
+      "uncertainty": "Sítio antigo, no Chipre.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "paphos",
+      "ancient": "Pafos",
+      "modern": "Paphos",
+      "lat": 34.758,
+      "lon": 32.405,
+      "uncertainty": "Cidade portuária antiga.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "perga",
+      "ancient": "Perge",
+      "modern": "Perge",
+      "lat": 36.959,
+      "lon": 30.853,
+      "uncertainty": "Sítio arqueológico.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "pisidian_antioch",
+      "ancient": "Antioquia da Pisídia",
+      "modern": "Yalvaç",
+      "lat": 38.307,
+      "lon": 31.189,
+      "uncertainty": "Sítio arqueológico.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "iconium",
+      "ancient": "Icônio",
+      "modern": "Konya",
+      "lat": 37.874,
+      "lon": 32.493,
+      "uncertainty": "Área urbana aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "lystra",
+      "ancient": "Listra",
+      "modern": "Hatunsaray",
+      "lat": 37.6,
+      "lon": 32.337,
+      "uncertainty": "Identificação aproximada; localização antiga discutida.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "troas",
+      "ancient": "Trôade",
+      "modern": "Alexandria Troas",
+      "lat": 39.751,
+      "lon": 26.158,
+      "uncertainty": "Sítio urbano antigo.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "miletus",
+      "ancient": "Mileto",
+      "modern": "Miletus",
+      "lat": 37.529,
+      "lon": 27.278,
+      "uncertainty": "Sítio arqueológico; litoral se deslocou por sedimentação.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "patmos",
+      "ancient": "Patmos",
+      "modern": "Patmos",
+      "lat": 37.309,
+      "lon": 26.547,
+      "uncertainty": "Coordenada insular aproximada.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "malta",
+      "ancient": "Malta",
+      "modern": "Malta",
+      "lat": 35.9,
+      "lon": 14.45,
+      "uncertainty": "Ilha; ponto exato do naufrágio tradicionalmente discutido.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "egypt",
+      "ancient": "Egito",
+      "modern": "Nile Delta",
+      "lat": 30.9,
+      "lon": 31.5,
+      "uncertainty": "Ponto regional ilustrativo; não localização do Êxodo.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    },
+    {
+      "id": "sinai",
+      "ancient": "Sinai",
+      "modern": "Southern Sinai",
+      "lat": 28.54,
+      "lon": 33.974,
+      "uncertainty": "Hipótese tradicional de localização; outras propostas existem.",
+      "source": "Coordenadas esquemáticas arredondadas para orientação; não permitem identificar um acontecimento dentro do sítio."
+    }
+  ],
+  "events": [
+    {
+      "id": "creation",
+      "title": "Criação",
+      "start": null,
+      "end": null,
+      "location": null,
+      "references": [
+        "1:1:1"
+      ],
+      "description": "O texto não fornece uma data civil consensual. Genealogias e modelos de cronologia são interpretações.",
+      "certainty": "não datado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "1:1:1",
+          "end": "1:1:176"
+        }
+      ]
+    },
+    {
+      "id": "flood",
+      "title": "Dilúvio",
+      "start": null,
+      "end": null,
+      "location": null,
+      "references": [
+        "1:6:14",
+        "1:7:1"
+      ],
+      "description": "Sem data e rota estabelecidas para cálculo confiável.",
+      "certainty": "não datado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "1:6:14",
+          "end": "1:6:176"
+        },
+        {
+          "start": "1:7:1",
+          "end": "1:7:176"
+        }
+      ]
+    },
+    {
+      "id": "abraham",
+      "title": "Chamado de Abraão",
+      "start": null,
+      "end": null,
+      "location": "haran",
+      "references": [
+        "1:12:1"
+      ],
+      "description": "A cronologia dos patriarcas é discutida; não adotar uma data precisa sem indicar o modelo.",
+      "certainty": "tradição textual",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "1:12:1",
+          "end": "1:12:176"
+        }
+      ]
+    },
+    {
+      "id": "exodus",
+      "title": "Êxodo",
+      "start": -1446,
+      "end": -1250,
+      "location": "egypt",
+      "references": [
+        "2:12:1"
+      ],
+      "description": "Intervalo abrange propostas distintas, não uma duração contínua do evento. Local exato da travessia não estabelecido.",
+      "certainty": "hipóteses",
+      "world": false,
+      "alternatives": [
+        {
+          "label": "Leitura cronológica de 1 Reis 6:1",
+          "start": -1446,
+          "end": -1446
+        },
+        {
+          "label": "Propostas do século XIII a.C.",
+          "start": -1290,
+          "end": -1250
+        }
+      ],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "2:12:1",
+          "end": "2:12:176"
+        }
+      ]
+    },
+    {
+      "id": "sinai_event",
+      "title": "Aliança no Sinai",
+      "start": null,
+      "end": null,
+      "location": "sinai",
+      "references": [
+        "2:19:1",
+        "2:20:1"
+      ],
+      "description": "Relacionado ao Êxodo. Localização e cronologia dependem do modelo adotado.",
+      "certainty": "hipóteses",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "2:19:1",
+          "end": "2:19:176"
+        },
+        {
+          "start": "2:20:1",
+          "end": "2:20:176"
+        }
+      ]
+    },
+    {
+      "id": "david",
+      "title": "Reinado de Davi",
+      "start": -1010,
+      "end": -970,
+      "location": "jerusalem",
+      "references": [
+        "10:5:1"
+      ],
+      "description": "Intervalo convencional aproximado; cronologias diferem em seus pontos exatos.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "10:5:1",
+          "end": "10:5:176"
+        }
+      ]
+    },
+    {
+      "id": "solomon",
+      "title": "Construção do Templo de Salomão",
+      "start": -970,
+      "end": -930,
+      "location": "jerusalem",
+      "references": [
+        "11:6:1"
+      ],
+      "description": "O intervalo representa o reinado convencional no qual se situa a construção, não quarenta anos de obra.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "11:6:1",
+          "end": "11:6:176"
+        }
+      ]
+    },
+    {
+      "id": "samaria_fall",
+      "title": "Queda de Samaria",
+      "start": -722,
+      "end": -720,
+      "location": "samaria",
+      "references": [
+        "12:17:6"
+      ],
+      "description": "Fase final da conquista assíria e deportações; distinguir campanhas e consolidação.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "12:17:6",
+          "end": "12:17:176"
+        }
+      ]
+    },
+    {
+      "id": "jerusalem_fall",
+      "title": "Queda de Jerusalém e exílio",
+      "start": -587,
+      "end": -586,
+      "location": "jerusalem",
+      "references": [
+        "12:25:1"
+      ],
+      "description": "587/586 a.C. são propostas decorrentes de sincronismos e calendários de reinado.",
+      "certainty": "data discutida",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "12:25:1",
+          "end": "12:25:176"
+        }
+      ]
+    },
+    {
+      "id": "cyrus",
+      "title": "Conquista persa de Babilônia",
+      "start": -539,
+      "end": -539,
+      "location": "babylon",
+      "references": [
+        "27:5:30"
+      ],
+      "description": "Contexto histórico do domínio persa. A crônica babilônica registra a conquista por Ciro.",
+      "certainty": "histórico",
+      "world": true,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição.",
+        "https://www.britishmuseum.org/collection/object/W_Sp-II-964",
+        "https://www.britishmuseum.org/collection/object/W_1880-0617-1941"
+      ],
+      "ranges": [
+        {
+          "start": "27:5:30",
+          "end": "27:5:176"
+        }
+      ]
+    },
+    {
+      "id": "return",
+      "title": "Retorno e restauração",
+      "start": -538,
+      "end": -515,
+      "location": "jerusalem",
+      "references": [
+        "15:1:1",
+        "15:6:15"
+      ],
+      "description": "Intervalo da permissão de retorno à conclusão do templo; não confundir diferentes ondas de retorno.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "15:1:1",
+          "end": "15:1:176"
+        },
+        {
+          "start": "15:6:15",
+          "end": "15:6:176"
+        }
+      ]
+    },
+    {
+      "id": "alexander",
+      "title": "Conquistas de Alexandre",
+      "start": -334,
+      "end": -323,
+      "location": null,
+      "references": [],
+      "description": "Contexto de expansão macedônica e difusão helenística.",
+      "certainty": "histórico",
+      "world": true,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": []
+    },
+    {
+      "id": "augustus",
+      "title": "Principado de Augusto",
+      "start": -27,
+      "end": 14,
+      "location": "rome",
+      "references": [
+        "42:2:1"
+      ],
+      "description": "Contexto imperial. O intervalo corresponde ao principado; não data com precisão o recenseamento de Lucas.",
+      "certainty": "histórico",
+      "world": true,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição.",
+        "https://www.metmuseum.org/art/collection/search/247993"
+      ],
+      "ranges": [
+        {
+          "start": "42:2:1",
+          "end": "42:2:176"
+        }
+      ]
+    },
+    {
+      "id": "birth",
+      "title": "Nascimento de Jesus",
+      "start": -6,
+      "end": -4,
+      "location": "bethlehem",
+      "references": [
+        "40:2:1",
+        "42:2:1"
+      ],
+      "description": "Proposta comum, anterior à morte convencional de Herodes. O sincronismo do recenseamento continua discutido.",
+      "certainty": "estimativa",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "40:2:1",
+          "end": "40:2:176"
+        },
+        {
+          "start": "42:2:1",
+          "end": "42:2:176"
+        }
+      ]
+    },
+    {
+      "id": "ministry",
+      "title": "Ministério público de Jesus",
+      "start": 27,
+      "end": 33,
+      "location": "capernaum",
+      "references": [
+        "41:1:14",
+        "42:3:1"
+      ],
+      "description": "Intervalo amplo; diferentes cronologias relacionam o início do ministério e a Páscoa.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "41:1:14",
+          "end": "41:1:176"
+        },
+        {
+          "start": "42:3:1",
+          "end": "42:3:176"
+        }
+      ]
+    },
+    {
+      "id": "resurrection",
+      "title": "Morte e ressurreição de Cristo",
+      "start": 30,
+      "end": 33,
+      "location": "jerusalem",
+      "references": [
+        "40:27:1",
+        "40:28:1",
+        "43:19:1",
+        "43:20:1"
+      ],
+      "description": "Duas propostas frequentes situam a crucificação em 30 ou 33 d.C. O intervalo não significa que o evento durou três anos.",
+      "certainty": "propostas de data",
+      "world": false,
+      "alternatives": [
+        {
+          "label": "Páscoa de 30 d.C.",
+          "start": 30,
+          "end": 30
+        },
+        {
+          "label": "Páscoa de 33 d.C.",
+          "start": 33,
+          "end": 33
+        }
+      ],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "40:27:1",
+          "end": "40:27:176"
+        },
+        {
+          "start": "40:28:1",
+          "end": "40:28:176"
+        },
+        {
+          "start": "43:19:1",
+          "end": "43:19:176"
+        },
+        {
+          "start": "43:20:1",
+          "end": "43:20:176"
+        }
+      ]
+    },
+    {
+      "id": "pentecost",
+      "title": "Pentecostes",
+      "start": 30,
+      "end": 33,
+      "location": "jerusalem",
+      "references": [
+        "44:2:1"
+      ],
+      "description": "Datação depende da cronologia adotada para a Páscoa.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:2:1",
+          "end": "44:2:176"
+        }
+      ]
+    },
+    {
+      "id": "paul_conversion",
+      "title": "Conversão de Paulo",
+      "start": 33,
+      "end": 36,
+      "location": "damascus",
+      "references": [
+        "44:9:1"
+      ],
+      "description": "Cronologias paulinas variam; local registrado é a região próxima a Damasco.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:9:1",
+          "end": "44:9:176"
+        }
+      ]
+    },
+    {
+      "id": "paul_first",
+      "title": "Primeira viagem missionária",
+      "start": 46,
+      "end": 49,
+      "location": "antioch",
+      "references": [
+        "44:13:1",
+        "44:14:1"
+      ],
+      "description": "Roteiro baseado em Atos 13–14; datas estimadas.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:13:1",
+          "end": "44:13:176"
+        },
+        {
+          "start": "44:14:1",
+          "end": "44:14:176"
+        }
+      ]
+    },
+    {
+      "id": "council",
+      "title": "Concílio de Jerusalém",
+      "start": 48,
+      "end": 50,
+      "location": "jerusalem",
+      "references": [
+        "44:15:1"
+      ],
+      "description": "Sincronização com Gálatas é discutida; registrar como aproximação.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:15:1",
+          "end": "44:15:176"
+        }
+      ]
+    },
+    {
+      "id": "corinth_paul",
+      "title": "Paulo em Corinto",
+      "start": 50,
+      "end": 52,
+      "location": "corinth",
+      "references": [
+        "44:18:1"
+      ],
+      "description": "O proconsulado de Gálio fornece um sincronismo histórico útil, sem datar automaticamente todos os versículos do capítulo.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:18:1",
+          "end": "44:18:176"
+        }
+      ]
+    },
+    {
+      "id": "ephesus_paul",
+      "title": "Paulo em Éfeso",
+      "start": 52,
+      "end": 56,
+      "location": "ephesus",
+      "references": [
+        "44:19:1"
+      ],
+      "description": "Intervalo convencional de cronologias missionárias.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:19:1",
+          "end": "44:19:176"
+        }
+      ]
+    },
+    {
+      "id": "rome_paul",
+      "title": "Paulo em Roma",
+      "start": 60,
+      "end": 62,
+      "location": "rome",
+      "references": [
+        "44:28:16"
+      ],
+      "description": "Proposta habitual para a prisão narrada em Atos; cronologias alternativas existem.",
+      "certainty": "aproximado",
+      "world": false,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": [
+        {
+          "start": "44:28:16",
+          "end": "44:28:176"
+        }
+      ]
+    },
+    {
+      "id": "temple_destruction",
+      "title": "Destruição de Jerusalém e do Segundo Templo",
+      "start": 70,
+      "end": 70,
+      "location": "jerusalem",
+      "references": [],
+      "description": "A guerra romana culmina na destruição do templo, posterior a muitos acontecimentos do Novo Testamento.",
+      "certainty": "histórico",
+      "world": true,
+      "alternatives": [],
+      "sources": [
+        "Referências bíblicas indicadas; datas convencionais exigem distinguir evento e composição."
+      ],
+      "ranges": []
+    }
+  ],
+  "routes": [
+    {
+      "id": "paul1",
+      "title": "Primeira viagem missionária de Paulo",
+      "places": [
+        "antioch",
+        "salamis",
+        "paphos",
+        "perga",
+        "pisidian_antioch",
+        "iconium",
+        "lystra",
+        "antioch"
+      ],
+      "source": "Atos 13–14",
+      "certainty": "Segmentos entre cidades representam sequência textual; traçado real de estradas e navegação não documentado aqui.",
+      "start": 46,
+      "end": 49
+    },
+    {
+      "id": "paul_macedonia",
+      "title": "Travessia à Macedônia e à Acaia",
+      "places": [
+        "troas",
+        "philippi",
+        "thessalonica",
+        "athens",
+        "corinth"
+      ],
+      "source": "Atos 16–18",
+      "certainty": "Sequência textual simplificada, omite paradas; linhas não são rotas medidas.",
+      "start": 49,
+      "end": 52
+    },
+    {
+      "id": "abraham",
+      "title": "Abraão: Harã, Siquém, Hebrom",
+      "places": [
+        "haran",
+        "shechem",
+        "hebron"
+      ],
+      "source": "Gênesis 12–13",
+      "certainty": "Sequência narrativa. Não há reconstrução única do percurso.",
+      "start": null,
+      "end": null
+    }
+  ],
+  "territories": []
+}

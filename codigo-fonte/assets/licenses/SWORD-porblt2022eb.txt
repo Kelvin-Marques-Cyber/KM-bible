@@ -1,0 +1,101 @@
+## Sword module configuration file
+
+## Required elements
+# Module unique identifier
+[porblt2022eb]
+
+# Short well-known abbreviation for the module
+Abbreviation=BLT
+
+# Short description of the module
+Description=Biblia Livre Para Todos
+
+# Path to the module data files relative to the Sword module library root directory
+DataPath=./modules/texts/ztext/porblt2022eb/
+
+# Driver used for reading the module
+ModDrv=zText
+
+## Required elements with defaults
+# Markup used in the module
+SourceType=OSIS
+
+# Character encoding used in the module and this conf file
+Encoding=UTF-8
+
+# Compression algorithm
+CompressType=ZIP
+
+# How much of the work is compressed into a block
+BlockType=BOOK
+
+# Closest standard versification to what is used in this work
+Versification=NRSV
+
+## Elements required for proper rendering
+# Never use <q> to supply quotation punctuation. All required and allowed punctuation is in the text already.
+OSISqToTick=false
+
+# Recommended font
+Font=DejaVu Serif
+# Filters
+GlobalOptionFilter=OSISFootnotes
+
+# Longer description of the text
+About=     Objetivo: fornecer uma tradução atualizada em português do Brasil que não seja limitada por questões usuais de direitos autorais.     Intent: to provide an up-to-date translation in Brazilian Portugiese that is not constrained by usual copyright issues.    Biblia Livre Para Todos The New Testament in Portuguese, translated from the English Free Bible Version with input from Hebrew and Greek O Novo Testamento em Português, traduzido da Free Bible Version em Inglês com entrada de hebraico e grego copyright © 2022 Free Bible Ministry, Inc. Language: Português Dialect: Brasil Contributor: Free Bible Ministry, Inc.      Objetivo: fornecer uma tradução atualizada em português do Brasil que não seja limitada por questões usuais de direitos autorais.     Intent: to provide an up-to-date translation in Brazilian Portugiese that is not constrained by usual copyright issues.    Se você encontrar erros tipográficos ou tiver sugestões para melhorar esta tradução da Bíblia, entre em contato com jonathangallagherfbv@gmail.com. This translation is made available to you under the terms of the Creative Commons Attribution Share-Alike license 4.0. You have permission to share and redistribute this Bible translation in any format and to make reasonable revisions and adaptations of this translation, provided that:  \par You include the above copyright and source information. \par If you make any changes to the text, you must indicate that you did so in a way that makes it clear that the original licensor is not necessarily endorsing your changes. \par If you redistribute this text, you must distribute your contributions under the same license as the original.  Pictures included with Scriptures and other documents on this site are licensed just for use with those Scriptures and documents. For other uses, please contact the respective copyright owners. Note that in addition to the rules above, revising and adapting God's Word involves a great responsibility to be true to God's Word. See Revelation 22:18-19. 2022-03-08 
+
+# Sword module version number and date
+SwordVersionDate=2026-10-07
+Version=10.59
+History_10.59=Automatically generated on 2026-10-07 from source files dated 2022-03-09 using Haiola (http://haiola.org)
+
+# Minimum version of the Sword libary needed to load this module
+MinimumVersion=1.7.0
+
+# This is a Bible translation.
+Category=Biblical Texts
+
+# Library of Congress subject heading
+LCSH=Bible. Português.
+
+# Language code (2 letters if available, otherwise 3 letters)
+Lang=pt
+
+# Number of bytes this module takes up on disk
+InstallSize=854814
+
+# OSIS isn't currently being developed or changed, so this is a constant version number.
+OSISVersion=2.1.1
+
+# Copyright and licensing information
+Copyright=Copyright © 2022 Free Bible Ministry, Inc.
+CopyrightHolder=Free Bible Ministry, Inc.
+CopyrightDate=2022
+CopyrightNotes=Biblia Livre Para Todos \
+The New Testament in Portuguese, translated from the English Free Bible Version with input from Hebrew and Greek \
+O Novo Testamento em Português, traduzido da Free Bible Version em Inglês com entrada de hebraico e grego \
+copyright © 2022 Free Bible Ministry, Inc. \
+Language: Português \
+Dialect: Brasil \
+Contributor: Free Bible Ministry, Inc. \
+ \
+ \
+ Objetivo: fornecer uma tradução atualizada em português do Brasil que não seja limitada por questões usuais de direitos autorais. \
+ Intent: to provide an up-to-date translation in Brazilian Portugiese that is not constrained by usual copyright issues. \
+ \
+Se você encontrar erros tipográficos ou tiver sugestões para melhorar esta tradução da Bíblia, entre em contato com jonathangallagherfbv@gmail.com. \
+This translation is made available to you under the terms of the \
+Creative Commons Attribution Share-Alike license 4.0. \
+You have permission to share and redistribute this Bible translation in any format and to make reasonable revisions and adaptations of this translation, provided that: \
+ \
+ * You include the above copyright and source information. \
+ * If you make any changes to the text, you must indicate that you did so in a way that makes it clear that the original licensor is not necessarily endorsing your changes. \
+ * If you redistribute this text, you must distribute your contributions under the same license as the original. \
+ \
+Pictures included with Scriptures and other documents on this site are licensed just for use with those Scriptures and documents. \
+For other uses, please contact the respective copyright owners. \
+Note that in addition to the rules above, revising and adapting God's Word involves a great responsibility to be true to God's Word. See Revelation 22:18-19. \
+2022-03-08 
+ShortCopyright=© 2022 Free Bible Ministry
+DistributionLicense=Creative Commons: by-sa
+TextSource=https://eBible.org/Scriptures/

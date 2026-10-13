@@ -1,0 +1,9 @@
+{
+  "source": "https://a.openbible.info/data/cross-references.zip",
+  "license": "CC BY 4.0",
+  "license_url": "https://creativecommons.org/licenses/by/4.0/",
+  "rows": 344794,
+  "rejected_unmapped": 5,
+  "basis": "BLN4 / KJV canonical references",
+  "methodology": "Editorial references, principally Treasury of Scripture Knowledge. Votes order retrieval; they are not exegetical authority. Ranges preserved; unavailable numeric addresses excluded."
+}
