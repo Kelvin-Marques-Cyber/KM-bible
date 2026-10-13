@@ -14,6 +14,7 @@ fi
 flutter --version
 flutter config --enable-web
 flutter create --platforms=web --project-name biblia_reformada .
+python3 scripts/preparar_calvino_por_livro.py
 flutter pub get
 # Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
 python3 scripts/otimizar_acervo_sqlite.py
