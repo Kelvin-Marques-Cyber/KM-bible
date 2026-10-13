@@ -15,6 +15,8 @@ flutter --version
 flutter config --enable-web
 flutter create --platforms=web --project-name biblia_reformada .
 flutter pub get
+# Reduz a memoria e o trafego ao remover copias duplicadas de textos nos indices.
+python3 scripts/otimizar_acervo_sqlite.py
 # O sqlite3 2.9.4 exige o modulo WebAssembly do mesmo release na plataforma Web.
 if [[ ! -s web/sqlite3.wasm ]]; then
   echo 'Baixando modulo oficial SQLite WebAssembly 2.9.4...'
