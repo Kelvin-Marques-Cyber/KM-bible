@@ -1,5 +1,6 @@
 import 'dart:isolate';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3/common.dart';
+import 'sqlite_runtime.dart' as runtime;
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -491,10 +492,10 @@ Future<void> installContentPackageOffline(Store store, Uint8List bytes) async {
   final transfer = TransferableTypedData.fromList([bytes]);
   await Isolate.run(() {
     final isolated = Store(
-      sqlite3.open(p.join(directory, 'catalogue.sqlite')),
-      sqlite3.open(p.join(directory, 'personal.sqlite')),
-      sqlite3.open(p.join(directory, 'lexicon.sqlite')),
-      sqlite3.open(p.join(directory, 'library.sqlite')),
+      runtime.sqlite3.open(p.join(directory, 'catalogue.sqlite')),
+      runtime.sqlite3.open(p.join(directory, 'personal.sqlite')),
+      runtime.sqlite3.open(p.join(directory, 'lexicon.sqlite')),
+      runtime.sqlite3.open(p.join(directory, 'library.sqlite')),
       directory,
     );
     try {
