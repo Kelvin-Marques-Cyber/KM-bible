@@ -140,33 +140,9 @@ class _GraphPageState extends State<GraphPage>
   }
 
   Future<void> selectNode(GraphNode node, Offset position) async {
-    if (animating) return;
-    setState(() => selected = node);
-    if (context.app.store.pref('reduced_motion', false)) return;
-    animating = true;
-    final scale = math.max(
-      .85,
-      transform.value.getMaxScaleOnAxis(),
-    ).clamp(.2, 2.0).toDouble();
-    final target = Matrix4.diagonal3Values(scale, scale, 1)
-      ..setTranslationRaw(
-        _viewport.width / 2 - position.dx * scale,
-        _viewport.height / 2 - position.dy * scale,
-        0,
-      );
-    final tween = Matrix4Tween(begin: transform.value.clone(), end: target);
-    final curve = CurvedAnimation(parent: motion, curve: Curves.easeInOutCubic);
-    void tick() => transform.value = tween.evaluate(curve);
-    motion.addListener(tick);
-    try {
-      await motion.forward(from: 0).orCancel;
-    } catch (_) {
-      // The animation may be cancelled by navigation or closing this page.
-    } finally {
-      motion.removeListener(tick);
-      curve.dispose();
-      animating = false;
-    }
+    // Evita salto brusco no enquadramento ao tocar uma conexao.
+    motion.stop();
+    if (mounted) setState(() => selected = node);
   }
 
   List<GraphNode> neighbors() {
@@ -330,7 +306,10 @@ class _GraphPageState extends State<GraphPage>
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
-        Row(
+        Wrap(
+          spacing: 6,
+          runSpacing: 6,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             if (topicId == null)
               action(
@@ -351,7 +330,10 @@ class _GraphPageState extends State<GraphPage>
                 },
                 icon: const Icon(Icons.arrow_back),
               ),
-            Expanded(
+            ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: math.max(160.0, MediaQuery.sizeOf(context).width - 96),
+              ),
               child: TextButton.icon(
                 onPressed: () => sheet(
                   context,
@@ -359,7 +341,7 @@ class _GraphPageState extends State<GraphPage>
                   PassagePicker(initial: r, onSelect: focus),
                 ),
                 icon: const Icon(Icons.menu_book),
-                label: Text(centerTitle),
+                label: Text(centerTitle, maxLines: 1, overflow: TextOverflow.ellipsis),
               ),
             ),
           ],
@@ -371,50 +353,66 @@ class _GraphPageState extends State<GraphPage>
           style: Theme.of(context).textTheme.bodySmall,
         ),
         const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: DropdownButtonFormField<String>(
-                initialValue: kind,
-                decoration: const InputDecoration(labelText: 'Tipo de ligação'),
-                items: [
-                  const DropdownMenuItem(value: 'all', child: Text('Todos')),
-                  for (final entry in relationLabels.entries)
-                    DropdownMenuItem(
-                      value: entry.key,
-                      child: Text(entry.value),
-                    ),
-                ],
-                onChanged: (v) => setState(() {
-                  kind = v!;
-                  selected = null;
-                  _needsFit = true;
-                }),
+        LayoutBuilder(builder: (ctx, limits) {
+          final narrow = limits.maxWidth < 480;
+          return Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              SizedBox(
+                width: narrow ? limits.maxWidth : limits.maxWidth - 144,
+                child: DropdownButtonFormField<String>(
+                  initialValue: kind,
+                  isExpanded: true,
+                  decoration: const InputDecoration(labelText: 'Tipo de ligação'),
+                  items: [
+                    const DropdownMenuItem(value: 'all', child: Text('Todos')),
+                    for (final entry in relationLabels.entries)
+                      DropdownMenuItem(
+                        value: entry.key,
+                        child: Text(entry.value, maxLines: 1,
+                          overflow: TextOverflow.ellipsis),
+                      ),
+                  ],
+                  onChanged: (v) => setState(() {
+                    if (v == null) return;
+                    kind = v;
+                    selected = null;
+                    _needsFit = true;
+                  }),
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
-            DropdownButton<int>(
-              value: density,
-              items: [
-                for (final n in [8, 12, 20])
-                  DropdownMenuItem(value: n, child: Text('$n nós')),
-              ],
-              onChanged: (v) => setState(() {
-                density = v!;
-                selected = null;
-                _needsFit = true;
-              }),
-            ),
-          ],
-        ),
-        Row(
+              SizedBox(
+                width: narrow ? limits.maxWidth : 136,
+                child: DropdownButtonFormField<int>(
+                  initialValue: density,
+                  isExpanded: true,
+                  decoration: const InputDecoration(labelText: 'Densidade'),
+                  items: [
+                    for (final n in [8, 12, 20])
+                      DropdownMenuItem(value: n, child: Text('$n nós')),
+                  ],
+                  onChanged: (v) => setState(() {
+                    if (v == null) return;
+                    density = v;
+                    selected = null;
+                    _needsFit = true;
+                  }),
+                ),
+              ),
+            ],
+          );
+        }),
+        Wrap(
+          spacing: 4,
+          runSpacing: 6,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
             TextButton.icon(
               onPressed: () => setState(() => list = !list),
               icon: Icon(list ? Icons.hub : Icons.list),
               label: Text(list ? 'Ver grafo' : 'Lista acessível'),
             ),
-            const Spacer(),
             IconButton(
               tooltip: 'Aproximar rede',
               icon: const Icon(Icons.add),
@@ -525,8 +523,8 @@ class _GraphPageState extends State<GraphPage>
                                 position,
                                 center,
                                 scene,
-                              ).inflate(7);
-                              if ((position - point).distance <= 23 ||
+                              ).inflate(13);
+                              if ((position - point).distance <= 30 ||
                                   label.contains(point)) {
                                 selectNode(n, position);
                                 return;
