@@ -10,6 +10,8 @@ import argparse
 import hashlib
 import re
 import sqlite3
+import json
+import zipfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -66,30 +68,56 @@ def chunks(text: str, limit=1300):
                 rest = rest[cut:]
 
 
-def run(maximum: int | None, retry_broken: bool):
+def calvin_rows():
+    package = ROOT / 'assets' / 'bundled' / 'CalvinCommentaries.biblepkg'
+    if not package.is_file():
+        raise SystemExit(f'Modulo original de Calvino ausente: {package}')
+    with zipfile.ZipFile(package) as z:
+        manifest = json.loads(z.read('manifest.json'))
+        if manifest.get('id') != 'CalvinCommentaries':
+            raise SystemExit('O arquivo informado nao e o modulo esperado de Calvino.')
+        rows = json.loads(z.read('data.json'))
+    for row in rows:
+        yield ('CalvinCommentaries:' + str(row['id']),
+               row.get('title', 'Comentário de João Calvino'),
+               row.get('body', ''))
+
+
+def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
     library = CONTENT / 'library.sqlite'
     local = CONTENT / 'portuguese.sqlite'
     if not library.is_file() or not local.is_file():
         raise SystemExit('Bancos de conteudo ausentes: assets/content.')
     engine = translator()
     conn = sqlite3.connect(local)
-    conn.execute('ATTACH DATABASE ? AS original', (str(library),))
-    where = """t.id IS NULL OR length(trim(coalesce(t.body,'')))=0"""
-    if retry_broken:
-        where += """ OR instr(t.body,'⁇') > 0"""
-    rows = conn.execute(f"""
-        SELECT c.id,c.title,c.body
-        FROM original.commentary_entries AS c
-        LEFT JOIN main.translations AS t
-          ON t.type='commentary' AND t.id=c.id
-        WHERE {where}
-        ORDER BY c.id
-    """)
+    if only_calvin:
+        # No APK/PWA original, Calvino nao esta no library.sqlite:
+        # os 11.063 textos estao dentro de assets/bundled/*.biblepkg.
+        rows = calvin_rows()
+    else:
+        conn.execute('ATTACH DATABASE ? AS original', (str(library),))
+        rows = conn.execute("""
+            SELECT c.id,c.title,c.body
+            FROM original.commentary_entries AS c
+            ORDER BY c.id
+        """).fetchall()
+    if maximum is not None and maximum < 1:
+        raise SystemExit('--limit deve ser maior que zero')
     processed = 0
+    skipped = 0
     for id, title, body in rows:
         if maximum is not None and processed >= maximum:
             break
         if not body or not body.strip():
+            continue
+        existing = conn.execute(
+            "SELECT body FROM translations WHERE type='commentary' AND id=?",
+            (id,),
+        ).fetchone()
+        if existing and existing[0] and (
+            not retry_broken or '⁇' not in existing[0]
+        ):
+            skipped += 1
             continue
         parts = []
         for part in chunks(body):
@@ -114,10 +142,11 @@ def run(maximum: int | None, retry_broken: bool):
             conn.commit()
             print(f'{processed} comentarios processados (retomada segura)', flush=True)
     conn.commit()
+    conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     conn.close()
     digest = hashlib.sha256(local.read_bytes()).hexdigest()
     (CONTENT / 'portuguese.sha256').write_text(digest + '\n', encoding='utf-8')
-    print(f'Terminou: {processed} traducao(oes). SHA256 atualizada.')
+    print(f'Terminou: {processed} traducao(oes); {skipped} preexistentes. SHA256 atualizada.')
     print('Recompile Android e Web. Confirme licencas antes de redistribuir.')
 
 
@@ -126,5 +155,7 @@ if __name__ == '__main__':
     parser.add_argument('--limit', type=int, default=None,
                         help='Maximo de comentarios nesta rodada, ex. 20')
     parser.add_argument('--retraduzir-danificados', action='store_true')
+    parser.add_argument('--calvino', action='store_true',
+                        help='Traduz os 11.063 comentarios originais de Calvino')
     args = parser.parse_args()
-    run(args.limit, args.retraduzir_danificados)
+    run(args.limit, args.retraduzir_danificados, args.calvino)
