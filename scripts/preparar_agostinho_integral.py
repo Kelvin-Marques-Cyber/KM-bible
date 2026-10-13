@@ -20,8 +20,8 @@ EDITION = "https://www.solusagape.com.br/obras-milenares/confiss%C3%B5es"
 ROMAN = re.compile(r"^[IVXLCDM]+$", re.I)
 BOOK_LINE = re.compile(
     r"^\s*(?:LIVRO|LIBRO)\s+(?P<num>[IVXLCDM]+|\d{1,2}|PRIMEIRO|SEGUNDO|"
-    r"TERCEIRO|QUARTO|QUINTO|SEXTO|S[EÉ]TIMO|OITAVO|NONO|D[EÉ]CIMO|"
-    r"D[EÉ]CIMO[- ]PRIMEIRO|D[EÉ]CIMO[- ]SEGUNDO|D[EÉ]CIMO[- ]TERCEIRO)"
+    r"TERCEIRO|QUARTO|QUINTO|SEXTO|S[EÉ]TIMO|OITAVO|NONO|"
+    r"D[EÉ]CIMO[- ]TERCEIRO|D[EÉ]CIMO[- ]SEGUNDO|D[EÉ]CIMO[- ]PRIMEIRO|D[EÉ]CIMO)"
     r"(?:\b|[.:\s—–-])", re.I)
 CHAPTER_LINE = re.compile(
     r"^\s*CAP[IÍ]TULO\s+(?P<num>[IVXLCDM]+|\d{1,2})"
@@ -58,7 +58,9 @@ def cleaned(text):
                 lines.append("")
             continue
         # Numero da pagina, quando impresso sozinho.
-        if re.fullmatch(r"[-—– ]*\d{1,3}[-—– ]*", line):
+        # Remove apenas numeros decorados por tracos (cabecalhos de pagina).
+        # "01" ou "1" podem ser os titulos reais dos capitulos.
+        if re.fullmatch(r"[-—–]+\\s*\\d{1,3}\\s*[-—–]+", line):
             continue
         lines.append(line)
     return lines
