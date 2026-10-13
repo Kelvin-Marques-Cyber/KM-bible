@@ -1,171 +1,196 @@
 #!/usr/bin/env python3
-"""Corrige APRESENTAÇÃO do texto já extraído das Confissões, sem paráfrases.
+"""Formata a transcrição integral de Agostinho para leitura, sem paráfrase.
 
-Preserva a edição portuguesa, separa título/notas, remove cabeçalhos/páginas
-do PDF, junta quebras tipográficas e retira o índice/apêndice colado no fim.
-A edição original permanece no PDF junto aos assets para conferência.
-Idempotente: os livros formatados não são reformatados numa nova compilação.
+Separação de títulos por bloco tipográfico (não exige pontuação final).
+Remoção de cabeçalhos e números de página. Notas extraídas sem misturar
+o corpo com o rodapé. O PDF original é mantido para conferência.
+A escrita é atômica: erros não sobrescrevem os JSONs dos livros.
 """
 from __future__ import annotations
+
 import json
+import os
 import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 ASSETS = ROOT / "assets" / "agostinho"
 PAGE_HEADER = re.compile(r"^Santo Agostinho\s*[–—-]\s*Confiss(?:ões|oes)\.?$", re.I)
-NUMBER = re.compile(r"^\d{1,3}$")
-NOTE = re.compile(r"^(\d{1,3})\s+(.+\S)$")
-TITLE_END = re.compile(r"[.!?][”\"']?\s*$")
-SPLIT = re.compile(r"\n[ \t]*\n")
+PAGE_NUMBER = re.compile(r"^\d{1,3}$")
+FOOTNOTE_START = re.compile(r"^(\d{1,3})\s+(\S.+)$")
+PAGE_SEPARATOR = re.compile(r"^_{3,}$")
 SUPERSCRIPT = str.maketrans("0123456789", "⁰¹²³⁴⁵⁶⁷⁸⁹")
 
 
-def join_wrapped(lines: list[str], *, paragraphs: bool = True) -> str:
-    assembled = []
-    for fragment in lines:
-        part = fragment.strip()
-        if not part:
+def join_lines(lines: list[str], *, paragraphs: bool = True) -> str:
+    """Reconecta linhas quebradas pelo PDF sem reescrever nenhuma palavra."""
+    text = ""
+    previous = ""
+    for line in lines:
+        piece = line.strip()
+        if not piece:
             continue
-        if not assembled:
-            assembled.append(part)
-            continue
-        previous = assembled[-1]
-        # Hífen no fim da linha impressa: 'cri-' + 'ação' -> 'criação'.
-        if previous.endswith("-") and re.match(r"^[a-zà-ÿ]", part):
-            assembled[-1] = previous[:-1] + part
-        elif paragraphs and re.search(r"[.!?][\"”']?$", previous) and re.match(
-            r"^[A-ZÀ-Ý“\"']", part
-        ):
-            assembled.append("\n\n" + part)
+        if not text:
+            text = piece
+        elif text.endswith("-") and re.match(r"^[a-zà-ÿ]", piece):
+            text = text[:-1] + piece
+        elif paragraphs and re.search(r'[.!?]["”’]?(?:[⁰¹²³⁴⁵⁶⁷⁸⁹]+)?$', previous) \
+                and re.match(r'^[A-ZÀ-Ý“"‘]', piece):
+            text += "\n\n" + piece
         else:
-            assembled.append(" " + part)
-    return re.sub(r"[ \t]{2,}", " ", "".join(
-        value if value.startswith((" ", "\n")) or i == 0 else " " + value
-        for i, value in enumerate(assembled)
-    )).strip()
+            text += " " + piece
+        previous = piece
+    return re.sub(r"[ \t]{2,}", " ", text).strip()
+
+
+def split_title(lines: list[str], book: int, chapter: int) -> tuple[str, int]:
+    """O título ocupa um bloco separado por linha vazia; pode terminar sem ponto.
+
+    Exemplos na edição:
+    Livro III.1: 'Amores impuros'
+    Livro III.3: 'O estudante de retórica e os "demolidores"'
+    Livro XIII.2: duas linhas terminando em 'de Deus.'
+    """
+    cursor = 0
+    while cursor < len(lines) and not lines[cursor].strip():
+        cursor += 1
+    start = cursor
+    while cursor < len(lines) and lines[cursor].strip():
+        cursor += 1
+    items = lines[start:cursor]
+    title = join_lines(items, paragraphs=False)
+
+    # Em títulos excepcionalmente divididos por linhas em branco, não
+    # engolir o corpo: recuar e manter ao menos a primeira linha como título.
+    if not title or len(title) > 185:
+        if start < len(lines) and 2 < len(lines[start].strip()) <= 185:
+            title, cursor = lines[start].strip(), start + 1
+        else:
+            raise ValueError(f"Título ilegível: livro {book}, cap. {chapter}")
+    if len(title) < 3:
+        raise ValueError(f"Título curto: livro {book}, cap. {chapter}")
+    return title, cursor
 
 
 def normalize(chapter: dict, book_number: int) -> dict:
-    if chapter.get("layout_version") == 2:
+    if chapter.get("layout_version") == 3:
         return chapter
-    raw = chapter.get("body", "")
-    lines = raw.splitlines()
-    # O capítulo XIII.38 continha índice geral e páginas publicitárias da
-    # edição após o fim do texto original. Nenhum trecho anterior ao índice é
-    # cortado, nem há remoção de material doutrinário dentro dos 278 capítulos.
-    if book_number == 13 and chapter["chapter"] == 38:
+    if chapter.get("layout_version") == 2:
+        # Evita editar novamente arquivos formatados por versões anteriores.
+        return chapter
+    chapter_number = chapter["chapter"]
+    original = str(chapter.get("body", ""))
+    lines = original.splitlines()
+
+    # O final do Livro XIII.38 inclui o sumário do volume e divulgação da
+    # editora, que não fazem parte do texto agostiniano.
+    if (book_number, chapter_number) == (13, 38):
         for i, line in enumerate(lines):
             if line.strip().casefold() == "índice" and any(
-                "CONFISSÕES" in x.upper()
-                for x in lines[i + 1:i + 9]
+                "CONFISSÕES" in following.upper()
+                for following in lines[i + 1:i + 12]
             ):
                 lines = lines[:i]
                 break
-    nonempty = [i for i, x in enumerate(lines) if x.strip()]
-    if not nonempty:
-        raise ValueError("Capítulo vazio.")
-    start = nonempty[0]
-    title_parts = []
-    pos = start
-    while pos < len(lines) and len(" ".join(title_parts)) < 150:
-        item = lines[pos].strip()
-        pos += 1
-        if not item:
-            if title_parts and TITLE_END.search(title_parts[-1]):
-                break
-            continue
-        title_parts.append(item)
-        if TITLE_END.search(item):
-            break
-    title = join_wrapped(title_parts, paragraphs=False)
-    if not title or len(title) > 180:
-        raise ValueError(f"Título ilegível: livro {book_number}, cap. {chapter['chapter']}")
-    text_lines: list[str] = []
-    notes: list[dict] = []
-    active = None
+
+    title, pos = split_title(lines, book_number, chapter_number)
+    body_lines = []
+    notes = []
+    active_note = None
+    expecting_number = False
 
     def flush_note():
-        nonlocal active
-        if active:
-            active["text"] = join_wrapped(active.pop("lines"), paragraphs=False)
-            if active["text"]:
-                notes.append(active)
-        active = None
+        nonlocal active_note
+        if active_note:
+            text = join_lines(active_note.pop("lines"), paragraphs=False)
+            if text:
+                notes.append({"number": active_note["number"], "text": text})
+        active_note = None
 
     for i in range(pos, len(lines)):
         line = lines[i].strip()
-        if not line or line == "_______" or re.fullmatch(r"_+", line):
-            if line.startswith("_"):
-                flush_note()
+        if not line:
+            continue
+        if PAGE_SEPARATOR.fullmatch(line):
+            flush_note()
             continue
         if PAGE_HEADER.fullmatch(line):
             flush_note()
             continue
-        if NUMBER.fullmatch(line):
-            # Página isolada, não um numeral do conteúdo.
-            next_nonempty = next((x.strip() for x in lines[i + 1:] if x.strip()), "")
-            if PAGE_HEADER.fullmatch(next_nonempty) or (int(line) > 100 and (
-                active is not None or book_number == 13
-            )):
+
+        # Números de página são impressos em uma linha isolada, usualmente
+        # seguidos imediatamente por "Santo Agostinho – Confissões.".
+        if PAGE_NUMBER.fullmatch(line):
+            next_nonempty = next(
+                (candidate.strip() for candidate in lines[i+1:] if candidate.strip()),
+                ""
+            )
+            if PAGE_HEADER.fullmatch(next_nonempty) or active_note is not None \
+                    or book_number == 13 and int(line) >= 590:
                 flush_note()
                 continue
-        note = NOTE.match(line)
-        if note and len(note.group(2)) >= 8:
+        match = FOOTNOTE_START.fullmatch(line)
+        if match and len(match.group(2)) >= 8:
+            # Uma nota começa no rodapé. Continua apenas até a página seguinte
+            # (marcada por número/cabeçalho) ou o próximo item.
             flush_note()
-            active = {"number": int(note.group(1)), "lines": [note.group(2)]}
+            active_note = {"number": int(match.group(1)),
+                           "lines": [match.group(2)]}
             continue
-        if active is not None:
-            active["lines"].append(line)
+        if active_note is not None:
+            active_note["lines"].append(line)
         else:
-            text_lines.append(line)
+            body_lines.append(line)
     flush_note()
-    body = join_wrapped(text_lines)
-    # Preserva referências numéricas da tradução, agora elevadas à linha
-    # tipográfica (em vez de 'mim?8' e 'Senhor730').
-    for n in sorted({x["number"] for x in notes}, key=lambda x: -len(str(x))):
+
+    body = join_lines(body_lines)
+    for note in notes:
+        number = str(note["number"])
         body = re.sub(
-            rf"(?<=[A-Za-zÀ-ÿ?!.,;:\]\)])(?<!\d){n}(?!\d)",
-            str(n).translate(SUPERSCRIPT),
+            rf"(?<=[A-Za-zÀ-ÿ?!.,;:\])])(?<!\d){number}(?!\d)",
+            number.translate(SUPERSCRIPT),
             body,
         )
-    if len(body) < 250:
-        raise ValueError(f"Corpo curto: livro {book_number}, cap. {chapter['chapter']}")
-    return {
-        "chapter": chapter["chapter"],
-        "title": title,
-        "body": body,
-        "footnotes": notes,
-        "layout_version": 2,
-    }
+
+    if len(body) < 220:
+        raise ValueError(
+            f"Texto curto após separar notas: livro {book_number}, "
+            f"cap. {chapter_number}: {len(body)} caracteres"
+        )
+    return {"chapter": chapter_number, "title": title, "body": body,
+            "footnotes": notes, "layout_version": 3}
 
 
 def main():
     manifest = json.loads((ASSETS / "manifest.json").read_text(encoding="utf-8"))
-    if len(manifest["chapterCounts"]) != 13 or manifest["chapterCount"] != 278:
-        raise SystemExit("Índice de Agostinho inválido.")
-    total = 0
-    for book in range(1, 14):
-        path = ASSETS / f"{book}.json"
-        data = json.loads(path.read_text(encoding="utf-8"))
-        if data.get("book") != book:
-            raise SystemExit(f"Livro incorreto no JSON {book}.")
-        if len(data["chapters"]) != manifest["chapterCounts"][book - 1]:
-            raise SystemExit(f"Faltam capítulos no livro {book}.")
-        changed = []
-        for ch in data["chapters"]:
-            changed.append(normalize(ch, book))
-        # Prepara inteiramente o livro antes de substituir seu arquivo.
-        data["chapters"] = changed
-        data["layout_version"] = 2
-        path.write_text(json.dumps(data, ensure_ascii=False, separators=(",", ":")),
-                        encoding="utf-8")
-        total += len(changed)
-    assert total == 278
-    final = json.loads((ASSETS / "13.json").read_text())["chapters"][-1]
-    if "Solus Ágape" in final["body"] or "\nÍndice" in final["body"]:
-        raise SystemExit("Índice da edição ainda presente no último capítulo.")
-    print(f"Agostinho: {total} capítulos revisados (títulos, parágrafos, notas e rodapés).")
+    counts = manifest.get("chapterCounts", [])
+    if len(counts) != 13 or manifest.get("chapterCount") != 278:
+        raise SystemExit("Manifest de Agostinho inválido.")
+    books = []
+    all_chapters = 0
+    for number, expected in enumerate(counts, 1):
+        filename = ASSETS / f"{number}.json"
+        book = json.loads(filename.read_text(encoding="utf-8"))
+        if book["book"] != number or len(book["chapters"]) != expected:
+            raise SystemExit(f"Estrutura inválida no livro {number}")
+        revised = [normalize(ch, number) for ch in book["chapters"]]
+        book["chapters"] = revised
+        book["layout_version"] = 3
+        books.append((filename, book))
+        all_chapters += len(revised)
+    if all_chapters != 278:
+        raise SystemExit(f"Capítulos incompletos: {all_chapters}")
+    last = books[-1][1]["chapters"][-1]
+    if len(last["body"]) >= 8000 or "Solus Ágape" in last["body"]:
+        raise SystemExit("Índice/publicidade indevidamente incluídos em XIII.38")
+    for filename, book in books:
+        temp = filename.with_suffix(".json.tmp")
+        temp.write_text(
+            json.dumps(book, ensure_ascii=False, separators=(",", ":")),
+            encoding="utf-8",
+        )
+        os.replace(temp, filename)
+    print(f"Agostinho: normalização concluída em {all_chapters} capítulos.")
 
 
 if __name__ == "__main__":
