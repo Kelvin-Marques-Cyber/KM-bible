@@ -31,7 +31,12 @@ fi
 if ! "$VENV/bin/python" -c 'import fitz, gdown' >/dev/null 2>&1; then
   "$VENV/bin/python" -m pip install -q --disable-pip-version-check 'pymupdf>=1.24,<2' 'gdown>=5,<7'
 fi
+# O PDF integral ja foi incorporado ao repositorio. Evita baixar 3,39 MB
+# novamente no Cloud Shell a cada build; o documento continua inalterado.
 ARGS=(--download)
+if [[ -s assets/agostinho/confissoes-santo-agostinho-ptbr.pdf ]]; then
+  ARGS=(--pdf assets/agostinho/confissoes-santo-agostinho-ptbr.pdf)
+fi
 if [[ -n "${AGOSTINHO_PDF:-}" ]]; then
   ARGS=(--pdf "$AGOSTINHO_PDF")
 fi
