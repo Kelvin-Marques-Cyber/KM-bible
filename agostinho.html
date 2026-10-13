@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#795839">
+<meta name="description" content="Confissões de Santo Agostinho, 13 livros em linguagem simples, organizados por grupos de capítulos.">
+<title>Confissões de Santo Agostinho | Bíblia Reformada</title>
+<link rel="icon" href="./favicon.png?v=20261013-app-1" type="image/png">
+<link rel="manifest" href="./manifest.json">
+<style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif; color:#3b2c21; background:#f5f0e7}
+*{box-sizing:border-box}body{max-width:910px;margin:0 auto;padding:22px 15px 64px}
+a{color:#68472b}a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #c9824b;outline-offset:3px}
+header{margin:0 0 23px}header a{text-decoration:none;font-size:.96rem}h1{font:700 clamp(1.7rem,4vw,2.6rem)/1.2 Georgia,serif;margin:14px 0 8px}
+p{line-height:1.75}.intro{color:#665345;margin:0 0 15px}
+.info{background:#fffaed;border-left:4px solid #916b43;padding:13px 17px;border-radius:9px;font-size:.94rem;line-height:1.6}
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+fieldset{border:0;margin:0;padding:0}label{display:block;font-size:.9rem;font-weight:700;margin-bottom:6px}
+select,input,button{font:inherit}select{width:100%;padding:12px;background:#fffefa;border:1px solid #bba990;border-radius:10px;color:#3b2c21}
+article{background:#fffefa;border:1px solid #dfd1bd;border-radius:17px;padding:clamp(18px,4vw,35px);box-shadow:0 8px 35px #43301809}
+.eyebrow{color:#816346;font-size:.85rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em}
+h2{font:700 clamp(1.4rem,3vw,1.9rem)/1.26 Georgia,serif;margin:10px 0 10px}
+h3{font:700 1.25rem/1.35 Georgia,serif;margin:23px 0 12px}
+#summary{color:#5f5143;font-style:italic}.reading{font:1.12rem/1.87 Georgia,"Times New Roman",serif;white-space:normal}
+.reading p{margin:0 0 1.2em;line-height:inherit}
+.row{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin:16px 0}
+button{border:1px solid #bca98f;background:#fffefa;color:#4b3629;padding:11px 16px;border-radius:10px;cursor:pointer}
+button.primary{border-color:#795839;background:#795839;color:white;font-weight:700}
+button:disabled{opacity:.45;cursor:not-allowed}
+.small{font-size:.88rem;color:#64594b}.status{min-height:1.4em}
+footer{margin-top:20px;line-height:1.6}
+@media(max-width:630px){.controls{grid-template-columns:1fr}button{flex:1}}
+</style>
+</head>
+<body>
+<header>
+<a href="./">← Voltar à Bíblia Reformada</a>
+<h1>Confissões de Santo Agostinho</h1>
+<p class="intro">Uma jornada sobre a infância, o desejo, os erros, a conversão e o descanso em Deus.</p>
+<div class="info">Esta é uma <strong>adaptação explicativa original em português simples</strong>. As 52 leituras resumem grupos de capítulos dos 13 livros históricos; não são a tradução integral nem palavras literais de Agostinho. Confira o texto original pelo link ao final.</div>
+</header>
+<div class="controls">
+<fieldset><label for="book">Escolher livro (canto)</label><select id="book" aria-label="Escolher um dos 13 livros"></select></fieldset>
+<fieldset><label for="chapter">Escolher capítulos</label><select id="chapter" aria-label="Escolher grupo de capítulos"></select></fieldset>
+</div>
+<article aria-live="polite">
+<div class="eyebrow" id="eyebrow">Preparando leitura…</div>
+<h2 id="title">Confissões</h2>
+<p id="summary"></p>
+<h3 id="section"></h3>
+<div id="content" class="reading"></div>
+<div class="row">
+<button id="mark" type="button">☆ Marcar leitura</button>
+<button id="font" type="button" aria-label="Aumentar fonte da leitura">Aumentar fonte A+</button>
+<button id="copy" type="button">Copiar</button>
+</div>
+<div class="row">
+<button id="prev" type="button">← Anterior</button>
+<button id="next" class="primary" type="button">Próxima →</button>
+</div>
+<p class="small status" id="status" role="status"></p>
+</article>
+<footer class="small">Referência histórica: <a href="https://www.newadvent.org/fathers/1101.htm" target="_blank" rel="noopener noreferrer">Confessions — Saint Augustine, texto integral em inglês</a>. Uma síntese em linguagem acessível não substitui a consulta à obra.</footer>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const read=(key,fallback)=>{try{return localStorage.getItem(key)??fallback}catch(_){return fallback}};
+const write=(key,value)=>{try{localStorage.setItem(key,String(value))}catch(_){}};
+let data=null,bookNo=0,partNo=0,size=Number(read('augustine-font-size',1.12));
+if(!Number.isFinite(size)||size<1||size>1.8)size=1.12;
+function setStatus(message){$('status').textContent=message}
+function save(){write('augustine-book',bookNo);write('augustine-section',partNo)}
+function buildParts(){
+ const book=data.books[bookNo];
+ $('chapter').replaceChildren();
+ book.sections.forEach((item,i)=>{
+  const option=document.createElement('option');option.value=i;
+  option.textContent='Cap. '+item.from+'–'+item.to+' · '+item.title;
+  $('chapter').append(option);
+ });
+}
+function display(){
+ const book=data.books[bookNo],part=book.sections[partNo];
+ $('book').value=bookNo;$('chapter').value=partNo;
+ $('eyebrow').textContent='Livro '+book.number+' de 13 · Capítulos '+part.from+'–'+part.to;
+ $('title').textContent=book.title;$('summary').textContent=book.summary;
+ $('section').textContent=part.title;$('content').replaceChildren();
+ for(const paragraph of part.body.split(/\n\n+/)){
+  const p=document.createElement('p');p.textContent=paragraph;$('content').append(p);
+ }
+ $('content').style.fontSize=size+'rem';
+ const key='augustine-mark-'+book.number+'-'+part.from;
+ $('mark').textContent=read(key,'')==='1'?'★ Leitura marcada':'☆ Marcar leitura';
+ $('prev').disabled=bookNo===0&&partNo===0;
+ $('next').disabled=bookNo===data.books.length-1&&partNo===book.sections.length-1;
+ $('font').textContent=size>1.5?'Fonte normal A':'Aumentar fonte A+';
+ save();setStatus('Progresso salvo automaticamente neste navegador.');
+}
+function go(book,part){
+ bookNo=Math.max(0,Math.min(book,data.books.length-1));
+ buildParts();partNo=Math.max(0,Math.min(part,data.books[bookNo].sections.length-1));display();
+}
+$('book').addEventListener('change',e=>go(Number(e.target.value),0));
+$('chapter').addEventListener('change',e=>go(bookNo,Number(e.target.value)));
+$('prev').addEventListener('click',()=>{
+ if(partNo>0)go(bookNo,partNo-1);
+ else if(bookNo>0)go(bookNo-1,data.books[bookNo-1].sections.length-1);
+});
+$('next').addEventListener('click',()=>{
+ if(partNo+1<data.books[bookNo].sections.length)go(bookNo,partNo+1);
+ else if(bookNo+1<data.books.length)go(bookNo+1,0);
+});
+$('mark').addEventListener('click',()=>{
+ const part=data.books[bookNo].sections[partNo];
+ const key='augustine-mark-'+(bookNo+1)+'-'+part.from;
+ write(key,read(key,'')==='1'?'0':'1');display();
+});
+$('font').addEventListener('click',()=>{
+ size=size>1.5?1.12:Math.min(1.65,size+.14);write('augustine-font-size',size);display();
+});
+$('copy').addEventListener('click',async()=>{
+ const b=data.books[bookNo],p=b.sections[partNo];
+ const message='Confissões de Agostinho · Livro '+b.number+
+ ' · Capítulos '+p.from+'–'+p.to+'\n'+p.title+'\n\n'+p.body+
+ '\n\nAdaptação didática em português simples, não tradução literal.';
+ try{await navigator.clipboard.writeText(message);setStatus('Leitura copiada.')}
+ catch(_){setStatus('Selecione o texto da leitura para copiá-lo.')}
+});
+fetch('./assets/assets/content/agostinho-confissoes-facil.json',{cache:'no-store'})
+.then(r=>{if(!r.ok)throw Error('HTTP '+r.status);return r.json()})
+.then(json=>{
+ if(!json.books||json.books.length!==13)throw Error('Catálogo de livros incompleto');
+ data=json;
+ data.books.forEach((item,index)=>{
+  const option=document.createElement('option');option.value=index;
+  option.textContent='Livro '+item.number+' · '+item.title;$('book').append(option);
+ });
+ go(Number(read('augustine-book',0))||0,Number(read('augustine-section',0))||0);
+})
+.catch(error=>{$('eyebrow').textContent='Não foi possível carregar';setStatus('Erro: '+error.message+'. Tente atualizar a página ou verificar sua conexão.');});
+</script>
+</body>
+</html>
