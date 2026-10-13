@@ -48,6 +48,12 @@ class _StartupState extends State<Startup> {
   Future<void> load() async {
     try {
       final store = await Store.open();
+      // A ARA é distribuída pré-instalada nesta edição. Use-a na primeira
+      // execução, sem substituir a escolha de tradução de quem já usa o app.
+      if (store.installed('ARA') &&
+          store.pref('translation', '') == '') {
+        store.setPref('translation', 'ARA');
+      }
       for (final directory in ['bundled', 'private']) {
         List<dynamic> modules = [];
         try {
