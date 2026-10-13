@@ -1,4 +1,6 @@
 import 'verse_study.dart';
+import 'dart:convert';
+import 'package:flutter/foundation.dart' show kIsWeb, defaultTargetPlatform, TargetPlatform;
 import 'portuguese_resources.dart';
 import 'cross_references.dart';
 import 'passage_picker.dart';
@@ -567,6 +569,48 @@ class CommentariesPage extends StatefulWidget {
 class _CommentariesPageState extends State<CommentariesPage> {
   Set<String> authors = {};
   bool showEnglishOriginals = false;
+  List<RecordRow> _calvinOnDemand = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadCalvinOnDemand();
+  }
+
+  Future<void> _loadCalvinOnDemand() async {
+    final mobileWeb = kIsWeb &&
+        (defaultTargetPlatform == TargetPlatform.android ||
+         defaultTargetPlatform == TargetPlatform.iOS);
+    if (!mobileWeb) return;
+    try {
+      final book = widget.reference.book;
+      final text = await rootBundle.loadString('assets/calvino-por-livro/$book.json');
+      final data = jsonDecode(text) as List;
+      final key = widget.reference.key;
+      int keyOf(String ref) {
+        final parts = ref.split(':');
+        if (parts.length != 3) return -1;
+        final values = parts.map(int.tryParse).toList();
+        if (values.any((v) => v == null)) return -1;
+        return values[0]! * 1000000 + values[1]! * 1000 + values[2]!;
+      }
+      final rows = <RecordRow>[];
+      for (final entry in data) {
+        final row = Map<String, Object?>.from(entry as Map);
+        final start = keyOf(row['reference'] as String);
+        final end = keyOf(row['end_reference'] as String);
+        if (start > key || end < key) continue;
+        rows.add({
+          ...row,
+          'module_id': 'CalvinCommentaries',
+          'bibliography': 'Calvin Commentaries — CCEL (texto historico)',
+        });
+      }
+      if (mounted) setState(() => _calvinOnDemand = rows);
+    } catch (_) {
+      // Os outros comentaristas permanecem disponiveis.
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final a = context.app,
@@ -574,6 +618,10 @@ class _CommentariesPageState extends State<CommentariesPage> {
           widget.reference,
           sourceTranslation: a.translation,
         );
+    final found = all.map((entry) => entry['id']).toSet();
+    for (final row in _calvinOnDemand) {
+      if (found.add(row['id'])) all.add(row);
+    }
     all.sort((x, y) {
       int rank(Map<String, Object?> r) =>
           (r['module_id'] as String).startsWith('HDL')
@@ -624,7 +672,8 @@ class _CommentariesPageState extends State<CommentariesPage> {
                   label: Text(
                     id == 'HDL-JOAO'
                         ? 'Hernandes · João'
-                        : a.store.module(id)?['author'] as String? ?? id,
+                        : (a.store.module(id)?['author'] as String?) ??
+                            (id == 'CalvinCommentaries' ? 'João Calvino' : id),
                   ),
                   selected: authors.contains(id),
                   onSelected: (v) => setState(() {
@@ -638,7 +687,16 @@ class _CommentariesPageState extends State<CommentariesPage> {
         ...localized.where((r) => authors.isEmpty || authors.contains(r['module_id'])).map((
           r,
         ) {
-          final m = a.store.module(r['module_id'] as String)!;
+          final m = a.store.module(r['module_id'] as String) ??
+              <String, Object?>{
+                'author': 'João Calvino',
+                'title': 'Comentários reunidos de João Calvino',
+                'language': 'en',
+                'id': 'CalvinCommentaries',
+                'version': 'public.1',
+                'license': 'Domínio público',
+                'source': 'CCEL — edição histórica',
+              };
           final pt = a.store.translatedEntry('commentary', r['id'] as String);
           final englishOnly =
               pt == null && m['language'] == 'en' && a.language == 'pt';
