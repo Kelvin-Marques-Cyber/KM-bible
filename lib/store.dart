@@ -2,11 +2,13 @@ import 'scripture_links.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/common.dart';
 import 'sqlite_runtime.dart' as runtime;
+import 'store_bootstrap.dart' as bootstrap;
 import 'package:uuid/uuid.dart';
 import 'domain.dart';
 
@@ -45,6 +47,13 @@ class Store {
     initPersonal();
   }
   static Future<Store> open() async {
+    if (kIsWeb) {
+      final dbs = await bootstrap.openBrowserDatabases();
+      final store = Store(dbs.$1, dbs.$2, dbs.$3, dbs.$4, 'browser');
+      await store.refreshModelIndex();
+      await store.refreshEditorial();
+      return store;
+    }
     await runtime.initializeSqliteRuntime();
     final dir = await getApplicationSupportDirectory();
     await dir.create(recursive: true);
@@ -203,6 +212,9 @@ class Store {
   }
 
   Database? get connections {
+    if (kIsWeb) {
+      return _connections ??= runtime.sqlite3.open('connections.sqlite', mode: OpenMode.readOnly);
+    }
     final file = File(p.join(directory, 'connections.sqlite'));
     return _connections ??= file.existsSync()
         ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
@@ -210,6 +222,9 @@ class Store {
   }
 
   Database? get portuguese {
+    if (kIsWeb) {
+      return _portuguese ??= runtime.sqlite3.open('portuguese.sqlite', mode: OpenMode.readOnly);
+    }
     final file = File(p.join(directory, 'portuguese.sqlite'));
     return _portuguese ??= file.existsSync()
         ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
@@ -217,6 +232,9 @@ class Store {
   }
 
   Database? get topical {
+    if (kIsWeb) {
+      return _topics ??= runtime.sqlite3.open('topics.sqlite', mode: OpenMode.readOnly);
+    }
     final file = File(p.join(directory, 'topics.sqlite'));
     return _topics ??= file.existsSync()
         ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
