@@ -9,7 +9,7 @@ for tool in flutter python3; do
 done
 
 # Resguarda conteudo pessoal nao autorizado para o build publico.
-if [[ -d assets/private ]] && find assets/private -type f \\( -iname '*.biblepkg' -o -iname '*.sqlite' -o -iname '*.pdf' \\) -print -quit | grep -q .; then
+if [[ -d assets/private ]] && find assets/private -type f \( -iname '*.biblepkg' -o -iname '*.sqlite' -o -iname '*.pdf' \) -print -quit | grep -q .; then
   echo 'Existem arquivos pessoais em assets/private; nao serao empacotados no APK.' >&2
   exit 4
 fi
@@ -35,8 +35,8 @@ python3 scripts/otimizar_acervo_sqlite.py
 python3 scripts/verificar_modulos_embutidos.py
 
 # Permite ajustar para builds posteriores mantendo incremento do versionCode.
-flutter build apk --release --target-platform android-arm64 \\
-  --build-name="${APK_VERSION_NAME:-0.5.4}" \\
+flutter build apk --release --target-platform android-arm64 \
+  --build-name="${APK_VERSION_NAME:-0.5.4}" \
   --build-number="${APK_VERSION_CODE:-54}"
 
 artifact="build/app/outputs/flutter-apk/app-release.apk"
