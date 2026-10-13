@@ -47,7 +47,9 @@ cleanup(){
 }
 trap cleanup EXIT
 git worktree add --detach "$tmp" origin/gh-pages
-find "$tmp" -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf -- {} +
+# Preserva as paginas auxiliares de instalacao e diagnostico, sem apagar dados.
+find "$tmp" -mindepth 1 -maxdepth 1 ! -name .git \
+  ! -name diagnostico.html ! -name instalar.html -exec rm -rf -- {} +
 cp -a build/web/. "$tmp/"
 touch "$tmp/.nojekyll"
 git -C "$tmp" add -A
