@@ -7,10 +7,10 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/common.dart';
 import 'sqlite_runtime.dart' as runtime;
-
-typedef Database = CommonDatabase;
 import 'package:uuid/uuid.dart';
 import 'domain.dart';
+
+typedef Database = CommonDatabase;
 
 typedef RecordRow = Map<String, Object?>;
 Map<String, dynamic> jsonMap(Object? text) {
