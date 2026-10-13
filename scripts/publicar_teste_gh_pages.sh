@@ -6,12 +6,14 @@ cd "$(dirname "$0")/.."
 if [[ "${1:-}" != "--sem-build" ]]; then
   bash scripts/build_flutter_web_fiel.sh
 fi
-for name in index.html flutter_bootstrap.js main.dart.js sqlite3.wasm assets/assets/content/catalogue.sqlite assets/assets/3d/viewer_immersive.html; do
+for name in index.html flutter_bootstrap.js main.dart.js sqlite3.wasm assets/assets/content/sqlite-web-parts.json assets/assets/3d/viewer_immersive.html; do
   if [[ ! -s "build/web/$name" ]]; then
     echo "Falha de verificacao: build/web/$name ausente" >&2
     exit 2
   fi
 done
+# Verifica SHA das partes e que nenhum arquivo excede o limite do GitHub.
+python3 scripts/particionar_sqlite_web.py --validar-build
 # Protege contra publicação de assets incompletos ou da ARA apenas
 # como nome no catálogo, em vez de texto realmente pronto para leitura.
 python3 - <<'PY'
@@ -30,7 +32,9 @@ for i in range(1,14):
 manifest=json.loads((root/'agostinho'/'manifest.json').read_text())
 if manifest['chapterCount']!=278:
     raise SystemExit('Publicacao interrompida: indice de Agostinho incompleto.')
-db=sqlite3.connect(root/'content'/'catalogue.sqlite')
+# Os arquivos >50 MB são publicados em partes; a conferência de registros
+# usa a fonte SQLite, já submetida ao teste de integridade do build.
+db=sqlite3.connect(Path('assets/content/catalogue.sqlite'))
 try:
     row=db.execute("SELECT count(*),count(distinct book),count(distinct book||':'||chapter) FROM verses WHERE translation='ARA'").fetchone()
     if tuple(row)!=(31104,66,1189):
@@ -88,6 +92,16 @@ find "$tmp" -mindepth 1 -maxdepth 1 ! -name .git \
   ! -name agostinho.html ! -name atualizar.html ! -name codigo-fonte -exec rm -rf -- {} +
 cp -a build/web/. "$tmp/"
 cp -a "$icon_backup/." "$tmp/"
+# Garante que também as páginas auxiliares preservadas não tragam blobs >100 MB.
+python3 - "$tmp" <<'PY'
+from pathlib import Path
+import sys
+root=Path(sys.argv[1])
+large=[f"{p.relative_to(root)} ({p.stat().st_size})"
+       for p in root.rglob('*') if p.is_file() and p.stat().st_size >= 100_000_000]
+if large: raise SystemExit("Bloqueado por limite de 100 MB do GitHub: " + ", ".join(large))
+print("GH001: todos os arquivos de publicacao abaixo de 100 MB.")
+PY
 touch "$tmp/.nojekyll"
 git -C "$tmp" add -A
 if git -C "$tmp" diff --cached --quiet; then
