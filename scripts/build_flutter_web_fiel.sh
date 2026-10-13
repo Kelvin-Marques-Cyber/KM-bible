@@ -33,6 +33,8 @@ python3 scripts/embutir_modulos_bundled.py
 # Reconstroi FTS5 e SHA-256 DEPOIS da pre-instalacao, garantindo busca coerente.
 python3 scripts/otimizar_acervo_sqlite.py
 python3 scripts/verificar_modulos_embutidos.py
+# Divide os SQLite grandes em fragmentos Web de 16 MiB antes do Flutter build.
+python3 scripts/particionar_sqlite_web.py --preparar
 # O sqlite3 2.9.4 exige o modulo WebAssembly do mesmo release na plataforma Web.
 if [[ ! -s web/sqlite3.wasm ]]; then
   echo 'Baixando modulo oficial SQLite WebAssembly 2.9.4...'
@@ -54,6 +56,8 @@ if ! flutter build web --release --base-href /KM-bible/ 2>&1 | tee flutter-web-b
   echo 'Build falhou: veja flutter-web-build.log' >&2
   exit 1
 fi
+# Remove apenas do build/web os SQLite grandes, mantendo os fragmentos.
+python3 scripts/particionar_sqlite_web.py --finalizar
 python3 - <<'PY'
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
