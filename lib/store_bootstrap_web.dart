@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
@@ -12,6 +13,13 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
   await runtime.initializeSqliteRuntime();
 
   final vfs = runtime.sqliteFileSystem;
+  // Estas preferências já existem no armazenamento persistente do usuário.
+  // Guardamos apenas os hashes de distribuição, sem copiar, apagar ou
+  // modificar as anotações e os dados de leitura.
+  final versions = runtime.sqlite3.open('personal.sqlite');
+  versions.execute(
+    'CREATE TABLE IF NOT EXISTS preferences(key TEXT PRIMARY KEY, value TEXT)',
+  );
   for (final name in const [
     'catalogue',
     'lexicon',
@@ -31,6 +39,17 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
     final bundlePath = 'assets/content/$name.sqlite';
     final expected =
         (await rootBundle.loadString('assets/content/$name.sha256')).trim();
+    // Bancos ja validados nao precisam ser relidos (dezenas de MB) a cada F5.
+    // Se uma nova edicao do aplicativo tiver outro hash, verificamos/trocamos
+    // apenas aquele banco, nunca o personal.sqlite.
+    final versionKey = 'browser_asset_sha256_$name';
+    final remembered = versions.select(
+      'SELECT value FROM preferences WHERE key=?', [versionKey],
+    );
+    if (exists && remembered.isNotEmpty &&
+        remembered.first['value'] == jsonEncode(expected)) {
+      continue;
+    }
     if (exists) {
       final current = vfs.xOpen(
         Sqlite3Filename(path),
@@ -41,7 +60,14 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
         if (size > 0) {
           final existingBytes = Uint8List(size);
           current.xRead(existingBytes, 0);
-          if (sha256.convert(existingBytes).toString() == expected) continue;
+          if (sha256.convert(existingBytes).toString() == expected) {
+            versions.execute(
+              'INSERT OR REPLACE INTO preferences(key,value) VALUES(?,?)',
+              [versionKey, jsonEncode(expected)],
+            );
+            await vfs.flush();
+            continue;
+          }
         }
       } finally {
         current.xClose();
@@ -75,7 +101,13 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
     }
     // Aguardamos a persistencia antes de abrir o banco via SQLite.
     await vfs.flush();
+    versions.execute(
+      'INSERT OR REPLACE INTO preferences(key,value) VALUES(?,?)',
+      [versionKey, jsonEncode(expected)],
+    );
+    await vfs.flush();
   }
+  versions.dispose();
 
   return (
     runtime.sqlite3.open('catalogue.sqlite'),
