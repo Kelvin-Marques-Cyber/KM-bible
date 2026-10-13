@@ -62,6 +62,15 @@ class _StartupState extends State<Startup> {
         for (final item in modules) {
           final name = item is String ? item : item['file'] as String;
           final id = item is String ? 'ARA' : item['id'] as String;
+          // O pacote de Calvino tem mais de 11 mil entradas. Na PWA de celular,
+          // evita descompactar e indexar o acervo durante a abertura inicial.
+          // No Android nativo ele continua disponivel normalmente.
+          final mobileWeb = kIsWeb &&
+              (defaultTargetPlatform == TargetPlatform.android ||
+               defaultTargetPlatform == TargetPlatform.iOS);
+          if (mobileWeb && id == 'CalvinCommentaries') {
+            continue;
+          }
           final imported = '${directory}_imported_$id';
           if (store.installed(id) ||
               store.pref(imported, false) ||
