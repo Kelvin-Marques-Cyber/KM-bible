@@ -48,12 +48,9 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: SelectableText(
-                'Não foi possível carregar os capítulos de Agostinho: '
-                '${snapshot.error}',
-              ),
+            child: SelectableText(
+              'Não foi possível carregar o índice de Agostinho: '
+              '${snapshot.error}',
             ),
           );
         }
@@ -64,50 +61,49 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
         final books = (data['books'] as List)
             .map((item) => Map<String, dynamic>.from(item as Map))
             .toList();
-        final readings = <({
+        final chapters = <({
           int bookIndex,
-          int sectionIndex,
+          int chapter,
           Map<String, dynamic> book,
-          Map<String, dynamic> section,
         })>[];
         for (var b = 0; b < books.length; b++) {
           final book = books[b];
           if (agostinhoLivro != 0 && book['number'] != agostinhoLivro) {
             continue;
           }
-          final sections = book['sections'] as List;
-          for (var i = 0; i < sections.length; i++) {
-            final section = Map<String, dynamic>.from(sections[i] as Map);
+          final count = book['chapterCount'] as int;
+          for (var chapter = 1; chapter <= count; chapter++) {
             if (query.isNotEmpty &&
                 !fold(
-                  '${book['title']} ${book['number']} '
-                  '${section['title']} ${section['body']} '
-                  '${section['from']} ${section['to']}',
+                  'Livro ${book['number']} ${book['title']} '
+                  'Capítulo $chapter',
                 ).contains(fold(query))) {
               continue;
             }
-            readings.add((
-              bookIndex: b,
-              sectionIndex: i,
-              book: book,
-              section: section,
-            ));
+            chapters.add((bookIndex: b, chapter: chapter, book: book));
           }
         }
+
         return ListView(
           padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
           children: [
+            const Text(
+              '278 capítulos com o texto integral em português, '
+              'e não resumos. Escolha um capítulo para abrir a '
+              'edição textual. É necessária conexão à internet.',
+            ),
+            const SizedBox(height: 12),
             DropdownButtonFormField<int>(
-              key: ValueKey('agostinho-lista-$agostinhoLivro'),
-              initialValue: agostinhoLivro,
+              key: ValueKey('agostinho-indice-livro-$agostinhoLivro'),
               isExpanded: true,
+              initialValue: agostinhoLivro,
               decoration: const InputDecoration(
                 labelText: 'Selecionar livro de Agostinho',
               ),
               items: [
                 const DropdownMenuItem(
                   value: 0,
-                  child: Text('Todos os 13 livros · 52 leituras'),
+                  child: Text('Todos os 13 livros · 278 capítulos'),
                 ),
                 for (final book in books)
                   DropdownMenuItem(
@@ -124,51 +120,60 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
                 }
               },
             ),
-            const SizedBox(height: 8),
-            if (readings.isEmpty)
+            const SizedBox(height: 10),
+            TextButton.icon(
+              onPressed: () => openAugustineSource(
+                context,
+                augustineFullEdition,
+              ),
+              icon: const Icon(Icons.menu_book_outlined),
+              label: const Text('Consultar edição integral em português'),
+            ),
+            if (chapters.isEmpty)
               const Padding(
                 padding: EdgeInsets.all(16),
-                child: Text('Nenhuma leitura encontrada neste livro.'),
+                child: Text('Nenhum capítulo encontrado.'),
               ),
-            for (final entry in readings)
+            for (final entry in chapters)
               ListTile(
                 contentPadding: EdgeInsets.zero,
-                leading: Icon(
-                  context.app.store.pref(
-                            'agostinho_favorito_${entry.book['number']}_'
-                            '${entry.section['from']}',
-                            false,
-                          ) ==
-                          true
-                      ? Icons.bookmark
-                      : Icons.auto_stories_outlined,
-                ),
+                leading: const Icon(Icons.auto_stories_outlined),
                 title: Text(
                   'Livro ${entry.book['number']} · '
-                  '${entry.section['title']}',
+                  'Capítulo ${entry.chapter}',
                 ),
                 subtitle: Text(
-                  'Capítulos ${entry.section['from']}–'
-                  '${entry.section['to']} · '
-                  '${entry.book['title']}',
+                  '${entry.book['title']} · '
+                  'Ler as palavras de Agostinho',
                 ),
+                trailing: const Icon(Icons.open_in_new),
                 onTap: () {
-                  // Reutiliza o leitor completo ao tocar numa leitura.
                   context.app.store.setPref(
                     'agostinho_livro',
                     entry.bookIndex,
                   );
                   context.app.store.setPref(
-                    'agostinho_secao',
-                    entry.sectionIndex,
+                    'agostinho_capitulo',
+                    entry.chapter - 1,
                   );
-                  sheet(
+                  openAugustineSource(
                     context,
-                    'Agostinho · Livro ${entry.book['number']}',
-                    const AugustineConfessionsPage(),
+                    augustineChapterUrl(
+                      entry.bookIndex + 1,
+                      entry.chapter,
+                    ),
                   );
                 },
               ),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              child: Text(
+                'A edição em português é oferecida por fonte externa. '
+                'O latim original está disponível no mesmo endereço. '
+                'Os textos não são reproduzidos aqui sem verificar '
+                'as condições de cada edição.',
+              ),
+            ),
           ],
         );
       },
@@ -202,10 +207,9 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
             children: [
               Text(
                 code == 'AUG'
-                    ? 'Confissões de Agostinho: adaptação explicativa '
-                      'em português simples, separada dos padrões '
-                      'confessionais de Westminster. Organizada nos '
-                      '13 livros históricos e em leituras por capítulos.'
+                    ? 'Confissões de Santo Agostinho: texto integral em português '
+                      'acessível por livro e capítulo, sem resumos. '
+                      'Obra distinta dos padrões de Westminster.'
                     : 'Escrituras como regra suprema. Westminster como '
                       'padrão subordinado. Textos em português para estudo, '
                       'com o original histórico disponível para conferência.',
