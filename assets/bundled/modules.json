@@ -22,5 +22,45 @@
   {
     "id": "CalvinCommentaries",
     "file": "CalvinCommentaries.biblepkg"
+  },
+  {
+    "id": "EXP2-APOL-REF",
+    "file": "PTBR-Apologetica-Presbiteriana-64-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP-SPURGEON-DIARIO",
+    "file": "PTBR-Cafe-da-Manha-366-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP2-CALV-PT",
+    "file": "PTBR-Calvino-Leituras-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP-JORNADA-DIARIO",
+    "file": "PTBR-Devocionais-Reformados-180-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP2-CH-1189",
+    "file": "PTBR-Guia-Capitulo-a-Capitulo-1189-PTBR.biblepkg"
+  },
+  {
+    "id": "HDL-GUIA-FONTES",
+    "file": "PTBR-Guia-Hernandes-Fontes-PTBR.biblepkg"
+  },
+  {
+    "id": "JOSEMAR-GUIA-FONTES",
+    "file": "PTBR-Guia-Josemar-Fontes-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP2-HDL-CAT",
+    "file": "PTBR-Hernandes-Catalogo-Obras-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP2-PAN-66",
+    "file": "PTBR-Panoramas-66-Livros-PTBR.biblepkg"
+  },
+  {
+    "id": "EXP2-APOL-NEUTRO",
+    "file": "PTBR-Panoramas-Imparciais-64-PTBR.biblepkg"
   }
 ]
