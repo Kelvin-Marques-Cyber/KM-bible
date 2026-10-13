@@ -123,8 +123,15 @@ def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
         for part in chunks(body):
             parts.append(engine.translate(part) if part.strip() else part)
         translated = ''.join(parts)
-        if not translated.strip():
+        # Nao registrar traducao vazia, danificada ou que manteve o original.
+        if not translated.strip() or '⁇' in translated:
             continue
+        if len(body) >= 100 and translated.strip() == body.strip():
+            continue
+        translated_title = (
+            engine.translate(title) if title and title.strip()
+            and title != 'Comentário de João Calvino' else title
+        )
         conn.execute("""
             INSERT INTO translations (type,id,title,gloss,body,status,source)
             VALUES ('commentary',?,?,?,?,?,?)
@@ -132,7 +139,7 @@ def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
                title=excluded.title,body=excluded.body,
                status=excluded.status,source=excluded.source
         """, (
-            id, title, '',
+            id, translated_title, '',
             translated,
             'Tradução automática de estudo — revisão necessária',
             'Argos Translate EN→PT; original no módulo de origem',
@@ -146,6 +153,21 @@ def run(maximum: int | None, retry_broken: bool, only_calvin: bool):
     conn.close()
     digest = hashlib.sha256(local.read_bytes()).hexdigest()
     (CONTENT / 'portuguese.sha256').write_text(digest + '\n', encoding='utf-8')
+    db = sqlite3.connect(local)
+    counts = dict(db.execute('SELECT type,count(*) FROM translations GROUP BY type'))
+    translated_calvin = db.execute(
+        "SELECT count(*) FROM translations WHERE type='commentary' "
+        "AND id LIKE 'CalvinCommentaries:%' AND length(trim(body))>0"
+    ).fetchone()[0]
+    db.close()
+    (CONTENT / 'portuguese-coverage.json').write_text(json.dumps({
+        'records': counts,
+        'calvin_translated': translated_calvin,
+        'sha256': digest,
+        'review': 'Tradução automática de estudo; revisão especializada pendente',
+        'scope': 'Somente entradas realmente traduzidas; originais preservados',
+    }, ensure_ascii=False, indent=2) + '\\n', encoding='utf-8')
+    print(f'Calvino traduzido: {translated_calvin} entradas.', flush=True)
     print(f'Terminou: {processed} traducao(oes); {skipped} preexistentes. SHA256 atualizada.')
     print('Recompile Android e Web. Confirme licencas antes de redistribuir.')
 
