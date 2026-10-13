@@ -55,7 +55,7 @@ done
 # Preserva as paginas auxiliares e a biblioteca de modulos do site.
 find "$tmp" -mindepth 1 -maxdepth 1 ! -name .git \
   ! -name diagnostico.html ! -name instalar.html ! -name modulos.html \
-  ! -name codigo-fonte -exec rm -rf -- {} +
+  ! -name agostinho.html ! -name codigo-fonte -exec rm -rf -- {} +
 cp -a build/web/. "$tmp/"
 cp -a "$icon_backup/." "$tmp/"
 touch "$tmp/.nojekyll"
