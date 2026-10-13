@@ -24,6 +24,8 @@ else
 fi
 python3 scripts/preparar_calvino_por_livro.py
 bash scripts/preparar_agostinho_integral.sh
+python3 scripts/normalizar_agostinho.py
+python3 scripts/verificar_agostinho_layout.py
 # Gera perfis das tradicoes com minimo de 5000 caracteres no modo impessoal.
 python3 scripts/gerar_panorama_apologetica.py
 python3 scripts/ampliar_apologetica.py
