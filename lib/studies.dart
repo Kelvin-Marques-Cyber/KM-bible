@@ -406,11 +406,16 @@ class StudyPage extends StatefulWidget {
 
 class _StudyPageState extends State<StudyPage> {
   late bool apologetic;
+  late final Future<String> _impersonalDeepReading;
   bool strongest = false, rejoinder = false;
   @override
   void initState() {
     super.initState();
     apologetic = widget.apologetic;
+    final target = widget.study['target'] as String;
+    _impersonalDeepReading = rootBundle.loadString(
+      'assets/apologetica/$target.md',
+    );
   }
 
   @override
@@ -445,7 +450,30 @@ class _StudyPageState extends State<StudyPage> {
           style: Theme.of(context).textTheme.titleMedium,
         ),
         const SizedBox(height: 10),
-        MarkdownText(s['exposition'] as String),
+        if (apologetic)
+          MarkdownText(s['exposition'] as String)
+        else
+          FutureBuilder<String>(
+            future: _impersonalDeepReading,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Panorama aprofundado indisponível nesta versão. '
+                      'Atualize o aplicativo para consultar o acervo completo.',
+                    ),
+                    MarkdownText(s['exposition'] as String),
+                  ],
+                );
+              }
+              if (!snapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return MarkdownText(snapshot.data!);
+            },
+          ),
         if (apologetic) ...[
           const Divider(height: 36),
           Text(
@@ -467,16 +495,9 @@ class _StudyPageState extends State<StudyPage> {
             label: Text(a.t('rejoinder')),
           ),
           if (rejoinder) MarkdownText(s['rejoinder'] as String),
-        ] else ...[
-          const Divider(height: 30),
-          Text(
-            'Como a posição selecionada responde às críticas',
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          MarkdownText(s['strongest'] as String),
         ],
         const SizedBox(height: 16),
-        TextButton.icon(
+        if (apologetic) TextButton.icon(
           onPressed: () => sheet(
             context,
             a.t('argumentCompare'),
