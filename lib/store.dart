@@ -5,7 +5,10 @@ import 'package:crypto/crypto.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:sqlite3/sqlite3.dart';
+import 'package:sqlite3/common.dart';
+import 'sqlite_runtime.dart' as runtime;
+
+typedef Database = CommonDatabase;
 import 'package:uuid/uuid.dart';
 import 'domain.dart';
 
@@ -42,6 +45,7 @@ class Store {
     initPersonal();
   }
   static Future<Store> open() async {
+    await runtime.initializeSqliteRuntime();
     final dir = await getApplicationSupportDirectory();
     await dir.create(recursive: true);
     for (final name in [
@@ -77,10 +81,10 @@ class Store {
       }
     }
     final store = Store(
-      sqlite3.open(p.join(dir.path, 'catalogue.sqlite')),
-      sqlite3.open(p.join(dir.path, 'personal.sqlite')),
-      sqlite3.open(p.join(dir.path, 'lexicon.sqlite')),
-      sqlite3.open(p.join(dir.path, 'library.sqlite')),
+      runtime.sqlite3.open(p.join(dir.path, 'catalogue.sqlite')),
+      runtime.sqlite3.open(p.join(dir.path, 'personal.sqlite')),
+      runtime.sqlite3.open(p.join(dir.path, 'lexicon.sqlite')),
+      runtime.sqlite3.open(p.join(dir.path, 'library.sqlite')),
       dir.path,
     );
     await store.refreshModelIndex();
@@ -201,21 +205,21 @@ class Store {
   Database? get connections {
     final file = File(p.join(directory, 'connections.sqlite'));
     return _connections ??= file.existsSync()
-        ? sqlite3.open(file.path, mode: OpenMode.readOnly)
+        ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
         : null;
   }
 
   Database? get portuguese {
     final file = File(p.join(directory, 'portuguese.sqlite'));
     return _portuguese ??= file.existsSync()
-        ? sqlite3.open(file.path, mode: OpenMode.readOnly)
+        ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
         : null;
   }
 
   Database? get topical {
     final file = File(p.join(directory, 'topics.sqlite'));
     return _topics ??= file.existsSync()
-        ? sqlite3.open(file.path, mode: OpenMode.readOnly)
+        ? runtime.sqlite3.open(file.path, mode: OpenMode.readOnly)
         : null;
   }
 
