@@ -1,5 +1,8 @@
+import 'dart:convert';
 import 'study_catalog.dart';
+import 'agostinho.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'app.dart';
 import 'common.dart';
 import 'domain.dart';
@@ -34,6 +37,144 @@ class ConfessionsPage extends StatefulWidget {
 
 class _ConfessionsPageState extends State<ConfessionsPage> {
   String code = 'WCF', query = '';
+  late final Future<Map<String, dynamic>> _agostinho = rootBundle
+      .loadString('assets/content/agostinho-confissoes-facil.json')
+      .then((raw) => Map<String, dynamic>.from(jsonDecode(raw) as Map));
+  int agostinhoLivro = 0; // Zero = todos os livros.
+
+  Widget _agostinhoNoMesmoPainel(BuildContext context) {
+    return FutureBuilder<Map<String, dynamic>>(
+      future: _agostinho,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: SelectableText(
+                'Não foi possível carregar os capítulos de Agostinho: '
+                '${snapshot.error}',
+              ),
+            ),
+          );
+        }
+        if (!snapshot.hasData) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        final data = snapshot.data!;
+        final books = (data['books'] as List)
+            .map((item) => Map<String, dynamic>.from(item as Map))
+            .toList();
+        final readings = <({
+          int bookIndex,
+          int sectionIndex,
+          Map<String, dynamic> book,
+          Map<String, dynamic> section,
+        })>[];
+        for (var b = 0; b < books.length; b++) {
+          final book = books[b];
+          if (agostinhoLivro != 0 && book['number'] != agostinhoLivro) {
+            continue;
+          }
+          final sections = book['sections'] as List;
+          for (var i = 0; i < sections.length; i++) {
+            final section = Map<String, dynamic>.from(sections[i] as Map);
+            if (query.isNotEmpty &&
+                !fold(
+                  '${book['title']} ${book['number']} '
+                  '${section['title']} ${section['body']} '
+                  '${section['from']} ${section['to']}',
+                ).contains(fold(query))) {
+              continue;
+            }
+            readings.add((
+              bookIndex: b,
+              sectionIndex: i,
+              book: book,
+              section: section,
+            ));
+          }
+        }
+        return ListView(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
+          children: [
+            DropdownButtonFormField<int>(
+              key: ValueKey('agostinho-lista-$agostinhoLivro'),
+              initialValue: agostinhoLivro,
+              isExpanded: true,
+              decoration: const InputDecoration(
+                labelText: 'Selecionar livro de Agostinho',
+              ),
+              items: [
+                const DropdownMenuItem(
+                  value: 0,
+                  child: Text('Todos os 13 livros · 52 leituras'),
+                ),
+                for (final book in books)
+                  DropdownMenuItem(
+                    value: book['number'] as int,
+                    child: Text(
+                      'Livro ${book['number']} · ${book['title']}',
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+              ],
+              onChanged: (value) {
+                if (value != null) {
+                  setState(() => agostinhoLivro = value);
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+            if (readings.isEmpty)
+              const Padding(
+                padding: EdgeInsets.all(16),
+                child: Text('Nenhuma leitura encontrada neste livro.'),
+              ),
+            for (final entry in readings)
+              ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: Icon(
+                  context.app.store.pref(
+                            'agostinho_favorito_${entry.book['number']}_'
+                            '${entry.section['from']}',
+                            false,
+                          ) ==
+                          true
+                      ? Icons.bookmark
+                      : Icons.auto_stories_outlined,
+                ),
+                title: Text(
+                  'Livro ${entry.book['number']} · '
+                  '${entry.section['title']}',
+                ),
+                subtitle: Text(
+                  'Capítulos ${entry.section['from']}–'
+                  '${entry.section['to']} · '
+                  '${entry.book['title']}',
+                ),
+                onTap: () {
+                  // Reutiliza o leitor completo ao tocar numa leitura.
+                  context.app.store.setPref(
+                    'agostinho_livro',
+                    entry.bookIndex,
+                  );
+                  context.app.store.setPref(
+                    'agostinho_secao',
+                    entry.sectionIndex,
+                  );
+                  sheet(
+                    context,
+                    'Agostinho · Livro ${entry.book['number']}',
+                    const AugustineConfessionsPage(),
+                  );
+                },
+              ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final a = context.app;
@@ -60,16 +201,25 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
           child: Column(
             children: [
               Text(
-                'Escrituras como regra suprema. Westminster como padrão subordinado. Textos em português para estudo, com o original histórico disponível para conferência.',
+                code == 'AUG'
+                    ? 'Confissões de Agostinho: adaptação explicativa '
+                      'em português simples, separada dos padrões '
+                      'confessionais de Westminster. Organizada nos '
+                      '13 livros históricos e em leituras por capítulos.'
+                    : 'Escrituras como regra suprema. Westminster como '
+                      'padrão subordinado. Textos em português para estudo, '
+                      'com o original histórico disponível para conferência.',
                 style: Theme.of(context).textTheme.bodySmall,
               ),
               Wrap(
                 spacing: 8,
+                runSpacing: 6,
                 children: [
                   for (final c in [
                     ('WCF', 'Confissão · 33'),
                     ('WSC', 'Breve · 107'),
                     ('WLC', 'Maior · 196'),
+                    ('AUG', 'Agostinho · 13 livros'),
                   ])
                     ChoiceChip(
                       label: Text(c.$2),
@@ -86,7 +236,9 @@ class _ConfessionsPageState extends State<ConfessionsPage> {
           ),
         ),
         Expanded(
-          child: ListView(
+          child: code == 'AUG'
+              ? _agostinhoNoMesmoPainel(context)
+              : ListView(
             children: rows
                 .map(
                   (d) => ListTile(
