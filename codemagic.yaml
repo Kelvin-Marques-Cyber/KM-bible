@@ -30,3 +30,18 @@ workflows:
       - build/ios/ipa/*.ipa
       - build/ios/iphoneos/*.app
       - /tmp/xcodebuild_logs/*.log
+
+  flutter-web-fidelidade:
+    name: Biblia Reformada - Flutter Web fiel ao APK (diagnostico)
+    instance_type: mac_mini_m2
+    max_build_duration: 90
+    environment:
+      flutter: stable
+    scripts:
+      - name: Compilar exatamente os widgets Flutter do aplicativo Android
+        script: |
+          bash scripts/build_flutter_web_fiel.sh
+    artifacts:
+      - build/biblia-reformada-flutter-web.zip
+      - flutter-web-build.log
+      - flutter-web-dependencias.txt
