@@ -19,6 +19,8 @@ fi
 
 # Substitui o service worker da antiga PWA estaticamente recriada.
 cp scripts/sw_flutter_teste.js build/web/sw.js
+# Cada publicacao recebe um cache versionado, evitando exibir a PWA antiga.
+sed -i "s/biblia-flutter-web-053-20261013/biblia-flutter-web-$(date +%Y%m%d%H%M%S)/" build/web/sw.js
 python3 - <<'PY'
 from pathlib import Path
 p=Path('build/web/index.html')
