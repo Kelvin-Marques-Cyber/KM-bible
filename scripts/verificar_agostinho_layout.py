@@ -17,7 +17,7 @@ for book in range(1, 14):
     for i, chapter in enumerate(data["chapters"], 1):
         count += 1
         assert chapter["chapter"] == i, f"Ordem: {book}.{i}"
-        assert chapter.get("layout_version") == 2, f"Layout nao convertido: {book}.{i}"
+        assert chapter.get("layout_version") == 3, f"Layout nao convertido: {book}.{i}"
         assert len(chapter["title"].strip()) >= 3, f"Titulo ausente: {book}.{i}"
         body = chapter["body"]
         assert len(body) >= 200, f"Corpo truncado: {book}.{i}"
