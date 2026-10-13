@@ -1,0 +1,277 @@
+{
+  "scope": "apologetica_impessoal",
+  "min_characters": 5000,
+  "disclaimer": "Sínteses editoriais, não transcrições integrais de terceiros.",
+  "profiles": [
+    {
+      "id": "presbyterian",
+      "title": "Presbiterianismo reformado",
+      "characters": 8049,
+      "topics": 8,
+      "sources": 2,
+      "type": "editorial_impessoal",
+      "file": "presbyterian.md"
+    },
+    {
+      "id": "roman_catholic",
+      "title": "Catolicismo romano",
+      "characters": 8233,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "roman_catholic.md"
+    },
+    {
+      "id": "eastern_orthodox",
+      "title": "Cristianismo ortodoxo oriental",
+      "characters": 8179,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "eastern_orthodox.md"
+    },
+    {
+      "id": "lutheran",
+      "title": "Luteranismo confessional",
+      "characters": 8026,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "lutheran.md"
+    },
+    {
+      "id": "anglican",
+      "title": "Anglicanismo histórico",
+      "characters": 8166,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "anglican.md"
+    },
+    {
+      "id": "islam",
+      "title": "Islã",
+      "characters": 8153,
+      "topics": 8,
+      "sources": 5,
+      "type": "editorial_impessoal",
+      "file": "islam.md"
+    },
+    {
+      "id": "judaism",
+      "title": "Judaísmo — tradições rabínicas",
+      "characters": 8234,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "judaism.md"
+    },
+    {
+      "id": "hinduism_vedanta",
+      "title": "Hinduísmo — escolas e Vedanta",
+      "characters": 8376,
+      "topics": 8,
+      "sources": 4,
+      "type": "editorial_impessoal",
+      "file": "hinduism_vedanta.md"
+    },
+    {
+      "id": "buddhism_theravada",
+      "title": "Budismo Theravada",
+      "characters": 8033,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "buddhism_theravada.md"
+    },
+    {
+      "id": "buddhism_mahayana",
+      "title": "Budismo Mahayana",
+      "characters": 8044,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "buddhism_mahayana.md"
+    },
+    {
+      "id": "sikhism",
+      "title": "Sikhismo",
+      "characters": 7914,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "sikhism.md"
+    },
+    {
+      "id": "jainism",
+      "title": "Jainismo",
+      "characters": 7858,
+      "topics": 8,
+      "sources": 4,
+      "type": "editorial_impessoal",
+      "file": "jainism.md"
+    },
+    {
+      "id": "shinto",
+      "title": "Xintoísmo",
+      "characters": 8017,
+      "topics": 8,
+      "sources": 4,
+      "type": "editorial_impessoal",
+      "file": "shinto.md"
+    },
+    {
+      "id": "daoism",
+      "title": "Taoismo / Daoismo",
+      "characters": 7976,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "daoism.md"
+    },
+    {
+      "id": "confucianism",
+      "title": "Confucionismo",
+      "characters": 7840,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "confucianism.md"
+    },
+    {
+      "id": "zoroastrianism",
+      "title": "Zoroastrismo",
+      "characters": 7840,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "zoroastrianism.md"
+    },
+    {
+      "id": "bahai",
+      "title": "Fé Bahá’í",
+      "characters": 7804,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "bahai.md"
+    },
+    {
+      "id": "baptist",
+      "title": "Batistas — perspectiva confessional",
+      "characters": 7802,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "baptist.md"
+    },
+    {
+      "id": "seventh_day_adventist",
+      "title": "Adventismo do Sétimo Dia",
+      "characters": 7766,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "seventh_day_adventist.md"
+    },
+    {
+      "id": "methodist",
+      "title": "Metodismo",
+      "characters": 7673,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "methodist.md"
+    },
+    {
+      "id": "pentecostal",
+      "title": "Pentecostalismo clássico",
+      "characters": 7698,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "pentecostal.md"
+    },
+    {
+      "id": "jehovahs_witnesses",
+      "title": "Testemunhas de Jeová",
+      "characters": 7767,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "jehovahs_witnesses.md"
+    },
+    {
+      "id": "latter_day_saints",
+      "title": "Santos dos Últimos Dias",
+      "characters": 7851,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "latter_day_saints.md"
+    },
+    {
+      "id": "shia_islam",
+      "title": "Islã xiita duodecimano",
+      "characters": 7756,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "shia_islam.md"
+    },
+    {
+      "id": "spiritism",
+      "title": "Espiritismo kardecista",
+      "characters": 7807,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "spiritism.md"
+    },
+    {
+      "id": "secular_humanism",
+      "title": "Humanismo secular",
+      "characters": 7888,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "secular_humanism.md"
+    },
+    {
+      "id": "atheism",
+      "title": "Ateísmo e agnosticismo",
+      "characters": 7908,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "atheism.md"
+    },
+    {
+      "id": "umbanda",
+      "title": "Umbanda",
+      "characters": 9053,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "umbanda.md"
+    },
+    {
+      "id": "candomble",
+      "title": "Candomblé",
+      "characters": 9100,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "candomble.md"
+    },
+    {
+      "id": "indigenous_traditions",
+      "title": "Tradições religiosas de povos indígenas",
+      "characters": 9071,
+      "topics": 8,
+      "sources": 3,
+      "type": "editorial_impessoal",
+      "file": "indigenous_traditions.md"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "id": "AugustineConfessionsFullPt",
+  "language": "pt-BR",
+  "status": "integral",
+  "title": "Confissoes — Santo Agostinho",
+  "author": "Agostinho de Hipona",
+  "translator": "J. Oliveira Santos, S.J.; A. Ambrosio de Pina, S.J.",
+  "revision": "E. L. de Souza Campos",
+  "edition": "Valdemar Teodoro Editor (2024) / Solus Agape",
+  "license": "Reproducao e divulgacao autorizadas com atribuicao, conforme creditos da edicao",
+  "source": "https://www.solusagape.com.br/obras-milenares/confiss%C3%B5es",
+  "chapterCounts": [
+    20,
+    10,
+    12,
+    16,
+    14,
+    16,
+    21,
+    12,
+    13,
+    43,
+    31,
+    32,
+    38
+  ],
+  "bookCount": 13,
+  "chapterCount": 278,
+  "pdf_sha256": "952dd14102e48c5021bfb856e9afc4cff74a563a9c65514eb631ebef3888274a"
+}
