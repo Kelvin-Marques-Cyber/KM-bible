@@ -1,0 +1,305 @@
+{
+  "count": 30,
+  "profiles": [
+    {
+      "target": "presbyterian",
+      "name": "Presbiterianismo reformado",
+      "base_characters": 8050,
+      "impersonal_added": 19753,
+      "impersonal_total": 27803,
+      "reformed_addition": 18046,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "roman_catholic",
+      "name": "Catolicismo romano",
+      "base_characters": 8234,
+      "impersonal_added": 20235,
+      "impersonal_total": 28469,
+      "reformed_addition": 18574,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "eastern_orthodox",
+      "name": "Cristianismo ortodoxo oriental",
+      "base_characters": 8180,
+      "impersonal_added": 20326,
+      "impersonal_total": 28506,
+      "reformed_addition": 18642,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "lutheran",
+      "name": "Luteranismo confessional",
+      "base_characters": 8027,
+      "impersonal_added": 20006,
+      "impersonal_total": 28033,
+      "reformed_addition": 18500,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "anglican",
+      "name": "Anglicanismo histórico",
+      "base_characters": 8167,
+      "impersonal_added": 20683,
+      "impersonal_total": 28850,
+      "reformed_addition": 19130,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "islam",
+      "name": "Islã",
+      "base_characters": 8154,
+      "impersonal_added": 18952,
+      "impersonal_total": 27106,
+      "reformed_addition": 17436,
+      "sources": 40,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "judaism",
+      "name": "Judaísmo — tradições rabínicas",
+      "base_characters": 8235,
+      "impersonal_added": 20248,
+      "impersonal_total": 28483,
+      "reformed_addition": 18490,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "hinduism_vedanta",
+      "name": "Hinduísmo — escolas e Vedanta",
+      "base_characters": 8377,
+      "impersonal_added": 21264,
+      "impersonal_total": 29641,
+      "reformed_addition": 19497,
+      "sources": 32,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "buddhism_theravada",
+      "name": "Budismo Theravada",
+      "base_characters": 8034,
+      "impersonal_added": 19712,
+      "impersonal_total": 27746,
+      "reformed_addition": 18213,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "buddhism_mahayana",
+      "name": "Budismo Mahayana",
+      "base_characters": 8045,
+      "impersonal_added": 19421,
+      "impersonal_total": 27466,
+      "reformed_addition": 17876,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "sikhism",
+      "name": "Sikhismo",
+      "base_characters": 7915,
+      "impersonal_added": 19199,
+      "impersonal_total": 27114,
+      "reformed_addition": 17836,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "jainism",
+      "name": "Jainismo",
+      "base_characters": 7859,
+      "impersonal_added": 19626,
+      "impersonal_total": 27485,
+      "reformed_addition": 18388,
+      "sources": 32,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "shinto",
+      "name": "Xintoísmo",
+      "base_characters": 8018,
+      "impersonal_added": 19814,
+      "impersonal_total": 27832,
+      "reformed_addition": 18413,
+      "sources": 32,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "daoism",
+      "name": "Taoismo / Daoismo",
+      "base_characters": 7977,
+      "impersonal_added": 19333,
+      "impersonal_total": 27310,
+      "reformed_addition": 17845,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "confucianism",
+      "name": "Confucionismo",
+      "base_characters": 7841,
+      "impersonal_added": 19109,
+      "impersonal_total": 26950,
+      "reformed_addition": 17777,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "zoroastrianism",
+      "name": "Zoroastrismo",
+      "base_characters": 7841,
+      "impersonal_added": 19654,
+      "impersonal_total": 27495,
+      "reformed_addition": 18408,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "bahai",
+      "name": "Fé Bahá’í",
+      "base_characters": 7805,
+      "impersonal_added": 18887,
+      "impersonal_total": 26692,
+      "reformed_addition": 17597,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "baptist",
+      "name": "Batistas — perspectiva confessional",
+      "base_characters": 7803,
+      "impersonal_added": 19492,
+      "impersonal_total": 27295,
+      "reformed_addition": 18079,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "seventh_day_adventist",
+      "name": "Adventismo do Sétimo Dia",
+      "base_characters": 7767,
+      "impersonal_added": 19235,
+      "impersonal_total": 27002,
+      "reformed_addition": 17916,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "methodist",
+      "name": "Metodismo",
+      "base_characters": 7674,
+      "impersonal_added": 18959,
+      "impersonal_total": 26633,
+      "reformed_addition": 17829,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "pentecostal",
+      "name": "Pentecostalismo clássico",
+      "base_characters": 7699,
+      "impersonal_added": 19223,
+      "impersonal_total": 26922,
+      "reformed_addition": 17980,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "jehovahs_witnesses",
+      "name": "Testemunhas de Jeová",
+      "base_characters": 7768,
+      "impersonal_added": 19421,
+      "impersonal_total": 27189,
+      "reformed_addition": 18160,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "latter_day_saints",
+      "name": "Santos dos Últimos Dias",
+      "base_characters": 7852,
+      "impersonal_added": 19837,
+      "impersonal_total": 27689,
+      "reformed_addition": 18515,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "shia_islam",
+      "name": "Islã xiita duodecimano",
+      "base_characters": 7757,
+      "impersonal_added": 19545,
+      "impersonal_total": 27302,
+      "reformed_addition": 18298,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "spiritism",
+      "name": "Espiritismo kardecista",
+      "base_characters": 7808,
+      "impersonal_added": 19379,
+      "impersonal_total": 27187,
+      "reformed_addition": 18050,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "secular_humanism",
+      "name": "Humanismo secular",
+      "base_characters": 7889,
+      "impersonal_added": 19595,
+      "impersonal_total": 27484,
+      "reformed_addition": 18245,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "atheism",
+      "name": "Ateísmo e agnosticismo",
+      "base_characters": 7909,
+      "impersonal_added": 19655,
+      "impersonal_total": 27564,
+      "reformed_addition": 18250,
+      "sources": 24,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "umbanda",
+      "name": "Umbanda",
+      "base_characters": 9054,
+      "impersonal_added": 16814,
+      "impersonal_total": 25868,
+      "reformed_addition": 8455,
+      "sources": 0,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "candomble",
+      "name": "Candomblé",
+      "base_characters": 9101,
+      "impersonal_added": 16960,
+      "impersonal_total": 26061,
+      "reformed_addition": 8457,
+      "sources": 0,
+      "kind": "editorial_research_and_confessional_argument"
+    },
+    {
+      "target": "indigenous_traditions",
+      "name": "Tradições religiosas de povos indígenas",
+      "base_characters": 9072,
+      "impersonal_added": 17062,
+      "impersonal_total": 26134,
+      "reformed_addition": 8487,
+      "sources": 0,
+      "kind": "editorial_research_and_confessional_argument"
+    }
+  ]
+}

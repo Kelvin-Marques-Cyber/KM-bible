@@ -1,0 +1,145 @@
+{
+  "format": 1,
+  "chunk_size": 16777216,
+  "partitioned": {
+    "catalogue": {
+      "size": 119578624,
+      "sha256": "71f51ea1d3a33a66c6a7c489cc00d0d281740223ab4bbfb8132ecc7ab6f49186",
+      "chunks": [
+        {
+          "file": "catalogue.sqlite.part000.bin",
+          "size": 16777216,
+          "sha256": "337e507b21a42b5a66dd27b6062b3a2fb334b7cc137422cd82a9b18a9ea955cf"
+        },
+        {
+          "file": "catalogue.sqlite.part001.bin",
+          "size": 16777216,
+          "sha256": "70d4f8adcced82be23bd405afe329eca6efb8c82a4da1ec035e09a6d48820184"
+        },
+        {
+          "file": "catalogue.sqlite.part002.bin",
+          "size": 16777216,
+          "sha256": "1962b9c34dd2f1e65dfca0b243c6ef255fa585b160d913fd3d78dc18285ed289"
+        },
+        {
+          "file": "catalogue.sqlite.part003.bin",
+          "size": 16777216,
+          "sha256": "173bb0a2ee24ad367dc2cbcc44bdf9effb909553d5c8557e4538ec6415512371"
+        },
+        {
+          "file": "catalogue.sqlite.part004.bin",
+          "size": 16777216,
+          "sha256": "6dc194d0af2e012c3888783a923a13faee6b3bd19d02128c27b1577451591497"
+        },
+        {
+          "file": "catalogue.sqlite.part005.bin",
+          "size": 16777216,
+          "sha256": "f6c48d72aa598101feb5dc0eba818f8db8e129f8c7cda4b4fb3c6ca32d159aba"
+        },
+        {
+          "file": "catalogue.sqlite.part006.bin",
+          "size": 16777216,
+          "sha256": "5f29a28943420c23b4042e1547e60f6b47e2051b0c5d039a9043e5adc9d677e0"
+        },
+        {
+          "file": "catalogue.sqlite.part007.bin",
+          "size": 2138112,
+          "sha256": "615b5cd9cbf6c5007c01aab2203cf5fec2acc9580e9a4fb1dbe334ea98e6b1d7"
+        }
+      ]
+    },
+    "lexicon": {
+      "size": 67059712,
+      "sha256": "a49f082cffb60747a7901dfeec8860dadd0b2db9f2157afb4249f372944ec8fb",
+      "chunks": [
+        {
+          "file": "lexicon.sqlite.part000.bin",
+          "size": 16777216,
+          "sha256": "65040fa24ddbdf131e9bf7d4b987277f94589c6eeba4ac53a996d317496d5ab7"
+        },
+        {
+          "file": "lexicon.sqlite.part001.bin",
+          "size": 16777216,
+          "sha256": "ded81895b66edf23ae927ea15e388fe771e89360c0b08cc7a6f4d04bc2df16cf"
+        },
+        {
+          "file": "lexicon.sqlite.part002.bin",
+          "size": 16777216,
+          "sha256": "041378adb12e42b5383431e2607405970a15b466727f878229ec31910a5e1227"
+        },
+        {
+          "file": "lexicon.sqlite.part003.bin",
+          "size": 16728064,
+          "sha256": "7481c9ed7a4920a394a85acea6ed657cb42e81d31d6f09161e71298bdd21c998"
+        }
+      ]
+    },
+    "library": {
+      "size": 107655168,
+      "sha256": "49fabd8dce22a69c6bb15bed541170eaeea4e2d94d22fa01cc8770b5255852cc",
+      "chunks": [
+        {
+          "file": "library.sqlite.part000.bin",
+          "size": 16777216,
+          "sha256": "54353b3f11fb3f8913725be683f69bdda0fbc872c13e7a60c31a3f4b6ed5212c"
+        },
+        {
+          "file": "library.sqlite.part001.bin",
+          "size": 16777216,
+          "sha256": "cf5eca3a41de6288eb9fe70744c6efc9fb1862a0d9122a0986039343a1671fcc"
+        },
+        {
+          "file": "library.sqlite.part002.bin",
+          "size": 16777216,
+          "sha256": "2901d412b1aca23f0391a75f7d857389210b81d3ba3f64e804339a945de3c102"
+        },
+        {
+          "file": "library.sqlite.part003.bin",
+          "size": 16777216,
+          "sha256": "318adb1a81c6ceb071a07495effe4b2884a4cfddc52223ed6c82ec9203c9a02f"
+        },
+        {
+          "file": "library.sqlite.part004.bin",
+          "size": 16777216,
+          "sha256": "0d178a7990c19e7b84bfa8602d3f03c5fd2dacc94138917682a6a5667ad1ec52"
+        },
+        {
+          "file": "library.sqlite.part005.bin",
+          "size": 16777216,
+          "sha256": "19e861daba605791781db9aa323a7de9471eb948e28c46f463ca841c72b9abca"
+        },
+        {
+          "file": "library.sqlite.part006.bin",
+          "size": 6991872,
+          "sha256": "9025c350970e3b33843b6312c47ded4f7a5557f9558fbf9a8473e59581555dff"
+        }
+      ]
+    },
+    "connections": {
+      "size": 55926784,
+      "sha256": "35366c8c9d38559fef82f12244ab4aae1a9ff0e4505a571178c72fb4a5309760",
+      "chunks": [
+        {
+          "file": "connections.sqlite.part000.bin",
+          "size": 16777216,
+          "sha256": "a7da899bbbda13bb01781955ee09e0912d38d9ee07b5f7adb178fbf8ede08bd0"
+        },
+        {
+          "file": "connections.sqlite.part001.bin",
+          "size": 16777216,
+          "sha256": "563b98cb8faaae7c0365a5e7ad6ff0e2c6c00dce67299399db4397c6c0f88fdf"
+        },
+        {
+          "file": "connections.sqlite.part002.bin",
+          "size": 16777216,
+          "sha256": "6d9c3872abed7637a9e09ac8991e27b4fad866a3d450547348f4530528c17dcd"
+        },
+        {
+          "file": "connections.sqlite.part003.bin",
+          "size": 5595136,
+          "sha256": "d7d7ccdf8b26735b663adf71a60303560c67b8e19101a050582466f7038388de"
+        }
+      ]
+    }
+  }
+}
