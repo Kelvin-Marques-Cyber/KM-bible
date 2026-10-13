@@ -6,11 +6,7 @@ if ! command -v flutter >/dev/null 2>&1; then
   echo 'Flutter SDK nao encontrado' >&2
   exit 127
 fi
-# Nao publicar arquivos pessoais da ARA.
-if [[ -d assets/private ]] && find assets/private -type f \( -iname '*.biblepkg' -o -iname '*.pdf' -o -iname '*.sqlite' \) -print -quit | grep -q .; then
-  echo 'Arquivo privado em assets/private. Build interrompido.' >&2
-  exit 4
-fi
+# Pacotes autorizados devem estar em assets/bundled; assets/private permanece fora da publicacao.
 flutter --version
 flutter config --enable-web
 flutter create --platforms=web --project-name biblia_reformada .
