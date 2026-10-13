@@ -58,6 +58,8 @@ if ! flutter build web --release --base-href /KM-bible/ 2>&1 | tee flutter-web-b
 fi
 # Remove apenas do build/web os SQLite grandes, mantendo os fragmentos.
 python3 scripts/particionar_sqlite_web.py --finalizar
+# Poupa espaco no Cloud Shell: as partes ja estao em build/web.
+rm -f assets/content/*.sqlite.part*.bin
 python3 - <<'PY'
 from pathlib import Path
 from zipfile import ZipFile, ZIP_DEFLATED
