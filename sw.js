@@ -1,8 +1,43 @@
 'use strict';
-const VERSION='0.5.3-web.2';
-const OFFLINE='biblia-reformada-offline-'+VERSION;
-const CORE=['./','index.html','app.js','styles.css','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png'];
-self.addEventListener('install',event=>{event.waitUntil(caches.open(OFFLINE).then(async cache=>{for(const path of CORE){try{await cache.add(path)}catch(e){console.warn('Falha no pré-cache',path,e)}}}).then(()=>self.skipWaiting()))});
-self.addEventListener('activate',event=>{event.waitUntil((async()=>{for(const key of await caches.keys()){if(key.startsWith('biblia-reformada-offline-')&&key!==OFFLINE)await caches.delete(key)}await self.clients.claim()})())});
-self.addEventListener('fetch',event=>{const req=event.request;if(req.method!=='GET')return;let url=new URL(req.url);if(url.origin!==self.location.origin)return;
- event.respondWith((async()=>{const cache=await caches.open(OFFLINE);const cached=await cache.match(req);if(cached)return cached;try{const response=await fetch(req);if(response.ok&&(url.pathname.endsWith('.json')||url.pathname.endsWith('.glb')||url.pathname.endsWith('.css')||url.pathname.endsWith('.js')||url.pathname.endsWith('.png')||url.pathname.endsWith('.html'))){cache.put(req,response.clone()).catch(()=>{})}return response}catch(e){if(req.mode==='navigate')return await cache.match('./')||new Response('Abra a Bíblia depois de concluir a preparação offline.',{status:503,headers:{'Content-Type':'text/plain;charset=utf-8'}});return new Response('Sem conexão e arquivo ainda não baixado.',{status:503})}})())});
+const VERSION='biblia-flutter-web-20261013005219';
+const CORE=['./','./index.html','./flutter_bootstrap.js','./main.dart.js','./sqlite3.wasm','./manifest.json'];
+self.addEventListener('install', event=>{
+  event.waitUntil(caches.open(VERSION)
+    .then(async cache => { for(const path of CORE) {
+      try { await cache.add(path); } catch(error) { console.warn('cache:',path,error); }
+    } })
+    .then(()=>self.skipWaiting()));
+});
+self.addEventListener('activate',event=>{
+ event.waitUntil(caches.keys().then(async keys=>{
+   for(const key of keys){
+     if((key.startsWith('biblia-reformada-offline-')||key.startsWith('biblia-flutter-web-'))&&key!==VERSION){
+       await caches.delete(key);
+     }
+   }
+   await self.clients.claim();
+ }));
+});
+self.addEventListener('fetch',event=>{
+ const request=event.request;
+ if(request.method!=='GET')return;
+ const url=new URL(request.url);
+ if(url.origin!==self.location.origin)return;
+ if(!url.pathname.startsWith(new URL(self.registration.scope).pathname))return;
+ event.respondWith((async()=>{
+   const cache=await caches.open(VERSION);
+   const cached=await cache.match(request);
+   if(cached)return cached;
+   try{
+     const response=await fetch(request);
+     // Evita duplicar centenas de MB dos bancos SQLite ja persistidos no IndexedDB.
+     if(response.ok && /\.(js|css|html|png|webp|svg|woff2?|otf|ttf|wasm|json|glb)$/.test(url.pathname)){
+       cache.put(request,response.clone()).catch(()=>{});
+     }
+     return response;
+   }catch(error){
+     if(request.mode==='navigate')return await cache.match('./index.html')||Response.error();
+     return Response.error();
+   }
+ })());
+});

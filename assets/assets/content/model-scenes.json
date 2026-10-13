@@ -1,0 +1,4912 @@
+{
+  "version": 1,
+  "translation_basis": "BLN4",
+  "editorial_author": "Kelvin e Silva Marques",
+  "chapter_interval": 4,
+  "books": 66,
+  "chapters": 1189,
+  "blocks": 321,
+  "models": 136,
+  "scenes": [
+    {
+      "id": "block-1-1",
+      "book": 1,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "jardim",
+          "reference": "1:2:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "figueira",
+          "reference": "1:2:9",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-1-5",
+      "book": 1,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "arca_noe",
+          "reference": "1:6:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-9",
+      "book": 1,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "1:11:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-13",
+      "book": 1,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "1:13:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-17",
+      "book": 1,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "1:18:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-21",
+      "book": 1,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "poco",
+          "reference": "1:21:25",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-25",
+      "book": 1,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "escada",
+          "reference": "1:28:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-29",
+      "book": 1,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "1:29:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-33",
+      "book": 1,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "1:33:20",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-37",
+      "book": 1,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "cisterna",
+          "reference": "1:37:24",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-41",
+      "book": 1,
+      "start_chapter": 41,
+      "end_chapter": 44,
+      "items": [
+        {
+          "model_id": "celeiro",
+          "reference": "1:41:49",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-45",
+      "book": 1,
+      "start_chapter": 45,
+      "end_chapter": 48,
+      "items": [
+        {
+          "model_id": "carro",
+          "reference": "1:46:29",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-1-49",
+      "book": 1,
+      "start_chapter": 49,
+      "end_chapter": 50,
+      "items": [
+        {
+          "model_id": "tumulo",
+          "reference": "1:50:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-1",
+      "book": 2,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "cesto",
+          "reference": "2:2:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-5",
+      "book": 2,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "tijolos",
+          "reference": "2:5:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-9",
+      "book": 2,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "cordeiro",
+          "reference": "2:12:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-13",
+      "book": 2,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "pao",
+          "reference": "2:16:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-17",
+      "book": 2,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "2:19:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-21",
+      "book": 2,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "tabuas",
+          "reference": "2:24:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-25",
+      "book": 2,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "arca_alianca",
+          "reference": "2:25:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-29",
+      "book": 2,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "bacia",
+          "reference": "2:30:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-33",
+      "book": 2,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "tabernaculo",
+          "reference": "2:35:11",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-2-37",
+      "book": 2,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "candelabro",
+          "reference": "2:37:17",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-1",
+      "book": 3,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "3:1:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-5",
+      "book": 3,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "roupa",
+          "reference": "3:8:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-9",
+      "book": 3,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "3:9:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-13",
+      "book": 3,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "3:14:34",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-17",
+      "book": 3,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "3:19:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-21",
+      "book": 3,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "3:24:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-3-25",
+      "book": 3,
+      "start_chapter": 25,
+      "end_chapter": 27,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "3:25:14",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-4-1",
+      "book": 4,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "acampamento",
+          "reference": "4:2:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-5",
+      "book": 4,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "candelabro",
+          "reference": "4:8:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-9",
+      "book": 4,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "trombeta",
+          "reference": "4:10:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-13",
+      "book": 4,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "uvas",
+          "reference": "4:13:23",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-17",
+      "book": 4,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "vara",
+          "reference": "4:17:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-21",
+      "book": 4,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "serpente_bronze",
+          "reference": "4:21:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-25",
+      "book": 4,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "4:28:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-29",
+      "book": 4,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "4:32:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-4-33",
+      "book": 4,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "estrada",
+          "reference": "4:33:1",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-5-1",
+      "book": 5,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "tabuas",
+          "reference": "5:4:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-5",
+      "book": 5,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "porta_casa",
+          "reference": "5:6:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-9",
+      "book": 5,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "arca_alianca",
+          "reference": "5:10:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-13",
+      "book": 5,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "5:16:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-17",
+      "book": 5,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "5:17:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-21",
+      "book": 5,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "grade_telhado",
+          "reference": "5:22:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-25",
+      "book": 5,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "cesto",
+          "reference": "5:26:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-29",
+      "book": 5,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "5:31:24",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-5-33",
+      "book": 5,
+      "start_chapter": 33,
+      "end_chapter": 34,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "5:34:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-1",
+      "book": 6,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "pedras_memoria",
+          "reference": "6:4:20",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-5",
+      "book": 6,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "muralha",
+          "reference": "6:6:20",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-9",
+      "book": 6,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "odres",
+          "reference": "6:9:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-13",
+      "book": 6,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "cidade",
+          "reference": "6:15:21",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-17",
+      "book": 6,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "cidade",
+          "reference": "6:20:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-6-21",
+      "book": 6,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "6:22:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-1",
+      "book": 7,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "carro",
+          "reference": "7:4:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-5",
+      "book": 7,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "jarro",
+          "reference": "7:7:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-9",
+      "book": 7,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "moinho",
+          "reference": "7:9:53",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-13",
+      "book": 7,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "7:16:29",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-17",
+      "book": 7,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "estrada",
+          "reference": "7:19:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-7-21",
+      "book": 7,
+      "start_chapter": 21,
+      "end_chapter": 21,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "7:21:20",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-8-1",
+      "book": 8,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "8:2:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-1",
+      "book": 9,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "arca_alianca",
+          "reference": "9:4:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-5",
+      "book": 9,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "arca_alianca",
+          "reference": "9:5:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-9",
+      "book": 9,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "9:10:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-13",
+      "book": 9,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "9:16:23",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-17",
+      "book": 9,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "funda",
+          "reference": "9:17:49",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-21",
+      "book": 9,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "pao",
+          "reference": "9:21:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-25",
+      "book": 9,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "9:25:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-9-29",
+      "book": 9,
+      "start_chapter": 29,
+      "end_chapter": 31,
+      "items": [
+        {
+          "model_id": "escudo",
+          "reference": "9:31:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-10-1",
+      "book": 10,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "trono",
+          "reference": "10:3:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-10-5",
+      "book": 10,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "cidade",
+          "reference": "10:5:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-10-9",
+      "book": 10,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "mesa",
+          "reference": "10:9:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-10-13",
+      "book": 10,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "portao",
+          "reference": "10:15:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-10-17",
+      "book": 10,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "pedras_memoria",
+          "reference": "10:18:17",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-10-21",
+      "book": 10,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "eira",
+          "reference": "10:24:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-1",
+      "book": 11,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "banquete",
+          "reference": "11:4:22",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-5",
+      "book": 11,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "templo_salomao",
+          "reference": "11:6:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "mar_bronze",
+          "reference": "11:7:23",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-9",
+      "book": 11,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "trono",
+          "reference": "11:10:18",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-13",
+      "book": 11,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "11:13:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-17",
+      "book": 11,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "oleo",
+          "reference": "11:17:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-11-21",
+      "book": 11,
+      "start_chapter": 21,
+      "end_chapter": 22,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "11:21:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-1",
+      "book": 12,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "oleo",
+          "reference": "12:4:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-5",
+      "book": 12,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "rio",
+          "reference": "12:5:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-9",
+      "book": 12,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "carro",
+          "reference": "12:9:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-13",
+      "book": 12,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "12:16:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-17",
+      "book": 12,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "muralha",
+          "reference": "12:19:21",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "serpente_bronze",
+          "reference": "12:18:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-21",
+      "book": 12,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "prumo",
+          "reference": "12:21:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-12-25",
+      "book": 12,
+      "start_chapter": 25,
+      "end_chapter": 25,
+      "items": [
+        {
+          "model_id": "ruinas",
+          "reference": "12:25:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-1",
+      "book": 13,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "tear",
+          "reference": "13:4:21",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-5",
+      "book": 13,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "13:5:9",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-13-9",
+      "book": 13,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "portao",
+          "reference": "13:9:22",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-13",
+      "book": 13,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "arca_alianca",
+          "reference": "13:13:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-17",
+      "book": 13,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "13:17:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-21",
+      "book": 13,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "13:21:26",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-25",
+      "book": 13,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "13:25:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-13-29",
+      "book": 13,
+      "start_chapter": 29,
+      "end_chapter": 29,
+      "items": [
+        {
+          "model_id": "metais",
+          "reference": "13:29:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-1",
+      "book": 14,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "mar_bronze",
+          "reference": "14:4:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-5",
+      "book": 14,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "templo_salomao",
+          "reference": "14:5:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-9",
+      "book": 14,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "trono",
+          "reference": "14:9:17",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-13",
+      "book": 14,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "acampamento",
+          "reference": "14:13:7",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-14-17",
+      "book": 14,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "14:20:28",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-21",
+      "book": 14,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "cofre",
+          "reference": "14:24:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-25",
+      "book": 14,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "14:26:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-29",
+      "book": 14,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "cordeiro",
+          "reference": "14:30:15",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-14-33",
+      "book": 14,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "14:36:23",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-15-1",
+      "book": 15,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "15:3:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-15-5",
+      "book": 15,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "15:6:15",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-15-9",
+      "book": 15,
+      "start_chapter": 9,
+      "end_chapter": 10,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "15:10:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-16-1",
+      "book": 16,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "muralha",
+          "reference": "16:3:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-16-5",
+      "book": 16,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "16:8:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-16-9",
+      "book": 16,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "16:12:27",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-16-13",
+      "book": 16,
+      "start_chapter": 13,
+      "end_chapter": 13,
+      "items": [
+        {
+          "model_id": "portao",
+          "reference": "16:13:19",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-17-1",
+      "book": 17,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "banquete",
+          "reference": "17:1:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-17-5",
+      "book": 17,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "cetro",
+          "reference": "17:5:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-17-9",
+      "book": 17,
+      "start_chapter": 9,
+      "end_chapter": 10,
+      "items": [
+        {
+          "model_id": "carta",
+          "reference": "17:9:29",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-1",
+      "book": 18,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "18:1:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-5",
+      "book": 18,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "18:6:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-18-9",
+      "book": 18,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "vaso",
+          "reference": "18:10:9",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-18-13",
+      "book": 18,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "rocha",
+          "reference": "18:14:19",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-17",
+      "book": 18,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "18:18:6",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-18-21",
+      "book": 18,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "18:24:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-25",
+      "book": 18,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "mina",
+          "reference": "18:28:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-29",
+      "book": 18,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "portao",
+          "reference": "18:29:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-18-33",
+      "book": 18,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "vaso",
+          "reference": "18:33:6",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-18-37",
+      "book": 18,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "mar",
+          "reference": "18:38:8",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-18-41",
+      "book": 18,
+      "start_chapter": 41,
+      "end_chapter": 42,
+      "items": [
+        {
+          "model_id": "escalas",
+          "reference": "18:41:15",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-1",
+      "book": 19,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "oliveira",
+          "reference": "19:1:3",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-5",
+      "book": 19,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "leito",
+          "reference": "19:6:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-9",
+      "book": 19,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "arco",
+          "reference": "19:11:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-13",
+      "book": 19,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "copo",
+          "reference": "19:16:5",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-17",
+      "book": 19,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "fortaleza",
+          "reference": "19:18:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-21",
+      "book": 19,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "cajado",
+          "reference": "19:23:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-25",
+      "book": 19,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "19:26:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-29",
+      "book": 19,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "cervo",
+          "reference": "19:29:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-33",
+      "book": 19,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "19:33:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-37",
+      "book": 19,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "19:40:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-41",
+      "book": 19,
+      "start_chapter": 41,
+      "end_chapter": 44,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "19:43:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-45",
+      "book": 19,
+      "start_chapter": 45,
+      "end_chapter": 48,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "19:46:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-49",
+      "book": 19,
+      "start_chapter": 49,
+      "end_chapter": 52,
+      "items": [
+        {
+          "model_id": "oliveira",
+          "reference": "19:52:8",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-53",
+      "book": 19,
+      "start_chapter": 53,
+      "end_chapter": 56,
+      "items": [
+        {
+          "model_id": "pomba",
+          "reference": "19:55:6",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-57",
+      "book": 19,
+      "start_chapter": 57,
+      "end_chapter": 60,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "19:57:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-61",
+      "book": 19,
+      "start_chapter": 61,
+      "end_chapter": 64,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "19:61:3",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-65",
+      "book": 19,
+      "start_chapter": 65,
+      "end_chapter": 68,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "19:65:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-69",
+      "book": 19,
+      "start_chapter": 69,
+      "end_chapter": 72,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "19:72:2",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-19-73",
+      "book": 19,
+      "start_chapter": 73,
+      "end_chapter": 76,
+      "items": [
+        {
+          "model_id": "tabernaculo",
+          "reference": "19:73:17",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-19-77",
+      "book": 19,
+      "start_chapter": 77,
+      "end_chapter": 80,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "19:80:8",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-81",
+      "book": 19,
+      "start_chapter": 81,
+      "end_chapter": 84,
+      "items": [
+        {
+          "model_id": "trombeta",
+          "reference": "19:81:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-85",
+      "book": 19,
+      "start_chapter": 85,
+      "end_chapter": 88,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "19:87:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-89",
+      "book": 19,
+      "start_chapter": 89,
+      "end_chapter": 92,
+      "items": [
+        {
+          "model_id": "palmeira",
+          "reference": "19:92:12",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-93",
+      "book": 19,
+      "start_chapter": 93,
+      "end_chapter": 96,
+      "items": [
+        {
+          "model_id": "mar",
+          "reference": "19:93:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-97",
+      "book": 19,
+      "start_chapter": 97,
+      "end_chapter": 100,
+      "items": [
+        {
+          "model_id": "portao",
+          "reference": "19:100:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-101",
+      "book": 19,
+      "start_chapter": 101,
+      "end_chapter": 104,
+      "items": [
+        {
+          "model_id": "oliveira",
+          "reference": "19:104:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-105",
+      "book": 19,
+      "start_chapter": 105,
+      "end_chapter": 108,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "19:106:25",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-109",
+      "book": 19,
+      "start_chapter": 109,
+      "end_chapter": 112,
+      "items": [
+        {
+          "model_id": "pao",
+          "reference": "19:111:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-113",
+      "book": 19,
+      "start_chapter": 113,
+      "end_chapter": 116,
+      "items": [
+        {
+          "model_id": "copo",
+          "reference": "19:116:13",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-117",
+      "book": 19,
+      "start_chapter": 117,
+      "end_chapter": 120,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "19:119:105",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-121",
+      "book": 19,
+      "start_chapter": 121,
+      "end_chapter": 124,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "19:121:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-125",
+      "book": 19,
+      "start_chapter": 125,
+      "end_chapter": 128,
+      "items": [
+        {
+          "model_id": "feixes",
+          "reference": "19:126:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-129",
+      "book": 19,
+      "start_chapter": 129,
+      "end_chapter": 132,
+      "items": [
+        {
+          "model_id": "tabernaculo",
+          "reference": "19:132:13",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-19-133",
+      "book": 19,
+      "start_chapter": 133,
+      "end_chapter": 136,
+      "items": [
+        {
+          "model_id": "oleo",
+          "reference": "19:133:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-137",
+      "book": 19,
+      "start_chapter": 137,
+      "end_chapter": 140,
+      "items": [
+        {
+          "model_id": "harpa",
+          "reference": "19:137:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-141",
+      "book": 19,
+      "start_chapter": 141,
+      "end_chapter": 144,
+      "items": [
+        {
+          "model_id": "incenso",
+          "reference": "19:141:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-19-145",
+      "book": 19,
+      "start_chapter": 145,
+      "end_chapter": 148,
+      "items": [
+        {
+          "model_id": "oliveira",
+          "reference": "19:148:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-19-149",
+      "book": 19,
+      "start_chapter": 149,
+      "end_chapter": 150,
+      "items": [
+        {
+          "model_id": "cimbalos",
+          "reference": "19:150:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "tambor",
+          "reference": "19:150:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "flauta",
+          "reference": "19:150:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-20-1",
+      "book": 20,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "colar",
+          "reference": "20:1:9",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-20-5",
+      "book": 20,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "cisterna",
+          "reference": "20:5:15",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-20-9",
+      "book": 20,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "20:9:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-20-13",
+      "book": 20,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "20:16:11",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-20-17",
+      "book": 20,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "20:20:23",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-20-21",
+      "book": 20,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "20:24:3",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-20-25",
+      "book": 20,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "fruto_ouro",
+          "reference": "20:25:11",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-20-29",
+      "book": 20,
+      "start_chapter": 29,
+      "end_chapter": 31,
+      "items": [
+        {
+          "model_id": "fuso",
+          "reference": "20:31:19",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-21-1",
+      "book": 21,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "jardim",
+          "reference": "21:3:2",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-21-5",
+      "book": 21,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "21:5:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-21-9",
+      "book": 21,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "poco",
+          "reference": "21:12:6",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-22-1",
+      "book": 22,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "fonte",
+          "reference": "22:4:15",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-22-5",
+      "book": 22,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "22:7:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-1",
+      "book": 23,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "boi",
+          "reference": "23:1:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-5",
+      "book": 23,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "lagar",
+          "reference": "23:5:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-9",
+      "book": 23,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "vara",
+          "reference": "23:10:5",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-13",
+      "book": 23,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "cidade",
+          "reference": "23:16:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-17",
+      "book": 23,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "23:17:5",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-21",
+      "book": 23,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "23:21:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-25",
+      "book": 23,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "eira",
+          "reference": "23:28:28",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-29",
+      "book": 23,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "roda_oleiro",
+          "reference": "23:29:16",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-33",
+      "book": 23,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "deserto",
+          "reference": "23:35:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-37",
+      "book": 23,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "23:40:11",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-41",
+      "book": 23,
+      "start_chapter": 41,
+      "end_chapter": 44,
+      "items": [
+        {
+          "model_id": "bigorna",
+          "reference": "23:44:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-45",
+      "book": 23,
+      "start_chapter": 45,
+      "end_chapter": 48,
+      "items": [
+        {
+          "model_id": "vaso",
+          "reference": "23:45:9",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-49",
+      "book": 23,
+      "start_chapter": 49,
+      "end_chapter": 52,
+      "items": [
+        {
+          "model_id": "copo",
+          "reference": "23:51:17",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-53",
+      "book": 23,
+      "start_chapter": 53,
+      "end_chapter": 56,
+      "items": [
+        {
+          "model_id": "ovelha",
+          "reference": "23:53:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-57",
+      "book": 23,
+      "start_chapter": 57,
+      "end_chapter": 60,
+      "items": [
+        {
+          "model_id": "muralha",
+          "reference": "23:60:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-23-61",
+      "book": 23,
+      "start_chapter": 61,
+      "end_chapter": 64,
+      "items": [
+        {
+          "model_id": "jardim",
+          "reference": "23:61:11",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-23-65",
+      "book": 23,
+      "start_chapter": 65,
+      "end_chapter": 66,
+      "items": [
+        {
+          "model_id": "jardim",
+          "reference": "23:65:17",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-24-1",
+      "book": 24,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "amendoeira",
+          "reference": "24:1:11",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-24-5",
+      "book": 24,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "bigorna",
+          "reference": "24:6:28",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-24-9",
+      "book": 24,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "bigorna",
+          "reference": "24:10:3",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-24-13",
+      "book": 24,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "tecido",
+          "reference": "24:13:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-17",
+      "book": 24,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "roda_oleiro",
+          "reference": "24:18:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-21",
+      "book": 24,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "cesto_frutos",
+          "reference": "24:24:2",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-24-25",
+      "book": 24,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "jugo",
+          "reference": "24:27:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-29",
+      "book": 24,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "documento",
+          "reference": "24:32:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-33",
+      "book": 24,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "24:36:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-37",
+      "book": 24,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "cisterna",
+          "reference": "24:38:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-41",
+      "book": 24,
+      "start_chapter": 41,
+      "end_chapter": 44,
+      "items": [
+        {
+          "model_id": "tijolos",
+          "reference": "24:43:9",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-45",
+      "book": 24,
+      "start_chapter": 45,
+      "end_chapter": 48,
+      "items": [
+        {
+          "model_id": "lagar",
+          "reference": "24:48:33",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-24-49",
+      "book": 24,
+      "start_chapter": 49,
+      "end_chapter": 52,
+      "items": [
+        {
+          "model_id": "templo_salomao",
+          "reference": "24:52:17",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-25-1",
+      "book": 25,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "ruinas",
+          "reference": "25:1:1",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-25-5",
+      "book": 25,
+      "start_chapter": 5,
+      "end_chapter": 5,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "25:5:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-26-1",
+      "book": 26,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "cidade",
+          "reference": "26:4:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-26-5",
+      "book": 26,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "26:5:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-26-9",
+      "book": 26,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "templo_visao",
+          "reference": "26:10:3",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-26-13",
+      "book": 26,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "26:15:2",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-26-17",
+      "book": 26,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "aguia",
+          "reference": "26:17:3",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-26-21",
+      "book": 26,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "pote",
+          "reference": "26:24:3",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-26-25",
+      "book": 26,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "navio",
+          "reference": "26:27:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-26-29",
+      "book": 26,
+      "start_chapter": 29,
+      "end_chapter": 32,
+      "items": [
+        {
+          "model_id": "rede",
+          "reference": "26:29:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-26-33",
+      "book": 26,
+      "start_chapter": 33,
+      "end_chapter": 36,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "26:34:14",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-26-37",
+      "book": 26,
+      "start_chapter": 37,
+      "end_chapter": 40,
+      "items": [
+        {
+          "model_id": "ossos",
+          "reference": "26:37:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-26-41",
+      "book": 26,
+      "start_chapter": 41,
+      "end_chapter": 44,
+      "items": [
+        {
+          "model_id": "templo_visao",
+          "reference": "26:41:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-26-45",
+      "book": 26,
+      "start_chapter": 45,
+      "end_chapter": 48,
+      "items": [
+        {
+          "model_id": "rio",
+          "reference": "26:47:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        },
+        {
+          "model_id": "jardim",
+          "reference": "26:47:12",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-27-1",
+      "book": 27,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "banquete",
+          "reference": "27:1:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-27-5",
+      "book": 27,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "inscricao",
+          "reference": "27:5:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-27-9",
+      "book": 27,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "27:9:17",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-28-1",
+      "book": 28,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "28:2:15",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-28-5",
+      "book": 28,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "forno",
+          "reference": "28:7:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-28-9",
+      "book": 28,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "jugo",
+          "reference": "28:10:11",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-28-13",
+      "book": 28,
+      "start_chapter": 13,
+      "end_chapter": 14,
+      "items": [
+        {
+          "model_id": "flores",
+          "reference": "28:14:5",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-29-1",
+      "book": 29,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "gafanhoto",
+          "reference": "29:1:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-30-1",
+      "book": 30,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "30:3:14",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-30-5",
+      "book": 30,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "cesto_frutos",
+          "reference": "30:8:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-30-9",
+      "book": 30,
+      "start_chapter": 9,
+      "end_chapter": 9,
+      "items": [
+        {
+          "model_id": "peneira",
+          "reference": "30:9:9",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-31-1",
+      "book": 31,
+      "start_chapter": 1,
+      "end_chapter": 1,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "31:1:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-32-1",
+      "book": 32,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "navio",
+          "reference": "32:1:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "peixe_grande",
+          "reference": "32:1:17",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-33-1",
+      "book": 33,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "33:4:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-33-5",
+      "book": 33,
+      "start_chapter": 5,
+      "end_chapter": 7,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "33:6:11",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-34-1",
+      "book": 34,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "carro",
+          "reference": "34:2:3",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-35-1",
+      "book": 35,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "35:2:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-36-1",
+      "book": 36,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "36:1:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-37-1",
+      "book": 37,
+      "start_chapter": 1,
+      "end_chapter": 2,
+      "items": [
+        {
+          "model_id": "templo_zorobabel",
+          "reference": "37:1:8",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-38-1",
+      "book": 38,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "candelabro",
+          "reference": "38:4:2",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-38-5",
+      "book": 38,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "38:5:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-38-9",
+      "book": 38,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "moedas",
+          "reference": "38:11:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-38-13",
+      "book": 38,
+      "start_chapter": 13,
+      "end_chapter": 14,
+      "items": [
+        {
+          "model_id": "montanha",
+          "reference": "38:14:4",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-39-1",
+      "book": 39,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "39:1:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-40-1",
+      "book": 40,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "40:4:4",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-40-5",
+      "book": 40,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "40:5:15",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-40-9",
+      "book": 40,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "40:12:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-40-13",
+      "book": 40,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "rede",
+          "reference": "40:13:47",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-40-17",
+      "book": 40,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "moedas",
+          "reference": "40:17:27",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-40-21",
+      "book": 40,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "lagar",
+          "reference": "40:21:33",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-40-25",
+      "book": 40,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "40:25:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        },
+        {
+          "model_id": "tumulo",
+          "reference": "40:27:60",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-41-1",
+      "book": 41,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "barco",
+          "reference": "41:4:35",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "habitacao",
+          "reference": "41:2:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-41-5",
+      "book": 41,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "pao",
+          "reference": "41:6:41",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-41-9",
+      "book": 41,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "videira",
+          "reference": "41:12:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-41-13",
+      "book": 41,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "tumulo",
+          "reference": "41:15:46",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-42-1",
+      "book": 42,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "manjedoura",
+          "reference": "42:2:7",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-42-5",
+      "book": 42,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "barco",
+          "reference": "42:5:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-42-9",
+      "book": 42,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "lampada",
+          "reference": "42:11:33",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-42-13",
+      "book": 42,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "torre",
+          "reference": "42:14:28",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-42-17",
+      "book": 42,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "sicômoro",
+          "reference": "42:19:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-42-21",
+      "book": 42,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "tumulo",
+          "reference": "42:24:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-43-1",
+      "book": 43,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "jarro",
+          "reference": "43:2:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-43-5",
+      "book": 43,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "piscina",
+          "reference": "43:5:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-43-9",
+      "book": 43,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "porta_casa",
+          "reference": "43:10:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-43-13",
+      "book": 43,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "bacia",
+          "reference": "43:13:5",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        },
+        {
+          "model_id": "videira",
+          "reference": "43:15:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-43-17",
+      "book": 43,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "tumulo",
+          "reference": "43:20:1",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-43-21",
+      "book": 43,
+      "start_chapter": 21,
+      "end_chapter": 21,
+      "items": [
+        {
+          "model_id": "rede",
+          "reference": "43:21:6",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-1",
+      "book": 44,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "segundo_templo",
+          "reference": "44:3:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-5",
+      "book": 44,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "carro",
+          "reference": "44:8:28",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-9",
+      "book": 44,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "cesto",
+          "reference": "44:9:25",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-13",
+      "book": 44,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "navio",
+          "reference": "44:13:4",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-17",
+      "book": 44,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "barco",
+          "reference": "44:20:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-21",
+      "book": 44,
+      "start_chapter": 21,
+      "end_chapter": 24,
+      "items": [
+        {
+          "model_id": "tribunal",
+          "reference": "44:24:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-44-25",
+      "book": 44,
+      "start_chapter": 25,
+      "end_chapter": 28,
+      "items": [
+        {
+          "model_id": "naufragio",
+          "reference": "44:27:41",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-45-1",
+      "book": 45,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "pomba",
+          "reference": "45:1:23",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-45-5",
+      "book": 45,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "tumulo",
+          "reference": "45:6:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-45-9",
+      "book": 45,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "oliveira",
+          "reference": "45:11:17",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-45-13",
+      "book": 45,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "armadura",
+          "reference": "45:13:12",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-46-1",
+      "book": 46,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "habitacao",
+          "reference": "46:3:10",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-46-5",
+      "book": 46,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "pao",
+          "reference": "46:5:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-46-9",
+      "book": 46,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "estadio",
+          "reference": "46:9:24",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-46-13",
+      "book": 46,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "46:15:37",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-47-1",
+      "book": 47,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "vaso",
+          "reference": "47:4:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-47-5",
+      "book": 47,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "tenda",
+          "reference": "47:5:1",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-47-9",
+      "book": 47,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "fortaleza",
+          "reference": "47:10:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-47-13",
+      "book": 47,
+      "start_chapter": 13,
+      "end_chapter": 13,
+      "items": [
+        {
+          "model_id": "carta",
+          "reference": "47:13:10",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-48-1",
+      "book": 48,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "48:3:8",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-48-5",
+      "book": 48,
+      "start_chapter": 5,
+      "end_chapter": 6,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "48:6:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-49-1",
+      "book": 49,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "templo_salomao",
+          "reference": "49:2:21",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-49-5",
+      "book": 49,
+      "start_chapter": 5,
+      "end_chapter": 6,
+      "items": [
+        {
+          "model_id": "armadura",
+          "reference": "49:6:13",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-50-1",
+      "book": 50,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "corrente",
+          "reference": "50:1:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-51-1",
+      "book": 51,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "carta",
+          "reference": "51:4:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-52-1",
+      "book": 52,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "trombeta",
+          "reference": "52:4:16",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-52-5",
+      "book": 52,
+      "start_chapter": 5,
+      "end_chapter": 5,
+      "items": [
+        {
+          "model_id": "elmo",
+          "reference": "52:5:8",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-53-1",
+      "book": 53,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "carta",
+          "reference": "53:3:17",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-54-1",
+      "book": 54,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "pergaminho",
+          "reference": "54:4:13",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-54-5",
+      "book": 54,
+      "start_chapter": 5,
+      "end_chapter": 6,
+      "items": [
+        {
+          "model_id": "moedas",
+          "reference": "54:6:10",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-55-1",
+      "book": 55,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "corrente",
+          "reference": "55:1:16",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-56-1",
+      "book": 56,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "jugo",
+          "reference": "56:3:3",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-57-1",
+      "book": 57,
+      "start_chapter": 1,
+      "end_chapter": 1,
+      "items": [
+        {
+          "model_id": "corrente",
+          "reference": "57:1:13",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-58-1",
+      "book": 58,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "espada",
+          "reference": "58:4:12",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-58-5",
+      "book": 58,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "58:7:27",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-58-9",
+      "book": 58,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "tabernaculo",
+          "reference": "58:9:2",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-58-13",
+      "book": 58,
+      "start_chapter": 13,
+      "end_chapter": 13,
+      "items": [
+        {
+          "model_id": "altar",
+          "reference": "58:13:10",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-59-1",
+      "book": 59,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "balanca",
+          "reference": "59:2:1",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        },
+        {
+          "model_id": "espelho",
+          "reference": "59:1:23",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-59-5",
+      "book": 59,
+      "start_chapter": 5,
+      "end_chapter": 5,
+      "items": [
+        {
+          "model_id": "campo",
+          "reference": "59:5:7",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-60-1",
+      "book": 60,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "templo_salomao",
+          "reference": "60:2:5",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-60-5",
+      "book": 60,
+      "start_chapter": 5,
+      "end_chapter": 5,
+      "items": [
+        {
+          "model_id": "leao",
+          "reference": "60:5:8",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-61-1",
+      "book": 61,
+      "start_chapter": 1,
+      "end_chapter": 3,
+      "items": [
+        {
+          "model_id": "corrente",
+          "reference": "61:2:4",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-62-1",
+      "book": 62,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "oleo",
+          "reference": "62:2:27",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-62-5",
+      "book": 62,
+      "start_chapter": 5,
+      "end_chapter": 5,
+      "items": [
+        {
+          "model_id": "carta",
+          "reference": "62:5:13",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    },
+    {
+      "id": "block-63-1",
+      "book": 63,
+      "start_chapter": 1,
+      "end_chapter": 1,
+      "items": [
+        {
+          "model_id": "papiro",
+          "reference": "63:1:12",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-64-1",
+      "book": 64,
+      "start_chapter": 1,
+      "end_chapter": 1,
+      "items": [
+        {
+          "model_id": "tinta",
+          "reference": "64:1:13",
+          "kind": "t",
+          "genre": "Objeto no texto",
+          "explanation": "O recurso permite examinar um objeto, lugar ou elemento mencionado nesta passagem. A forma e os detalhes não especificados são ilustrativos."
+        }
+      ]
+    },
+    {
+      "id": "block-65-1",
+      "book": 65,
+      "start_chapter": 1,
+      "end_chapter": 1,
+      "items": [
+        {
+          "model_id": "nuvens",
+          "reference": "65:1:12",
+          "kind": "m",
+          "genre": "Metáfora ou linguagem poética",
+          "explanation": "A passagem usa imagem, comparação ou linguagem poética. A cena ajuda a reconhecer a imagem e não transforma a metáfora em acontecimento ou objeto literal."
+        }
+      ]
+    },
+    {
+      "id": "block-66-1",
+      "book": 66,
+      "start_chapter": 1,
+      "end_chapter": 4,
+      "items": [
+        {
+          "model_id": "sete_lampadas",
+          "reference": "66:1:12",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-66-5",
+      "book": 66,
+      "start_chapter": 5,
+      "end_chapter": 8,
+      "items": [
+        {
+          "model_id": "sete_selos",
+          "reference": "66:5:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-66-9",
+      "book": 66,
+      "start_chapter": 9,
+      "end_chapter": 12,
+      "items": [
+        {
+          "model_id": "vara",
+          "reference": "66:11:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-66-13",
+      "book": 66,
+      "start_chapter": 13,
+      "end_chapter": 16,
+      "items": [
+        {
+          "model_id": "tacas",
+          "reference": "66:15:7",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-66-17",
+      "book": 66,
+      "start_chapter": 17,
+      "end_chapter": 20,
+      "items": [
+        {
+          "model_id": "corrente",
+          "reference": "66:20:1",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        }
+      ]
+    },
+    {
+      "id": "block-66-21",
+      "book": 66,
+      "start_chapter": 21,
+      "end_chapter": 22,
+      "items": [
+        {
+          "model_id": "nova_jerusalem",
+          "reference": "66:21:12",
+          "kind": "v",
+          "genre": "Visão e símbolo",
+          "explanation": "Associação a uma visão ou linguagem simbólica. A cena não é uma fotografia de um acontecimento histórico nem decide entre interpretações escatológicas."
+        },
+        {
+          "model_id": "oliveira",
+          "reference": "66:22:2",
+          "kind": "c",
+          "genre": "Contexto cultural",
+          "explanation": "Ilustração de contexto para estudar a passagem. O objeto específico desta cena não é afirmado pelo versículo; não se trata de uma reconstrução comprovada."
+        }
+      ]
+    }
+  ],
+  "methodology": "Cada bloco de até quatro capítulos possui uma associação editorial ancorada em uma passagem real. Recursos podem reaparecer quando o texto retoma o objeto. Objeto, contexto cultural, metáfora e visão são distinguídos; não há representação de Deus ou de Cristo."
+}
