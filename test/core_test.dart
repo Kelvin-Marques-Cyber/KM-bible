@@ -217,7 +217,7 @@ void main() {
       1,
     );
     expect(s.note(note), isNotNull);
-    expect(s.library.select('PRAGMA integrity_check').first.values.first, 'ok');
+    expect(s.library.select('PRAGMA integrity_check').first['integrity_check'], 'ok');
   });
   test('Reject corrupted and path traversal content before installation', () {
     expect(
