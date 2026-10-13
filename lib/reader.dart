@@ -735,7 +735,7 @@ class _CommentariesPageState extends State<CommentariesPage> {
                       Icons.article,
                       () => sheet(
                         context,
-                        '${m['author']} · ${r['title']}',
+                        '${m['author']} · ${(pt?['title'] as String?)?.trim().isNotEmpty == true ? pt!['title'] : r['title']}',
                         LongStudyText(body),
                       ),
                     ),
