@@ -1,13 +1,5 @@
 name: Flutter Web otimizado e APK de teste
 on:
-  push:
-    branches: [flutter-web-fiel]
-    paths:
-      - 'lib/**'
-      - 'assets/**'
-      - 'scripts/**'
-      - 'pubspec.yaml'
-      - '.github/workflows/flutter-web-and-android.yml'
   workflow_dispatch:
 permissions:
   contents: write
