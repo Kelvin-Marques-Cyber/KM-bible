@@ -36,6 +36,7 @@ flutter pub get
 python3 scripts/embutir_modulos_bundled.py
 # Reconstroi FTS5 e SHA-256 DEPOIS da pre-instalacao, garantindo busca coerente.
 python3 scripts/otimizar_acervo_sqlite.py
+python3 scripts/verificar_modulos_embutidos.py
 # O sqlite3 2.9.4 exige o modulo WebAssembly do mesmo release na plataforma Web.
 if [[ ! -s web/sqlite3.wasm ]]; then
   echo 'Baixando modulo oficial SQLite WebAssembly 2.9.4...'
