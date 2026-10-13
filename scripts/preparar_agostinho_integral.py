@@ -181,7 +181,7 @@ def main():
         import gdown
         pdf.parent.mkdir(parents=True, exist_ok=True)
         print("Baixando edicao integral autorizada de Solus Agape...", flush=True)
-        fetched = gdown.download(id=PDF_ID, output=str(pdf), quiet=False, fuzzy=True)
+        fetched = gdown.download(id=PDF_ID, output=str(pdf), quiet=False)
         if not fetched:
             sys.exit("Nao foi possivel baixar a edicao PDF do Google Drive. "
                      "Baixe-a manualmente no site Solus Agape e use --pdf ARQUIVO.pdf")
