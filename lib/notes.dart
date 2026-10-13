@@ -7,7 +7,6 @@ import 'common.dart';
 import 'store.dart';
 import 'domain.dart';
 import 'studies.dart';
-import 'agostinho.dart';
 import 'explore.dart';
 
 Future<void> openNote(BuildContext context, RecordRow note) =>
@@ -56,20 +55,13 @@ class _NotesPageState extends State<NotesPage> {
       children: [
         feature(
           context,
-          app.t('confessions'),
-          'Confissão de Fé · Breve Catecismo · Catecismo Maior',
+          'Confissões e catecismos',
+          'Westminster · Breve · Maior · Confissões de Agostinho',
           Icons.account_balance,
-          () => sheet(context, app.t('confessions'), const ConfessionsPage()),
-        ),
-        feature(
-          context,
-          'Confissões de Santo Agostinho',
-          '13 livros · 52 leituras em linguagem simples · por capítulos',
-          Icons.auto_stories_outlined,
           () => sheet(
             context,
-            'Confissões de Santo Agostinho',
-            const AugustineConfessionsPage(),
+            'Confissões e catecismos',
+            const ConfessionsPage(),
           ),
         ),
         Wrap(
