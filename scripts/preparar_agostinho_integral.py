@@ -24,7 +24,7 @@ BOOK_LINE = re.compile(
     r"D[EÉ]CIMO[- ]TERCEIRO|D[EÉ]CIMO[- ]SEGUNDO|D[EÉ]CIMO[- ]PRIMEIRO|D[EÉ]CIMO)"
     r"(?:\b|[.:\s—–-])", re.I)
 CHAPTER_LINE = re.compile(
-    r"^\s*CAP[IÍ]TULO\s+(?P<num>[IVXLCDM]+|\d{1,2})"
+    r"^\s*(?:CAP[IÍ]TULO|CAP\.)\s*(?P<num>[IVXLCDM]+|\d{1,2})"
     r"(?:\b|[.:\s—–-])", re.I)
 ORDINALS = {
     "PRIMEIRO": 1, "SEGUNDO": 2, "TERCEIRO": 3, "QUARTO": 4,
@@ -60,7 +60,7 @@ def cleaned(text):
         # Numero da pagina, quando impresso sozinho.
         # Remove apenas numeros decorados por tracos (cabecalhos de pagina).
         # "01" ou "1" podem ser os titulos reais dos capitulos.
-        if re.fullmatch(r"[-—–]+\\s*\\d{1,3}\\s*[-—–]+", line):
+        if re.fullmatch(r"[-—–]+\s*\d{1,3}\s*[-—–]+", line):
             continue
         lines.append(line)
     return lines
