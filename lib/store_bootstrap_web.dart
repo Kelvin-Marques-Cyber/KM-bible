@@ -20,13 +20,33 @@ Future<(CommonDatabase, CommonDatabase, CommonDatabase, CommonDatabase)>
     'portuguese',
     'topics',
   ]) {
-    final path = '$name.sqlite';
-    // SQLite usa SQLITE_ACCESS_EXISTS == 0.
-    if (vfs.xAccess(path, 0) != 0) continue;
+    // O SQLite transforma "catalogue.sqlite" em "/catalogue.sqlite".
+    // A copia deve usar o MESMO caminho para evitar abrir banco vazio.
+    final path = vfs.xFullPathName('$name.sqlite');
+    // Os bancos de traducao sao atualizaveis; nunca sobrescrever dados pessoais.
+    final mustCheckUpdate = name == 'portuguese' || name == 'topics';
+    final exists = vfs.xAccess(path, 0) != 0;
+    if (exists && !mustCheckUpdate) continue;
 
-    final bundlePath = 'assets/content/$path';
+    final bundlePath = 'assets/content/$name.sqlite';
     final expected =
         (await rootBundle.loadString('assets/content/$name.sha256')).trim();
+    if (exists) {
+      final current = vfs.xOpen(
+        Sqlite3Filename(path),
+        SqlFlag.SQLITE_OPEN_READONLY | SqlFlag.SQLITE_OPEN_MAIN_DB,
+      ).file;
+      try {
+        final size = current.xFileSize();
+        if (size > 0) {
+          final existingBytes = Uint8List(size);
+          current.xRead(existingBytes, 0);
+          if (sha256.convert(existingBytes).toString() == expected) continue;
+        }
+      } finally {
+        current.xClose();
+      }
+    }
     final data = await rootBundle.load(bundlePath);
     final bytes =
         data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
