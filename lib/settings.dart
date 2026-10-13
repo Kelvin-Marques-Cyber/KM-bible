@@ -2,6 +2,8 @@ import 'appearance.dart';
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'pwa_update_stub.dart' if (dart.library.html) 'pwa_update_web.dart' as pwaUpdate;
 import 'app.dart';
 import 'domain.dart';
 import 'common.dart';
@@ -228,6 +230,20 @@ class _SettingsPageState extends State<SettingsPage> {
           value: a.store.pref('split_comments', true),
           onChanged: (v) => a.set('split_comments', v),
         ),
+        if (kIsWeb) ...[
+          const Divider(height: 36),
+          ListTile(
+            contentPadding: EdgeInsets.zero,
+            leading: const Icon(Icons.system_update_alt),
+            title: const Text('Atualizar aplicativo'),
+            subtitle: const Text(
+              'Buscar a versão mais recente sem apagar anotações, '
+              'favoritos ou configurações.',
+            ),
+            trailing: const Icon(Icons.chevron_right),
+            onTap: pwaUpdate.openWebUpdater,
+          ),
+        ],
         const Divider(height: 36),
         Text(a.t('backup'), style: Theme.of(context).textTheme.titleLarge),
         const SizedBox(height: 12),
