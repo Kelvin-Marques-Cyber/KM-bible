@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Diagnóstico seguro — Bíblia Reformada</title>
+<style>
+:root{color-scheme:light dark;font-family:system-ui,-apple-system,sans-serif}body{max-width:760px;margin:auto;padding:20px 16px;line-height:1.5}h1{font-size:1.45rem}button{font:inherit;padding:10px 15px;border-radius:9px;border:1px solid #888;cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:Canvas;border:1px solid #8886;padding:16px;border-radius:10px}p{margin:10px 0}.warn{border-left:4px solid #b87917;padding:5px 12px}
+</style></head><body>
+<h1>Diagnóstico da Bíblia Reformada no Android</h1>
+<p>Esta página <strong>não carrega o Flutter, os modelos 3D ou os bancos bíblicos</strong>. Não apaga dados, não lê o conteúdo das anotações e não envia informações a um servidor.</p>
+<p class="warn"><strong>Não limpe os dados do site:</strong> suas anotações podem estar no IndexedDB.</p>
+<button id="run">Verificar armazenamento</button> <button id="copy">Copiar resultado</button>
+<pre id="result">Toque em “Verificar armazenamento”.</pre>
+<p><small>Espaço disponível não é o mesmo que RAM disponível. O erro “Ops, parece que ocorreu um erro” pode indicar que o processo do navegador foi encerrado por falta de memória.</small></p>
+<script>
+const out=document.getElementById('result');
+const mb=n=>Number.isFinite(n)?(n/1000000).toFixed(1)+' MB':'não informado';
+document.getElementById('run').onclick=async()=>{
+ let a=[];
+ const add=(k,v)=>a.push(k+': '+v);
+ add('Endereço',location.origin);
+ add('Navegador',navigator.userAgent);
+ add('RAM aproximada (API)', navigator.deviceMemory ? navigator.deviceMemory+' GB' : 'não disponibilizada');
+ add('Núcleos lógicos',navigator.hardwareConcurrency||'não informado');
+ try{
+  if(navigator.storage?.estimate){
+   const r=await navigator.storage.estimate();
+   add('Uso total estimado no site',mb(r.usage));
+   add('Cota estimada para o site',mb(r.quota));
+   add('Uso/cota',r.quota?((r.usage||0)*100/r.quota).toFixed(1)+'%':'não informado');
+   if(r.usageDetails){
+    for(const [k,v] of Object.entries(r.usageDetails))add('  '+k,mb(v));
+   }
+  }else add('Armazenamento','API indisponível');
+ }catch(e){add('Erro ao estimar armazenamento',String(e))}
+ try{
+  if(navigator.storage?.persisted) add('Armazenamento persistente autorizado',await navigator.storage.persisted()?'sim':'não');
+ }catch(e){add('Persistência',String(e))}
+ try{const keys=await caches.keys();add('Caches do site',keys.length+' ('+keys.join(', ').slice(0,500)+')')}catch(e){add('Caches',String(e))}
+ try{if(indexedDB.databases){const databases=await indexedDB.databases();add('Bancos IndexedDB',databases.map(x=>x.name||'sem nome').join(', ')||'nenhum')}}catch(e){add('IndexedDB',String(e))}
+ try{if(performance.memory)add('Heap JavaScript usado (estimado)',mb(performance.memory.usedJSHeapSize))}catch(e){}
+ add('Hora local',new Date().toLocaleString('pt-BR'));
+ out.textContent=a.join('\n');
+};
+document.getElementById('copy').onclick=async()=>{
+ try{await navigator.clipboard.writeText(out.textContent);document.getElementById('copy').textContent='Copiado!'}catch(e){out.focus();document.getElementById('copy').textContent='Selecione e copie o texto abaixo'}
+};
+</script></body></html>
