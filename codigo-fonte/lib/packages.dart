@@ -207,7 +207,7 @@ class ContentPackage {
               .contains("content='$contentTable'");
     }
     final externalVerse = ftsUsesTriggers(s.content, 'verse_search', 'verses');
-    final externalComment = ftsUsesTriggers(
+    var externalComment = ftsUsesTriggers(
       s.library, 'commentary_search', 'commentary_entries');
     final externalLexicon = ftsUsesTriggers(s.lexical, 'lexical_search', 'lexemes');
     for (final dep in manifest['dependencies']) {
@@ -241,6 +241,61 @@ class ContentPackage {
           .select('PRAGMA database_list')
           .any((r) => r['name'] == 'linguistic')) {
         s.content.execute('ATTACH DATABASE ? AS linguistic', [lexPath]);
+      }
+    }
+    // Bancos antigos ou migracoes interrompidas podem conservar os textos
+    // sem o indice FTS5. Recupera o indice sem tocar nas anotacoes pessoais.
+    if (kind == 'commentary' && !memory) {
+      final hasCommentaries = s.content.select(
+        "SELECT 1 FROM library.sqlite_master WHERE type='table' "
+        "AND name='commentary_entries'",
+      ).isNotEmpty;
+      if (!hasCommentaries) {
+        throw StateError('Banco da biblioteca sem tabela de comentarios.');
+      }
+      final hasIndex = s.content.select(
+        "SELECT 1 FROM library.sqlite_master WHERE type='table' "
+        "AND name='commentary_search'",
+      ).isNotEmpty;
+      if (!hasIndex) {
+        s.content.execute('''
+          CREATE VIRTUAL TABLE library.commentary_search USING fts5(
+            id UNINDEXED, module_id UNINDEXED, title, body,
+            content='commentary_entries', content_rowid='rowid',
+            tokenize='unicode61 remove_diacritics 2'
+          )
+        ''');
+        s.content.execute(
+          "INSERT INTO library.commentary_search(commentary_search) "
+          "VALUES('rebuild')",
+        );
+        externalComment = true;
+      }
+      if (externalComment) {
+        // Indice externo: os gatilhos sincronizam buscas e alteracoes.
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_ai
+          AFTER INSERT ON commentary_entries BEGIN
+            INSERT INTO commentary_search(rowid,id,module_id,title,body)
+            VALUES(new.rowid,new.id,new.module_id,new.title,new.body);
+          END
+        ''');
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_ad
+          AFTER DELETE ON commentary_entries BEGIN
+            INSERT INTO commentary_search(commentary_search,rowid,id,module_id,title,body)
+            VALUES('delete',old.rowid,old.id,old.module_id,old.title,old.body);
+          END
+        ''');
+        s.content.execute('''
+          CREATE TRIGGER IF NOT EXISTS library.optimized_commentary_search_au
+          AFTER UPDATE ON commentary_entries BEGIN
+            INSERT INTO commentary_search(commentary_search,rowid,id,module_id,title,body)
+            VALUES('delete',old.rowid,old.id,old.module_id,old.title,old.body);
+            INSERT INTO commentary_search(rowid,id,module_id,title,body)
+            VALUES(new.rowid,new.id,new.module_id,new.title,new.body);
+          END
+        ''');
       }
     }
     final written = <File>[];
