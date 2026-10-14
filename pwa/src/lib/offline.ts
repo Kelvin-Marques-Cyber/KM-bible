@@ -618,23 +618,40 @@ export function runOfflineJob(
   controller = own;
   job = { id, label, state: 'running', progress: null, result: null, error: null };
   notify();
+  const current = job;
+  const mine = () => job !== null && job.id === current.id && job.state === 'running';
+  // No máximo ~10 atualizações por segundo na interface; a última sempre chega
+  // (uma espera de rede longa não deixa números antigos na tela).
   let last = 0;
-  return task((progress) => {
-    // No máximo ~10 atualizações por segundo na interface.
-    const now = Date.now();
-    if (now - last < 100 && progress.done + progress.failed < progress.total) {
-      if (job) job = { ...job, progress };
-      return;
-    }
-    last = now;
+  let pending: DownloadProgress | null = null;
+  let timer: ReturnType<typeof setTimeout> | null = null;
+  const flush = () => {
+    timer = null;
+    if (!pending || !mine()) return;
+    last = Date.now();
+    const progress = pending;
+    pending = null;
     patchJob({ progress });
+  };
+  const stop = () => {
+    if (timer) clearTimeout(timer);
+    timer = null;
+    pending = null;
+  };
+  return task((progress) => {
+    pending = progress;
+    const wait = 100 - (Date.now() - last);
+    if (wait <= 0 || progress.done + progress.failed >= progress.total) flush();
+    else if (!timer) timer = setTimeout(flush, wait);
   }, own.signal).then(
     (result) => {
+      stop();
       if (controller === own) controller = null;
       patchJob({ state: result.cancelled ? 'cancelled' : 'done', result, progress: result });
       return result;
     },
     (error) => {
+      stop();
       if (controller === own) controller = null;
       patchJob({ state: isAbort(error) ? 'cancelled' : 'error', error });
       return null;

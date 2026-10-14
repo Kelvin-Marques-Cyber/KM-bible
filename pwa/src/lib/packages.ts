@@ -177,7 +177,12 @@ class PackageWorker {
   onStage: ((stage: PackageStage) => void) | null = null;
 
   constructor() {
-    this.worker = new Worker(new URL('../workers/packages.worker.ts', import.meta.url), { type: 'module' });
+    try {
+      this.worker = new Worker(new URL('../workers/packages.worker.ts', import.meta.url), { type: 'module' });
+    } catch (error) {
+      // Safari < 15 e navegadores restritos (CSP) recusam workers de módulo no construtor.
+      throw new WorkerStartError(error instanceof Error ? error.message : String(error));
+    }
     this.worker.onmessage = (event: MessageEvent<PackageWorkerMessage>) => {
       this.started = true;
       const data = event.data;
@@ -241,9 +246,11 @@ async function prepareInWorker(file: Blob, onStage?: (stage: PackageStage) => vo
       previous: userModule(parsed.manifest.id),
       async install(stage) {
         if (finished) throw new Error('Importação já concluída.');
-        checkDependencies(parsed.manifest);
-        worker.onStage = stage ?? onStage ?? null;
+        // Uma tentativa por preparação: com sucesso ou falha (inclusive dependência
+        // ausente), o worker e os registros preparados na memória dele são liberados.
         try {
+          checkDependencies(parsed.manifest);
+          worker.onStage = stage ?? onStage ?? null;
           await worker.request({ type: 'install' }, 'installed');
         } finally {
           finished = true;
@@ -275,10 +282,10 @@ async function prepareInline(file: Blob, onStage?: (stage: PackageStage) => void
     previous: userModule(manifest.id),
     async install(stage) {
       if (!plan) throw new Error('Importação já concluída.');
-      checkDependencies(manifest);
-      (stage ?? onStage)?.('write');
       const current = plan;
       plan = null;
+      checkDependencies(manifest);
+      (stage ?? onStage)?.('write');
       await writeInstallPlan(current);
       await afterInstall();
     },

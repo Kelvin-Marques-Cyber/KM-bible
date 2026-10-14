@@ -9,8 +9,8 @@ import { act, createElement, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { app } from '../../src/lib/app';
-import { installed, loadUserModules, module } from '../../src/lib/content';
-import { deleteModuleData } from '../../src/lib/library-packages-core';
+import { installed, loadUserModules, module, userModule } from '../../src/lib/content';
+import { buildInstallPlan, deleteModuleData, parsePackage, writeInstallPlan } from '../../src/lib/library-packages-core';
 import { DATA_CACHE, FULL_FLAG, resetOfflineState } from '../../src/lib/offline';
 import { removeModule } from '../../src/lib/packages';
 import { pref, setPref } from '../../src/lib/store';
@@ -233,6 +233,59 @@ describe('ModulePage', () => {
     expect(installed(app.translation)).toBe(true);
     await setPref('disabled_modules', []);
   });
+
+  it('módulo importado: desativa, ativa e apaga os dados com confirmação', async () => {
+    const records = new TextEncoder().encode(
+      JSON.stringify([
+        { id: 'b', title: 'Segundo estudo', body: 'Texto 2' },
+        { id: 'a', title: 'Primeiro estudo', body: 'Texto 1' },
+      ]),
+    );
+    const manifest = {
+      format_version: 1,
+      id: 'TESTE-ESTUDO',
+      kind: 'study',
+      title: 'Estudos Importados',
+      version: '2.0.0',
+      language: 'pt-BR',
+      author: 'Autora',
+      license: 'CC BY-SA 4.0',
+      license_text: 'Licença do estudo.',
+      source: 'https://example.org/estudos',
+      dependencies: [],
+      files: { 'data.json': createHash('sha256').update(records).digest('hex') },
+    };
+    const zip = zipSync({ 'manifest.json': new TextEncoder().encode(JSON.stringify(manifest)), 'data.json': records });
+    await writeInstallPlan(await buildInstallPlan(await parsePackage(zip)));
+    await loadUserModules();
+    try {
+      const view = render(createElement(ModulePage, { moduleId: 'TESTE-ESTUDO' }));
+      await until(() => view.textContent!.includes('Conteúdo disponível · 2 textos'));
+      expect(view.textContent).toContain('Autora · pt-BR');
+      expect(view.textContent).toContain('Primeiro estudo');
+
+      click(button('Remover módulo', view));
+      await until(() => userModule('TESTE-ESTUDO')?.enabled === false && !!button('Ativar módulo', view));
+      expect(installed('TESTE-ESTUDO')).toBe(false);
+
+      click(button('Ativar módulo', view));
+      await until(() => userModule('TESTE-ESTUDO')?.enabled === true && !!button('Remover módulo', view));
+
+      click(button('Apagar dados do módulo', view));
+      const confirm = view.querySelector('[role=alertdialog]')!;
+      expect(confirm.textContent).toContain('Estudos Importados');
+      click(button('Cancelar', confirm));
+      expect(view.querySelector('[role=alertdialog]')).toBeNull();
+      expect(userModule('TESTE-ESTUDO')).toBeTruthy();
+
+      click(button('Apagar dados do módulo', view));
+      click(buttons(view.querySelector('[role=alertdialog]')!).find((b) => b.textContent === 'Apagar'));
+      await until(() => userModule('TESTE-ESTUDO') === undefined);
+    } finally {
+      await deleteModuleData('TESTE-ESTUDO');
+      await loadUserModules();
+    }
+  });
 });
 
 describe('OfflinePage', () => {
@@ -264,4 +317,19 @@ describe('OfflinePage', () => {
     await until(() => !buttons(view).some((b) => b.getAttribute('aria-label')?.startsWith('Remover do aparelho: Referências cruzadas')));
     expect(view.textContent).toContain('Armazenamento');
   }, 30_000);
+
+  it('no iPhone fora da Tela de Início, orienta a instalar antes, mas permite baixar', async () => {
+    const agent = vi.spyOn(navigator, 'userAgent', 'get').mockReturnValue(
+      'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
+    );
+    try {
+      const view = render(createElement(OfflinePage));
+      expect(view.textContent).toContain('Adicionar à Tela de Início');
+      expect(view.textContent).toContain('O Safari pode apagar os dados');
+      // Habilitado assim que a lista de arquivos carrega (no iPhone o download continua permitido).
+      await until(() => button('Baixar tudo para usar sem internet', view)?.disabled === false);
+    } finally {
+      agent.mockRestore();
+    }
+  });
 });

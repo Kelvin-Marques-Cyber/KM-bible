@@ -226,6 +226,30 @@ describe('ContentPackage.parse', () => {
   });
 });
 
+describe('atlas e modelos: campos que o aplicativo percorre', () => {
+  it('locations (lidas pelo atlas) passam pela mesma conferência de coordenadas que places', async () => {
+    await rejects(data('atlas', [{ id: 'p', locations: [{ id: 'jer', lat: 95, lon: 35 }] }]), 'invalid_coordinates');
+    await rejects(data('atlas', [{ id: 'p', locations: [{ id: 'jer', ancient: 'Jerusalém' }] }]), 'invalid_coordinates');
+    await rejects(data('atlas', [{ id: 'p', locations: 'Jerusalém' }]), 'invalid_coordinates');
+    await rejects(data('atlas', [{ id: 'p', metadata: { locations: [{ lat: 0, lon: 200 }] } }]), 'invalid_coordinates');
+    await rejects(data('atlas', [{ id: 'p', metadata: { events: [{ start: 0 }] } }]), 'invalid_date');
+    await rejects(data('atlas', [{ id: 'p', events: [{ start: -30, references: '43:3:16' }] }]), 'invalid_metadata');
+    const ok = await parsePackage(
+      data('atlas', [{ id: 'p', title: 'Atlas', locations: [{ id: 'jer', lat: 31.78, lon: 35.22 }], events: [{ id: 'e', start: -30, references: ['43:3:16'] }] }]),
+    );
+    const plan = await buildInstallPlan(ok);
+    const docs = plan.rows.find((r) => r.key === 'docs')!.value as unknown[][];
+    expect((docs[0][5] as { locations: unknown[] }).locations).toHaveLength(1);
+  });
+
+  it('modelos: referências e camadas, quando presentes, precisam ser listas', async () => {
+    const model = (row: Record<string, unknown>) => data('model', [{ id: 'arca', title: 'Arca', file: 'arca.glb', ...row }], {}, { 'arca.glb': glb(asset) });
+    await rejects(model({ references: '6:25:10' }), 'invalid_metadata');
+    await rejects(model({ metadata: { layers: 'Estrutura' } }), 'invalid_metadata');
+    await expect(parsePackage(model({ references: ['2:25:10'], layers: ['Estrutura', 'Querubins'] }))).resolves.toBeTruthy();
+  });
+});
+
 describe('validateGlb', () => {
   it('aceita glTF 2.0 binário sem recursos externos', () => {
     expect(() => validateGlb(glb(asset))).not.toThrow();
@@ -390,6 +414,28 @@ describe('gravação atômica no IndexedDB', () => {
     await ok.install((s) => stages.push(s));
     expect(userModule('TESTE')?.enabled).toBe(true);
     expect(stages).toEqual(expect.arrayContaining(['read', 'unzip', 'verify', 'validate', 'prepare', 'write']));
+  });
+
+  it('worker que não inicia (construtor recusa módulos, como no Safari 14) cai para a thread principal', async () => {
+    const original = (globalThis as { Worker?: unknown }).Worker;
+    let constructed = 0;
+    (globalThis as { Worker?: unknown }).Worker = class {
+      constructor() {
+        constructed++;
+        throw new TypeError('Module scripts are not supported');
+      }
+    };
+    try {
+      const prepared = await preparePackageFile(new Blob([bible(verses, { id: 'TESTE-SEM-WORKER' }) as BlobPart]), undefined, { worker: true });
+      expect(constructed).toBe(1);
+      expect(prepared.manifest.id).toBe('TESTE-SEM-WORKER');
+      await prepared.install();
+      expect(userModule('TESTE-SEM-WORKER')?.enabled).toBe(true);
+    } finally {
+      (globalThis as { Worker?: unknown }).Worker = original;
+      await deleteModuleData('TESTE-SEM-WORKER');
+      await loadUserModules();
+    }
   });
 });
 

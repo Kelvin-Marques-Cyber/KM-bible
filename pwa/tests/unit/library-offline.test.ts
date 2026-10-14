@@ -358,4 +358,24 @@ describe('tarefa offline', () => {
     expect(offlineJob()?.error).toBeInstanceOf(OfflineQuotaError);
     stop();
   });
+
+  it('limita as atualizações da interface, mas a última sempre chega', async () => {
+    const p = (done: number) => ({ total: 10, done, skipped: 0, failed: 0, bytesTotal: 10, bytesDone: done });
+    let finish!: () => void;
+    const running = runOfflineJob('all', 'Tudo', (onProgress) => {
+      onProgress(p(1));
+      onProgress(p(2));
+      onProgress(p(3));
+      return new Promise((resolve) => {
+        finish = () => resolve({ ...p(10), cancelled: false, failures: [] });
+      });
+    });
+    // A primeira chega na hora; as seguintes, agrupadas em até 100 ms.
+    expect(offlineJob()?.progress?.done).toBe(1);
+    await new Promise((r) => setTimeout(r, 160));
+    expect(offlineJob()?.progress?.done).toBe(3);
+    finish();
+    await running;
+    expect(offlineJob()).toMatchObject({ state: 'done', progress: { done: 10 } });
+  });
 });

@@ -155,6 +155,8 @@ type Json = Record<string, unknown>;
 const isMap = (v: unknown): v is Json => typeof v === 'object' && v !== null && !Array.isArray(v);
 const isInt = (v: unknown): v is number => typeof v === 'number' && Number.isInteger(v);
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
+/** Ausente ou lista (campos opcionais percorridos por content.ts). */
+const optionalList = (v: unknown) => v === undefined || v === null || Array.isArray(v);
 const text = (v: unknown, fallback: string) => (typeof v === 'string' ? v : v === null || v === undefined ? fallback : String(v));
 const describe = (row: Json, fallback: number) => text(row.id ?? row.reference, `#${fallback + 1}`).slice(0, 80);
 
@@ -436,27 +438,37 @@ function validateRecord(kind: PackageKind, row: Json, index: number, keys: Set<s
   } else if (kind === 'lexicon') {
     if (typeof row.lemma !== 'string' || typeof row.gloss !== 'string') throw new PackageError('invalid_lexeme', label);
   } else if (kind === 'atlas') {
+    // O original valida "places"; o atlas (loadContext) desenha "locations" e
+    // "events" de {...metadata, ...registro}: tudo passa pela mesma conferência.
+    const meta = isMap(row.metadata) ? row.metadata : {};
     const places = row.places ?? [];
-    if (!Array.isArray(places)) throw new PackageError('invalid_coordinates', label);
-    for (const place of places) {
+    const locations = row.locations ?? meta.locations ?? [];
+    if (!Array.isArray(places) || !Array.isArray(locations)) throw new PackageError('invalid_coordinates', label);
+    for (const place of [...places, ...locations]) {
       const lat = isMap(place) ? place.lat : undefined;
       const lon = isMap(place) ? place.lon : undefined;
       if (!isNum(lat) || !isNum(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
         throw new PackageError('invalid_coordinates', label);
       }
     }
-    const events = row.events ?? [];
+    const events = row.events ?? meta.events ?? [];
     if (!Array.isArray(events)) throw new PackageError('invalid_date', label);
     for (const event of events) {
       if (!isMap(event)) throw new PackageError('invalid_date', label);
       for (const v of [event.start, event.end]) {
         if (v !== undefined && v !== null && (!isInt(v) || v === 0)) throw new PackageError('invalid_date', label);
       }
+      if (!optionalList(event.references)) throw new PackageError('invalid_metadata', label);
     }
   } else if (kind === 'model') {
     const glb = typeof row.file === 'string' ? files.get(row.file) : undefined;
     if (!glb) throw new PackageError('missing_glb', text(row.file, label));
     validateGlb(glb);
+    // loadModels percorre estas listas: um valor que não seja lista quebraria a tela 3D.
+    const meta = isMap(row.metadata) ? row.metadata : {};
+    if (!optionalList(row.references ?? meta.references) || !optionalList(row.layers ?? meta.layers)) {
+      throw new PackageError('invalid_metadata', label);
+    }
   }
 }
 
