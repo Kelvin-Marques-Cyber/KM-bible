@@ -1,10 +1,11 @@
 {
   "records": {
-    "commentary": 4368,
+    "commentary": 15431,
     "document": 336,
     "lexeme": 14197
   },
-  "sha256": "a14e9aa2d0ec18a8fd0a85413128313145254d4b18d5f9a4703ca9f4739442bf",
-  "review": "Revisão especializada pendente",
-  "scope": "Entradas efetivamente traduzidas; originais permanecem disponíveis"
+  "calvin_translated": 11063,
+  "sha256": "d77ea5b40d8e340ad80966adcf2ac138e4501c1bcfcc65b5606e3d1a565b32ca",
+  "review": "Tradução automática de estudo; revisão especializada pendente",
+  "scope": "Somente entradas realmente traduzidas; originais preservados"
 }

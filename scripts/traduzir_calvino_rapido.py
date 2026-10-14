@@ -90,14 +90,15 @@ def split_sentences(paragraph: str) -> list[str]:
 
 
 class Engine:
-    def __init__(self, threads: int, beam: int):
+    def __init__(self, threads: int, beam: int, workers: int = 2):
         import ctranslate2  # type: ignore
         import sentencepiece  # type: ignore
 
         model = find_model()
         self.sp = sentencepiece.SentencePieceProcessor(model_file=str(model / "sentencepiece.model"))
         self.translator = ctranslate2.Translator(
-            str(model / "model"), device="cpu", compute_type="int8", inter_threads=1, intra_threads=threads
+            str(model / "model"), device="cpu", compute_type="int8",
+            inter_threads=workers, intra_threads=max(1, threads // workers)
         )
         self.beam = beam
 
@@ -108,7 +109,8 @@ class Engine:
         output = self.translator.translate_batch(
             tokens,
             beam_size=self.beam,
-            max_batch_size=48,
+            # Lotes ordenados por tamanho, processados em paralelo pelos "workers".
+            max_batch_size=32,
             batch_type="examples",
             max_decoding_length=400,
             replace_unknowns=True,
@@ -136,7 +138,7 @@ def restore(text: str, kept: list[str]) -> str:
     return text
 
 
-def translate_body(engine: Engine, body: str) -> str:
+def prepare_body(body: str):
     parts = re.split(r"(\n\s*\n)", body)
     jobs: list[tuple[int, int, str, list[str], str]] = []  # (part, index, texto protegido, guardados, espaço)
     rebuilt: list[list[str]] = []
@@ -153,7 +155,10 @@ def translate_body(engine: Engine, body: str) -> str:
                 rebuilt[p_index][s_index] = sentence
                 continue
             jobs.append((p_index, s_index, protected, kept, spacing))
-    translated = engine.translate([j[2] for j in jobs])
+    return rebuilt, jobs
+
+
+def finish_body(rebuilt, jobs, translated: list[str]) -> str:
     for (p_index, s_index, _, kept, spacing), text in zip(jobs, translated):
         rebuilt[p_index][s_index] = restore(text, kept) + (spacing or " ")
     result = "".join("".join(items) for items in rebuilt)
@@ -161,12 +166,30 @@ def translate_body(engine: Engine, body: str) -> str:
     return re.sub(r"[ \t]{2,}", " ", result).strip()
 
 
+def translate_body(engine: Engine, body: str) -> str:
+    rebuilt, jobs = prepare_body(body)
+    return finish_body(rebuilt, jobs, engine.translate([j[2] for j in jobs]))
+
+
+def translate_many(engine: Engine, bodies: list[str]) -> list[str]:
+    """Traduz vários comentários numa única chamada (melhor uso dos núcleos)."""
+    prepared = [prepare_body(b) for b in bodies]
+    flat = [job[2] for _, jobs in prepared for job in jobs]
+    translated = engine.translate(flat)
+    out, cursor = [], 0
+    for rebuilt, jobs in prepared:
+        out.append(finish_body(rebuilt, jobs, translated[cursor:cursor + len(jobs)]))
+        cursor += len(jobs)
+    return out
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--limit", type=int)
     parser.add_argument("--threads", type=int, default=4)
     parser.add_argument("--beam", type=int, default=1, help="1 = guloso (mais rápido)")
-    parser.add_argument("--batch", type=int, default=24, help="comentários por lote gravado")
+    parser.add_argument("--batch", type=int, default=48, help="comentários por lote gravado")
+    parser.add_argument("--workers", type=int, default=2, help="tradutores paralelos (inter_threads)")
     args = parser.parse_args()
     with zipfile.ZipFile(PACKAGE) as archive:
         manifest = json.loads(archive.read("manifest.json"))
@@ -191,14 +214,14 @@ def main() -> int:
         pending = pending[: args.limit]
     total_chars = sum(len(b) for _, _, b in pending)
     print(f"Pendentes: {len(pending)} comentários ({total_chars / 1e6:.1f} M caracteres); já traduzidos: {len(done)}", flush=True)
-    engine = Engine(args.threads, args.beam)
+    engine = Engine(args.threads, args.beam, args.workers)
     started = time.time()
     processed_chars = 0
     for start in range(0, len(pending), args.batch):
         batch = pending[start:start + args.batch]
         results = []
-        for cid, title, body in batch:
-            translated = translate_body(engine, body)
+        outputs = translate_many(engine, [b for _, _, b in batch])
+        for (cid, title, body), translated in zip(batch, outputs):
             processed_chars += len(body)
             if not translated or "⁇" in translated or (len(body) >= 100 and translated.strip() == body.strip()):
                 continue
