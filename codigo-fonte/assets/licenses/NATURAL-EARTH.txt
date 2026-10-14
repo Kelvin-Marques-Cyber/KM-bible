@@ -1,3 +1,0 @@
-Natural Earth 1:110m land. Public domain. Source: https://naturalearth.s3.amazonaws.com/110m_physical/ne_110m_land.zip
-Download SHA-256: 1926c621afd6ac67c3f36639bb1236134a48d82226dc675d3e3df53d02d2a3de
-Coastlines are modern generalized reference geography, not ancient territorial boundaries.

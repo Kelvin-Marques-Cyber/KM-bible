@@ -1,0 +1,1 @@
+import{r as s,i as t,j as n,bQ as r,bR as i}from"./index-Of9jyFy_.js";import"./react-BRnhmgIC.js";function g({initialBook:e=1,initialChapter:o=1}){const[a,u]=s.useState(e),[c,p]=s.useState(o);return t(r,[]),t(()=>i(),[a]),n.jsx("p",{className:"p-5",children:"Confissões de Agostinho não consta do acervo disponível."})}export{g as default};

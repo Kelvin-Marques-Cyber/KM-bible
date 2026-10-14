@@ -1,31 +1,194 @@
+/* Service worker da Bíblia Reformada (gerado por scripts/finalize_build.mjs).
+ *
+ * - App shell (HTML/JS/CSS/ícones) pré-armazenado por versão: abre instantaneamente e offline.
+ * - Dados (data/v1/**) com cache permanente "cache-first": tudo que foi lido fica offline.
+ *   As URLs carregam ?v=<hash do pacote>; versões antigas são removidas ao ativar.
+ * - ATUALIZAÇÃO FORÇADA: ao substituir a versão Flutter antiga (ou quando a publicação
+ *   é marcada como obrigatória), assume o controle na hora e recarrega as páginas abertas,
+ *   sem o usuário precisar limpar cache. IndexedDB/localStorage nunca são apagados.
+ */
 'use strict';
 
-self.addEventListener('install', () => {
-  self.skipWaiting();
+const BUILD = '1.0.0-17b0901-20261014165839';
+const FORCE = true;
+const PRECACHE = ["index.html","app/Atlas-DRVNyqPj.js","app/Augustine-BV0VLaL3.js","app/Commentaries-C7Mv2yl_.js","app/Comparison-CWrF1Q6m.js","app/CrossReferences-71FeIpwz.js","app/Devotionals-BW3um6B0.js","app/Documents-D7rOeP_D.js","app/Explore-DnElvIb1.js","app/Graph-8iVXxHjA.js","app/Library-DYJrF5om.js","app/Markdown-CrIpXXGI.js","app/Memory-Bag1Tux2.js","app/Models-DF1KpYSf.js","app/Notes-BXTy3zzY.js","app/Onboarding-DGalN_c7.js","app/Original-C8iwdlnh.js","app/Passage-CiQFul89.js","app/SavedPlaces-BJaGmqKm.js","app/Search-BcYz3mwv.js","app/Settings-CjOtZFvx.js","app/Studies-Dd4k7Mt3.js","app/Topics-CdCzQnFq.js","app/VerseStudy-Cz5CUIHS.js","app/arrow-left-BIaXuyio.js","app/arrow-left-right-djGkAn5e.js","app/book-open-text-DXSoLYRX.js","app/chevron-down-Bt7rkGWm.js","app/circle-check-BNp9wbsF.js","app/commentaries-logic-CxpIlwRi.js","app/explore-logic-DZnB-Ies.js","app/external-link-BAYs7fJ9.js","app/file-text-y8qS60U4.js","app/index-B8gYXRmv.css","app/index-BSm2EvSp.js","app/index-Of9jyFy_.js","app/link-pN8Tw591.js","app/markdown-fNCmOoSr.js","app/messages-square-Bip14PPi.js","app/minus-DDoiIcuL.js","app/notes-virtual-BfWFT9yh.js","app/original-index-CIP8WK8u.js","app/plus-D4X_b97h.js","app/react-BRnhmgIC.js","app/rotate-ccw-ulkH8m6I.js","app/rotate-cw-DM9jNH4M.js","app/studycontext-text-D2706ihG.js","app/studycontext-ui-CMRGmDh_.js","app/table-2-EHXLclJi.js","app/tag-SYvXiFNF.js","icons/apple-touch-icon.png","icons/favicon-32.png","icons/favicon-48.png","icons/icon-192.png","icons/icon-512.png","icons/maskable-192.png","icons/maskable-512.png","manifest.webmanifest"];
+const PACKS = {"bible/ASV":"3785678971","bible/BLN4":"43396e0f59","bible/BLTR":"8b99e32ca6","bible/OSHB":"a413d0a2f6","bible/SpaRV":"273ae4dca3","bible/TR":"497545f74b","bible/ARA":"c185b0fa39","bible/Darby":"66abc67a58","bible/YLT":"f8c5c95e78","bible/Webster":"be94b0778b","bible/FreBDM1744":"d3a81cb438","bible/porblt2022eb":"76d22bf3b8","comm/Barnes":"70f9f01382","comm/MHCC":"9df300cbe3","comm/CalvinCommentaries":"b4d3ac8938","comm/EXP2-CALV-PT":"8b33263f4f","comm/EXP2-CH-1189":"5b673f9256","comm/HDL-GUIA-FONTES":"419e2e0992","comm/JOSEMAR-GUIA-FONTES":"9c5bfc490c","xref":"d132a48dd4","words":"7647331b42","lexicon":"c677ac5520","topics":"87ec6d99bd","docs":"9fd11b48c1","misc":"8dd5119af9","apologetica":"eb891b1a5a","search/general":"af0fc7e347","search/comm":"9cd2fa3736","licenses":"3c45fde28f","3d":"711921c6b3","":"913ea00905"};
+const APP_CACHE = 'km-app-' + BUILD;
+const DATA_CACHE = 'km-data-v1';
+const RUNTIME_CACHE = 'km-runtime-v1';
+
+const LEGACY_CACHE = (name) =>
+  name.startsWith('biblia-flutter-web-') ||
+  name.startsWith('biblia-reformada-offline-') ||
+  name === 'flutter-app-cache' ||
+  name === 'flutter-temp-cache' ||
+  name === 'flutter-app-manifest';
+
+// Arquivos da versão clássica (Flutter) e páginas auxiliares: sempre da rede.
+const CLASSIC_FILES = new Set([
+  'main.dart.js', 'flutter.js', 'flutter_bootstrap.js', 'sqlite3.wasm', 'version.json', 'classico.html',
+  'instalar.html', 'atualizar.html', 'modulos.html', 'diagnostico.html', 'agostinho.html', 'favicon.png',
+  'manifest.json', '.last_build_id',
+]);
+const isClassic = (path) =>
+  CLASSIC_FILES.has(path) || path.startsWith('assets/') || path.startsWith('canvaskit/') || path.startsWith('icons/Icon-');
+
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    (async () => {
+      const cache = await caches.open(APP_CACHE);
+      // Tudo ou nada: se faltar um arquivo, a versão antiga continua funcionando.
+      await cache.addAll(PRECACHE.map((url) => new Request(url, { cache: 'reload' })));
+      const keys = await caches.keys();
+      const firstVersion = !keys.some((k) => k.startsWith('km-app-') && k !== APP_CACHE);
+      if (FORCE || firstVersion || keys.some(LEGACY_CACHE)) await self.skipWaiting();
+    })(),
+  );
 });
+
+async function pruneData() {
+  const cache = await caches.open(DATA_CACHE);
+  const scope = new URL(self.registration.scope);
+  const base = scope.pathname + 'data/v1/';
+  const packs = Object.keys(PACKS).sort((a, b) => b.length - a.length);
+  for (const request of await cache.keys()) {
+    const url = new URL(request.url);
+    if (!url.pathname.startsWith(base)) continue;
+    const rest = decodeURIComponent(url.pathname.slice(base.length));
+    const pack = packs.find((p) => (p === '' ? !rest.includes('/') : rest.startsWith(p + '/')));
+    const version = url.searchParams.get('v');
+    if (pack === undefined || (version && PACKS[pack] !== version)) await cache.delete(request);
+  }
+}
 
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     (async () => {
-      try {
-        await self.registration.unregister();
-      } catch (e) {
-        console.warn('Failed to unregister the service worker:', e);
+      const keys = await caches.keys();
+      // Havia a versão Flutter antiga (sem botão de atualizar): ela será recarregada.
+      const legacy = keys.some(LEGACY_CACHE);
+      for (const key of keys) {
+        if ((key.startsWith('km-app-') && key !== APP_CACHE) || LEGACY_CACHE(key)) await caches.delete(key);
       }
+      try {
+        await pruneData();
+      } catch (error) {
+        console.warn('Limpeza de dados antigos adiada:', error);
+      }
+      await self.clients.claim();
+      // Páginas desta PWA recarregam sozinhas no evento controllerchange (lib/pwa.ts).
+      // A versão Flutter antiga não sabe fazer isso: o service worker a recarrega,
+      // mas só DEPOIS de ativado (navegar durante a ativação trava: a navegação
+      // espera este service worker, que esperaria a navegação).
+      if (legacy) setTimeout(reloadLegacyPages, 0);
+    })(),
+  );
+});
 
-      try {
-        const clients = await self.clients.matchAll({
-          type: 'window',
-        });
-        // Reload clients to ensure they are not using the old service worker.
-        clients.forEach((client) => {
-          if (client.url && 'navigate' in client) {
-            client.navigate(client.url);
-          }
-        });
-      } catch (e) {
-        console.warn('Failed to navigate some service worker clients:', e);
+async function reloadLegacyPages() {
+  const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  for (const client of windows) {
+    const path = new URL(client.url).pathname.split('/').pop() || '';
+    if (path === 'classico.html') continue;
+    try {
+      client.postMessage({ type: 'KM_UPDATED', build: BUILD });
+      await client.navigate(client.url);
+    } catch (error) {
+      console.warn('Recarregamento não permitido para', client.url, error);
+    }
+  }
+}
+
+self.addEventListener('message', (event) => {
+  const data = event.data || {};
+  if (data.type === 'SKIP_WAITING') self.skipWaiting();
+  if (data.type === 'GET_BUILD' && event.ports && event.ports[0]) event.ports[0].postMessage({ build: BUILD });
+});
+
+async function fromAppCache(request) {
+  const cached = await caches.match(request, { cacheName: APP_CACHE, ignoreSearch: false });
+  if (cached) return cached;
+  const response = await fetch(request);
+  if (response.ok && response.type === 'basic') {
+    const cache = await caches.open(RUNTIME_CACHE);
+    cache.put(request, response.clone()).catch(() => undefined);
+  }
+  return response;
+}
+
+async function fromDataCache(request) {
+  const cache = await caches.open(DATA_CACHE);
+  const cached = await cache.match(request);
+  if (cached) return cached;
+  try {
+    const response = await fetch(request);
+    if (response.ok && response.status === 200 && response.type === 'basic') {
+      cache.put(request, response.clone()).catch(() => undefined); // cota cheia: segue sem cache
+    }
+    return response;
+  } catch (error) {
+    return new Response(JSON.stringify({ offline: true }), {
+      status: 503,
+      statusText: 'Offline',
+      headers: { 'Content-Type': 'application/json', 'X-KM-Offline': '1' },
+    });
+  }
+}
+
+async function navigation(request, path) {
+  if (path === '' || path === 'index.html') {
+    const shell = await caches.match('index.html', { cacheName: APP_CACHE });
+    if (shell) return shell;
+  }
+  try {
+    return await fetch(request);
+  } catch (error) {
+    return (
+      (await caches.match(request)) ||
+      (await caches.match('index.html', { cacheName: APP_CACHE })) ||
+      new Response('<h1>Sem conexão</h1><p>Abra a Bíblia Reformada novamente quando estiver online.</p>', {
+        status: 503,
+        headers: { 'Content-Type': 'text/html; charset=utf-8' },
+      })
+    );
+  }
+}
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
+  if (url.origin !== self.location.origin) return;
+  const scope = new URL(self.registration.scope);
+  if (!url.pathname.startsWith(scope.pathname)) return;
+  const path = decodeURIComponent(url.pathname.slice(scope.pathname.length));
+  if (path === 'app-version.json' || path === 'sw.js' || path === 'flutter_service_worker.js') return;
+  if (request.mode === 'navigate') {
+    if (isClassic(path)) return;
+    event.respondWith(navigation(request, path));
+    return;
+  }
+  if (isClassic(path)) return;
+  if (path.startsWith('data/v1/')) {
+    event.respondWith(fromDataCache(request));
+    return;
+  }
+  event.respondWith(fromAppCache(request));
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  event.waitUntil(
+    (async () => {
+      const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+      const target = new URL(event.notification.data && event.notification.data.url ? event.notification.data.url : './', self.registration.scope).href;
+      for (const client of windows) {
+        if ('focus' in client) {
+          await client.focus();
+          return;
+        }
       }
-    })()
+      await self.clients.openWindow(target);
+    })(),
   );
 });

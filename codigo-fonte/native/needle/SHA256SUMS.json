@@ -1,6 +1,0 @@
-{
-  "assets/content/needle2.cact": "b43aabfcaf1a6db6acf488076eab71d823c08697c7af4521fc1d174b60ede5ba",
-  "native/needle/android-arm64/libneedle.a": "93738ae3a9488cbc3104eb65bf49093683c26eb01b0d257e980e499d1d06a9f4",
-  "native/needle/ios-sim-arm64/libneedle.a": "53c9f666df634697f9f484454ca1b5dcbf5e9630a0b7b710e2e00ce1630028fc",
-  "native/needle/ios-arm64/libneedle.a": "d650326b0526cbae6a9b90cd29c630785c1f84448123b5cc519309b28c9d2d01"
-}
