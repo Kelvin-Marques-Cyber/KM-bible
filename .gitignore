@@ -26,3 +26,11 @@ __pycache__/
 # Fragmentos SQLite temporarios gerados apenas durante o Flutter Web build.
 assets/content/*.sqlite.part*.bin
 assets/content/sqlite-web-parts.json
+
+# Gerados no build (Agostinho a partir do PDF; apologética ampliada; diagnósticos).
+.cache/
+assets/agostinho/*.json
+assets/apologetica/index.json
+assets/apologetica_extra/*.md
+assets/apologetica_extra/index.json
+assets/apologetica_reformada/*.md

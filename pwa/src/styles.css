@@ -1,0 +1,184 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --surface: 244 239 223;
+  --surface-low: 237 232 216;
+  --surface-high: 228 223 207;
+  --on-surface: 33 28 22;
+  --muted: 100 92 80;
+  --outline: 190 180 160;
+  --primary: 121 88 57;
+  --on-primary: 255 255 255;
+  --primary-container: 230 214 190;
+  --on-primary-container: 50 35 20;
+  --secondary: 110 95 80;
+  --secondary-container: 225 215 200;
+  --tertiary: 110 80 130;
+  --danger: 162 35 33;
+  --reading-font: 'KM EBGaramond', Georgia, serif;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+body {
+  background: rgb(var(--surface));
+  color: rgb(var(--on-surface));
+  overscroll-behavior-y: none;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+:focus-visible {
+  outline: 3px solid rgb(var(--primary));
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+::selection {
+  background: rgb(var(--primary) / 0.28);
+}
+
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.001ms !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* Texto longo: só desenha o que está perto da tela (economia em celulares). */
+.cv-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 120px;
+}
+
+.scroll-area {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+/* Markdown (comentários, confissões, estudos, notas). */
+.md {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.md > * + * {
+  margin-top: 0.75em;
+}
+.md h1,
+.md h2,
+.md h3,
+.md h4 {
+  font-weight: 650;
+  line-height: 1.3;
+  margin-top: 1.1em;
+}
+.md h1 {
+  font-size: 1.35em;
+}
+.md h2 {
+  font-size: 1.2em;
+}
+.md h3 {
+  font-size: 1.08em;
+}
+.md a {
+  color: rgb(var(--primary));
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+}
+.md blockquote {
+  border-left: 3px solid rgb(var(--primary) / 0.5);
+  padding-left: 0.9em;
+  color: rgb(var(--muted));
+}
+.md ul {
+  list-style: disc;
+  padding-left: 1.4em;
+}
+.md ol {
+  list-style: decimal;
+  padding-left: 1.4em;
+}
+.md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.9em;
+  background: rgb(var(--surface-high));
+  padding: 0.1em 0.3em;
+  border-radius: 4px;
+}
+.md pre code {
+  display: block;
+  padding: 0.8em;
+  overflow-x: auto;
+}
+.md hr {
+  border: 0;
+  border-top: 1px solid rgb(var(--outline));
+  margin: 1.4em 0;
+}
+.md img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+.md table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.md td,
+.md th {
+  border: 1px solid rgb(var(--outline));
+  padding: 0.4em 0.6em;
+  vertical-align: top;
+}
+
+.verse-red {
+  color: rgb(var(--danger));
+}
+
+.sheet-enter {
+  animation: sheet-in 180ms ease-out;
+}
+@keyframes sheet-in {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+input[type='range'] {
+  accent-color: rgb(var(--primary));
+}
+input[type='checkbox'],
+input[type='radio'] {
+  accent-color: rgb(var(--primary));
+}
