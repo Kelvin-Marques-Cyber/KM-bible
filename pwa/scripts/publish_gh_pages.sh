@@ -85,7 +85,10 @@ echo "    removidos da árvore: $(wc -l < "$TMP/remove.txt") arquivos"
 
 # 3) Acrescenta dist/ (blobs gravados localmente; os da versão clássica já estão no GitHub).
 (cd "$DIST" && find . -type f ! -name '*.map' | sed 's|^\./||' | sort) > "$TMP/add.txt"
-(cd "$DIST" && git hash-object -w --stdin-paths < "$TMP/add.txt") > "$TMP/shas.txt"
+# git hash-object --stdin-paths lê caminhos em relação à raiz do repositório,
+# mesmo quando invocado dentro de dist/. Use caminhos absolutos para evitar
+# "could not open 'app/arquivo.js'" durante a publicação.
+sed "s|^|$DIST/|" "$TMP/add.txt" | git hash-object -w --stdin-paths > "$TMP/shas.txt"
 paste -d '\t' <(sed 's/^/100644 /' "$TMP/shas.txt") "$TMP/add.txt" | git update-index --add --index-info
 grep '^app/' "$TMP/add.txt" > "$TMP/app-files.txt" || true
 python3 - "$TMP/app-builds.json" "$TMP/app-files.txt" "$BUILD" > "$TMP/app-builds.new.json" <<'PY'
