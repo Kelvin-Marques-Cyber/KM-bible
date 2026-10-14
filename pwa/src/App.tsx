@@ -11,7 +11,7 @@ import { ensureFont, fontStack, selectedTheme, themeColorHex, themeVariables } f
 import { IconButton, Spinner, Toasts } from './components/ui';
 import { ReaderPage } from './screens/Reader';
 import { InstallButton, UpdateBanner } from './screens/PwaBanners';
-import { choosePassage, openSearch, openSettings } from './screens/open';
+import { choosePassage, openDevotionals, openSearch, openSettings } from './screens/open';
 
 const ExplorePage = lazy(() => import('./screens/Explore'));
 const LibraryPage = lazy(() => import('./screens/Library'));
@@ -81,6 +81,20 @@ function useShortcuts() {
   }, []);
 }
 
+/** Atalhos do manifesto (?acao=pesquisar | devocionais) — executados uma vez. */
+function useLaunchAction() {
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const action = params.get('acao');
+    if (!action) return;
+    params.delete('acao');
+    const query = params.toString();
+    history.replaceState(history.state, '', `${location.pathname}${query ? `?${query}` : ''}${location.hash}`);
+    if (action === 'pesquisar') openSearch();
+    else if (action === 'devocionais') openDevotionals();
+  }, []);
+}
+
 function SheetHost() {
   useApp();
   return (
@@ -110,6 +124,7 @@ export function App({ storageWarning }: { storageWarning: string | null }) {
   useApp();
   useTheme();
   useShortcuts();
+  useLaunchAction();
   const pwa = usePwa();
   const onboarding = !pref('dedication_seen', false) || !pref('onboarding_done', false);
   const full = isFullscreen() && app.area === 0;

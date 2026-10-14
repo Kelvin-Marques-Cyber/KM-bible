@@ -4,12 +4,26 @@ import { createRoot } from 'react-dom/client';
 import { initApp, installBackHandler } from './lib/app';
 import { loadUserModules } from './lib/content';
 import { openDb, useFallbackFactory } from './lib/db';
-import { bootFinished, bootStarted, startPwa } from './lib/pwa';
+import { BUILD_ID, bootFinished, bootStarted, startPwa } from './lib/pwa';
 import { loadPrefs, loadProgress } from './lib/store';
 import { App } from './App';
 import { Recovery } from './screens/Recovery';
 
+// Arquivo de uma versão anterior não encontrado (publicação nova): recarrega uma vez.
+window.addEventListener('vite:preloadError', (event) => {
+  try {
+    if (sessionStorage.getItem('km-preload-reload') === BUILD_ID) return;
+    sessionStorage.setItem('km-preload-reload', BUILD_ID);
+  } catch {
+    /* sem sessionStorage */
+  }
+  event.preventDefault();
+  location.reload();
+});
+
 async function boot() {
+  // Identifica a versão em execução (diagnóstico e testes de atualização).
+  document.documentElement.dataset.build = BUILD_ID;
   const previousFailed = bootStarted();
   let storageWarning: string | null = null;
   try {

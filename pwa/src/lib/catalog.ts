@@ -57,6 +57,8 @@ export interface Catalog {
   models3d: PackInfo & { sizes: Record<string, number> };
   search: { general: SearchPack; commentary: SearchPack };
   repairs: Record<string, number>;
+  /** data/v1/files.json: { [caminhoDoPacote]: { hash, files[] } } para downloads offline. */
+  filesIndex: { path: string; hash: string };
 }
 
 export const catalog = raw as unknown as Catalog;

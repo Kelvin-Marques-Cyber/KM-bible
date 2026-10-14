@@ -33,7 +33,9 @@ PWA = Path(__file__).resolve().parents[1]
 ROOT = PWA.parent
 ASSETS = ROOT / "assets"
 CONTENT = ASSETS / "content"
-OUT = PWA / "public" / "data" / "v1"
+FINAL_OUT = PWA / "public" / "data" / "v1"
+# Gera numa pasta temporária e troca no final: uma falha nunca apaga os dados atuais.
+OUT = FINAL_OUT.with_name("v1.next")
 GENERATED = PWA / "src" / "generated"
 FORMAT = 1
 
@@ -154,10 +156,13 @@ class Pack:
             target.write_bytes(self.files[name])
             total += len(self.files[name])
         STATS.append((self.path, len(self.files), total))
+        FILE_INDEX[self.path] = {"hash": digest.hexdigest()[:10], "files": sorted(self.files)}
         return {"path": self.path, "hash": digest.hexdigest()[:10], "bytes": total, "files": len(self.files)}
 
 
 STATS: list[tuple[str, int, int]] = []
+# Lista de arquivos por pacote (usada pelo gerenciador de conteúdo offline).
+FILE_INDEX: dict[str, dict] = {}
 
 # ------------------------------------------------------------ modulos/licencas
 
@@ -682,8 +687,15 @@ def build() -> dict:
 
     licenses_info = licenses.write()
 
+    FILE_INDEX["3d"] = {"hash": three_d["hash"], "files": sorted(list(safe_names.values()) + ["viewer.html"] +
+                                                               [f"previews/{x.name}" for x in (models_dir / "previews").glob("*.jpg")])}
+    index_bytes = json.dumps(FILE_INDEX, separators=(",", ":")).encode()
+    index_hash = hashlib.sha256(index_bytes).hexdigest()[:10]
+    (OUT / "files.json").write_bytes(index_bytes)
+
     catalog = {
         "format": FORMAT,
+        "filesIndex": {"path": "", "hash": index_hash},
         "generated": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "modules": sorted(modules.values(), key=lambda m: (0 if m["id"] == "ARA" else 1 if m["id"] == "BLN4" else 2, fold(m["title"]))),
         "licenses": {"path": licenses_info["path"], "hash": licenses_info["hash"]},
@@ -766,6 +778,14 @@ def main() -> None:
         # A pasta privada nunca e lida; esta verificacao apenas documenta a regra.
         pass
     build()
+    previous = FINAL_OUT.with_name("v1.old")
+    if previous.exists():
+        shutil.rmtree(previous)
+    if FINAL_OUT.exists():
+        FINAL_OUT.rename(previous)
+    OUT.rename(FINAL_OUT)
+    if previous.exists():
+        shutil.rmtree(previous)
 
 
 if __name__ == "__main__":

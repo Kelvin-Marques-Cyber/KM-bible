@@ -23,8 +23,9 @@ export function initApp(): void {
   let passage = fromId(pref('last_reference', '43:3:16')) ?? ref(43, 3, 16);
   if (!hasVerse(translation, passage)) passage = firstRefOfBook(translation);
   app.passage = passage;
-  const area = Number(new URLSearchParams(location.hash.replace(/^#\/?/, '').split('?')[1] ?? '').get('area'));
-  if (area >= 0 && area <= 4) app.area = area;
+  // Atalhos do manifesto: ?area=N abre uma área; ?acao=... é tratado em App.
+  const area = new URLSearchParams(location.search).get('area');
+  if (area !== null && /^[0-4]$/.test(area)) app.area = Number(area);
 }
 
 export function useApp(): typeof app {

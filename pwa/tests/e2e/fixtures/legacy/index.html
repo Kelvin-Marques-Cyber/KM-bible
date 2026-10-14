@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>biblia_reformada</title>
+  <link rel="manifest" href="manifest.json">
+</head>
+<body>
+  <!-- Réplica mínima da página Flutter publicada (mesmo registro de service worker). -->
+  <h1 id="legacy">Versão antiga (Flutter)</h1>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('./sw.js', {scope:'./'})
+      .catch(function(e){console.warn('Offline indisponivel:',e)});
+  });
+}
+</script>
+</body>
+</html>

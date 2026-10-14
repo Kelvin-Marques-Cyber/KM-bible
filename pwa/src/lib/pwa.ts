@@ -25,6 +25,8 @@ export interface RemoteVersion {
   build: string;
   date: string;
   notes?: string[];
+  /** Publicação obrigatória: aplica a nova versão automaticamente. */
+  force?: boolean;
 }
 
 interface PwaState {
@@ -186,6 +188,9 @@ export async function checkForUpdate(manual = false): Promise<'update' | 'curren
       } else {
         patch({ updateReady: true });
       }
+      // Publicação obrigatória: o aviso aparece e a atualização é aplicada sozinha
+      // (UpdateBanner faz a contagem regressiva); sem service worker, recarrega.
+      if (remote.force && !registration) setTimeout(() => void applyUpdate(), 5000);
       return 'update';
     }
     return 'current';
@@ -193,6 +198,28 @@ export async function checkForUpdate(manual = false): Promise<'update' | 'curren
     if (manual) patch({ lastCheck: Date.now() });
     return 'offline';
   }
+}
+
+const hadController = typeof navigator !== 'undefined' && !!navigator.serviceWorker?.controller;
+
+/** Build do service worker que controla a página (null se não responder em 1,5 s). */
+export function controllerBuild(): Promise<string | null> {
+  const controller = navigator.serviceWorker?.controller;
+  if (!controller) return Promise.resolve(null);
+  return new Promise((resolve) => {
+    const channel = new MessageChannel();
+    const timer = setTimeout(() => resolve(null), 1500);
+    channel.port1.onmessage = (event) => {
+      clearTimeout(timer);
+      resolve(((event.data as { build?: string } | null)?.build ?? null) || null);
+    };
+    try {
+      controller.postMessage({ type: 'GET_BUILD' }, [channel.port2]);
+    } catch {
+      clearTimeout(timer);
+      resolve(null);
+    }
+  });
 }
 
 async function register() {
@@ -209,10 +236,18 @@ async function register() {
       patch({ updateReady: true });
     }
     registration.addEventListener('updatefound', () => watchWorker(registration!.installing));
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if ((event.data as { type?: string } | null)?.type === 'KM_UPDATED') patch({ updating: true });
+    });
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      if (reloading) return;
-      reloading = true;
-      location.reload();
+      // Primeira visita: o service worker apenas assume a página; não recarrega.
+      if (!hadController || reloading) return;
+      void controllerBuild().then((build) => {
+        // Mesmo build (ex.: troca do registro antigo sw.js/flutter_service_worker.js): nada a recarregar.
+        if (build === BUILD_ID || reloading) return;
+        reloading = true;
+        location.reload();
+      });
     });
   } catch (error) {
     patch({ swError: String((error as Error)?.message ?? error) });

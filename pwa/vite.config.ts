@@ -18,7 +18,20 @@ const build = process.env.KM_BUILD_ID ?? `${pkg.version}-${commit}-${date.replac
 // qualquer subpasta. assetsDir "app" evita colisão com assets/ do Flutter clássico.
 export default defineConfig({
   base: './',
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      // Identidade desta compilação, lida por scripts/finalize_build.mjs.
+      name: 'km-build-info',
+      generateBundle() {
+        this.emitFile({
+          type: 'asset',
+          fileName: 'build-info.json',
+          source: JSON.stringify({ version: pkg.version, build, date, commit }),
+        });
+      },
+    },
+  ],
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
     __BUILD_ID__: JSON.stringify(build),
