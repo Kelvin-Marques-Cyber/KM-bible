@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { APP_VERSION, BUILD_DATE, checkForUpdate, formatBytes, requestPersistence, storageInfo } from '../lib/pwa';
 import { modules } from '../lib/content';
 import { pref, setPref } from '../lib/store';
-import { useApp } from '../lib/app';
+import { openSheet, useApp } from '../lib/app';
+import { readingThemes, themeName, readingFonts } from '../lib/themes';
+import { Recovery } from './Recovery';
 import { openInstallHelp, openOffline } from './open';
 
 function Choice({ label, value, onChange, values }: { label: string; value: string; values: { id: string; label: string }[]; onChange: (x: string) => void }) {
@@ -18,7 +20,9 @@ export function AppearanceSettings() {
   return <section className="space-y-4">
     <h3 className="text-lg font-semibold">Aparência e leitura</h3>
     <Choice label="Tema" value={pref('theme', 'sepia')} onChange={(x) => void setPref('theme', x)}
-      values={['sepia', 'light', 'dark', 'black', 'high_contrast'].map((id) => ({ id, label: id.replace('_', ' ') }))} />
+      values={readingThemes.map((t) => ({ id: t.id, label: themeName(t, pref('language', 'pt')) }))} />
+    <Choice label="Fonte de leitura" value={pref('font_family', 'EBGaramond')} onChange={(x) => void setPref('font_family', x)}
+      values={Object.entries(readingFonts).map(([id, label]) => ({ id, label }))} />
     <Choice label="Idioma da interface" value={pref('language', 'pt')} onChange={(x) => void setPref('language', x)}
       values={[{ id: 'pt', label: 'Português' }, { id: 'en', label: 'English' }, { id: 'es', label: 'Español' }]} />
     {([['font_size', 'Tamanho da fonte', 14, 40], ['line_height', 'Espaçamento entre linhas', 1.1, 2.3]] as const).map(([key, label, min, max]) =>
@@ -56,6 +60,7 @@ export default function SettingsPage() {
     <div className="space-y-3 border-t border-outline pt-5">
       <h3 className="text-lg font-semibold">Instalação e armazenamento</h3>
       <button type="button" className="block underline" onClick={openOffline}>Gerenciar conteúdo offline</button>
+      <button type="button" className="block underline" onClick={() => openSheet('Backup e restauração', () => <Recovery onContinue={() => { location.reload(); }} />)}>Exportar ou restaurar backup</button>
       <button type="button" className="block underline" onClick={openInstallHelp}>Como instalar no dispositivo</button>
       <button type="button" className="block underline" onClick={() => void inspect()}>Consultar espaço usado</button>
       <button type="button" className="block underline" onClick={() => void requestPersistence().then((ok) => setStatus(ok ? 'Armazenamento persistente autorizado.' : 'O navegador não concedeu armazenamento persistente.'))}>Proteger dados contra limpeza automática</button>

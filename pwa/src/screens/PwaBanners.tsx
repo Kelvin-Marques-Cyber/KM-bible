@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { Download, RefreshCw } from 'lucide-react';
-import { applyUpdate, browserName, checkForUpdate, isStandalone, platform, promptInstall, usePwa } from '../lib/pwa';
+import { applyUpdate, BUILD_ID, browserName, checkForUpdate, isStandalone, platform, promptInstall, usePwa } from '../lib/pwa';
 import { openInstallHelp } from './open';
 
 export function UpdateBanner() {
   const state = usePwa();
   const [working, setWorking] = useState(false);
-  if (!state.updateReady && !(state.remote?.force && state.remote.build)) return null;
+  if (!state.updateReady && !(state.remote?.force && state.remote.build !== BUILD_ID)) return null;
   const update = async () => {
     setWorking(true);
     try { await applyUpdate(); } finally { setWorking(false); }

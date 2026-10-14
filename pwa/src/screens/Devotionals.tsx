@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { moduleDocuments, modules, type DocumentRow } from '../lib/content';
-import { useAsync, Async, ErrorBox } from '../components/ui';
+import { useAsync, Async } from '../components/ui';
 import { openDocument } from './open';
 import { useApp } from '../lib/app';
 

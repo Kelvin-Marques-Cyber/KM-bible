@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { catalog, dataBase, packUrl, type ModuleInfo } from '../lib/catalog';
+import { dataBase } from '../lib/catalog';
 import { licenseText, module, moduleDocuments, modules } from '../lib/content';
 import { useAsync, Async, message } from '../components/ui';
 import { openDocument, openModule, openOffline } from './open';
 import { formatBytes, requestPersistence, storageInfo } from '../lib/pwa';
-import { useApp } from '../lib/app';
+import { refresh, useApp } from '../lib/app';
+import { loadUserModules, userModuleList } from '../lib/content';
+import { preparePackage, writeInstallPlan, deleteModuleData, packageErrorText } from '../lib/library-packages-core';
 
-const CACHE = 'km-bible-offline-acervo-v1';
+const CACHE = 'km-data-v1';
 type Files = Record<string, { hash: string; files: string[] }>;
 const groupName = (path: string) => path.replace(/^search\//, 'Índice de pesquisa: ').replace('bibles/', 'Bíblia: ').replace('commentaries/', 'Comentário: ');
 
@@ -14,6 +16,27 @@ export default function LibraryPage() {
   useApp();
   const list = modules();
   const [filter, setFilter] = useState('');
+  const [importing, setImporting] = useState(false);
+  const [importStatus, setImportStatus] = useState('');
+  const importPackage = async (file: File | undefined) => {
+    if (!file) return;
+    setImporting(true);
+    try {
+      const { plan } = await preparePackage(new Uint8Array(await file.arrayBuffer()));
+      await writeInstallPlan(plan);
+      await loadUserModules();
+      refresh();
+      setImportStatus(`Módulo ${plan.record.id} instalado com sucesso.`);
+    } catch (e) { setImportStatus(packageErrorText(e)); }
+    finally { setImporting(false); }
+  };
+  const remove = async (id: string) => {
+    if (!window.confirm(`Excluir o módulo importado ${id}? Esta ação não afeta o acervo original.`)) return;
+    await deleteModuleData(id);
+    await loadUserModules();
+    refresh();
+    setImportStatus(`Módulo ${id} removido.`);
+  };
   const visible = useMemo(() => list.filter((m) => [m.id, m.title, m.author, m.kind].join(' ').toLocaleLowerCase('pt-BR').includes(filter.toLocaleLowerCase('pt-BR'))), [list, filter]);
   return <div className="mx-auto max-w-3xl space-y-4 p-5">
     <div className="flex flex-wrap items-center justify-between gap-3">
@@ -24,6 +47,17 @@ export default function LibraryPage() {
       <input type="search" value={filter} onChange={(e) => setFilter(e.target.value)} placeholder="Bíblia, comentários, autor…"
         className="mt-2 block w-full rounded-lg border border-outline bg-surface px-3 py-2" />
     </label>
+    <div className="space-y-2 rounded-xl border border-outline p-4">
+      <h3 className="font-semibold">Importar módulo (.biblepkg)</h3>
+      <input type="file" accept=".biblepkg" disabled={importing} aria-label="Escolher pacote bíblico"
+        onChange={(e) => void importPackage(e.target.files?.[0])} />
+      <p className="text-xs text-muted">Pacotes importados ficam apenas neste dispositivo. Use somente arquivos de fontes confiáveis.</p>
+      {importStatus && <p role="status" className="text-sm">{importStatus}</p>}
+      {userModuleList().map((m) => <div key={m.id} className="flex items-center justify-between gap-3 text-sm">
+        <span>{m.manifest.title}</span>
+        <button type="button" className="underline" disabled={importing} onClick={() => void remove(m.id)}>Remover</button>
+      </div>)}
+    </div>
     <p className="text-sm text-muted">{visible.length} módulos encontrados. O conteúdo público é carregado conforme você abre cada item.</p>
     <ul className="space-y-2">{visible.map((m) => <li key={m.id}>
       <button type="button" className="w-full rounded-xl border border-outline p-3 text-left hover:bg-surface-high" onClick={() => openModule(m)}>
