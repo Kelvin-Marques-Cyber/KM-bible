@@ -1,6 +1,11 @@
 name: Flutter Web otimizado e APK de teste
 on:
   workflow_dispatch:
+    inputs:
+      publicar_classico:
+        description: 'Publicar a versao Flutter em gh-pages como classico.html (a raiz e a PWA)'
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -61,27 +66,18 @@ jobs:
           if [[ -d build/web/assets/assets/private ]]; then
             ! find build/web/assets/assets/private -type f \( -name '*.biblepkg' -o -name '*.sqlite' \) | grep -q .
           fi
-      - name: Gerar manifesto PWA e cache offline
+      - name: Preparar versao classica (sem substituir a PWA da raiz)
+        if: ${{ inputs.publicar_classico }}
         shell: bash
         run: |
-          cp scripts/sw_flutter_teste.js build/web/sw.js
-          sed -i "s/biblia-flutter-web-053-20261013/biblia-flutter-web-${{ github.sha }}/" build/web/sw.js
+          # A raiz de gh-pages e a PWA (pwa/scripts/publish_gh_pages.sh). A versao Flutter
+          # fica em classico.html; index.html, sw.js e flutter_service_worker.js da PWA
+          # nunca sao sobrescritos (eles fazem a atualizacao obrigatoria dos usuarios).
+          mv build/web/index.html build/web/classico.html
+          rm -f build/web/sw.js build/web/flutter_service_worker.js build/web/manifest.webmanifest
           touch build/web/.nojekyll
-          python3 - <<'PY'
-          from pathlib import Path
-          f=Path('build/web/index.html')
-          s=f.read_text()
-          snippet="""<script>
-          if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () =>
-              navigator.serviceWorker.register('./sw.js', {scope:'./'}).catch(console.warn));
-          }
-          </script>"""
-          if "register('./sw.js'" not in s:
-            s=s.replace('</body>',snippet+'\n</body>')
-            f.write_text(s)
-          PY
-      - name: Publicar nova versao compilada em gh-pages sem remover diagnosticos
+      - name: Publicar versao classica em gh-pages sem remover a PWA
+        if: ${{ inputs.publicar_classico }}
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
@@ -89,7 +85,7 @@ jobs:
           publish_branch: gh-pages
           keep_files: true
           enable_jekyll: false
-          commit_message: 'Teste Android/PWA: Flutter otimizado ${{ github.sha }}'
+          commit_message: 'Versao classica (Flutter) ${{ github.sha }}'
       - uses: actions/upload-artifact@v4
         with:
           name: biblia-reformada-web-otimizada
@@ -134,10 +130,13 @@ jobs:
             printf 'storeFile=%s\nstorePassword=%s\nkeyPassword=%s\nkeyAlias=%s\n' "$RUNNER_TEMP/release.jks" "$STORE_PASS" "$KEY_PASS" "$ALIAS" > android/key.properties
           fi
       - name: Compilar APK ARM64
+        env:
+          APK_VERSION_NAME: '0.5.5'
+          APK_VERSION_CODE: '55'
         run: bash scripts/build_android_otimizado.sh
       - uses: actions/upload-artifact@v4
         with:
-          name: Biblia-Reformada-Android-ARM64-v0.5.4
+          name: Biblia-Reformada-Android-ARM64-v0.5.5
           path: build/app/outputs/flutter-apk/app-release.apk
           retention-days: 14
           compression-level: 0
