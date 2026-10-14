@@ -203,9 +203,13 @@ describe('VerseStudyPage', () => {
     await until(() => (view.textContent ?? '').includes('Contexto literário do trecho'));
     const classic = button(view, 'Contexto literário do trecho');
     expect(classic.getAttribute('aria-expanded')).toBe('true');
-    const excerpt = view.querySelector(`#${CSS.escape(classic.getAttribute('aria-controls')!)} .md`)!.textContent!;
-    expect(excerpt.trim().endsWith('…')).toBe(true);
-    expect(excerpt.length).toBeLessThan(1900);
+    // jsdom não expõe CSS.escape; consulte diretamente o elemento pelo ID.
+    const controls = classic.getAttribute('aria-controls');
+    expect(controls).toBeTruthy();
+    const excerpt = view.ownerDocument.getElementById(controls!)?.querySelector('.md')?.textContent;
+    expect(excerpt).toBeDefined();
+    expect(excerpt!.trim().endsWith('…')).toBe(true);
+    expect(excerpt!.length).toBeLessThan(1900);
     click(button(view, 'Ler comentário completo e fontes'));
     expect(open.openCommentaries).toHaveBeenLastCalledWith(r, 'Comentário da passagem');
     click(classic);

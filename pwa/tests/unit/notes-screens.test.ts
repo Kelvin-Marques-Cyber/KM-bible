@@ -2,7 +2,7 @@
 // IndexedDB em memória (fake-indexeddb).
 import { act, createElement, type ReactElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterAll, afterEach, beforeAll, describe, expect, it } from 'vitest';
 import { app, sheets } from '../../src/lib/app';
 import { ref } from '../../src/lib/domain';
 import { stopReminders } from '../../src/lib/notes-reminders';
@@ -10,8 +10,41 @@ import { addCard, backlinks, cards, deleteCard, note, notes, reviewStats, saveNo
 import NotesPage, { NoteEditor } from '../../src/screens/Notes';
 import MemoryPage, { CreateCard, ReviewPage } from '../../src/screens/Memory';
 
+// O jsdom não calcula dimensões; o virtualizador precisa de uma viewport
+// representativa de celular. Simulamos só a área rolável dos testes.
+const originalBounds = HTMLElement.prototype.getBoundingClientRect;
+const originalHeight = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetHeight');
+const originalWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
+
 beforeAll(() => {
   (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true;
+  HTMLElement.prototype.getBoundingClientRect = function () {
+    if (this.classList.contains('scroll-area')) {
+      return { x: 0, y: 0, top: 0, left: 0, right: 360, bottom: 800, width: 360, height: 800, toJSON: () => ({}) };
+    }
+    return originalBounds.call(this);
+  };
+  Object.defineProperty(HTMLElement.prototype, 'offsetHeight', {
+    configurable: true,
+    get(this: HTMLElement) {
+      if (this.classList.contains('scroll-area')) return 800;
+      if (this.hasAttribute('data-index')) return 112;
+      return originalHeight?.get?.call(this) ?? 0;
+    },
+  });
+  Object.defineProperty(HTMLElement.prototype, 'offsetWidth', {
+    configurable: true,
+    get(this: HTMLElement) {
+      if (this.classList.contains('scroll-area')) return 360;
+      return originalWidth?.get?.call(this) ?? 0;
+    },
+  });
+});
+
+afterAll(() => {
+  HTMLElement.prototype.getBoundingClientRect = originalBounds;
+  if (originalHeight) Object.defineProperty(HTMLElement.prototype, 'offsetHeight', originalHeight);
+  if (originalWidth) Object.defineProperty(HTMLElement.prototype, 'offsetWidth', originalWidth);
 });
 
 let root: Root | null = null;
@@ -102,7 +135,10 @@ describe('NotesPage', () => {
   it('virtualiza listas grandes', async () => {
     for (let i = 0; i < 80; i++) await saveNote({ title: `Nota em massa ${i}`, body: 'x', notebook: 'Massa' }, false);
     const view = render(createElement(NotesPage));
-    await until(() => view.textContent!.includes('Nota em massa'));
+    // Primeiro esperamos os dados carregarem; depois os itens visíveis
+    // serem calculados pelo virtualizador (não há layout real no jsdom).
+    await until(() => /\\d+ anotações/.test(view.querySelector('[aria-live="polite"]')?.textContent ?? ''));
+    await until(() => view.querySelectorAll('[data-index]').length > 0, 5000);
     const rendered = [...view.querySelectorAll('[data-index]')].length;
     expect(rendered).toBeGreaterThan(0);
     expect(rendered).toBeLessThan(80);
