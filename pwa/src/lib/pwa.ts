@@ -239,12 +239,17 @@ async function register() {
     navigator.serviceWorker.addEventListener('message', (event) => {
       if ((event.data as { type?: string } | null)?.type === 'KM_UPDATED') patch({ updating: true });
     });
+    let controlled = hadController;
     navigator.serviceWorker.addEventListener('controllerchange', () => {
-      // Primeira visita: o service worker apenas assume a página; não recarrega.
-      if (!hadController || reloading) return;
+      if (reloading) return;
+      const wasControlled = controlled;
+      controlled = true;
       void controllerBuild().then((build) => {
-        // Mesmo build (ex.: troca do registro antigo sw.js/flutter_service_worker.js): nada a recarregar.
-        if (build === BUILD_ID || reloading) return;
+        // Mesmo build (primeira visita, ou troca do registro antigo sw.js/flutter_service_worker.js):
+        // o service worker apenas assume a página; nada a recarregar.
+        if (reloading || build === BUILD_ID) return;
+        // Sem resposta: só recarrega se já havia um service worker (atualização de versão).
+        if (build === null && !wasControlled) return;
         reloading = true;
         location.reload();
       });

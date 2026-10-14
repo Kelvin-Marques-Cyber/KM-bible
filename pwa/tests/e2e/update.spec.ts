@@ -36,7 +36,9 @@ async function makeBuildB(): Promise<string> {
 }
 
 async function swBuild(page: Page): Promise<string | null> {
-  return page.evaluate(
+  // A página pode estar recarregando (atualização aplicada): conta como "ainda não".
+  return page
+    .evaluate(
     () =>
       new Promise<string | null>((resolve) => {
         const controller = navigator.serviceWorker?.controller;
@@ -49,7 +51,8 @@ async function swBuild(page: Page): Promise<string | null> {
         };
         controller.postMessage({ type: 'GET_BUILD' }, [channel.port2]);
       }),
-  );
+    )
+    .catch(() => null);
 }
 
 const pageBuild = (page: Page) => page.evaluate(() => document.documentElement.dataset.build ?? null).catch(() => null);
@@ -127,7 +130,7 @@ test('nova publicação é aplicada automaticamente durante o uso (atualização
   expect(names).not.toContain(`km-app-${buildA}`);
 });
 
-test('abre sem internet depois da primeira visita, com os dados já lidos', async ({ page, context }) => {
+test('abre sem internet depois da primeira visita, com os dados já lidos', async ({ page }) => {
   server.setRoot(DIST);
   await page.goto(server.url);
   await expect.poll(() => swBuild(page), { timeout: 60_000 }).toBe(buildA);
@@ -138,7 +141,7 @@ test('abre sem internet depois da primeira visita, com os dados já lidos', asyn
   const dataUrl = `data/v1/${bible.path}/43.json?v=${bible.hash}`;
   expect(await page.evaluate(async (url) => (await fetch(url)).status, dataUrl)).toBe(200);
 
-  await context.setOffline(true);
+  server.setOffline(true);
   await page.reload();
   await expect.poll(() => pageBuild(page)).toBe(buildA);
   await expect(page.locator('#root')).not.toBeEmpty();
@@ -151,7 +154,7 @@ test('abre sem internet depois da primeira visita, com os dados já lidos', asyn
   // Arquivo nunca lido: resposta 503 controlada, sem quebrar o app.
   const missing = await page.evaluate(async (url) => (await fetch(url)).status, `data/v1/${bible.path}/44.json?v=${bible.hash}`);
   expect(missing).toBe(503);
-  await context.setOffline(false);
+  server.setOffline(false);
 });
 
 test('manifesto válido e ícones com os tamanhos declarados', async ({ request }) => {

@@ -24,14 +24,21 @@ export const PREFIX = '/KM-bible/';
 export interface SwitchServer {
   url: string;
   setRoot(dir: string): void;
+  /** Simula queda da internet: as conexões são derrubadas (vale também para o service worker). */
+  setOffline(offline: boolean): void;
   requests: string[];
   close(): Promise<void>;
 }
 
 export async function startSwitchServer(port: number, root: string): Promise<SwitchServer> {
   let current = root;
+  let offline = false;
   const requests: string[] = [];
   const server: Server = createServer(async (req, res) => {
+    if (offline) {
+      req.socket.destroy();
+      return;
+    }
     const url = new URL(req.url ?? '/', 'http://localhost');
     requests.push(url.pathname + url.search);
     if (!url.pathname.startsWith(PREFIX)) {
@@ -67,6 +74,9 @@ export async function startSwitchServer(port: number, root: string): Promise<Swi
     url: `http://127.0.0.1:${port}${PREFIX}`,
     setRoot(dir: string) {
       current = dir;
+    },
+    setOffline(value: boolean) {
+      offline = value;
     },
     requests,
     close: () => new Promise<void>((resolve) => server.close(() => resolve())),

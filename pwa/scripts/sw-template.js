@@ -77,23 +77,27 @@ self.addEventListener('activate', (event) => {
       }
       await self.clients.claim();
       // Páginas desta PWA recarregam sozinhas no evento controllerchange (lib/pwa.ts).
-      // A versão Flutter antiga não sabe fazer isso: o service worker a recarrega.
-      if (legacy) {
-        const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
-        for (const client of windows) {
-          const path = new URL(client.url).pathname.split('/').pop() || '';
-          if (path === 'classico.html') continue;
-          try {
-            client.postMessage({ type: 'KM_UPDATED', build: BUILD });
-            await client.navigate(client.url);
-          } catch (error) {
-            console.warn('Recarregamento não permitido para', client.url, error);
-          }
-        }
-      }
+      // A versão Flutter antiga não sabe fazer isso: o service worker a recarrega,
+      // mas só DEPOIS de ativado (navegar durante a ativação trava: a navegação
+      // espera este service worker, que esperaria a navegação).
+      if (legacy) setTimeout(reloadLegacyPages, 0);
     })(),
   );
 });
+
+async function reloadLegacyPages() {
+  const windows = await self.clients.matchAll({ type: 'window', includeUncontrolled: true });
+  for (const client of windows) {
+    const path = new URL(client.url).pathname.split('/').pop() || '';
+    if (path === 'classico.html') continue;
+    try {
+      client.postMessage({ type: 'KM_UPDATED', build: BUILD });
+      await client.navigate(client.url);
+    } catch (error) {
+      console.warn('Recarregamento não permitido para', client.url, error);
+    }
+  }
+}
 
 self.addEventListener('message', (event) => {
   const data = event.data || {};
