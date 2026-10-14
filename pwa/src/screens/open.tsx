@@ -99,7 +99,8 @@ export const openModel = (model: Model3D) => openSheet(model.title, () => <L.Mod
 export const openGraph = (reference?: Ref) => openSheet(reference ? tr('Conexões bíblicas', 'Biblical connections', 'Conexiones bíblicas') : t('graph'), () => <L.Graph reference={reference} />);
 export const openModule = (m: ModuleInfo) => openSheet(m.title, () => <L.Module moduleId={m.id} />);
 export const openLibrary = () => openSheet(t('library'), () => <L.Library />);
-export const openOffline = () => openSheet(t('offlinePacks'), () => <L.Offline />);
+export const openOffline = (options?: { autoStart?: 'all' }) =>
+  openSheet(t('offlinePacks'), () => <L.Offline autoStart={options?.autoStart} />);
 export const openReview = (cardIds: string[] | null) => openSheet(t('review'), () => <L.Review cardIds={cardIds} />);
 export const createCard = (reference: Ref, text: string) => openSheet(t('addCard'), () => <L.CreateCard reference={reference} text={text} />);
 export const openSavedPlaces = (kind: 'bookmarks' | 'study_tabs') => openSheet(t(kind === 'study_tabs' ? 'tabs' : 'bookmarks'), () => <L.SavedPlaces kind={kind} />);

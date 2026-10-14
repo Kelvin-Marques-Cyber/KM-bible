@@ -53,8 +53,9 @@ function useTheme() {
 function useShortcuts() {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
-      const target = event.target as HTMLElement;
-      const typing = target.closest('input, textarea, select, [contenteditable=true]');
+      // Eventos enviados à janela (sem elemento de destino) não têm closest().
+      const target = event.target;
+      const typing = target instanceof Element && !!target.closest('input, textarea, select, [contenteditable=true]');
       const key = event.key.toLowerCase();
       if ((event.ctrlKey || event.metaKey) && key === 'f') {
         event.preventDefault();

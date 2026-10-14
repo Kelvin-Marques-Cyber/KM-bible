@@ -3,7 +3,7 @@ import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { initApp, installBackHandler } from './lib/app';
 import { loadUserModules } from './lib/content';
-import { openDb, useFallbackFactory } from './lib/db';
+import { isMemoryOnly, openDb, useFallbackFactory } from './lib/db';
 import { BUILD_ID, bootFinished, bootStarted, startPwa } from './lib/pwa';
 import { loadPrefs, loadProgress } from './lib/store';
 import { App } from './App';
@@ -34,6 +34,16 @@ async function boot() {
     const { indexedDB: memory } = await import('fake-indexeddb');
     useFallbackFactory(memory);
     await openDb();
+  }
+  if (!isMemoryOnly()) {
+    // Usuário da versão Flutter Web: importa anotações, marcações e preferências
+    // uma única vez (sql.js só é baixado se houver dados antigos). Nunca bloqueia a abertura.
+    try {
+      const { runMigrationIfNeeded } = await import('./lib/migration');
+      await runMigrationIfNeeded();
+    } catch (error) {
+      console.warn('Migração da versão anterior adiada:', error);
+    }
   }
   await Promise.all([loadPrefs(), loadProgress(), loadUserModules()]);
   initApp();
