@@ -34,3 +34,7 @@ assets/apologetica/index.json
 assets/apologetica_extra/*.md
 assets/apologetica_extra/index.json
 assets/apologetica_reformada/*.md
+assets/calvino-por-livro/*.json
+assets/content/*.sqlite-journal
+assets/content/*.sqlite-wal
+assets/content/*.sqlite-shm

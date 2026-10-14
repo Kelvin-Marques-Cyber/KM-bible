@@ -8,6 +8,7 @@ Não adiciona refutacao reformada aos panoramas imparciais.
 """
 from __future__ import annotations
 
+import argparse
 import json
 import re
 from pathlib import Path
@@ -205,7 +206,7 @@ def as_source(entry) -> tuple[str, str] | None:
     return str(entry.get("title") or url).strip(), url
 
 
-def generate() -> None:
+def generate(*, preserve_existing: bool = False) -> None:
     DEST.mkdir(parents=True, exist_ok=True)
     curricula = json.loads((SOURCE / "religion-curricula.json").read_text())
     expansions = json.loads((SOURCE / "editorial-expansion.json").read_text())["studies"]
@@ -262,7 +263,10 @@ def generate() -> None:
         if len(body) < MIN_CHARS:
             raise SystemExit(f"Texto insuficiente para {target}: {len(body)} caracteres")
         path = DEST / (target + ".md")
-        path.write_text(body + "\n", encoding="utf-8")
+        if preserve_existing and path.is_file():
+            body = path.read_text(encoding="utf-8").rstrip()
+        else:
+            path.write_text(body + "\n", encoding="utf-8")
         index.append({"id": target, "title": name, "characters": len(body),
                       "topics": len(lessons), "sources": len(sources),
                       "type": "editorial_impessoal", "file": path.name})
@@ -287,7 +291,10 @@ def generate() -> None:
         if len(body) < MIN_CHARS:
             raise SystemExit(f"Texto insuficiente para {target}: {len(body)} caracteres")
         path = DEST / (target + ".md")
-        path.write_text(body + "\n", encoding="utf-8")
+        if preserve_existing and path.is_file():
+            body = path.read_text(encoding="utf-8").rstrip()
+        else:
+            path.write_text(body + "\n", encoding="utf-8")
         index.append({"id": target, "title": item["name"], "characters": len(body),
                       "topics": 8, "sources": len(item["sources"]),
                       "type": "editorial_impessoal", "file": path.name})
@@ -304,4 +311,7 @@ def generate() -> None:
 
 
 if __name__ == "__main__":
-    generate()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--preserve-existing", action="store_true",
+                        help="Mantém os textos revisados e atualiza apenas o índice.")
+    generate(preserve_existing=parser.parse_args().preserve_existing)
