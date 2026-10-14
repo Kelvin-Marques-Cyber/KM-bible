@@ -137,7 +137,7 @@ describe('NotesPage', () => {
     const view = render(createElement(NotesPage));
     // Primeiro esperamos os dados carregarem; depois os itens visíveis
     // serem calculados pelo virtualizador (não há layout real no jsdom).
-    await until(() => /\\d+ anotações/.test(view.querySelector('[aria-live="polite"]')?.textContent ?? ''));
+    await until(() => /\d+ anotações/.test(view.querySelector('[aria-live="polite"]')?.textContent ?? ''));
     await until(() => view.querySelectorAll('[data-index]').length > 0, 5000);
     const rendered = [...view.querySelectorAll('[data-index]')].length;
     expect(rendered).toBeGreaterThan(0);
