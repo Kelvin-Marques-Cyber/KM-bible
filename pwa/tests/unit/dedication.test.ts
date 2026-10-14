@@ -1,10 +1,12 @@
 // A dedicatória faz parte da identidade do aplicativo e NUNCA pode ser removida.
 // Este teste falha se ela sumir da introdução ou da tela Sobre (Configurações).
 import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 const DEDICATION = 'Em presente dedicatória à Rebeca Teles';
-const source = (file: string) => readFileSync(new URL(`../../src/screens/${file}`, import.meta.url), 'utf8');
+// vitest roda a partir de pwa/ (no jsdom, import.meta.url não aponta para o disco).
+const source = (file: string) => readFileSync(resolve(process.cwd(), 'src/screens', file), 'utf8');
 
 describe('dedicatória', () => {
   it('aparece na introdução (primeira abertura e reabertura)', () => {
