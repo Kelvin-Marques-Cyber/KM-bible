@@ -1,8 +1,8 @@
 {
  "version": "1.0.0",
- "build": "1.0.0-17b0901-20261014165839",
- "date": "2026-10-14T16:58:39.087Z",
- "commit": "17b0901",
+ "build": "1.0.0-c6996f3-20261014205220",
+ "date": "2026-10-14T20:52:20.235Z",
+ "commit": "c6996f3",
  "force": true,
  "notes": [
   "Nova PWA muito mais leve e rápida: abre em segundos e funciona offline.",
