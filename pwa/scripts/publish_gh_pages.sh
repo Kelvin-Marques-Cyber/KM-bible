@@ -9,8 +9,10 @@
 # Regras:
 # - index.html da versão clássica (Flutter) vira classico.html; os demais arquivos
 #   dela (assets/, canvaskit/, main.dart.js…) continuam no mesmo lugar.
-# - codigo-fonte/ (cópia antiga do repositório, não referenciada) é removida: o site
-#   passava de 1 GB, limite do GitHub Pages. O código continua no repositório.
+# - codigo-fonte/ é preservada (decisão do responsável, como em scripts/publicar_teste_gh_pages.sh).
+#   KM_REMOVE_CODIGO_FONTE=1 a remove para caber no limite de 1 GB do GitHub Pages
+#   (o código continua no repositório). Acima de 1 GB a publicação é recusada,
+#   salvo KM_ALLOW_OVER_1GB=1.
 # - Arquivos app/* dos dois builds anteriores são mantidos, para que abas abertas
 #   com a versão antiga não quebrem durante a atualização.
 set -Eeuo pipefail
@@ -63,13 +65,14 @@ for entry in builds[-2:]:
 open(sys.argv[2], "w").write("\n".join(sorted(keep)))
 PY
 fi
-python3 - "$KEEP_APP" > "$TMP/remove.txt" <<'PY'
+python3 - "$KEEP_APP" "${KM_REMOVE_CODIGO_FONTE:-0}" > "$TMP/remove.txt" <<'PY'
 import subprocess, sys
 keep = set(open(sys.argv[1]).read().split())
+remove_source = sys.argv[2] == "1"
 files = subprocess.run(["git", "ls-files"], capture_output=True, text=True, check=True).stdout.splitlines()
 pwa_root = {"index.html", "sw.js", "flutter_service_worker.js", "app-version.json", "manifest.webmanifest", "app-builds.json"}
 for path in files:
-    if path.startswith("codigo-fonte/") or path.startswith("data/") or path.startswith("fonts/") \
+    if (remove_source and path.startswith("codigo-fonte/")) or path.startswith("data/") or path.startswith("fonts/") \
             or path in pwa_root or path.startswith("icons/icon-") or path.startswith("icons/maskable-") \
             or path.startswith("icons/favicon-") or path == "icons/apple-touch-icon.png" \
             or (path.startswith("app/") and path not in keep):
@@ -104,9 +107,10 @@ fi
 
 # 4) Validações: tamanho do site, maior arquivo, páginas essenciais.
 TREE="$(git write-tree)"
-python3 - "$TREE" <<'PY'
+python3 - "$TREE" "${KM_ALLOW_OVER_1GB:-0}" <<'PY'
 import subprocess, sys
 tree = sys.argv[1]
+allow_over = sys.argv[2] == "1"
 out = subprocess.run(["git", "ls-tree", "-r", "-l", tree], capture_output=True, text=True, check=True).stdout.splitlines()
 total = 0
 largest = (0, "")
@@ -124,7 +128,10 @@ for required in ("index.html", "sw.js", "app-version.json", "manifest.webmanifes
 if largest[0] > 100 * 1024 * 1024:
     sys.exit("Arquivo maior que 100 MB: o GitHub recusaria o envio")
 if total > 1000 * 1000 * 1000:
-    sys.exit("O site passaria de 1 GB (limite do GitHub Pages)")
+    if not allow_over:
+        sys.exit("O site passaria de 1 GB (limite recomendado do GitHub Pages). Use KM_REMOVE_CODIGO_FONTE=1 "
+                 "ou, assumindo o risco, KM_ALLOW_OVER_1GB=1")
+    print("AVISO: site acima de 1 GB (KM_ALLOW_OVER_1GB=1)")
 PY
 
 COMMIT="$(git commit-tree "$TREE" -p "$BASE" -m "PWA Bíblia Reformada $BUILD
