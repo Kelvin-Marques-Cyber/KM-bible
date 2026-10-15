@@ -1,0 +1,9 @@
+.cr-boot{position:fixed;inset:0;z-index:30;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;overflow:hidden;background:#0d2528;color:#efd9a8;text-align:center;isolation:isolate;}
+.cr-boot-landscape{position:absolute;inset:0;z-index:-1;opacity:.3;background:linear-gradient(135deg,transparent 55%,#59775d 55% 61%,#254e44 61% 68%,transparent 68%) 0 55%/210px 160px repeat-x,linear-gradient(45deg,transparent 48%,#456959 48% 60%,#294a3e 60% 69%,transparent 69%) 0 70%/250px 200px repeat-x,linear-gradient(#254957,#123332 65%,#0b201f);image-rendering:pixelated;}
+.cr-boot-mark{font-size:46px;line-height:1;color:#e9cb8a;animation:cr-boot-glow 1.6s ease-in-out infinite;}
+.cr-boot-kicker{font:700 9px/1.6 ui-sans-serif,system-ui;letter-spacing:.23em;}
+.cr-boot h2{font:700 clamp(36px,7vw,74px)/1 Georgia,serif;text-shadow:0 4px 0 #061c22;margin:0;}
+.cr-boot h2 span{display:block;color:#d3b97f;}
+.cr-boot p{font:11px/1.7 ui-sans-serif,system-ui;letter-spacing:.08em;color:#bfccb2;margin-top:8px;}
+@keyframes cr-boot-glow{50%{opacity:.35;filter:drop-shadow(0 0 14px #dfcc8c);}}
+@media(prefers-reduced-motion:reduce){.cr-boot-mark{animation:none;}}

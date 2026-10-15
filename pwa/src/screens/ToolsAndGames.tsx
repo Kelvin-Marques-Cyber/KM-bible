@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Brain, Gamepad2, Sparkles, WifiOff } from 'lucide
 import { lazy, Suspense, useState } from 'react';
 import { Spinner } from '../components/ui';
 import { tr } from '../lib/i18n';
+import ChroniclesBoot from '../games/chronicles/ChroniclesBoot';
 
 const Memory = lazy(() => import('./Memory'));
 const Mezuzah = lazy(() => import('./MezuzahClassic'));
@@ -22,7 +23,7 @@ export default function ToolsAndGames() {
   );
   if(tab==='mezuzah')return <Suspense fallback={<Spinner/>}><Mezuzah onBack={()=>setTab('home')}/></Suspense>;
   if(tab==='online')return <Suspense fallback={<Spinner/>}><Online onBack={()=>setTab('home')}/></Suspense>;
-  if(tab==='chronicles')return <div className="chronicles-viewport" aria-label="Crônicas da Aliança"><Suspense fallback={<Spinner/>}><Chronicles onBack={()=>setTab('home')}/></Suspense></div>;
+  if(tab==='chronicles')return <div className="chronicles-viewport" aria-label="Crônicas da Aliança"><Suspense fallback={<ChroniclesBoot/>}><Chronicles onBack={()=>setTab('home')}/></Suspense></div>;
   return (
     <div className="scroll-area h-full">
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
