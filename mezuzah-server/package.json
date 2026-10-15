@@ -4,10 +4,12 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=22.16"
+    "node": ">=22.18"
   },
   "scripts": {
-    "start": "node --experimental-strip-types server.mjs"
+    "start": "node --experimental-strip-types server.mjs",
+    "test": "node --experimental-strip-types --test server.test.mjs",
+    "start:legacy": "node --experimental-strip-types legacy-server.mjs"
   },
   "dependencies": {
     "ws": "^8.18.3"
