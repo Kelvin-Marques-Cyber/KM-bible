@@ -5,10 +5,11 @@ import { Spinner } from '../components/ui';
 import { tr } from '../lib/i18n';
 
 const Memory = lazy(() => import('./Memory'));
-const Mezuzah = lazy(() => import('./Mezuzah'));
-const Online = lazy(() => import('./MezuzahOnline'));
+const Mezuzah = lazy(() => import('./MezuzahClassic'));
+const Online = lazy(() => import('./MezuzahClassicOnline'));
+const Chronicles = lazy(() => import('./Chronicles'));
 
-type Tab = 'home' | 'flashcards' | 'mezuzah' | 'online';
+type Tab = 'home' | 'flashcards' | 'mezuzah' | 'online' | 'chronicles';
 export default function ToolsAndGames() {
   const [tab,setTab]=useState<Tab>('home');
   if(tab==='flashcards')return (
@@ -21,6 +22,7 @@ export default function ToolsAndGames() {
   );
   if(tab==='mezuzah')return <Suspense fallback={<Spinner/>}><Mezuzah onBack={()=>setTab('home')}/></Suspense>;
   if(tab==='online')return <Suspense fallback={<Spinner/>}><Online onBack={()=>setTab('home')}/></Suspense>;
+  if(tab==='chronicles')return <Suspense fallback={<Spinner/>}><Chronicles onBack={()=>setTab('home')}/></Suspense>;
   return (
     <div className="scroll-area h-full">
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
@@ -33,12 +35,18 @@ export default function ToolsAndGames() {
             'Su espacio para estudiar y jugar. Sus tarjetas y su historial de repaso siguen aquí.',
           )}</p>
         </div>
+        <button type="button" onClick={()=>setTab('chronicles')} className="mb-5 block w-full overflow-hidden rounded-[25px] border border-[#adbb8b]/40 bg-gradient-to-br from-[#152b27] via-[#334a34] to-[#796647] p-6 text-left text-[#f3e8cd] shadow-xl transition hover:-translate-y-1 sm:p-8">
+          <span className="text-xs font-semibold uppercase tracking-[.22em] text-[#e7cb91]">RPG bíblico 2D · episódio piloto</span>
+          <h3 className="mt-3 font-reading text-4xl sm:text-5xl">Crônicas da Aliança</h3>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#d8e4d1]">O Vale e a Coragem · 1 Samuel 16–17. Explore um povoado, ajude seus vizinhos e testemunhe uma história de coragem, com escolhas, missões e progresso salvo.</p>
+          <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#e4c48b] px-5 py-3 text-sm font-semibold text-[#223328]">Explorar a aventura <ArrowRight size={17}/></span>
+        </button>
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">
           <button type="button" onClick={()=>setTab('mezuzah')} className="group relative min-h-[280px] overflow-hidden rounded-[25px] border border-[#a98350]/40 bg-gradient-to-br from-[#141f23] via-[#33302e] to-[#633b2c] p-6 text-left text-[#faefd8] shadow-xl transition hover:-translate-y-1 hover:shadow-2xl sm:p-8">
-            <div className="absolute -right-10 -top-16 h-56 w-56 rotate-[35deg] rounded-3xl border-[19px] border-[#bb8961] bg-[conic-gradient(#f5ead8_25%,#a34c35_0_50%,#f5ead8_0_75%,#a34c35_0)] bg-[length:60px_60px] opacity-35 shadow-2xl transition-transform group-hover:rotate-[25deg]"/>
+            <div className="absolute -right-6 top-2 grid h-52 w-52 place-items-center text-[190px] leading-none text-[#dfc08a]/25" aria-hidden>✡</div>
             <span className="relative inline-flex items-center gap-2 rounded-full border border-[#e7c28a]/40 bg-black/30 px-3 py-1 text-xs text-[#f1d29b]"><Sparkles size={14}/> {tr('Novo · Tabuleiro 3D','New · 3D board','Nuevo · Tablero 3D')}</span>
             <h3 className="relative mt-8 font-reading text-4xl font-semibold">Mezuzá 3D</h3>
-            <p className="relative mt-3 max-w-[290px] text-sm leading-relaxed text-[#e9e3d6]">Uma aventura bíblica sobre madeira esculpida. Desafie amigos e descubra as Escrituras a cada jogada.</p>
+            <p className="relative mt-3 max-w-[290px] text-sm leading-relaxed text-[#e9e3d6]">Dinâmicas do Mezuzá Clássico em uma mesa tridimensional. Atividades autorais, leitor e equipes; percurso digital inspirado nos procedimentos do Clássico.</p>
             <span className="relative mt-5 inline-flex items-center gap-2 rounded-full bg-[#e8ce98] px-5 py-3 text-sm font-semibold text-[#29201b]">{tr('Jogar agora','Play now','Jugar ahora')} <ArrowRight size={16}/></span>
           </button>
           <button type="button" onClick={()=>setTab('flashcards')} className="group rounded-[25px] border border-outline/50 bg-surface-low p-6 text-left shadow-md transition hover:-translate-y-1 hover:shadow-lg sm:p-8">
@@ -55,10 +63,10 @@ export default function ToolsAndGames() {
           </div>
           <button type="button" onClick={()=>setTab('online')} className="rounded-2xl border border-outline/30 bg-surface p-4 text-left transition hover:bg-surface-high">
             <div className="flex items-center gap-2 font-semibold"><WifiOff size={20} className="text-primary"/> {tr('Salas pela internet','Internet rooms','Salas por internet')} <ArrowRight size={17} className="ml-auto"/></div>
-            <p className="mt-2 text-sm text-muted">{tr('Criar sala ou entrar com código, após conectar um servidor de partidas. Turnos e dado validados pelo servidor.','Create or join a room after configuring a game server. Turns and dice are server-authoritative.','Cree o entre en salas tras configurar un servidor. Turnos y dados validados por el servidor.')}</p>
+            <p className="mt-2 text-sm text-muted">{tr('Criar sala ou entrar com código, após conectar um servidor de partidas. Turnos, cartões e avanços validados pelo servidor.','Create or join a room after configuring a game server. Turns, cards and progress are server-authoritative.','Cree o entre en salas tras configurar un servidor. Turnos, tarjetas y avances validados por el servidor.')}</p>
           </button>
         </div>
-        <p className="mt-5 flex items-center gap-2 text-xs text-muted"><BookOpen size={15}/>{tr('O jogo é uma criação educativa original, não uma representação de rito religioso.','This is an original educational game, not a depiction of a religious rite.','Este es un juego educativo original, no una representación ritual.')}</p>
+        <p className="mt-5 flex items-center gap-2 text-xs text-muted"><BookOpen size={15}/>Mezuzá Clássico: regras consultadas na Bible Toys; atividades e arte digitais autorais. Adaptação com percurso digital próprio.</p>
       </div>
     </div>
   );
