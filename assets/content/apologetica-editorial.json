@@ -1,0 +1,546 @@
+{
+  "schema": 1,
+  "authoring_note": "Eixos editoriais de contraste, não transcrições das tradições. Cada eixo deve ser interpretado à luz das fontes e estudos locais; não atribuir a todos os participantes de uma tradição uma crença particular.",
+  "profiles": {
+    "presbyterian": {
+      "lead": "O presbiterianismo reformado deve examinar a si mesmo com o mesmo rigor aplicado às demais tradições. Westminster é subordinada à Escritura; a tradição institucional não está isenta de crítica. Aqui, a questão não é derrotar um adversário, mas verificar se doutrina, governo e prática permanecem coerentes com as próprias confissões.",
+      "visual": [
+        "Igreja reformada e púlpito",
+        "Arquitetura protestante de linhas sóbrias: púlpito, bancos e Bíblia aberta",
+        "chapel"
+      ],
+      "axes": [
+        "Não confundir a Reforma escocesa, a tradição continental e as múltiplas igrejas presbiterianas modernas; cada uma possui trajetória e controvérsias próprias.",
+        "O princípio de Sola Scriptura não dispensa tradução, história textual ou concílios; a pergunta é qual autoridade pode corrigir a interpretação eclesiástica.",
+        "A linguagem trinitária dos símbolos nicenos e de Westminster protege unidade divina e distinção de pessoas, sem fazer da filosofia uma segunda revelação.",
+        "Depravação total não significa maldade máxima de cada pessoa; distingue corrupção da natureza e responsabilidade moral contínua.",
+        "Eleição, vocação eficaz e união com Cristo exigem distinguir causa da salvação, sua aplicação e evidências na vida cristã.",
+        "Pregação, oração e sacramentos devem ser examinados segundo CFW 21, 27–29, inclusive abusos e ritualismos presbiterianos.",
+        "Disciplina e governo por presbíteros não autorizam coerção espiritual; a ética reformada também deve submeter líderes à prestação de contas.",
+        "Ressurreição, juízo e esperança escatológica não são licença para especulações cronológicas nem indiferença ao sofrimento presente."
+      ]
+    },
+    "roman_catholic": {
+      "lead": "A divergência entre Roma e a Reforma não se reduz a 'Bíblia contra tradição'. Trata de como a revelação é transmitida, de quem pode defini-la autenticamente e de como a graça de Cristo é anunciada e recebida na vida da Igreja. O Concílio de Trento, o Vaticano I e o Vaticano II não são documentos intercambiáveis.",
+      "visual": [
+        "Basílica de São Pedro",
+        "Fachada e cúpula de uma basílica católica, em ilustração arquitetônica",
+        "basilica"
+      ],
+      "axes": [
+        "Examinar primado romano, sucessão episcopal e desenvolvimento dogmático sem confundir as primeiras comunidades cristãs com a configuração contemporânea do Vaticano.",
+        "Comparar Dei Verbum, magistério e regra de fé de Westminster: a disputa diz respeito à autoridade interpretativa e à suficiência material e formal das Escrituras.",
+        "Trindade e cristologia são consensos importantes; a divergência aparece no modo de compreender o ministério da Igreja, a intercessão celestial e a mediação de Cristo.",
+        "Confrontar a natureza da graça e a condição caída: a tradição católica fala em cura e cooperação com a graça; a reformada distingue regeneração e mérito.",
+        "Trento e CFW 11 precisam ser lidos lado a lado em justificação, imputação, transformação interior e certeza, evitando a caricatura de que Roma ensinaria salvação sem graça.",
+        "Comparar Eucaristia, sacrifício da missa, transubstanciação, sete sacramentos, sacerdócio ministerial e a teologia reformada da ceia e dos dois sacramentos.",
+        "Tratar veneração de imagens, santos e Maria segundo suas definições católicas; avaliar a invocação à luz de 1Tm 2:5 e da distinção católica entre latria e dulia.",
+        "Estudar purgatório, sufrágios e juízo à luz de Hb 9:27 e 1Co 3, explicitando leituras concorrentes e o lugar atribuído à obra consumada de Cristo."
+      ]
+    },
+    "eastern_orthodox": {
+      "lead": "A ortodoxia oriental se compreende como continuidade da Igreja dos concílios ecumênicos, de sua vida litúrgica e do testemunho patrístico. Sua eclesiologia não é uma variante do papado romano, e 'teose' não significa tornar-se Deus por essência. A leitura reformada precisa reconhecer esses pontos antes de formular críticas.",
+      "visual": [
+        "Igreja ortodoxa e ícone",
+        "Cúpulas e iconóstase na tradição cristã oriental, representação editorial",
+        "orthodox"
+      ],
+      "axes": [
+        "Explicar o lugar dos patriarcados, o cisma entre Oriente e Ocidente e a autoridade conciliar sem atribuir ao Oriente a primazia papal.",
+        "Examinar Escritura dentro da Santa Tradição e a interpretação dos Padres; a crítica reformada pergunta que instância resolve disputas entre tradições patrísticas.",
+        "Comparar a formulação do Filioque, a distinção essência–energias e a doutrina da Trindade sem sugerir politeísmo.",
+        "A antropologia oriental enfatiza mortalidade, corrupção e restauração da imagem; diferenciar essa ênfase da discussão ocidental da culpa herdada.",
+        "Teose e participação na vida divina devem ser comparadas com união com Cristo e santificação, sem equipará-las automaticamente à justificação forense.",
+        "Os ícones do VII Concílio, a Divina Liturgia e a presença eucarística exigem análise diferente da controvérsia reformada com a transubstanciação latina.",
+        "Jejum, ascese e veneração dos santos articulam discipulado comunitário; distinguir devoção ortodoxa de caricaturas de idolatria antes do exame confessional.",
+        "Ressurreição e vitória pascal estruturam o imaginário ortodoxo; comparar as formulações sobre estado intermediário e juízo sem projetar um purgatório latino."
+      ]
+    },
+    "lutheran": {
+      "lead": "Luteranos confessionais e presbiterianos compartilham heranças essenciais da Reforma. Por isso, o debate principal não consiste em negar a justificação pela fé, mas em compreender diferenças na ceia, no batismo, na cristologia e na aplicação da distinção Lei–Evangelho.",
+      "visual": [
+        "Igreja da Reforma",
+        "Nave de igreja luterana e rosácea com cruz, ilustração editorial",
+        "chapel"
+      ],
+      "axes": [
+        "Diferenciar Lutero, Melanchthon e a Fórmula de Concórdia; o luteranismo não é mera etapa inicial do presbiterianismo.",
+        "A Escritura como regra normativa é convergência real, enquanto catecismos e confissões mostram diferenças na exegese de textos disputados.",
+        "A comunicação de atributos de Cristo ocupa papel decisivo na controvérsia eucarística; evitar reduzir a discussão a uma preferência litúrgica.",
+        "Ambas as tradições afirmam o pecado original, mas divergem em alguns modos de articular livre-arbítrio, graça e resistibilidade.",
+        "Justificação pela fé constitui solo comum; investigar eleição e possibilidade de apostasia sem declarar que os luteranos ensinam salvação por obras.",
+        "A presença sacramental de Cristo na ceia, a união sacramental e o batismo infantil merecem comparação com a presença espiritual reformada e o sinal do pacto.",
+        "Vocação no mundo, dois reinos e vida ética não representam desprezo pela lei; comparar os usos da Lei no catecismo e em Westminster.",
+        "Na escatologia, a esperança da ressurreição é compartilhada; diferenças confessionais não justificam criar controvérsias onde não existem."
+      ]
+    },
+    "anglican": {
+      "lead": "O anglicanismo reúne continuidades católicas, herança reformacional e plurais correntes contemporâneas. O Livro de Oração Comum, os Trinta e Nove Artigos e o episcopado histórico não devem ser confundidos com todas as posições teológicas de cada comunhão anglicana.",
+      "visual": [
+        "Catedral anglicana",
+        "Arcos góticos e vitrais de uma igreja anglicana, ilustração editorial",
+        "cathedral"
+      ],
+      "axes": [
+        "Examinar a Reforma inglesa, a coroa e as disputas entre correntes evangélicas, anglo-católicas e liberais sem postular uma única origem doutrinária homogênea.",
+        "Comparar os Trinta e Nove Artigos, Livro de Oração Comum e CFW; uma mesma liturgia pode hospedar interpretações divergentes.",
+        "Confissões trinitárias são compartilhadas; divergências surgem da eclesiologia episcopal e de diferentes compreensões do ministério ordenado.",
+        "As doutrinas do pecado e da graça variam entre vertentes, de modo que o interlocutor precisa ser identificado antes de qualquer refutação.",
+        "A justificação nos Artigos pode aproximar-se fortemente da Reforma; não imputar automaticamente ao anglicanismo a soteriologia romana.",
+        "Compreender batismo, ceia e liturgia do Prayer Book, distinguindo leitura reformada, alta igreja e desenvolvimentos anglo-católicos.",
+        "A autoridade de bispos, sínodos e comunhões nacionais suscita questões distintas da disciplina presbiteriana; tratar também pluralidade de posições éticas.",
+        "Credos e esperança escatológica são em grande medida compartilhados: a crítica mais forte não precisa fabricar desacordo sobre toda doutrina."
+      ]
+    },
+    "islam": {
+      "lead": "No islã, a unicidade divina (tawhid), a profecia de Maomé e a revelação corânica formam um conjunto próprio. A apologética presbiteriana deve ouvir o que muçulmanos de escolas diferentes afirmam, distinguindo Corão, hadith, jurisprudência e comentários posteriores.",
+      "visual": [
+        "Mesquita e minarete",
+        "Arquitetura de mesquita com minarete e cúpula, desenho editorial",
+        "mosque"
+      ],
+      "axes": [
+        "Situar Meca, Medina e a formação das comunidades muçulmanas, distinguindo acontecimentos históricos de interpretações confessionais posteriores.",
+        "Comparar revelação do Corão e inspiração bíblica: transmissão, cânon, traduções e alegações de alteração textual exigem provas documentais concretas.",
+        "Tawhid rejeita associações divinas; discutir Trindade a partir do Credo Niceno, não de uma caricatura em que cristãos afirmariam três deuses.",
+        "Responsabilidade moral, fitra e pecado de Adão diferem de leituras reformadas da queda; não pressupor uma mesma doutrina de culpa herdada.",
+        "Graça, submissão, misericórdia e juízo pertencem ao próprio vocabulário islâmico; a controvérsia sobre a cruz e a mediação de Cristo é central.",
+        "Salat, jejum do Ramadã, zakat e peregrinação não são sacramentos cristãos; discutir seus sentidos e a crítica à adoração com conhecimento de suas fontes.",
+        "Sharia, escolas jurídicas e condutas pessoais não são sinônimos; a comparação ética precisa distinguir norma clássica, contexto e diversidade contemporânea.",
+        "Juízo, ressurreição e paraíso possuem semelhanças verbais e diferenças teológicas; confrontar sobretudo morte e ressurreição de Jesus."
+      ]
+    },
+    "judaism": {
+      "lead": "O judaísmo rabínico não se reduz a uma recusa de Jesus nem é simplesmente 'o Antigo Testamento sem o Novo'. Trata-se de tradição viva com debates talmúdicos, história diaspórica, liturgia, halakhah e escolas distintas. A crítica cristã precisa reconhecer essa continuidade e rejeitar antissemitismo.",
+      "visual": [
+        "Sinagoga e rolos da Torá",
+        "Arco de sinagoga e rolos da Torá, ilustração editorial",
+        "synagogue"
+      ],
+      "axes": [
+        "Situar Segundo Templo, destruição de Jerusalém e formação rabínica; diferenciar judaísmo bíblico, rabínico e comunidades atuais.",
+        "Tanakh, Torá oral, Mishná e Talmude possuem funções distintas; a discussão sobre profecias messiânicas requer exegese de hebraico e contexto.",
+        "Shema e monoteísmo são centrais; a Trindade cristã deve ser discutida sem atribuir aos judeus uma doutrina cristã não adotada.",
+        "Aliança, teshuvá e responsabilidade pessoal devem ser descritas positivamente antes de discutir queda e pecado original.",
+        "Confrontar expectativas messiânicas, Is 53 e a identidade de Jesus com leituras judaicas documentadas; evitar selecionar versículos isolados como prova automática.",
+        "Shabat, festas, kashrut e oração preservam identidade comunitária; comparar prática da lei com a teologia cristã do cumprimento sem depreciar observância judaica.",
+        "A ética profética, justiça social e mandamentos possuem profundidade própria; nenhuma crítica teológica legitima hostilidade à população judaica.",
+        "Ressurreição, mundo vindouro e posições sobre vida após a morte variam por época e corrente; não apresentar unanimidade inexistente."
+      ]
+    },
+    "hinduism_vedanta": {
+      "lead": "As escolas hinduístas diferem profundamente sobre Brahman, Atman, divindade pessoal e libertação. Advaita, Vishishtadvaita e Dvaita não são sinônimos. O diálogo reformado precisa comparar proposições reais, não projetar uma religião hindu uniforme sobre um conjunto plural.",
+      "visual": [
+        "Templo hindu e torre monumental",
+        "Templo indiano com gopuram e motivos florais, ilustração editorial",
+        "temple"
+      ],
+      "axes": [
+        "Examinar Vedas, Upanishads, tradições de bhakti e escolas de Vedanta sem fixar um único fundador do hinduísmo.",
+        "Śruti, smriti e comentários de mestres possuem pesos diferentes; perguntar qual tradição e autoridade estão em pauta.",
+        "Na comparação entre Brahman e Deus criador, distinguir não dualismo estrito, não dualismo qualificado e dualismo teísta.",
+        "Atman, karma e samsara articulam uma antropologia distinta da narrativa bíblica da criação, queda e vida única.",
+        "Moksha não deve ser traduzido por justificação; a comparação pode envolver conhecimento, devoção, graça e ação em correntes específicas.",
+        "Puja, templos, imagens e mantras variam; o exame reformado da adoração deve partir de uma descrição correta de sua função.",
+        "Dharma e ahimsa não equivalem automaticamente à lei mosaica; discutir dever, estratificação social e práticas reformadoras de modo documentado.",
+        "Reencarnação e libertação do ciclo de renascimentos divergem da ressurreição corporal cristã; explicitar a diferença de horizonte."
+      ]
+    },
+    "buddhism_theravada": {
+      "lead": "No budismo Theravada, as Quatro Nobres Verdades, o caminho óctuplo, a impermanência e o não eu estruturam a investigação sobre sofrimento e cessação. Reduzi-lo a ateísmo ocidental ou a simples moralidade positiva é inadequado.",
+      "visual": [
+        "Mosteiro e estupa budista",
+        "Estupa com árvores e formas circulares no horizonte, ilustração editorial",
+        "stupa"
+      ],
+      "axes": [
+        "Situar cânon páli, comunidades monásticas e história do Theravada no Sul e Sudeste Asiático.",
+        "Os discursos do cânon páli não desempenham exatamente o papel de uma Bíblia inspirada; explicitar os critérios internos de transmissão e autoridade.",
+        "Anatta e origem dependente não significam necessariamente materialismo científico; comparar com um Deus pessoal sem fabricar equivalência.",
+        "Dukkha, desejo e ignorância não são simples sinônimos de pecado e culpa; situar o diagnóstico em seus termos.",
+        "Nibbana e libertação do ciclo de renascimentos não equivalem à reconciliação com Deus mediada por Cristo.",
+        "Meditação, ética e comunidade monástica integram um caminho; não chamar essas práticas de liturgia sacramental cristã.",
+        "Os cinco preceitos e a compaixão podem ser comparados eticamente sem negar convergências práticas reais.",
+        "O contraste entre renascimento e ressurreição requer explicar cuidadosamente continuidade causal sem alma permanente e identidade pessoal cristã."
+      ]
+    },
+    "buddhism_mahayana": {
+      "lead": "O Mahayana apresenta caminhos diversos orientados pelo ideal do bodhisattva, compaixão e sabedoria, com tradições como Terra Pura, Zen e escolas filosóficas de vacuidade. Nenhuma delas esgota a pluralidade mahayanista.",
+      "visual": [
+        "Pagode e jardim zen",
+        "Pagode budista e jardim contemplativo, ilustração editorial",
+        "pagoda"
+      ],
+      "axes": [
+        "Explicar expansão histórica do Mahayana e diferenças entre comunidades chinesas, coreanas, japonesas e tibetanas sem fundi-las.",
+        "Sutras mahayanistas e comentários posteriores possuem histórias textuais complexas; comparar autoridade escritural sem tratar cânones distintos como idênticos.",
+        "Sunyata em Nagarjuna não é simples niilismo; discutir ausência de essência inerente antes de contrapor criação e Criador.",
+        "Compaixão e interdependência configuram o cuidado com seres sencientes; não traduzir bodhicitta automaticamente em amor cristão.",
+        "O ideal do bodhisattva e caminhos de Terra Pura têm concepções diversas de confiança e libertação; não igualar à expiação cristã.",
+        "Recitação, meditação, rituais e veneração de budas variam; investigar os significados internos antes da crítica reformada de culto.",
+        "Votos e compaixão possuem dimensão ética relevante que a leitura apologética deve admitir sem confundir com justificação.",
+        "Terra Pura, budidade e renascimento diferem da esperança de ressurreição; tratar também divergências internas mahayanistas."
+      ]
+    },
+    "sikhism": {
+      "lead": "O sikhismo surgiu no Punjab com ensinamentos dos gurus e uma comunidade formada em torno de devoção ao Deus único, serviço e disciplina. A Escritura Guru Granth Sahib possui função distinta do conceito cristão de cânon.",
+      "visual": [
+        "Gurdwara e lago sagrado",
+        "Edifício de gurdwara com pavilhões e água, ilustração editorial",
+        "temple"
+      ],
+      "axes": [
+        "Situar Guru Nanak, sucessão dos gurus e formação do Khalsa sem confundir sikhismo com um ramo do hinduísmo ou islã.",
+        "Guru Granth Sahib é tratado como guru eterno pela comunidade; a comparação com Escritura e ministério cristãos requer precisão.",
+        "Ik Onkar afirma unidade divina; examinar atributos e revelação com a Trindade sem descrever sikhismo como trinitário.",
+        "Haumai e a vida egocentrada iluminam a antropologia sikh, mas não correspondem automaticamente à culpa adâmica.",
+        "Nadar (graça), naam simran e libertação precisam ser comparados com união com Cristo sem supor salvação por autossuficiência moral.",
+        "Kirtan, gurdwara, langar e serviço têm sentido espiritual e comunitário específico; não são equivalentes aos sacramentos.",
+        "Seva e igualdade espiritual confrontam hierarquias sociais; reconhecer sua força ética antes de formular diferenças teológicas.",
+        "O ciclo de renascimentos e a união com o divino diferem da ressurreição cristã; perguntar como o próprio sikhismo enuncia seu fim."
+      ]
+    },
+    "jainism": {
+      "lead": "O jainismo articula não violência radical, disciplina ascética, karma e libertação. Suas tradições Digambara e Svetambara têm diferenças relevantes, de modo que figuras ascéticas ou símbolos não devem representar uma posição única.",
+      "visual": [
+        "Templo jainista",
+        "Templo jainista de colunas e pináculos, ilustração editorial",
+        "temple"
+      ],
+      "axes": [
+        "Tratar Mahavira como tirthankara e considerar a tradição de mestres anterior, evitando identificá-lo simplesmente como fundador de religião moderna.",
+        "Agamas e comentários variam entre correntes; examinar autoridade religiosa sem projetar a noção protestante de sola scriptura.",
+        "A cosmologia jainista não requer um criador pessoal; o debate com criação bíblica recai sobre causalidade e fundamento do universo.",
+        "Jiva, ajiva e karma materializado definem uma antropologia distinta da noção reformada de pecado.",
+        "Moksha por libertação das amarras do karma não é o mesmo que justificação pela fé em Cristo.",
+        "Ascese, peregrinações e respeito à vida manifestam prática devocional própria; discutir austeridade sem zombar de suas motivações.",
+        "Ahimsa e anekantavada merecem exame filosófico e ético, reconhecendo sua seriedade e limites práticos debatidos.",
+        "Alma liberada e fim de renascimentos diferem da ressurreição corporal cristã; evitar alegar que jainistas negam toda transcendência."
+      ]
+    },
+    "shinto": {
+      "lead": "O xintoísmo abrange ritos e vínculos com kami, santuários, festivais e tradição japonesa. A categoria 'religião' aqui não esgota relações históricas com budismo, práticas familiares e identidade regional.",
+      "visual": [
+        "Torii e santuário japonês",
+        "Portão torii diante de um santuário japonês, ilustração editorial",
+        "torii"
+      ],
+      "axes": [
+        "Examinar santuários, práticas locais e transformações modernas do xintoísmo sem confundir ritos tradicionais com políticas estatais de certa época.",
+        "Kojiki, Nihon Shoki e liturgias têm usos diferentes; comparação com Escritura cristã não deve inventar um cânon único equivalente.",
+        "Kami não traduz simplesmente 'deuses' no sentido de um panteão ocidental; discutir presença e sacralidade em seu próprio idioma.",
+        "Pureza ritual e impureza não são a mesma coisa que culpa moral do pecado original.",
+        "A prática xintoísta frequentemente não se organiza em torno de justificação ou salvação nos moldes cristãos.",
+        "Matsuri, oferendas e visitas a santuários têm camadas sociais e religiosas; distinguir antes de avaliar o culto sob lentes reformadas.",
+        "Relações comunitárias, cuidado com lugares e memória ancestral exigem análise histórica sem estereotipar japoneses.",
+        "Perspectivas sobre morte e ancestrais variam e frequentemente dialogam com budismo; não impor uma escatologia xintoísta uniforme."
+      ]
+    },
+    "daoism": {
+      "lead": "O daoismo reúne filosofia, escolas religiosas, prática ritual e cosmologias diferentes. Daodejing, Zhuangzi e tradições de mestres celestiais não pertencem ao mesmo gênero textual nem defendem proposições idênticas.",
+      "visual": [
+        "Montanhas e pavilhão daoista",
+        "Pavilhão em montanhas com caminho sinuoso, ilustração editorial",
+        "mountain"
+      ],
+      "axes": [
+        "Situar a formação de tradições daoistas e seus diálogos com organização imperial, budismo e pensamento clássico chinês.",
+        "Daodejing e Zhuangzi usam imagens e paradoxos; lê-los como catecismos dogmáticos seria distorção interpretativa.",
+        "Dao não é automaticamente um equivalente impessoal do Deus de Gênesis; comparar transcendência, linguagem e agência.",
+        "Naturalidade, wu wei e cultivo não descrevem queda adâmica; examinar sua antropologia como proposta própria.",
+        "Imortalidade, harmonização e práticas de cultivo não constituem uma soteriologia cristã disfarçada.",
+        "Altares, ritos, meditações e comunidades variam por escola; não reduzir o daoismo à contemplação sem culto.",
+        "A ética de moderação e não coerção pode iluminar o diálogo, mas exige distinguir acepções históricas de wu wei.",
+        "Longevidade, transcendência e morte têm interpretações múltiplas; compará-las com ressurreição exige identificar a escola."
+      ]
+    },
+    "confucianism": {
+      "lead": "O confucionismo é tradição de formação ética, ritual, ordem familiar e reflexão política, cuja dimensão religiosa é debatida por seus próprios intérpretes. Compará-lo ao cristianismo só em termos de crença em Deus perde seu centro moral e social.",
+      "visual": [
+        "Academia confucionista",
+        "Pátio de academia tradicional chinesa com telhado curvo, ilustração editorial",
+        "pagoda"
+      ],
+      "axes": [
+        "Confúcio, Mêncio e Xunzi sustentam divergências importantes sobre educação moral e natureza humana.",
+        "Analectos, Cinco Clássicos e Quatro Livros possuem história de canonização; sua autoridade não equivale diretamente à inspiração bíblica.",
+        "Tian e ritos aos ancestrais possuem sentidos variados; não identificar Tian sem mediação com a Trindade.",
+        "Mêncio e Xunzi divergem sobre disposições humanas; evitar atribuir a todos uma doutrina de bondade natural.",
+        "Autocultivo e formação do sábio não são justificação diante de Deus; comparar objetivos antes de avaliar meios.",
+        "Li, culto familiar e rituais públicos unem ética e ordem comunitária; discutir sua função antes de rotular culto idolátrico.",
+        "Ren, yi e dever filial permitem diálogo substantivo sobre virtude e respeito sem apagar tensões com universalismo cristão.",
+        "O foco predominante em ordem social não implica ausência de reflexão sobre morte e ancestrais; a diversidade histórica importa."
+      ]
+    },
+    "zoroastrianism": {
+      "lead": "O zoroastrismo possui longa história iraniana, textos avésticos e concepções de verdade, escolha moral e renovação final. O diálogo com a tradição bíblica precisa evitar tanto atribuir-lhe todas as origens da escatologia cristã quanto negar suas doutrinas próprias.",
+      "visual": [
+        "Templo do fogo",
+        "Fogo cerimonial diante de arcos persas, ilustração editorial",
+        "fire"
+      ],
+      "axes": [
+        "Zaratustra, períodos aquemênida e sassânida e comunidades parsis não pertencem todos ao mesmo horizonte histórico.",
+        "Gathas e literatura avéstica apresentam estratos e tradições; o debate sobre revelação precisa considerar transmissão textual.",
+        "Ahura Mazda e Angra Mainyu levantam questões sobre mal e dualismo cuja formulação varia entre interpretações.",
+        "Escolha moral e influência do mal configuram antropologia distinta da doutrina reformada de pecado original.",
+        "Renovação e participação na verdade não equivalem automaticamente à justificação pela obra mediadora de Cristo.",
+        "Templos de fogo preservam um símbolo de pureza e não significam adoração literal do fogo; a crítica deve evitar essa falsidade.",
+        "Bons pensamentos, boas palavras e boas ações oferecem ponto concreto de comparação ética, sem desprezar sua lógica própria.",
+        "Frashokereti, juízo e restauração lembram temas bíblicos mas não comprovam identidade de origem ou significado."
+      ]
+    },
+    "bahai": {
+      "lead": "A fé bahá'í articula revelação progressiva, unidade da humanidade e escritos de Bahá'u'lláh. Não deve ser reduzida a sincretismo casual: possui história, instituições e interpretação específica da missão dos profetas.",
+      "visual": [
+        "Casa de adoração bahá'í",
+        "Templo bahá'í de nove entradas, ilustração editorial",
+        "lotus"
+      ],
+      "axes": [
+        "Situar o Báb, Bahá'u'lláh e o desenvolvimento da comunidade bahá'í no contexto persa moderno.",
+        "Revelação progressiva e escritos bahá'ís afirmam continuidade entre mensageiros; discutir se diferenças doutrinárias podem ser reconciliadas.",
+        "Unidade divina não significa identidade com a Trindade nicena; comparar concepções de manifestação e encarnação.",
+        "A dignidade humana universal e aperfeiçoamento moral têm lugar importante, mas a antropologia difere da queda reformada.",
+        "A interpretação bahá'í de Jesus e de seu retorno coloca a identidade singular de Cristo no centro da controvérsia.",
+        "Ritos diários, jejum, peregrinação e casas de adoração diferem dos sacramentos e culto presbiterianos.",
+        "Unidade da humanidade, igualdade e paz são compromissos éticos reais; discutem-se fundamentos e aplicação sem caricaturas.",
+        "Leituras simbólicas de ressurreição e cumprimento profético devem ser comparadas com a afirmação apostólica de ressurreição corporal."
+      ]
+    },
+    "baptist": {
+      "lead": "Batistas confessionais e presbiterianos divergem sobretudo em batismo e constituição visível da igreja, mas podem compartilhar soteriologia reformada. Uma comparação séria precisa distinguir batistas reformados, gerais e outras famílias.",
+      "visual": [
+        "Capela batista e batistério",
+        "Igreja batista com batistério e Bíblia, ilustração editorial",
+        "chapel"
+      ],
+      "axes": [
+        "Reconstituir origens dos batistas ingleses e desenvolvimento das igrejas independentes sem equiparar todos ao anabatismo continental.",
+        "Confissão Batista de 1689 e Westminster compartilham muitos capítulos; a diferença emerge sobretudo no pacto e nos sacramentos.",
+        "A doutrina trinitária é compartilhada por batistas confessionais; não criar falsas divergências sobre a natureza divina.",
+        "A queda e o novo nascimento possuem importantes convergências; identificar vertentes arminianas ou calvinistas.",
+        "Justificação e graça soberana podem ser quase idênticas; questão central permanece quem pertence à comunidade visível do pacto.",
+        "Batismo de professantes por imersão, batismo infantil e ceia exigem exegese de At 2, Cl 2 e promessa da aliança, não rótulos simplistas.",
+        "Governo congregacional e autonomia da igreja local contrastam com presbitérios e concílios; examinar responsabilidades e riscos de cada modelo.",
+        "Credos e ressurreição cristã são compartilhados; o debate deve registrar essa concordância sem ampliar divergências inexistentes."
+      ]
+    },
+    "seventh_day_adventist": {
+      "lead": "O adventismo do sétimo dia conecta expectativa da volta de Cristo, observância sabática, santuário celestial e saúde. É preciso distinguir declarações oficiais, escritos de Ellen G. White e práticas de membros, além de correntes internas.",
+      "visual": [
+        "Igreja adventista",
+        "Templo adventista com relógio e Bíblia, ilustração editorial",
+        "chapel"
+      ],
+      "axes": [
+        "Rever o movimento milerita, 1844 e a formação denominacional, diferenciando expectativa histórica e formulação posterior do juízo investigativo.",
+        "Relacionar Escritura e o papel dos escritos de Ellen White, perguntando como estes são testados e empregados na prática.",
+        "Adventistas são oficialmente trinitários; críticas que os tratam genericamente como antitrinitários são imprecisas.",
+        "Natureza humana, sono da morte e pecado articulam antropologia específica; não presumir aceitação do dualismo antropológico clássico.",
+        "Debater graça, segurança da salvação e juízo investigativo, distinguindo justificação de prestação de contas escatológica.",
+        "O sábado do sétimo dia e a lei moral devem ser comparados com domingo cristão e CFW 21, sem desprezar a leitura adventista do Decálogo.",
+        "Ética da saúde, alimentação e cuidado corporal tem razões teológicas próprias; não reduzi-la a mera proibição alimentar.",
+        "Juízo pré-advento, segunda vinda e aniquilacionismo diferem da escatologia presbiteriana tradicional."
+      ]
+    },
+    "methodist": {
+      "lead": "O metodismo surgiu de um movimento de renovação dentro do anglicanismo, com forte ênfase em santificação, pequenos grupos e graça preveniente. Suas diferenças com Westminster são importantes, mas não apagam uma cristologia e piedade protestantes compartilhadas.",
+      "visual": [
+        "Capela metodista",
+        "Capela histórica metodista com janelas alongadas, ilustração editorial",
+        "chapel"
+      ],
+      "axes": [
+        "John Wesley, sociedades metodistas e tradições de santidade possuem desenvolvimentos distintos em diferentes países.",
+        "Artigos de Religião, sermões wesleyanos e Escritura não devem ser confundidos com autoridade infalível do fundador.",
+        "A Trindade e divindade de Cristo são doutrinas comuns; principais controvérsias se concentram em graça e liberdade humana.",
+        "Pecado original e necessidade da graça são afirmados; discutir a função da graça preveniente sem chamar metodistas de pelagianos.",
+        "Eleição condicionada, resistibilidade da graça e perfeição cristã demandam leitura cuidadosa de Rm 8 e Hb 6.",
+        "Batismo, ceia frequente, oração e disciplina de classes ligam método pastoral e sacramentos; comparar com meios de graça reformados.",
+        "Movimentos metodistas se dedicaram a educação e reforma social; sua ética não deve ser caricaturada como mero ativismo.",
+        "A esperança da santificação plena e da volta de Cristo pertence ao quadro cristão compartilhado, com diferenças sobre segurança eterna."
+      ]
+    },
+    "pentecostal": {
+      "lead": "O pentecostalismo clássico enfatiza a ação atual do Espírito, testemunho, cura e dons, mas possui tradições trinitárias e não trinitárias diferentes. O debate presbiteriano deve distinguir pentecostalismo histórico, neopentecostalismo e práticas locais.",
+      "visual": [
+        "Templo pentecostal",
+        "Interior de igreja pentecostal com janelas luminosas, ilustração editorial",
+        "chapel"
+      ],
+      "axes": [
+        "Rua Azusa e outras raízes de avivamento compõem origem plural; não atribuir ao pentecostalismo clássico práticas de toda igreja neopentecostal.",
+        "Profecia e discernimento precisam ser comparados com a autoridade escritural; relatos de experiência não substituem exegese do cânon.",
+        "Pentecostais trinitários compartilham o Credo Niceno em essência; o movimento unicista requer tratamento distinto.",
+        "Novo nascimento e santificação têm relações variadas conforme raiz wesleyana ou obra consumada; esclarecer antes de discutir depravação.",
+        "Fé, perseverança e experiência com o Espírito são articuladas de modos diferentes; não associar salvação à riqueza material sem prova.",
+        "Glossolalia, batismo no Espírito, cura e dons espirituais pedem exegese de Atos e 1Cor 12–14; separar continuação dos dons de alegações de revelação normativa.",
+        "Santidade, comunidade e protagonismo popular coexistem com desafios de accountability; examinar práticas concretas e não estereótipos.",
+        "A expectativa da volta de Cristo pode estar ligada a pré-milenismo em certas denominações; não imputar uma única cronologia a todas."
+      ]
+    },
+    "jehovahs_witnesses": {
+      "lead": "As Testemunhas de Jeová possuem corpo dirigente, tradução bíblica própria e doutrina não nicena de Jesus e do Espírito. O diálogo exige examinar textos e traduções com precisão, sem substituir investigação por hostilidade aos praticantes.",
+      "visual": [
+        "Salão de reunião bíblica",
+        "Salão de reunião simples com Bíblia e púlpito, ilustração editorial",
+        "hall"
+      ],
+      "axes": [
+        "História dos Estudantes da Bíblia e organização Watch Tower deve ser diferenciada das doutrinas e cronologias atuais.",
+        "Examinar Tradução do Novo Mundo, Jo 1:1 e Cl 1:16 no grego, distinguindo escolha tradutória de consenso filológico.",
+        "A rejeição da Trindade e a compreensão de Cristo como ser criado colocam Jo 1 e Hb 1 no centro da controvérsia nicena.",
+        "Conceitos de alma e morte diferem da antropologia reformada; não imputar automaticamente crença em alma imortal.",
+        "Obra redentora de Cristo, fidelidade organizacional e esperança possuem articulação própria; testar o lugar da graça e da mediação.",
+        "Ceia anual, número de participantes e práticas de evangelização devem ser descritos a partir das fontes oficiais antes da comparação com sacramentos.",
+        "Neutralidade política, sangue e disciplina comunitária exigem distinção entre doutrina, decisão pessoal e questões médicas.",
+        "144 mil, grande multidão, paraíso terrestre e destruição final divergem da escatologia tradicional; comparar Ap 7 e 14 em contexto."
+      ]
+    },
+    "latter_day_saints": {
+      "lead": "A Igreja de Jesus Cristo dos Santos dos Últimos Dias sustenta escritura adicional, sacerdócio restaurado e uma compreensão de Deus distinta do teísmo niceno. A comparação presbiteriana precisa distinguir sua autodescrição cristã de identidade doutrinária com os credos históricos.",
+      "visual": [
+        "Templo dos Santos dos Últimos Dias",
+        "Templo de pedra com torre e jardins, ilustração editorial",
+        "temple"
+      ],
+      "axes": [
+        "Joseph Smith, movimento de restauração e sucessão posterior devem ser estudados sem reduzir a história a uma única polêmica.",
+        "Livro de Mórmon, Doutrina e Convênios e Pérola de Grande Valor colocam a questão de novas escrituras e revelação posterior.",
+        "A compreensão da Divindade como pessoas distintas e a possibilidade de exaltação diferem da unidade de essência nicena.",
+        "Preexistência espiritual e plano de salvação constituem antropologia não presente na CFW.",
+        "Expiação de Cristo, ordenanças e exaltação precisam ser comparadas como um conjunto, não rotuladas simplesmente como 'salvação por obras'.",
+        "Batismo vicário pelos mortos, investidura do templo e selamento possuem significados específicos e limites de acesso a respeitar.",
+        "A ética familiar e missionária deve ser discutida com justiça; distinções teológicas não autorizam rumores sobre práticas reservadas.",
+        "Graus de glória e exaltação diferem da esperança reformada de ressurreição e comunhão definitiva com Deus."
+      ]
+    },
+    "shia_islam": {
+      "lead": "No xiismo duodecimano, a autoridade dos imames e a memória de Karbala estruturam temas próprios que não podem ser diluídos numa definição genérica de islã. A apologética deve separar diferenças xiitas e sunitas sem instrumentalizá-las.",
+      "visual": [
+        "Santuário xiita",
+        "Santuário de cúpula e arcos em contexto islâmico xiita, ilustração editorial",
+        "mosque"
+      ],
+      "axes": [
+        "Ali, Husayn, Karbala e a sucessão profética definem questões de legitimidade e memória comunitária.",
+        "Corão é escritura central compartilhada; hadith e autoridade interpretativa dos imames variam entre escolas islâmicas.",
+        "Imamato não é a mesma coisa que encarnação; a rejeição da Trindade permanece no diálogo sobre unicidade divina.",
+        "Justiça divina e responsabilidade humana recebem tratamento em escolas xiitas; evitar confundir divergências teológicas com identidade política.",
+        "Intercessão e orientação dos imames devem ser comparadas com mediação singular de Cristo sem igualar funções automaticamente.",
+        "Ritos de Muharram e visitação a santuários são práticas de memória e devoção de diferentes formas, não prova de 'adoração de homens'.",
+        "Justiça, martírio e resistência possuem lugar ético; discernir fé religiosa, poder estatal e correntes interpretativas.",
+        "O retorno do Mahdi e o juízo final possuem estrutura escatológica própria; comparar com parusia cristã sem identificá-los."
+      ]
+    },
+    "spiritism": {
+      "lead": "O espiritismo kardecista articula comunicação com espíritos, reencarnação e progresso moral sob uma leitura própria do cristianismo. A comparação presbiteriana deve examinar as obras de Kardec e a variedade brasileira sem tratar assistência social e doutrina espiritual como sinônimos.",
+      "visual": [
+        "Biblioteca espírita",
+        "Mesa com livros de estudo espírita e luminária, ilustração editorial",
+        "library"
+      ],
+      "axes": [
+        "Allan Kardec e o contexto espiritualista do século XIX são distintos de tradições afro-brasileiras, que não devem ser confundidas com kardecismo.",
+        "O Livro dos Espíritos e o Evangelho Segundo o Espiritismo interpretam textos bíblicos por outro princípio de autoridade, com comunicações mediúnicas.",
+        "A concepção de Deus e espíritos não corresponde à Trindade e antropologia cristãs históricas; examinar definições antes de confrontar.",
+        "Preexistência e reencarnação mudam o diagnóstico da vida humana, pecado e aprendizado moral.",
+        "Expiação entendida como aperfeiçoamento moral e reparação contrasta com justificação pela obra de Cristo; ler os próprios textos espíritas.",
+        "Reuniões mediúnicas e passes possuem sentidos internos; Dt 18 e 1Jo 4 suscitam crítica reformada à mediação espiritual.",
+        "Caridade e educação moral possuem contribuição social real; a diferença teológica não deve desmerecer serviços prestados.",
+        "Reencarnação e pluralidade de existências divergem de Hb 9:27 e ressurreição corporal, ponto central do debate."
+      ]
+    },
+    "secular_humanism": {
+      "lead": "O humanismo secular reúne projetos de ética pública, autonomia de investigação e dignidade humana sem referência necessária a revelação sobrenatural. Ele não é uma igreja, nem todos os humanistas adotam a mesma metafísica.",
+      "visual": [
+        "Biblioteca e debate humanista",
+        "Biblioteca e esfera de debate público, composição editorial",
+        "library"
+      ],
+      "axes": [
+        "Rastrear manifestações humanistas modernas sem confundir Renascimento cristão e humanismo secular contemporâneo.",
+        "Argumento público, ciência e razão ocupam papel epistemológico relevante; o debate é se essas fontes esgotam o conhecimento do real.",
+        "Naturalismo metodológico da ciência não equivale logicamente a naturalismo metafísico; a apologética deve evitar salto indevido.",
+        "Autonomia e dignidade podem ser fundamentadas de modos não teístas; a crítica reformada deve discutir justificações reais, não negar a existência de ética secular.",
+        "Salvação sobrenatural pode não ser categoria aplicável; confrontar esperança, finitude e reconciliação em vocabulários próprios.",
+        "Ritos seculares, comemorações e comunidades de sentido não devem ser classificados como culto a falsos deuses por mera analogia.",
+        "Direitos humanos, pluralismo e responsabilidade são terrenos de diálogo; pedir fundamento filosófico sem negar ações morais concretas.",
+        "Sentido diante da morte e projetos de legado diferem da ressurreição cristã, sem representar necessariamente desespero niilista."
+      ]
+    },
+    "atheism": {
+      "lead": "Ateísmo nega a existência de deuses, enquanto agnosticismo diz respeito aos limites ou grau de conhecimento; pessoas podem combinar posições. A defesa presbiteriana só será séria se formular argumentos com filósofos reais, evidências e objeções fortes.",
+      "visual": [
+        "Observatório e biblioteca filosófica",
+        "Observatório astronômico com livros e céu noturno, ilustração editorial",
+        "observatory"
+      ],
+      "axes": [
+        "História do ceticismo, naturalismo e descrença varia; não assumir que todo ateu adota o mesmo sistema político ou ético.",
+        "Comparar critérios de evidência, indução e testemunho histórico; recusar o falso dilema entre razão e fé cega.",
+        "Argumentos cosmológicos, teleológicos e problemas de contingência exigem premissas explícitas; não apresentar lacunas científicas como prova de Deus.",
+        "Problema do mal e sofrimento de inocentes desafiam diretamente a providência cristã; respostas fáceis ferem rigor intelectual e pastoral.",
+        "A crítica à ressurreição de Jesus envolve história, testemunhos e probabilidades; não a substituir por apelo a sentimento privado.",
+        "Prática comunitária e significado existencial não provam sozinhos uma doutrina; examinar se a religião produz apenas consolo ou reivindica fatos.",
+        "Fundamentação secular da moralidade possui teorias sofisticadas; uma objeção reformada deve enfrentar realismo moral, contratualismo e virtudes em seus termos.",
+        "Finitude, consciência e sentido cósmico suscitam questões reais; a esperança da ressurreição precisa apresentar razões públicas e testemunho histórico."
+      ]
+    },
+    "umbanda": {
+      "lead": "A Umbanda envolve diversidade de terreiros, linhas, cosmologias e práticas no Brasil. Não existe um catecismo único. O respeito às pessoas, o reconhecimento do racismo religioso e a distinção entre tradições são condições mínimas para qualquer análise confessional.",
+      "visual": [
+        "Terreiro de Umbanda e espaço comunitário",
+        "Espaço comunitário brasileiro com elementos de encontro, desenho editorial não litúrgico",
+        "community"
+      ],
+      "axes": [
+        "Situar formações históricas brasileiras e diferenças entre Umbanda branca, sagrada, popular e outras denominações sem eleger uma como universal.",
+        "Transmissão oral, lideranças e escritos têm pesos diferentes; perguntar à comunidade por suas fontes próprias.",
+        "Orixás, entidades e criador supremo não podem ser reduzidos à palavra 'ídolo' sem identificar a cosmologia específica do terreiro.",
+        "A pessoa, ancestralidade e mediunidade articulam relações espirituais distintas do ensino reformado sobre morte e espírito.",
+        "Cura, caridade e evolução espiritual não correspondem automaticamente à justificação pela fé; examinar o fim religioso proposto.",
+        "Pontos cantados, giras e incorporações requerem descrição consentida; a crítica reformada à mediação espiritual não autoriza registrar rituais reservados.",
+        "Serviço comunitário e combate ao preconceito merecem reconhecimento ético mesmo diante de discordância teológica.",
+        "Visões de ancestralidade e vida após a morte variam entre casas; evitar misturá-las com reencarnação kardecista como se fossem idênticas."
+      ]
+    },
+    "candomble": {
+      "lead": "O candomblé compreende nações e casas com histórias e liturgias próprias, inclusive matrizes iorubás, jejes e bantas. Uma leitura presbiteriana que ignora a violência religiosa histórica perde credibilidade antes de qualquer discussão doutrinária.",
+      "visual": [
+        "Terreiro e comunidade de candomblé",
+        "Pátio arborizado e arquitetura de convivência comunitária, ilustração não litúrgica",
+        "community"
+      ],
+      "axes": [
+        "Traçar formações da diáspora africana no Brasil e distinguir nações e linhagens sem inventar uniformidade.",
+        "Autoridade ritual, oralidade e tradição da casa não equivalem a uma escritura canônica universal.",
+        "Orixás e nkisis pertencem a sistemas distintos; discutir Deus e seres espirituais sem transpor definições cristãs inadequadas.",
+        "Relações de axé, destino e comunidade não devem ser interpretadas automaticamente por categorias de pecado original.",
+        "Obrigação ritual e pertencimento não constituem doutrina cristã de mérito e justificação; cada tradição formula objetivos próprios.",
+        "Ritos de iniciação e práticas reservadas não devem ser expostos sem consentimento; a crítica ao culto exige descrição responsável.",
+        "Hierarquia, cuidado comunitário e preservação cultural devem ser avaliados sem negar direitos de liberdade religiosa.",
+        "Ancestralidade e continuidade espiritual variam por nação e casa; a comparação com ressurreição exige recusa de generalizações."
+      ]
+    },
+    "indigenous_traditions": {
+      "lead": "Tradições espirituais indígenas não compõem uma religião única. Cada povo possui idioma, território, cosmologia, práticas de transmissão e história de contato particulares. O ponto de partida ético é não transformar a pluralidade de povos em objeto folclórico.",
+      "visual": [
+        "Território e memória indígena",
+        "Paisagem de floresta, rio e comunidade sem representação de rito específico",
+        "forest"
+      ],
+      "axes": [
+        "Identificar povo, região e história antes de enunciar qualquer tese; colonização e conversões alteraram contextos sem apagar agência indígena.",
+        "Memória oral, narrativas e aprendizagem ritual não são automaticamente 'ausência de escritura'; respeitar critérios locais de transmissão.",
+        "Criador, seres da floresta e relações cosmológicas não admitem um quadro teológico indígena universal.",
+        "Pessoa, parentesco, território e relações com não humanos possuem arranjos próprios que exigem escuta e documentação.",
+        "Concepções de cura, equilíbrio e bem viver não se traduzem em salvação cristã por simples troca de palavras.",
+        "Conhecimentos restritos e cerimônias não podem ser fotografados, descritos ou publicados sem autorização cultural explícita.",
+        "Justiça territorial, proteção ambiental e direitos coletivos devem ser reconhecidos independentemente da concordância doutrinária.",
+        "Memória ancestral e morte são entendidas diversamente entre povos; nunca fabricar um ensinamento espiritual 'indígena' único."
+      ]
+    }
+  }
+}
