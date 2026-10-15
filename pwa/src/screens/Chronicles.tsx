@@ -43,6 +43,22 @@ export default function Chronicles({ onBack }: { onBack: () => void }) {
     }, 400);
     return () => clearTimeout(timer);
   }, [game, loaded]);
+  // Ao caminhar continuamente, o debounce de 400 ms nunca dispara.
+  // Um checkpoint periódico mantém o progresso protegido mesmo durante
+  // longas travessias, sem gravar 60 vezes por segundo no IndexedDB.
+  useEffect(() => {
+    if (!loaded) return;
+    const timer = setInterval(() => {
+      const current = latest.current;
+      if (!current) return;
+      void saveGame(current).then(() => setSaved('Progresso salvo neste aparelho')).catch(() => {
+        setSaved('Não foi possível salvar');
+        setError('O armazenamento está indisponível. Continue nesta sessão ou exporte o save antes de sair.');
+      });
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [loaded]);
+
   useEffect(() => {
     const stop = () => setTouch(emptyInput);
     const visibility = () => { setHidden(document.hidden); stop(); if (document.hidden && latest.current) void saveGame(latest.current).catch(() => {}); };
