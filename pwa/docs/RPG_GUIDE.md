@@ -1,6 +1,21 @@
 # Crônicas da Aliança — como jogar
 
-Abra **Ferramentas e Games → Crônicas da Aliança**.
+Abra **Ferramentas e Games → Crônicas da Aliança**. O jogo agora inicia numa
+**tela de título em pixel art**, não numa lista de cartões de site.
+
+- **Continuar aventura**: retoma um capítulo salvo quando existir.
+- **Nova jornada / Escolher aventura**: abre o **Atlas da Aliança**,
+  um mapa interativo das seis sagas. Toque numa região, escolha um
+  dos seis marcos de capítulo, e selecione **Entrar na aventura**.
+- **O Vale e a Coragem**: abre o episódio piloto expandido, com save próprio.
+- **Códice da jornada**: mostra o total de capítulos concluídos,
+  permite exportar progresso e abrir o atlas.
+- **Opções**: tela cheia e música ambiente opcional.
+
+Ao explorar, os botões aparecem sobre o cenário. **Esc** abre o menu
+de pausa; **J** abre as missões; **C** abre o códice. No menu de pausa,
+é possível retornar ao atlas. No celular, use os botões sobrepostos
+à cena.
 
 Há duas experiências com progresso independente:
 
