@@ -876,6 +876,8 @@
   isolation: isolate;
   overflow: hidden;
 }
+/* When a narrative is active, its dialogue must sit above the touch HUD. */
+.ca-playing .ca-canvas.ca-has-dialog { z-index: 7; }
 .ca-playing .ca-canvas canvas {
   height: 100%;
   width: 100%;
