@@ -1,7 +1,8 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import { ArrowLeft, BookOpen, Check, ChevronRight, Compass, Gamepad2, Map, Play, Settings, Volume2, VolumeX } from 'lucide-react';
 import { CAMPAIGN_EPISODES, CAMPAIGN_SAGAS, type ChronicleEpisode } from './campaign-content';
 import type { CampaignProgress } from './campaign-engine';
+import { CampaignAudio } from './campaign-audio';
 import './game-front.css';
 
 type Screen = 'title' | 'world' | 'chapters' | 'settings' | 'chronicle';
@@ -28,6 +29,7 @@ function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?:
     if (!ctx) return;
     const W = 480, H = 270;
     let frame = 0, alive = true, last = -100, hidden = document.hidden;
+    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
     const random = (n: number) => {
       let a = Math.imul(n + seed * 3217 + 713, 1597334677);
       a ^= a >>> 13;
@@ -141,7 +143,7 @@ function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?:
     };
     const tick = (time: number) => {
       if (!alive) return;
-      if (!hidden && time - last > 55) { paint(time);last = time; }
+      if (!hidden && time - last > (reduceMotion ? 1000 : 55)) { paint(reduceMotion ? 0 : time);last = time; }
       frame = requestAnimationFrame(tick);
     };
     const visibility = () => {hidden = document.hidden;last = -100;};
@@ -157,6 +159,20 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const [chapter,setChapter] = useState(0);
   const [sound,setSound] = useState(false);
   const [full,setFull] = useState(false);
+  const audio = useRef<CampaignAudio | null>(null);
+  useEffect(()=>()=>{audio.current?.close();audio.current=null;},[]);
+  useEffect(()=>{audio.current?.setActive(sound && !document.hidden,saga);},[sound,saga]);
+  useEffect(()=>{
+    const visibility=()=>audio.current?.setActive(sound && !document.hidden,saga);
+    document.addEventListener('visibilitychange',visibility);
+    return ()=>document.removeEventListener('visibilitychange',visibility);
+  },[sound,saga]);
+  const toggleSound = async()=>{
+    if(sound){audio.current?.close();audio.current=null;setSound(false);return;}
+    const player=new CampaignAudio();
+    if(await player.enable()){audio.current=player;setSound(true);player.setActive(true,saga);}
+    else player.close();
+  };
   const stage=useRef<HTMLDivElement>(null);
   const chapters=useMemo(()=>CAMPAIGN_EPISODES.filter(e=>e.saga===saga),[saga]);
   const current = chapters[chapter] ?? chapters[0];
@@ -224,7 +240,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
         {CAMPAIGN_SAGAS.map((e,i)=>{
           const done=progress.completed.filter(id=>CAMPAIGN_EPISODES.some(c=>c.id===id&&c.saga===i)).length;
           return <button type="button" key={e.id} className="gf-region-pin ca-saga"
-            style={{'--pin-x':REGION_POSITIONS[i][0]+'%','--pin-y':REGION_POSITIONS[i][1]+'%','--region-color':e.color} as React.CSSProperties}
+            style={{'--pin-x':REGION_POSITIONS[i][0]+'%','--pin-y':REGION_POSITIONS[i][1]+'%','--region-color':e.color} as CSSProperties}
             aria-label={'Escolher saga '+e.title} onClick={()=>selectSaga(i)}>
             <span className="gf-map-marker">{i+1}</span>
             <span className="gf-map-legend"><strong>{e.title}</strong><small>{done}/6 testemunhos</small></span>
@@ -245,7 +261,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
         {chapters.map((e,i)=><button key={e.id} type="button"
           className={'gf-chapter-pin ca-chapter'+(i===chapter?' gf-selected':'')}
           aria-label={(progress.episodes[e.id]?'Continuar ':'Explorar ')+e.title}
-          style={{'--pin-x':CHAPTER_POSITIONS[i][0]+'%','--pin-y':CHAPTER_POSITIONS[i][1]+'%'} as React.CSSProperties}
+          style={{'--pin-x':CHAPTER_POSITIONS[i][0]+'%','--pin-y':CHAPTER_POSITIONS[i][1]+'%'} as CSSProperties}
           onClick={()=>setChapter(i)}>
           <span>{progress.completed.includes(e.id)?<Check size={18}/>:i+1}</span>
           <small>{e.title}</small>
@@ -282,8 +298,8 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       <h2>Opções do jogo</h2>
       <p>Os capítulos continuam salvos automaticamente neste dispositivo.</p>
       <button className="gf-menu-action" onClick={()=>void toggleFullscreen()}><Gamepad2 size={18}/>{full?'Sair da tela cheia':'Tela cheia'}<ChevronRight size={18}/></button>
-      <button className="gf-menu-action" onClick={()=>setSound(!sound)} aria-pressed={sound}>{sound?<Volume2 size={18}/>:<VolumeX size={18}/>} {sound?'Sons: indicador ligado':'Sons: desligados'}<ChevronRight size={18}/></button>
-      <small className="gf-settings-note">O som da aventura é ativado separadamente ao entrar no cenário.</small>
+      <button className="gf-menu-action" onClick={()=>void toggleSound()} aria-pressed={sound}>{sound?<Volume2 size={18}/>:<VolumeX size={18}/>} {sound?'Música ambiente: ligada':'Música ambiente: desligada'}<ChevronRight size={18}/></button>
+      <small className="gf-settings-note">Música original sintetizada, sem arquivos externos. A trilha do capítulo é controlada durante a aventura.</small>
     </div>}
   </div>;
 }
