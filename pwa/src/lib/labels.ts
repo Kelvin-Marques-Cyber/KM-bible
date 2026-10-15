@@ -4,7 +4,7 @@ export const labels: Record<string, [string, string, string]> = {
   explore: ["Explorar", "Explore", "Explorar"],
   library: ["Biblioteca", "Library", "Biblioteca"],
   studies: ["Estudos", "Studies", "Estudios"],
-  memory: ["Memorização", "Memory", "Memorización"],
+  memory: ["Ferramentas e Games", "Tools and Games", "Herramientas y juegos"],
   settings: ["Configurações", "Settings", "Configuración"],
   search: ["Pesquisar", "Search", "Buscar"],
   close: ["Fechar", "Close", "Cerrar"],
