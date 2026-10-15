@@ -595,12 +595,18 @@ def build() -> dict:
     misc.put("models.json", models)
     misc_info = misc.write()
 
-    # Panoramas impessoais (+ suplemento) e dossiês reformados, um arquivo por tradição.
+    # Panoramas impessoais, argumentos confessionais específicos e arte
+    # contextual original por tradição. A arte local integra o mesmo pacote
+    # versionado para continuar acessível quando a PWA está offline.
     apologetics = None
     base_dir = ASSETS / "apologetica"
     if base_dir.is_dir():
+        from apologetics_visuals import illustration
+        editorial_path = CONTENT / "apologetica-editorial.json"
+        editorial = json.loads(editorial_path.read_text(encoding="utf-8"))["profiles"]
         pack = Pack("apologetica")
         targets = []
+        visuals = {}
         for base in sorted(base_dir.glob("*.md")):
             target = base.stem
             impersonal = [base.read_text(encoding="utf-8").strip()]
@@ -608,11 +614,42 @@ def build() -> dict:
             if extra.is_file():
                 impersonal.append(extra.read_text(encoding="utf-8").strip())
             reformed_file = ASSETS / "apologetica_reformada" / f"{target}.md"
-            reformed = reformed_file.read_text(encoding="utf-8").strip() if reformed_file.is_file() else ""
+            if not reformed_file.is_file():
+                raise SystemExit(f"Dossiê reformado não gerado: {target}")
+            reformed = reformed_file.read_text(encoding="utf-8").strip()
+            if len(reformed) < 7000:
+                raise SystemExit(f"Dossiê reformado insuficiente: {target}: {len(reformed)}")
             pack.put(f"{target}.json", {"impersonal": "\n\n---\n\n".join(impersonal), "reformed": reformed})
+            profile = editorial.get(target)
+            if profile is None:
+                raise SystemExit(f"Perfil visual e editorial não definido: {target}")
+            path = f"visuals/{target}.svg"
+            pack.put(path, illustration(target, profile))
+            name, caption, kind = profile["visual"]
+            visuals[target] = {
+                "path": path,
+                "title": name,
+                "alt": f"Ilustração editorial de {name}, não fotografia nem registro de cerimônia.",
+                "caption": caption,
+                "credit": "Ilustração vetorial original · Bíblia Reformada",
+                "kind": kind,
+            }
+            # Fotografia documental identificada, em domínio público, de fonte
+            # efetivamente verificada. Se offline, a arte local continua visível.
+            if target == "roman_catholic":
+                visuals[target]["photo"] = {
+                    "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Basilique-Saint-Pierre-Vatican.jpg?width=960",
+                    "alt": "Fachada da Basílica de São Pedro no Vaticano.",
+                    "caption": "Basílica de São Pedro, Vaticano · fotografia documental.",
+                    "credit": "Rundvald, 2008 · domínio público · Wikimedia Commons",
+                    "source": "https://commons.wikimedia.org/wiki/File:Basilique-Saint-Pierre-Vatican.jpg",
+                }
             targets.append(target)
+        if len(targets) != 30:
+            raise SystemExit(f"Esperadas 30 tradições, encontradas {len(targets)}")
         apologetics = pack.write()
         apologetics["targets"] = targets
+        apologetics["visuals"] = visuals
 
     # ------------------------------------------------- Agostinho (texto integral)
     augustine = None
