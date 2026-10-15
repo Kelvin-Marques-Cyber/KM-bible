@@ -1329,3 +1329,63 @@
   .ca-playing .ca-pause-actions .ca-button {min-height:40px;padding:8px 12px;}
   .ca-playing .ca-pause small {font-size:9px;}
 }
+
+
+/* HUD is physically inside ca-stage now, not a header above the canvas. */
+.ca-playing .ca-header {display:none;}
+.ca-playing .ca-stage {position:relative;}
+.ca-playing .ca-episode-header {
+  position:absolute;
+  z-index:10;
+  top:0;
+  left:0;
+  right:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:6px;
+  padding:8px 10px;
+  margin:0;
+  border-bottom:1px solid #f2d19878;
+  background:linear-gradient(180deg,#0a1b23f1,#112c2dd9);
+  backdrop-filter:blur(7px);
+  box-shadow:0 4px 16px #0513138c;
+}
+.ca-playing .ca-episode-header > div {
+  flex:1 1 165px;
+  min-width:130px;
+  padding:0 8px;
+}
+.ca-playing .ca-episode-header > div h3 {font-size:17px;}
+.ca-playing .ca-episode-header .ca-button {
+  justify-content:center;
+  min-height:36px;
+  padding:6px 10px;
+  border-radius:5px;
+  border:1px solid #e2c98b89;
+  background:#1b3334c9;
+  font:700 11px/1.3 ui-sans-serif,system-ui,sans-serif;
+  color:#f6e7c8;
+}
+.ca-playing .ca-episode-header .ca-button:hover {background:#3b594b;}
+.ca-playing .ca-world-label {top:clamp(53px,6.5vw,72px);}
+@media(max-width:700px) {
+  .ca-playing .ca-episode-header {
+    padding:5px;
+    justify-content:space-between;
+    gap:3px;
+  }
+  .ca-playing .ca-episode-header > div {display:none;}
+  .ca-playing .ca-episode-header .ca-button {
+    min-height:35px;
+    font-size:0;
+    gap:0;
+    padding:7px;
+    flex:1 1 36px;
+    min-width:36px;
+    max-width:64px;
+  }
+  .ca-playing .ca-episode-header .ca-button svg {height:18px;width:18px;flex-shrink:0;}
+  .ca-playing .ca-world-label {top:49px;}
+}
