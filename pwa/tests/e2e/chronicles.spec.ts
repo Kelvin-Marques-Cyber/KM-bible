@@ -45,9 +45,7 @@ async function openEpisode(page: Page) {
     page.getByRole("heading", { name: "Crônicas da Aliança", exact: true }),
   ).toBeVisible();
   await page
-    .getByRole("button", {
-      name: /EPISÓDIO ORIGINAL AMPLIADO.*O Vale e a Coragem/,
-    })
+    .getByRole("button", { name: "O Vale e a Coragem", exact: true })
     .click();
 }
 
@@ -145,8 +143,7 @@ test("piloto renderiza, conversa, pausa, salva e retoma offline sem afetar Memor
     .getByRole("button", { name: "Mapa de aventuras", exact: true })
     .click();
   await page
-    .getByRole("button", { name: "Ferramentas e Games", exact: true })
-    .first()
+    .getByRole("button", { name: "Voltar para Ferramentas e Games", exact: true })
     .click();
   await expect(
     page.getByRole("heading", { name: "Memorização", exact: true }),
