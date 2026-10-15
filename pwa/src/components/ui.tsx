@@ -355,7 +355,16 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[]): AsyncState<T
     setState((s) => ({ ...s, loading: true, error: null }));
     // A requisição pode terminar depois que a tela ou o ambiente de teste
     // desmontar. Nunca atualizar React a partir de uma Promise obsoleta.
-    Promise.resolve().then(fn).then(
+    // Preserve a execução imediata do carregador, como antes desta correção.
+    // Converter throws síncronos em rejeições tratadas também impede que
+    // exceções escapem do efeito quando a tela está sendo montada.
+    let task: Promise<T>;
+    try {
+      task = Promise.resolve(fn());
+    } catch (error) {
+      task = Promise.reject(error);
+    }
+    task.then(
       (data) => {
         if (active && run === latest.current)
           setState({ data, error: null, loading: false });
