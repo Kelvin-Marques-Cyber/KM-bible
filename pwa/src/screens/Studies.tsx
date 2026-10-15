@@ -17,10 +17,9 @@ import {
   ReplyAll,
   Save,
   ScanSearch,
-  Search,
   Table2,
 } from 'lucide-react';
-import { useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Markdown } from '../components/Markdown';
 import {
   Action,
@@ -59,7 +58,6 @@ import { fold, refLabel } from '../lib/domain';
 import { lang, t, tr } from '../lib/i18n';
 import { completed, isCompleted, saveNote, setPref } from '../lib/store';
 import { sortedStudies } from '../lib/studies-data';
-import { useSheetVirtualizer } from '../lib/studies-hooks';
 import {
   APPROACHES,
   AUGUSTINE_BOOKS,
@@ -91,7 +89,7 @@ import {
   validAugustineCounts,
   type Approach,
 } from '../lib/studies-logic';
-import { ExternalLink, LongMarkdown, SourceList } from '../lib/studies-ui';
+import { AugustineUnavailable, ExternalLink, LongMarkdown, SearchField, SourceList, VirtualRows, editionLinkLabel } from '../lib/studies-ui';
 import {
   openApologists,
   openArena,
@@ -110,60 +108,6 @@ export { topicTitles, traditionTitles };
 
 /** Corpo dos estudos: 17 px e entrelinha 1,6, como MarkdownText do original. */
 const STUDY_TEXT = 'select-text text-[17px]';
-
-function SearchField({ label, value, onChange, placeholder }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string }) {
-  return (
-    <label className="mt-3 block">
-      <span className="mb-1 block text-sm text-muted">{label}</span>
-      <span className="relative block">
-        <Search size={19} aria-hidden className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-muted" />
-        <input
-          type="search"
-          value={value}
-          placeholder={placeholder}
-          onChange={(e) => onChange(e.target.value)}
-          enterKeyHint="search"
-          autoComplete="off"
-          className="w-full rounded-xl border border-outline bg-surface py-2.5 pl-10 pr-3 text-[16px] outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
-        />
-      </span>
-    </label>
-  );
-}
-
-/** Lista virtual dentro da área rolável que a contém (folha ou aba). */
-function VirtualRows<T>({
-  rows,
-  estimate,
-  render,
-  rowKey,
-  className,
-}: {
-  rows: T[];
-  estimate: (row: T, index: number) => number;
-  render: (row: T, index: number) => ReactNode;
-  rowKey: (row: T, index: number) => string;
-  className?: string;
-}) {
-  const { anchor, virtual, margin } = useSheetVirtualizer({ count: rows.length, estimateSize: (i) => estimate(rows[i], i), overscan: 8 });
-  const items = virtual.getVirtualItems();
-  return (
-    <div ref={anchor} role="list" className={cx('relative w-full', className)} style={{ height: virtual.getTotalSize() }}>
-      {items.map((item) => (
-        <div
-          key={rowKey(rows[item.index], item.index)}
-          role="listitem"
-          data-index={item.index}
-          ref={virtual.measureElement}
-          className="absolute left-0 right-0 top-0"
-          style={{ transform: `translateY(${item.start - margin}px)` }}
-        >
-          {render(rows[item.index], item.index)}
-        </div>
-      ))}
-    </div>
-  );
-}
 
 const levelLabel = (level: number) => t(levelKey(level));
 
@@ -252,7 +196,7 @@ function ConfessionList({ code, query }: { code: string; query: string }) {
 
 // ------------------------------------------------------- Agostinho (índice)
 type IndexRow = { kind: 'book'; book: number; matches: number } | { kind: 'chapter'; book: number; chapter: number };
-type Titles = Record<number, string[] | 'loading' | 'error'>;
+type TitleState = string[] | 'loading' | 'error';
 
 function openAugustineAt(book: number, chapter: number) {
   // Como o original: grava a posição (base 0) antes de abrir o leitor.
@@ -261,12 +205,65 @@ function openAugustineAt(book: number, chapter: number) {
   openAugustine({ book, chapter });
 }
 
+/**
+ * Títulos dos capítulos, lidos de cada livro (≈ 60 KB) só quando uma linha
+ * desse livro chega à tela; pedidos repetidos reaproveitam o mesmo carregamento.
+ */
+function useChapterTitles(available: boolean) {
+  const [titles, setTitles] = useState<Record<number, TitleState>>({});
+  const pending = useRef(new Map<number, Promise<void>>());
+  const alive = useRef(true);
+  useEffect(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
+  const request = useCallback(
+    (b: number): Promise<void> => {
+      if (!available) return Promise.resolve();
+      const existing = pending.current.get(b);
+      if (existing) return existing;
+      setTitles((current) => ({ ...current, [b]: 'loading' }));
+      const promise = augustineBook(b).then(
+        (data) => {
+          if (alive.current) setTitles((current) => ({ ...current, [b]: (data?.chapters ?? []).map((ch) => String(ch.title ?? '').trim()) }));
+        },
+        () => {
+          // Uma nova linha desse livro na tela tenta outra vez (sem repetição automática em laço).
+          pending.current.delete(b);
+          if (alive.current) setTitles((current) => ({ ...current, [b]: 'error' }));
+        },
+      );
+      pending.current.set(b, promise);
+      return promise;
+    },
+    [available],
+  );
+  return { titles, request };
+}
+
+function AugustineChapterRow({ book, chapter, title, request }: { book: number; chapter: number; title: string; request: (b: number) => Promise<void> }) {
+  useEffect(() => {
+    void request(book);
+  }, [book, request]);
+  return (
+    <ListItem
+      leading={BookOpenText}
+      title={`${tr('Livro', 'Book', 'Libro')} ${book} · ${tr('Capítulo', 'Chapter', 'Capítulo')} ${chapter}`}
+      subtitle={title || `${augustineBookTitle(book)} · ${tr('Ler as palavras de Agostinho', "Read Augustine's own words", 'Leer las palabras de Agustín')}`}
+      trailing="chevron"
+      onClick={() => openAugustineAt(book - 1, chapter - 1)}
+    />
+  );
+}
+
 function AugustineIndex({ query }: { query: string }) {
   const available = augustineAvailable();
   const manifest = useAsync(() => (available ? augustineManifest() : Promise.resolve(null)), [available]);
   const [book, setBook] = useState(0); // Zero = todos os livros.
   const [expanded, setExpanded] = useState<Set<number>>(() => new Set());
-  const [titles, setTitles] = useState<Titles>({});
+  const { titles, request } = useChapterTitles(available);
   const q = fold(query);
 
   const counts = useMemo(() => {
@@ -274,19 +271,25 @@ function AugustineIndex({ query }: { query: string }) {
     return meta && validAugustineCounts(meta.chapterCounts, meta.chapterCount) ? meta.chapterCounts : AUGUSTINE_BOOKS.map((b) => b.chapterCount);
   }, [manifest.data]);
 
-  const chapterTitle = (b: number, c: number) => {
-    const list = titles[b];
-    return Array.isArray(list) ? list[c - 1] ?? '' : '';
-  };
-  const matches = (b: number, c: number) =>
-    !q || fold(`Livro ${b} ${augustineBookTitle(b)} Capítulo ${c} ${chapterTitle(b, c)}`).includes(q);
+  const chapterTitle = useCallback(
+    (b: number, c: number) => {
+      const list = titles[b];
+      return Array.isArray(list) ? list[c - 1] ?? '' : '';
+    },
+    [titles],
+  );
 
   const rows = useMemo<IndexRow[]>(() => {
     const out: IndexRow[] = [];
     for (let b = 1; b <= counts.length; b++) {
       if (book !== 0 && b !== book) continue;
       const chapters: IndexRow[] = [];
-      for (let c = 1; c <= counts[b - 1]; c++) if (matches(b, c)) chapters.push({ kind: 'chapter', book: b, chapter: c });
+      for (let c = 1; c <= counts[b - 1]; c++) {
+        // Mesmo texto pesquisável do original + o título do capítulo, quando já lido.
+        if (!q || fold(`Livro ${b} ${augustineBookTitle(b)} Capítulo ${c} ${chapterTitle(b, c)}`).includes(q)) {
+          chapters.push({ kind: 'chapter', book: b, chapter: c });
+        }
+      }
       if (book !== 0) out.push(...chapters);
       else if (chapters.length > 0) {
         out.push({ kind: 'book', book: b, matches: chapters.length });
@@ -294,22 +297,22 @@ function AugustineIndex({ query }: { query: string }) {
       }
     }
     return out;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [counts, book, expanded, q, titles]);
+  }, [counts, book, expanded, q, chapterTitle]);
 
-  // Títulos dos capítulos: só dos livros cujos capítulos estão à mostra.
-  const visibleBooks = useMemo(() => [...new Set(rows.filter((r) => r.kind === 'chapter').map((r) => r.book))], [rows]);
+  // Com uma busca, os títulos dos capítulos também entram: lidos um livro por vez.
   useEffect(() => {
-    if (!available) return;
-    for (const b of visibleBooks) {
-      if (titles[b] !== undefined) continue;
-      setTitles((current) => ({ ...current, [b]: 'loading' }));
-      augustineBook(b).then(
-        (data) => setTitles((current) => ({ ...current, [b]: (data?.chapters ?? []).map((ch) => ch.title?.trim() ?? '') })),
-        () => setTitles((current) => ({ ...current, [b]: 'error' })),
-      );
-    }
-  }, [available, visibleBooks, titles]);
+    if (!q || !available || manifest.data === undefined) return;
+    let cancelled = false;
+    void (async () => {
+      for (let b = 1; b <= counts.length && !cancelled; b++) {
+        if (book !== 0 && b !== book) continue;
+        await request(b);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [q, available, manifest.data, counts, book, request]);
 
   const toggle = (b: number) =>
     setExpanded((current) => {
@@ -334,6 +337,8 @@ function AugustineIndex({ query }: { query: string }) {
   }
   if (manifest.data === undefined) return <Spinner />;
   const total = counts.reduce((a, b) => a + b, 0);
+  const searchingTitles = !!q && counts.some((_, i) => (book === 0 || book === i + 1) && titles[i + 1] === 'loading');
+  const chapterMatches = rows.reduce((n, r) => n + (r.kind === 'chapter' ? 1 : 0), 0);
 
   return (
     <div className="mx-auto w-full max-w-3xl px-4 pb-6">
@@ -355,16 +360,23 @@ function AugustineIndex({ query }: { query: string }) {
         ]}
       />
       <ExternalLink href={AUGUSTINE_EDITION_URL} className="-ml-3 mt-2">
-        {tr('Consultar edição integral em português', 'View the full Portuguese edition', 'Consultar la edición íntegra en portugués')}
+        {editionLinkLabel()}
       </ExternalLink>
       <p className="sr-only" aria-live="polite">
-        {q ? `${rows.filter((r) => r.kind === 'chapter').length} ${tr('capítulos', 'chapters', 'capítulos')}` : ''}
+        {q ? `${chapterMatches} ${tr('capítulos', 'chapters', 'capítulos')}` : ''}
       </p>
+      {searchingTitles && (
+        <div role="status" className="mt-2">
+          <Progress />
+          <Small className="mt-1">{tr('Procurando também nos títulos dos capítulos…', 'Also searching chapter titles…', 'Buscando también en los títulos de los capítulos…')}</Small>
+        </div>
+      )}
       {rows.length === 0 ? (
-        <p className="p-4 text-[15px]">{tr('Nenhum capítulo encontrado.', 'No chapter found.', 'Ningún capítulo encontrado.')}</p>
+        searchingTitles ? null : <p className="p-4 text-[15px]">{tr('Nenhum capítulo encontrado.', 'No chapter found.', 'Ningún capítulo encontrado.')}</p>
       ) : (
         <VirtualRows
           className="mt-2"
+          label={tr('Capítulos das Confissões', 'Chapters of the Confessions', 'Capítulos de las Confesiones')}
           rows={rows}
           estimate={(r) => (r.kind === 'book' ? 64 : 72)}
           rowKey={(r) => (r.kind === 'book' ? `b${r.book}` : `c${r.book}:${r.chapter}`)}
@@ -388,51 +400,12 @@ function AugustineIndex({ query }: { query: string }) {
                 {!q && <ChevronDown size={20} aria-hidden className={cx('shrink-0 text-muted transition-transform', expanded.has(r.book) && 'rotate-180')} />}
               </button>
             ) : (
-              <ListItem
-                leading={BookOpenText}
-                title={`${tr('Livro', 'Book', 'Libro')} ${r.book} · ${tr('Capítulo', 'Chapter', 'Capítulo')} ${r.chapter}`}
-                subtitle={
-                  chapterTitle(r.book, r.chapter) ||
-                  `${augustineBookTitle(r.book)} · ${tr('Ler as palavras de Agostinho', "Read Augustine's own words", 'Leer las palabras de Agustín')}`
-                }
-                trailing="chevron"
-                onClick={() => openAugustineAt(r.book - 1, r.chapter - 1)}
-              />
+              <AugustineChapterRow book={r.book} chapter={r.chapter} title={chapterTitle(r.book, r.chapter)} request={request} />
             )
           }
         />
       )}
       <Small className="mt-4 select-text">{AUGUSTINE_INDEX_CREDITS}</Small>
-    </div>
-  );
-}
-
-/** Sem o pacote integral neste build: índice dos livros e a edição externa. */
-export function AugustineUnavailable() {
-  return (
-    <div className="mx-auto w-full max-w-3xl px-4 pb-6 pt-2">
-      <p role="status" className="rounded-xl bg-secondary-container p-3 text-[15px]">
-        {tr(
-          'O texto integral das Confissões não está disponível nesta versão do aplicativo. Consulte abaixo o índice dos 13 livros e a edição integral em português na fonte.',
-          'The full text of the Confessions is not available in this build. See the index of the 13 books below and the full Portuguese edition at the source.',
-          'El texto íntegro de las Confesiones no está disponible en esta versión. Consulte abajo el índice de los 13 libros y la edición íntegra en portugués en la fuente.',
-        )}
-      </p>
-      <ul className="mt-3">
-        {AUGUSTINE_BOOKS.map((b) => (
-          <li key={b.number}>
-            <ListItem
-              leading={BookOpenText}
-              title={`${tr('Livro', 'Book', 'Libro')} ${b.number} · ${b.title}`}
-              subtitle={`${b.chapterCount} ${tr('capítulos', 'chapters', 'capítulos')}`}
-            />
-          </li>
-        ))}
-      </ul>
-      <ExternalLink href={AUGUSTINE_EDITION_URL} className="-ml-3 mt-2">
-        {tr('Consultar edição integral em português', 'View the full Portuguese edition', 'Consultar la edición íntegra en portugués')}
-      </ExternalLink>
-      <Small className="mt-3 select-text">{AUGUSTINE_INDEX_CREDITS}</Small>
     </div>
   );
 }
@@ -523,12 +496,17 @@ export function StudiesBrowser({ apologetic }: { apologetic: boolean }) {
 // ======================================================================= Estudo
 type Dossier = { status: 'idle' | 'loading' | 'missing' | 'error' } | { status: 'ready'; data: ApologeticsDossier };
 
-/** Dossiê da tradição (panorama impessoal + argumentação presbiteriana), só quando pedido. */
+/**
+ * Dossiê da tradição (panorama impessoal + argumentação presbiteriana), só quando
+ * pedido. Trocar de modo durante o carregamento não deixa a tela presa: o pedido
+ * é refeito (do cache em memória) na próxima vez em que for necessário.
+ */
 function useDossier(target: string, wanted: boolean) {
   const [state, setState] = useState<Dossier>({ status: 'idle' });
   const [attempt, setAttempt] = useState(0);
+  const settled = state.status === 'ready' || state.status === 'missing';
   useEffect(() => {
-    if (!wanted || (state.status !== 'idle' && attempt === 0)) return;
+    if (!wanted || settled) return;
     let alive = true;
     setState({ status: 'loading' });
     apologeticsDossier(target).then(

@@ -24,6 +24,8 @@ const CHUNK_CONCURRENCY = 4;
 const SHARD_CACHE = 12;
 const CHUNK_CACHE = 8;
 const USER_CACHE = 4;
+/** Candidatos examinados por módulo importado (títulos primeiro entre eles). */
+const USER_SCAN = 5000;
 /** Índice bíblico incompleto (sem conexão) é refeito depois deste intervalo. */
 export const RETRY_INCOMPLETE_MS = 30_000;
 /** Fatia máxima de trabalho contínuo antes de ceder a vez (ms). */
@@ -807,39 +809,71 @@ export function createSearchService(loaders: SearchLoaders) {
       }
     }
     await breathe();
+    if (ctx.cancelled()) return 'ok';
     const allowed = new Set(spec.allowed);
     const permitted = (group: Group, r: SearchRecord) => (group === 'documents' || group === 'commentary' ? allowed.has(r[4]) : true);
-    const lists = new Map<Group, RecordHit[]>();
-    const add = (group: Group, r: SearchRecord) => {
+    const lists = new Map<Group, (RecordHit & { id: number })[]>();
+    const add = (group: Group, id: number, r: SearchRecord, title: boolean) => {
       let list = lists.get(group);
       if (!list) lists.set(group, (list = []));
-      list.push({ r, t: matchesText(r[2], q) });
+      list.push({ id, r, t: title });
     };
     const recordAt = (id: number): SearchRecord | undefined => {
       const chunk = loaded.get(Math.floor(id / spec.chunk));
       const r = chunk?.[id % spec.chunk];
       return Array.isArray(r) ? r : undefined;
     };
+    /** Confere a disposição deduzida do catálogo; se não bater, refaz sem ela. */
+    const fits = (segment: Segment | undefined, group: Group, r: SearchRecord) =>
+      !!segment && groupOf(r[0]) === group && (segment.module === undefined || segment.module === r[4]);
+    const inWindow = new Set<number>();
     for (const [group, list] of windows) {
       let s = 0;
       for (const id of list) {
+        inWindow.add(id);
         const r = recordAt(id);
         if (!r) continue;
         if (group === '*') {
           const g = groupOf(r[0]);
           if (!spec.limits[g] || !permitted(g, r)) continue;
-          if ((lists.get(g)?.length ?? 0) < spec.limits[g]! * WINDOW_FACTOR) add(g, r);
+          if ((lists.get(g)?.length ?? 0) < spec.limits[g]! * WINDOW_FACTOR) add(g, id, r, matchesText(r[2], q));
           continue;
         }
-        // Confere a disposição deduzida do catálogo; se não bater, refaz sem ela.
         while (segments && s < segments.length && segments[s].end <= id) s++;
-        const segment = segments?.[s];
-        const actual = groupOf(r[0]);
-        if (!segment || actual !== group || (segment.module !== undefined && segment.module !== r[4])) return 'mismatch';
-        if (permitted(group, r)) add(group, r);
+        if (!fits(segments?.[s], group, r)) return 'mismatch';
+        if (permitted(group, r)) add(group, id, r, matchesText(r[2], q));
       }
     }
-    for (const [group, list] of lists) section.groups[group] = titleFirst(list).slice(0, spec.limits[group]);
+    // Títulos que contêm a consulta em blocos JÁ carregados também sobem ao topo,
+    // mesmo fora da janela (ex.: o tema "Graça" no meio da ordem alfabética), sem
+    // baixar nada a mais.
+    let s = 0;
+    let scanned = 0;
+    for (const id of ids) {
+      if (inWindow.has(id) || !loaded.has(Math.floor(id / spec.chunk))) continue;
+      let segment: Segment | undefined;
+      if (segments) {
+        while (s < segments.length && segments[s].end <= id) s++;
+        segment = segments[s];
+        if (!segment || id < segment.start || !segment.allowed || !spec.limits[segment.group]) continue;
+      }
+      const r = recordAt(id);
+      if (!r) continue;
+      const group: Group = segment ? segment.group : groupOf(r[0]);
+      if (segment && !fits(segment, group, r)) return 'mismatch';
+      if (!spec.limits[group] || !permitted(group, r)) continue;
+      if (++scanned % 512 === 0) {
+        await breathe();
+        if (ctx.cancelled()) return 'ok';
+      }
+      if (matchesText(r[2], q)) add(group, id, r, true);
+    }
+    for (const [group, list] of lists) {
+      list.sort((a, b) => a.id - b.id);
+      section.groups[group] = titleFirst(list)
+        .slice(0, spec.limits[group])
+        .map(({ r, t }) => ({ r, t }));
+    }
     return 'ok';
   }
 
@@ -867,7 +901,10 @@ export function createSearchService(loaders: SearchLoaders) {
       const docs = ((await loaders.userData(spec.id, 'docs')) as RawDoc[] | null) ?? [];
       for (const d of docs) {
         if (!Array.isArray(d)) continue;
-        records.push([String(d[1] ?? ''), String(d[0]), String(d[2] ?? ''), snippet(String(d[3] ?? '')), spec.id, String(d[4] ?? '')]);
+        // Como build_data.py: título e corpo em português quando o pacote os traz.
+        const title = typeof d[6] === 'string' && d[6] ? d[6] : String(d[2] ?? '');
+        const body = typeof d[7] === 'string' && d[7] ? d[7] : String(d[3] ?? '');
+        records.push([String(d[1] ?? ''), String(d[0]), title, snippet(body), spec.id, String(d[4] ?? '')]);
         builder.add([d[2], d[3], d[6], d[7]].filter((x) => typeof x === 'string').join(' '));
         await breathe();
       }
@@ -878,8 +915,10 @@ export function createSearchService(loaders: SearchLoaders) {
         for (const c of rows) {
           if (!Array.isArray(c) || seen.has(String(c[0]))) continue;
           seen.add(String(c[0]));
-          records.push(['commentary', String(c[0]), String(c[3] ?? ''), snippet(String(c[4] ?? '')), spec.id, refId(keyToRef(Number(c[1])))]);
-          builder.add(`${c[3] ?? ''} ${c[4] ?? ''}`);
+          const title = typeof c[7] === 'string' && c[7].trim() ? c[7] : String(c[3] ?? '');
+          const body = typeof c[8] === 'string' && c[8] ? c[8] : String(c[4] ?? '');
+          records.push(['commentary', String(c[0]), title, snippet(body), spec.id, refId(keyToRef(Number(c[1])))]);
+          builder.add([c[3], c[4], c[7], c[8]].filter((x) => typeof x === 'string').join(' '));
         }
         await breathe();
       }
@@ -906,10 +945,15 @@ export function createSearchService(loaders: SearchLoaders) {
         const { index, records } = await userIndex(spec);
         if (ctx.cancelled()) return null;
         const group: Group = spec.kind === 'commentary' ? 'commentary' : 'documents';
-        const limit = LIMITS[group];
         let list = lists.get(group);
         if (!list) lists.set(group, (list = []));
-        for (const i of index.search(request.query, limit * WINDOW_FACTOR)) list.push({ r: records[i], t: matchesText(records[i][2], request.query) });
+        // Tudo em memória: os títulos de todos os candidatos podem subir ao topo.
+        let n = 0;
+        for (const i of index.search(request.query, USER_SCAN)) {
+          list.push({ r: records[i], t: matchesText(records[i][2], request.query) });
+          if (++n % 512 === 0) await breathe();
+        }
+        if (ctx.cancelled()) return null;
       } catch (error) {
         section.error ??= errorInfo(error);
       }

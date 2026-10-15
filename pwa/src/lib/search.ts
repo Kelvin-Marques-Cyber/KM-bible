@@ -4,7 +4,7 @@
 // estudos, léxico e comentários), módulos importados e anotações pessoais.
 // Tudo local; com o service worker, funciona sem internet quando os pacotes
 // já estão salvos no aparelho.
-import { catalog, dataBase } from './catalog';
+import { catalog, dataBase, packUrl } from './catalog';
 import { installed, module, modules, userModule, userModuleList } from './content';
 import { get, isMemoryOnly } from './db';
 import { keyToRef, refId, refLabel, tokenize } from './domain';
@@ -221,14 +221,20 @@ export function releaseSearch(delay = 5 * 60_000): void {
   users = Math.max(0, users - 1);
   if (users > 0) return;
   if (idleTimer) clearTimeout(idleTimer);
-  idleTimer = setTimeout(() => {
+  const check = () => {
     idleTimer = null;
-    if (users > 0 || pending.size > 0 || fallbackRunning.size > 0) return;
+    if (users > 0) return;
+    // Ainda há consultas em andamento (ex.: o índice bíblico sendo montado): espera mais.
+    if (pending.size > 0 || fallbackRunning.size > 0) {
+      idleTimer = setTimeout(check, delay);
+      return;
+    }
     worker?.terminate();
     worker = null;
     fallback?.clear();
     fallback = null;
-  }, delay);
+  };
+  idleTimer = setTimeout(check, delay);
 }
 
 // ------------------------------------------------------- especificações
@@ -246,8 +252,8 @@ function bibleSource(translation: string): BibleSource | null {
   const books = Object.keys(pack.chapters)
     .map(Number)
     .sort((a, b) => a - b);
-  const base = `${dataBase()}${pack.path}/`;
-  return { kind: 'urls', key: `${translation}:${pack.hash}`, translation, books, urls: books.map((b) => `${base}${b}.json?v=${pack.hash}`) };
+  // URLs absolutas (o worker não conhece a base da página); as mesmas do cache do service worker.
+  return { kind: 'urls', key: `${translation}:${pack.hash}`, translation, books, urls: books.map((b) => packUrl(pack, `${b}.json`)) };
 }
 
 function layout(entries: [number, Group, string?][], records: number, allowed: Set<string>): Segment[] | null {
