@@ -1,85 +1,91 @@
-# Crônicas da Aliança — continuidade
+# Crônicas da Aliança — estado e continuidade
 
-## Escopo autorizado (15/10/2026)
+## Escopo e base
 
-- Repositório KM-bible, branch `flutter-web-fiel`; apenas PWA React/TypeScript/Vite. Não alterar nem compilar Android.
-- Primeiro episódio: **O Vale e a Coragem — 1 Samuel 16–17**, com testemunha fictícia, povoado, interior, acampamento, missões, escolhas, inventário, puzzle, encontro pacífico, conclusão canônica, save e leitor bíblico.
-- Seis sagas / 36 aventuras compactas têm conteúdo, motor e interface de exploração integrados. Não equivalem em profundidade ao piloto ampliado.
-- Sistemas e saves de Mezuzá e memorização permanecem independentes.
+Trabalho iniciado a partir de `290285d86d49ed0f535edb18ee12c506524d7f80`, na branch obrigatória `flutter-web-fiel` de `Kelvin-Marques-Cyber/KM-bible`.
 
-## Auditoria inicial
+Somente a PWA React/TypeScript/Vite foi alterada. Android não foi alterado, compilado ou publicado. A publicação da PWA permanece sem autorização e não deve ser executada por esta tarefa.
 
-Base recebida: `453b5e13aa2775443ce042deb374326b96984a2e`.
-PWA usa telas lazy em `screens/ToolsAndGames.tsx`, IndexedDB compartilhado (`lib/db.ts`) e SM-2 existente em `lib/domain.ts`/`screens/Memory.tsx`.
-Não havia RPG nesta base. Mezuzá existente é uma adaptação de percurso 7×7, com dado e perguntas, sem equivalência oficial verificada.
-Nenhuma alteração de implementação efetuada neste marco; nenhum teste executado ainda.
+## O que está implementado
 
-## Requisitos confirmados do Mezuzá
+- **Seis sagas / 36 aventuras compactas**, cada uma com introdução, cenário 2D explorável, movimentação real, colisões, três investigações que exigem proximidade, códice, desafio com novas tentativas, explicação, conclusão e avanço ao próximo capítulo.
+- **O Vale e a Coragem**, o piloto ampliado de 1 Samuel 16–17, preservado em uma entrada destacada. Continua com três mapas, NPCs, missões, escolhas, inventário, puzzle e seu próprio save. Os 36 episódios compactos **não equivalem em duração e profundidade ao piloto**.
+- Seleção de saga e capítulo, contagem global de 0/36 a 36/36, indicação por saga e retomada do capítulo ativo após fechar/reabrir a área ou recarregar.
+- Teclado WASD/setas, Shift, E/Enter; controles móveis com soltura em pointerup/cancel; pausa e limpeza de teclas ao perder foco.
+- Canvas 480 × 270 com renderização pixelada, 13 ambientes, chão por cenário, camadas, sombras, água animada, partículas, poses de caminhada, marcos contextuais, efeitos de descoberta, retratos originais e transições. Terreno estático em cache; pintura a 30 fps; frames cancelados com aba oculta; redução de movimento respeitada.
+- Trilha e efeitos sintetizados originais, opcionais e desligados inicialmente. Áudio habilitado por gesto, suspenso em pausa/aba oculta e liberado na saída.
+- Leitura do intervalo bíblico completo na tradução atual e criação opcional de cartões com texto real instalado. Nenhuma resposta do RPG gera avaliação SM-2 ou marca um versículo como dominado.
+- Salvamento, backup, exportação e recuperação sem misturar chaves de outros jogos. Exportação inclui o estado da sessão, mesmo se ainda não foi gravado.
 
-O usuário confirmou expressamente que o SOL acertou ao implementar a **adaptação do Mezuzá Clássico** (não xadrez e não Novo Mezuzá). A diferença entre edições está registrada em `MEZUZA_RULES_AUDIT.md`.
+## Arquivos principais
 
-- O tabuleiro físico original e seus cartões comerciais não foram reproduzidos integralmente: o percurso padrão 12+12+centro é **autoral e ajustável**, com 30 atividades autorais distribuídas em três cartas (sete dinâmicas).
-- Não anunciar esta edição digital como uma cópia idêntica ao produto comercial; sim, uma **adaptação baseada em procedimentos documentados do clássico**.
-- `MezuzahClassic.tsx` e `MezuzahClassicOnline.tsx` substituem a modalidade antiga no menu sem apagar saves legados.
-- O servidor local `mezuzah-server/server.mjs` utiliza o motor clássico, valida jogadas e possui testes Node. Salas públicas exigem hospedagem WebSocket WSS, não fornecida pelo Pages.
-- Não trocar o jogo por xadrez 8×8 nem misturar as regras do Novo Mezuzá e da edição Clássica.
+| Arquivo | Responsabilidade |
+| --- | --- |
+| `src/games/chronicles/CampaignChronicles.tsx` | Seleção, diário, diálogo, desafio, conclusão, leitor/cartões e checkpoints |
+| `campaign-content.ts` | Seis sagas, 36 narrativas e referências autorais |
+| `campaign-engine.ts` | Estado puro, movimento, colisões, investigação, respostas e validação |
+| `campaign-persistence.ts` | IndexedDB, fila de gravações, backup e recuperação |
+| `campaign-renderer.ts` | Pixel art procedural, cenário em cache, camadas e animação |
+| `CampaignCanvas.tsx` | Loop, foco, teclado, toque, visibilidade e descarte |
+| `CampaignPortrait.tsx`, `campaign-audio.ts` | Retratos em pixels e áudio original opcional |
+| `campaign-bible.ts` | Intervalo de leitura e âncora individual de memorização |
+| `campaign.css` | Interface responsiva, diálogos e transições |
+| `src/screens/ToolsAndGames.tsx` | Entrada das campanhas, piloto e jogos existentes |
+| `src/screens/Chronicles.tsx` | Piloto original; somente rótulo opcional de retorno acrescentado |
 
-## Entregas existentes na branch
+O manual de uso está em `RPG_GUIDE.md`.
 
-- **Piloto RPG:** `src/games/chronicles/engine.ts`, `content.ts`, `renderer.ts`, `ChroniclesCanvas.tsx`, `src/screens/Chronicles.tsx`, persistência `chronicles/persistence.ts`.
-- **Uma campanha ampliada disponível:** `O Vale e a Coragem`, com três mapas (povoado, casa e acampamento), missões principais/secundárias, diálogos, puzzle, resolução pacífica de conflito, narrativa canônica de 1 Samuel 16–17 e códice com referências e flashcards.
-- **Pixel art procedural:** Canvas 2D original, controles teclado/toque e efeitos de iluminação; 36 aventuras compactas adicionais têm cenários próprios e fluxo de três investigações + desafio. Polimento e validação completa em andamento.
-- **Mezuzá Clássico:** motor local e serviço de salas WebSocket separados, com interface e tabuleiro 3D, modo sem WebGL e testes unitários e E2E incluídos.
-- **Memorização:** permanece acessível e preservada na mesma área `Ferramentas e Games`.
-- O frontend PWA continua sem dependência de motor de jogo adicional.
-- Auditoria subsequente: commits `746a1b34` (a release agora instala dependências e testa o servidor de salas antes dos E2E) e `9341f3a6` (checkpoint periódico do RPG a cada 5 segundos durante movimentação contínua).
-- Esses commits foram salvos no GitHub; **a nova sequência de testes e publicação ainda precisa ser executada no ambiente do usuário**. Não afirmar que a build foi validada ou publicada.
+## Persistência e compatibilidade
 
-## Validação pós-auditoria e publicação
+- Save principal das aventuras: `chronicles:campaigns:v1` no object store `meta`.
+- Backup do último estado válido: `chronicles:campaigns:v1:backup`.
+- Envelope danificado preservado por recuperação/reinício explícito: `chronicles:campaigns:v1:preserved`.
+- Piloto: `chronicles:vale-coragem:v1`, independente.
+- `introduced`, `activeEpisodeId` e `selectedSaga` são extensões opcionais do formato v1; saves anteriores a esta interface continuam aceitos.
+- Saves guardam coordenadas, direção, diálogo, descobertas, fase, tentativas e conclusão. Checkpoints em eventos narrativos; debounce de 450 ms ao mover e checkpoint periódico de 5 s durante movimento contínuo; pausa, saída, pagehide e aba oculta também solicitam gravação.
+- Uma fila serializa gravações; snapshots são copiados antes de aguardar o IndexedDB. Atualização de backup e save ocorre em uma transação. Save inválido não substitui o anterior. Recuperação e reinício após corrupção exigem ação explícita do jogador.
+- A PWA já faz precache de todos os chunks de aplicação. As 36 aventuras e seus cenários não dependem de rede depois da instalação do shell. Traduções bíblicas continuam em pacotes da Biblioteca; não são embutidas nos textos do RPG.
 
-Verificar o Node 22.18+ (necessário para o servidor que importa TypeScript) e executar:
+## Fidelidade narrativa
+
+Os acontecimentos são fixos. Personagens de apoio são identificados como ficção; prólogos e visões usam um emblema/lanterna de leitura. Não há humano fictício antes da criação, participante extra dentro da visão de Isaías, sobrevivente adicional do dilúvio, poderes do jogador ou falas inventadas atribuídas a Deus/Jesus como citações.
+
+A revisão editorial contextual corrigiu as provisões da arca no intervalo citado, a palavra da aliança no Sinai, referências da ceia/fornalha e o contexto de crucificação e sepultamento antes da ressurreição. João 19:16–42 possui botão próprio. Conclusões agora narram o encerramento de cada história, em vez de apresentar instruções de implementação ao jogador. Referências e intervalos foram confrontados com as contagens do catálogo bíblico local. Não houve certificação pastoral externa.
+
+## Commits enviados
+
+| Commit | Etapa |
+| --- | --- |
+| `22edbf5` | Integração das seis sagas e 36 aventuras; piloto separado |
+| `b55c56f` | Retomada, transações, backup/recuperação e 36 percursos testados |
+| `3982d63` | Cenários, sprites, retratos, áudio e integração com intervalo de leitura |
+
+Quando o Git local não fornece credenciais de escrita, o envio usa a conexão autenticada do GitHub: blobs + árvore + commit + atualização fast-forward com `expected_sha`. A árvore é conferida contra o commit local; o checkout é sincronizado sem descartar alterações pendentes. Nunca usar force push.
+
+## Validação registrada
+
+- Node `24.19.0` (atende à exigência de 22.18+ do servidor de salas).
+- Typecheck e build de produção aprovados.
+- Suíte completa inicial: **421 testes unitários aprovados** (33 arquivos). Testes adicionais de checkpoint contínuo, exportação e recuperação estão sendo incluídos na rodada final.
+- Servidor de salas existente: **9 testes aprovados**, sem alterar seu motor/servidor/interface.
+- Cinco E2E específicos aprovados: movimento/pausa/diálogo/retomada, leitor e cartão na Memorização, recuperação de save danificado e os dois fluxos originais do piloto (incluindo offline e toque).
+- E2E de navegador: **36/36 aventuras percorridas offline**, usando teclado real, lendo os três testemunhos, errando/acertando, consultando o códice, concluindo e avançando. Resultado 1 teste aprovado em 5,2 minutos. Validação seca completa ainda pendente nesta etapa.
+
+Testes novos: `tests/unit/campaign-engine.test.ts`, `campaign-screen.test.ts`, `campaign-canvas.test.ts`, `tests/e2e/campaigns.spec.ts`. O E2E existente do piloto foi ajustado exclusivamente à nova entrada destacada e ao retorno pelo mapa.
+
+## Comandos obrigatórios antes de publicar
 
 ```bash
-cd ~/KM-bible-pwa
-git pull --ff-only origin flutter-web-fiel
-source ~/.cache/km-bible-content-venv/bin/activate
 cd pwa
 KM_DRY_RUN=1 bash scripts/release.sh
 ```
 
-A release agora possui **nove estágios**, incluindo `npm ci` isolado e `npm test` no servidor antes de rodar Playwright com dois navegadores. `KM_DRY_RUN=1` deve impedir o envio ao Pages; somente após todos os testes aprovados executar `bash scripts/release.sh` sem dry run.
+O script prepara o acervo local, gera catálogo/fontes, verifica tipos, roda toda a suíte unitária, instala/verifica o servidor do Mezuzá, compila, executa todos os E2E e valida a árvore do Pages. `KM_DRY_RUN=1` impede o envio da árvore de publicação. Não rodar sem essa variável enquanto não houver autorização explícita.
 
-Também verificar visualmente no celular o WebGL 3D, o fallback sem WebGL, a rota dos três mapas, a retenção do save offline, e o ciclo multiplayer via WSS hospedado. O vídeo/inspeção do tabuleiro real e revisão pastoral das passagens não fazem parte da validação automatizada.
+## Próximos passos desta rodada
 
-**Não** declarar as seis sagas nem o servidor WSS público concluídos até sua implementação/hospedagem real.
+1. Testes adicionais e percurso offline 36/36 concluídos; iniciar a validação seca completa.
+2. Executar e corrigir, se necessário, a validação seca completa.
+3. Registrar resultados, bugs reais remanescentes (se houver), commit e envio final. Não declarar publicação.
 
-## Continuação a partir de 290285d8 — integração
-
-- `CampaignChronicles.tsx` criado e integrado ao menu, com seis sagas, seis capítulos por saga, introduções, movimentação, três investigações presenciais, códice, desafio, conclusão, avanço e reinício individual.
-- Piloto preservado em entrada destacada e com persistência independente. Mezuzá e Memorização não tiveram seus motores alterados.
-- Progresso v1 aceita campos opcionais de capítulo ativo, saga selecionada e introdução já lida; saves v1 anteriores continuam aceitos.
-- Leitor e criação de cartões reutilizam `showPassage`/`createCard`, carregando texto de `verse(app.translation, ...)`. Nenhuma avaliação SM-2 é feita pelo RPG.
-- Interface distingue aventuras compactas de campanha ampliada.
-- Validação desta etapa: `npm run typecheck` aprovado; 25 testes aprovados nos quatro arquivos da interface, piloto e Ferramentas e Games, após geração obrigatória do catálogo/fontes. E2E completo ainda pendente.
-- Próximos arquivos: `campaign-persistence.ts` (backup e recuperação), `CampaignCanvas.tsx` (arte, desempenho e ciclo de vida), testes de todos os 36 fluxos. Nenhuma publicação autorizada ou efetuada.
-
-## Etapa: retomada, backup e verificação das 36 histórias
-
-- Integração inicial enviada em `22edbf5` (o envio usa a conexão autenticada do GitHub quando o Git local não dispõe de credenciais).
-- Checkpoints imediatos em descobertas, introdução, diálogos, respostas e conclusão; debounce de movimento e intervalo de 5 s; pausa, saída e aba oculta também salvam.
-- Gravações sequenciais e snapshots, backup transacional do último save válido, recuperação explícita, exportação e cópia preservada antes de reiniciar save danificado. Nenhuma chave do piloto, Mezuzá ou cartões é reutilizada.
-- 47 testes de motor/persistência cobrem os 36 trajetos reais, investigações, erros/acertos, conclusão, próximo capítulo, leitura e escrita de todos os estados, corrupção, backup e compatibilidade com saves anteriores; os quatro testes de interface também passam (51 no conjunto).
-- Referências e intervalos confrontados com contagens do catálogo bíblico real. Respostas corretas distribuídas nas três posições. Ajustados: provisões da arca no intervalo citado; palavra da aliança no Sinai; contexto da ceia e da fornalha; crucificação/sepultamento no capítulo da ressurreição. Testemunha do prólogo de Noé é um leitor, sem sobrevivente extra inventado.
-- Build de produção compilado; E2E completo e validação seca permanecem pendentes. Próxima etapa: `campaign-renderer.ts`, `CampaignCanvas.tsx`, retratos e áudio opcional, seguidos de testes de navegador.
-
-## Etapa: arte original, áudio e leitura integrada
-
-- `b55c56f` contém os 36 percursos e a proteção de saves no GitHub.
-- Renderizador separado em `campaign-renderer.ts`: cenário estático em cache, camadas ordenadas por profundidade, 13 paletas, chão/texturas por ambiente, marcos distintos, água e partículas animadas, sombra, luz, caminhada em quatro poses e retratos pixelados originais.
-- Prólogos e visões usam uma lanterna de leitura, sem inserir testemunhas humanas antes da criação ou dentro da visão. Cenários de criação/jardim não exibem construções humanas. Representações são ilustrativas, não reconstruções arqueológicas.
-- Canvas limita pintura a 30 fps, cancela frames com aba oculta, respeita redução de movimento e limpa teclas na pausa/perda de foco. Prévia decorativa não captura teclado.
-- Música ambiente e sinais de descoberta/acerto/erro são sintetizados, originais e desligados por padrão. Contexto de áudio só nasce por gesto do usuário, suspende na pausa e libera recursos na saída.
-- Leitor abre o intervalo completo indicado, preservando um versículo específico para o cartão. João 19:16–42 também pode ser aberto no capítulo da ressurreição.
-- As 36 conclusões foram reescritas como encerramentos narrativos, mantendo as advertências de ficção no lugar apropriado da interface.
-- Verificações: typecheck e build aprovados; 57 testes de campanhas aprovados, incluindo teclado/foco, toque, pausa/visibilidade, áudio e intervalo bíblico. Inspeção visual da seleção e do cenário desktop realizada. Os E2E específicos e a suíte completa estão na etapa seguinte.
-- Bundle do módulo de campanhas nesta build: aproximadamente 84 KB (30 KB gzip), sem imagens ou áudio baixados durante o jogo.
+As novas verificações pertencem a `tests/e2e/campaigns.spec.ts` e `tests/unit/campaign-screen.test.ts`; o estado funcional do produto está em `CampaignChronicles.tsx`. Não há necessidade de recomeçar o RPG.

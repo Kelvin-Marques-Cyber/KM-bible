@@ -193,6 +193,28 @@ describe("36 aventuras compactas: conteúdo e fluxo completo", () => {
     expect(() => newJourney("unknown")).toThrow();
     expect(nextJourneyEpisode("unknown")).toBeUndefined();
   });
+  it("reiniciar um episódio preserva o progresso de todos os outros", () => {
+    const creation = answerJourney(
+        discovered("creation"),
+        CAMPAIGN_EPISODES[0].trial.correct,
+      ),
+      garden = answerJourney(
+        discovered("garden"),
+        CAMPAIGN_EPISODES[1].trial.correct,
+      );
+    const progress = {
+      ...progressWithJourney(
+        progressWithJourney(emptyProgress(), creation),
+        garden,
+      ),
+      activeEpisodeId: "creation",
+    };
+    const reset = progressWithJourney(progress, newJourney("creation"));
+    expect(reset.completed).toEqual(["garden"]);
+    expect(reset.episodes.garden).toEqual(garden);
+    expect(reset.episodes.creation.visited).toEqual([]);
+    expect(reset.activeEpisodeId).toBe("creation");
+  });
 });
 
 describe("Persistência das aventuras: transações, corrupção, backup e recuperação", () => {
@@ -324,5 +346,14 @@ describe("Persistência das aventuras: transações, corrupção, backup e recup
       saveCampaign({ ...progress, completed: ["creation"] }),
     ).rejects.toThrow(/inválido/);
     expect(await loadCampaign()).toEqual(progress);
+  });
+  it("exporta também o estado da sessão ainda não gravado", async () => {
+    const session = {
+      ...progressWithJourney(emptyProgress(), newJourney("garden")),
+      activeEpisodeId: "garden",
+    };
+    const archive = JSON.parse(await exportCampaignArchive(session));
+    expect(archive.session).toEqual(session);
+    expect(archive.entries[0]).toBeNull();
   });
 });

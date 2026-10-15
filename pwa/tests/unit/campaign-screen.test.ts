@@ -2,6 +2,7 @@ import { act, createElement } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import CampaignChronicles from "../../src/games/chronicles/CampaignChronicles";
+import { CampaignSaveError } from "../../src/games/chronicles/campaign-persistence";
 import {
   emptyProgress,
   newJourney,
@@ -14,17 +15,31 @@ const spies = vi.hoisted(() => ({
   card: vi.fn(),
   passage: vi.fn(),
   message: vi.fn(),
+  recover: vi.fn(),
+  restart: vi.fn(),
 }));
 vi.mock("../../src/games/chronicles/campaign-persistence", () => ({
   loadCampaign: spies.load,
   saveCampaign: spies.save,
   CampaignSaveError: class extends Error {},
   exportCampaignArchive: vi.fn(),
-  recoverCampaign: vi.fn(),
-  preserveAndRestartCampaign: vi.fn(),
+  recoverCampaign: spies.recover,
+  preserveAndRestartCampaign: spies.restart,
 }));
 vi.mock("../../src/games/chronicles/CampaignCanvas", () => ({
-  default: () => createElement("canvas", { "aria-label": "Cenário pixel art" }),
+  default: (props: {
+    onMove: (dx: number, dy: number, seconds: number, run: boolean) => void;
+  }) =>
+    createElement(
+      "div",
+      {},
+      createElement("canvas", { "aria-label": "Cenário pixel art" }),
+      createElement(
+        "button",
+        { onClick: () => props.onMove(1, 0, 0.05, false) },
+        "Simular movimento",
+      ),
+    ),
 }));
 vi.mock("../../src/lib/app", () => ({ app: { translation: "BLN4" } }));
 vi.mock("../../src/lib/content", () => ({ verse: spies.verse }));
@@ -52,6 +67,7 @@ beforeEach(() => {
 afterEach(() => {
   act(() => root.unmount());
   host.remove();
+  vi.useRealTimers();
 });
 async function render() {
   await act(async () => {
@@ -153,5 +169,55 @@ describe("36 aventuras: interface central", () => {
     );
     expect(host.querySelector(".ca-chapter")).toBeNull();
     expect(spies.save).not.toHaveBeenCalled();
+  });
+  it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
+    await render();
+    await act(async () => {
+      click("Explorar O Primeiro Alvorecer");
+    });
+    await act(async () => {
+      click("Iniciar exploração");
+    });
+    const before = spies.save.mock.calls.length;
+    for (let i = 0; i < 52; i++)
+      await act(async () => {
+        click("Simular movimento");
+        await new Promise((resolve) => setTimeout(resolve, 100));
+      });
+    expect(spies.save.mock.calls.length).toBeGreaterThan(before);
+    const saved = spies.save.mock.calls.at(-1)![0];
+    expect(saved.episodes.creation.steps).toBeGreaterThanOrEqual(45);
+    await act(async () => {
+      click("Simular movimento");
+    });
+    const hidden = vi.spyOn(document, "hidden", "get").mockReturnValue(true);
+    await act(async () => {
+      document.dispatchEvent(new Event("visibilitychange"));
+    });
+    expect(spies.save.mock.calls.at(-1)![0].episodes.creation.steps).toBe(53);
+    hidden.mockRestore();
+  }, 10000);
+  it("oferece recuperação explícita do backup sem começar uma jornada vazia", async () => {
+    const error = Object.assign(new CampaignSaveError("Save danificado"), {
+      recoverable: true,
+    });
+    spies.load.mockRejectedValue(error);
+    const restored = {
+      ...progressWithJourney(emptyProgress(), {
+        ...newJourney("garden"),
+        introduced: true,
+      }),
+      activeEpisodeId: "garden",
+    };
+    spies.recover.mockResolvedValue(restored);
+    await render();
+    expect(host.textContent).toContain("Recuperar cópia de segurança");
+    expect(spies.save).not.toHaveBeenCalled();
+    await act(async () => {
+      click("Recuperar cópia de segurança");
+    });
+    expect(spies.recover).toHaveBeenCalledTimes(1);
+    expect(host.textContent).toContain("O Jardim e a Escolha");
+    expect(host.querySelector('[role="alert"]')).toBeNull();
   });
 });

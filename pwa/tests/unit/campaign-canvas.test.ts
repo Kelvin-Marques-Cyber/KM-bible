@@ -11,7 +11,7 @@ import {
   episodePassage,
   memoryReference,
 } from "../../src/games/chronicles/campaign-bible";
-const {draw,reset} = vi.hoisted(() => ({draw:vi.fn(),reset:vi.fn()}));
+const { draw, reset } = vi.hoisted(() => ({ draw: vi.fn(), reset: vi.fn() }));
 vi.mock("../../src/games/chronicles/campaign-renderer", () => ({
   SCENE_WIDTH: 480,
   SCENE_HEIGHT: 270,
