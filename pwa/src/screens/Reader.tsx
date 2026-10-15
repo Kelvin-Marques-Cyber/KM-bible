@@ -26,6 +26,8 @@ import {
   Columns2,
   X,
   BookOpen,
+  BookCheck,
+  Check,
   ScrollText,
 } from 'lucide-react';
 import { lazy, memo, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
@@ -33,6 +35,7 @@ import { app, fontSize, isFullscreen, isStudy, lineHeight, margins, navigate, re
 import { bibleBook, hasVerse, mapped, modules, toRows, type VerseRow, firstRefOfBook } from '../lib/content';
 import { bookNames, fromId, refId, refLabel, type Ref } from '../lib/domain';
 import { lang, t, tr } from '../lib/i18n';
+import { bibleReading, chapterRead, markChapter } from '../lib/reading-progress';
 import { highlight, highlights as loadHighlights, pref, recordReading, savePlace, setPref, subscribe } from '../lib/store';
 import { Action, ErrorBox, IconButton, Progress, Spinner, copyText, message } from '../components/ui';
 import {
@@ -45,6 +48,7 @@ import {
   openModels,
   openNewNote,
   openOriginal,
+  openReadingProgress,
   openSavedPlaces,
   openTimeline,
   openVerseStudy,
@@ -189,6 +193,7 @@ function Toolbar() {
         {bookNames(lang())[a.passage.book - 1]} {a.passage.chapter}
       </button>
       <IconButton label={t('next')} icon={ChevronRight} onClick={() => stepChapter(1)} />
+      <IconButton label={tr('Progresso de leitura', 'Reading progress', 'Progreso de lectura')} icon={BookCheck} onClick={() => openReadingProgress(a.passage.book)} />
       <IconButton label={t('models')} icon={Box} onClick={() => openModels(a.passage)} />
       <IconButton label={tr('Contexto, temas e teologia', 'Context, themes and theology', 'Contexto, temas y teología')} icon={ScrollText} onClick={() => openVerseStudy(a.passage)} />
       <div className="relative shrink-0">
@@ -402,6 +407,7 @@ export function ReaderPage() {
   const whole = pref('whole_book', false);
   const { loaded, error, reload } = useChapter(a.translation, a.passage.book, a.passage.chapter, whole, a.revision);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [savingRead, setSavingRead] = useState(false);
   const [wide, setWide] = useState(() => window.innerWidth >= 850);
   useEffect(() => {
     const onResize = () => setWide(window.innerWidth >= 850);
@@ -425,6 +431,8 @@ export function ReaderPage() {
   const index = rows.findIndex((r) => r.reference === refId(a.passage));
   const study = isStudy();
   const split = study && pref('split_comments', true) && wide;
+  const readingProgress = bibleReading();
+  const read = chapterRead(a.passage.book, a.passage.chapter);
 
   let reading;
   if (error) reading = <ErrorBox error={error} onRetry={reload} />;
@@ -447,7 +455,18 @@ export function ReaderPage() {
           </aside>
         )}
       </div>
-      {!isFullscreen() && <Progress value={rows.length ? (index + 1) / rows.length : 0} />}
+      {!isFullscreen() && <>
+        <div className="flex shrink-0 items-center justify-between gap-2 border-t border-outline/30 px-3 py-1">
+          <button type="button" aria-pressed={read} disabled={savingRead} className="inline-flex min-h-10 items-center gap-1.5 rounded-lg px-2 text-sm text-primary hover:bg-primary/5 disabled:opacity-50" onClick={async () => {
+            setSavingRead(true);
+            try { await markChapter(a.passage.book, a.passage.chapter, !read); }
+            catch (e) { message(e instanceof Error ? e.message : String(e)); }
+            finally { setSavingRead(false); }
+          }}><Check size={17} aria-hidden />{read ? tr('Capítulo lido', 'Chapter read', 'Capítulo leído') : tr('Marcar capítulo como lido', 'Mark chapter read', 'Marcar capítulo leído')}</button>
+          <button type="button" onClick={() => openReadingProgress(a.passage.book)} className="min-h-10 shrink-0 rounded-lg px-2 text-sm text-muted hover:bg-primary/5" aria-label={tr('Ver progresso na Bíblia', 'View Bible progress', 'Ver progreso de la Biblia')}>{readingProgress.read} / {readingProgress.total}</button>
+        </div>
+        <Progress value={rows.length ? (index + 1) / rows.length : 0} />
+      </>}
     </div>
   );
 }

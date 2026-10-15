@@ -235,15 +235,26 @@ export async function deletePlace(kind: PlaceKind, id: string) {
 // ------------------------------------------------------------ progresso
 const progress = new Map<string, boolean>();
 export async function loadProgress(): Promise<void> {
+  progress.clear();
   for (const row of await getAll<{ id: string; completed: number }>('learning_progress')) {
     progress.set(row.id, row.completed === 1);
   }
 }
 export const isCompleted = (id: string) => progress.get(id) === true;
 export async function completed(id: string, value: boolean): Promise<void> {
-  progress.set(id, value);
+  await completedMany([id], value);
+}
+
+/** Um livro inteiro é salvo numa transação; nunca fica parcialmente marcado. */
+export async function completedMany(ids: readonly string[], value: boolean): Promise<void> {
+  const unique = [...new Set(ids)];
+  const updated_at = Date.now();
+  await write(['learning_progress'], (tx) => {
+    const target = tx.objectStore('learning_progress');
+    for (const id of unique) target.put({ id, completed: value ? 1 : 0, updated_at });
+  });
+  for (const id of unique) progress.set(id, value);
   emit();
-  await put('learning_progress', { id, completed: value ? 1 : 0, updated_at: Date.now() });
 }
 
 // ----------------------------------------------------------- memorização

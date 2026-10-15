@@ -8,6 +8,7 @@ import type { Note } from '../lib/store';
 import type { ModuleInfo } from '../lib/catalog';
 
 const L = {
+  ReadingProgress: lazy(() => import('./ReadingProgress')),
   Search: lazy(() => import('./Search')),
   Settings: lazy(() => import('./Settings')),
   Commentaries: lazy(() => import('./Commentaries')),
@@ -56,6 +57,7 @@ const L = {
 
 export const openSearch = () => openSheet(t('search'), () => <L.Search />);
 export const openSettings = () => openSheet(t('settings'), () => <L.Settings />);
+export const openReadingProgress = (initialBook?: number) => openSheet(tr('Progresso de leitura', 'Reading progress', 'Progreso de lectura'), () => <L.ReadingProgress initialBook={initialBook} />);
 export const choosePassage = (options: { onSelect?: (r: Ref) => void; initial?: Ref; edition?: string } = {}) =>
   openSheet(t('reference'), () => <L.Picker {...options} />);
 export const showPassage = (r: Ref, options: { sourceEdition?: string; end?: Ref } = {}) =>

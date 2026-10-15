@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.reading-progress { height: 6px; appearance: none; border: 0; border-radius: 1rem; overflow: hidden; background: rgb(var(--outline) / .3); color: rgb(var(--primary)); }
+.reading-progress::-webkit-progress-bar { background: rgb(var(--outline) / .3); }
+.reading-progress::-webkit-progress-value { background: rgb(var(--primary)); border-radius: 1rem; }
+.reading-progress::-moz-progress-bar { background: rgb(var(--primary)); border-radius: 1rem; }
+
 :root {
   --surface: 244 239 223;
   --surface-low: 237 232 216;
