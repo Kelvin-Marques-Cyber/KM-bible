@@ -2,7 +2,7 @@
 // O multiplayer remoto será conectado apenas quando houver serviço de salas
 // configurado: não simulamos uma partida em rede num site estático.
 import { ArrowLeft, Award, BookOpen, Check, Dices, RotateCcw, ScrollText, ShieldCheck, Trophy, Users, WifiOff } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import MezuzahBoard3D from '../components/MezuzahBoard3D';
 import {
   LAST_SQUARE, QUESTIONS, answerQuestion, isGameState, rollDie, secureDie,
@@ -29,6 +29,9 @@ export default function MezuzahPage({onBack}:{onBack:()=>void}) {
   const [players,setPlayers]=useState(2);
   const [names,setNames]=useState(['Jogador 1','Jogador 2','Jogador 3','Jogador 4']);
   const [restart,setRestart]=useState(false);
+  const [rolling,setRolling]=useState(false);
+  const rollTimer=useRef<ReturnType<typeof setTimeout>|null>(null);
+  useEffect(()=>()=>{if(rollTimer.current!==null)clearTimeout(rollTimer.current);},[]);
   useEffect(()=>{
     try {
       if(game)localStorage.setItem(STORAGE_KEY,JSON.stringify(game));
@@ -41,8 +44,14 @@ export default function MezuzahPage({onBack}:{onBack:()=>void}) {
   const sorted=useMemo(()=>[...(game?.players??[])].sort((a,b)=>b.score-a.score),[game]);
   const launch=()=>{setGame(startGame(names.slice(0,players)));setRestart(false);};
   const roll=()=>{
-    if(!game||game.status!=='playing'||game.pending)return;
-    setGame(rollDie(game,secureDie()));
+    if(!game||game.status!=='playing'||game.pending||rolling)return;
+    setRolling(true);
+    const value=secureDie();
+    rollTimer.current=setTimeout(()=>{
+      setGame(rollDie(game,value));
+      setRolling(false);
+      rollTimer.current=null;
+    },560);
   };
   const answer=(choice:number)=>{
     if(!game||!game.pending)return;
@@ -50,6 +59,8 @@ export default function MezuzahPage({onBack}:{onBack:()=>void}) {
   };
   const reset=()=>{
     if(!restart){setRestart(true);return;}
+    if(rollTimer.current!==null)clearTimeout(rollTimer.current);
+    rollTimer.current=null;setRolling(false);
     setGame(null);setRestart(false);
   };
 
@@ -130,7 +141,7 @@ export default function MezuzahPage({onBack}:{onBack:()=>void}) {
                           <p className="mt-3 text-xs text-[#ccd6d0]">Referência para conferir: {pending.reference}</p>
                         </div>
                       ) : (
-                        <button type="button" onClick={roll} className="mt-4 flex min-h-14 w-full items-center justify-center gap-3 rounded-xl bg-[#dabb7b] text-lg font-bold text-[#22201a] shadow-lg transition hover:bg-[#f0d9a9]"><Dices size={23}/> Lançar dado</button>
+                        <button type="button" onClick={roll} disabled={rolling} className="mt-4 flex min-h-14 w-full items-center justify-center gap-3 rounded-xl bg-[#dabb7b] text-lg font-bold text-[#22201a] shadow-lg transition hover:bg-[#f0d9a9] disabled:opacity-80"><Dices size={23} className={rolling?'animate-spin':''}/> {rolling?'Lançando dado…':'Lançar dado'}</button>
                       )}
                     </>
                   )}
