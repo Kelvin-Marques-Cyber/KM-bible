@@ -33,6 +33,50 @@ alterações ainda não foram testadas nesta sessão, não foram publicadas no
 `npx playwright test` e inspeção visual em celular e desktop antes de
 publicação. Não substituir a versão online até essa conferência.
 
+## Nova camada de jogo — title screen e atlas (15/10/2026)
+
+O pedido do usuário foi explícito: Crônicas da Aliança **não pode mais começar
+como uma página HTML com cards**. O fluxo do RPG foi efetivamente modificado:
+
+1. **Ao abrir Crônicas**, `GameFront.tsx` mostra um título de jogo sobre um
+   cenário Canvas pixel art animado, com Continuar, Nova jornada / Escolher
+   aventura, O Vale e a Coragem, códice e opções. Não há grade de cards no
+   primeiro contato.
+2. **Atlas da Aliança**: seis regiões selecionáveis posicionadas num mapa
+   Canvas com relevo, litoral, árvores, trilhas e marcadores. Cada região
+   leva a um segundo mapa com seis capítulos selecionáveis por pontos.
+   O jogador entra num capítulo por `Entrar na aventura`.
+3. A partida conserva o motor, os 36 episódios, o piloto e o IndexedDB.
+   Ao usar `Mapa de aventuras`, o jogador retorna ao atlas, não a uma
+   página de blocos HTML.
+4. A HUD da campanha fica agora **dentro do palco**; os controles de toque,
+   a barra de capítulo, o diário recolhível e os diálogos pertencem ao jogo.
+   Novo menu de pausa em pixel art com retomada, missões, códice e atlas.
+   Atalhos `J`, `C`, `Esc`. O piloto preserva sua camada imersiva anterior.
+5. Capa e atlas usam arte Canvas original gerada por código, sem dependência
+   de assets protegidos de Stardew Valley. Música original opcional via
+   WebAudio e suporte a movimento reduzido.
+6. Testes de navegação unitários e testes E2E das 36 campanhas e do piloto
+   foram **adaptados ao novo fluxo**. Os testes anteriores continuam
+   preservados.
+
+Principais arquivos novos: `GameFront.tsx`, `game-front.css`.
+Arquivos modificados: `CampaignChronicles.tsx`, `campaign.css`,
+`tests/unit/campaign-screen.test.ts`,
+`tests/e2e/campaigns.spec.ts` e `tests/e2e/chronicles.spec.ts`.
+
+**Validação ainda pendente:** não foi possível executar Node/Playwright
+contra esta versão atualizada na sessão conectada ao GitHub. O resultado
+`425 unitários / 18 E2E` documentado mais abaixo pertence à versão anterior
+à abertura nova. Portanto, antes de qualquer publicação, execute
+`npx tsc --noEmit`, `npx vitest run`, `npx playwright test` e, por fim,
+`KM_DRY_RUN=1 bash scripts/release.sh` em ambiente preparado. Corrija
+erros encontrados, sem diminuir a suíte. **Não publicar automaticamente.**
+
+O estado de persistência continua em um save por campanha; três slots
+independentes não estão implementados. Não anunciar este recurso como
+concluído.
+
 ## O que está implementado
 
 - **Seis sagas / 36 aventuras compactas**, cada uma com introdução, cenário 2D explorável, movimentação real, colisões, três investigações que exigem proximidade, códice, desafio com novas tentativas, explicação, conclusão e avanço ao próximo capítulo.
