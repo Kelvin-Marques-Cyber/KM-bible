@@ -30,6 +30,7 @@ import { verse } from "../../lib/content";
 import { createCard, showPassage } from "../../screens/open";
 import CampaignCanvas from "./CampaignCanvas";
 import ChroniclesBoot from "./ChroniclesBoot";
+import { useGameSheetAccess } from "./useGameSheetAccess";
 import GameFront, { GameFrontBackdrop } from "./GameFront";
 import CampaignPortrait from "./CampaignPortrait";
 import { CampaignAudio } from "./campaign-audio";
@@ -93,6 +94,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [saved, setSaved] = useState("");
   const [saga, setSaga] = useState(0);
   const [pilot, setPilot] = useState(false);
+  useGameSheetAccess(sheets.length, !pilot);
   const [inAdventure, setInAdventure] = useState(false);
   const [landing, setLanding] = useState<"title" | "world">("title");
   const [menu, setMenu] = useState<JourneyMenu | null>(null);

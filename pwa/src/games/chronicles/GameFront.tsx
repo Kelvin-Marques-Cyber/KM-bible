@@ -5,6 +5,7 @@ import type { CampaignProgress } from './campaign-engine';
 import SaveSlots from './SaveSlots';
 import type { SaveSlot } from './save-slot-key';
 import type { SaveSlotSummary } from './save-slots';
+import { sheets } from '../../lib/app';
 import './game-front.css';
 
 type Screen = 'title' | 'world' | 'chapters' | 'settings' | 'chronicle' | 'saves';
@@ -197,7 +198,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const selectSaga=(n:number)=>{onSaga(n);setChapter(0);setScreen('chapters');};
   const openChapter=(e:ChronicleEpisode)=>onBegin(e.id);
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if(e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !(e.target instanceof Element) || e.target.closest('input,textarea,select,[contenteditable=true]')) return;
+      if(sheets.length || e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !(e.target instanceof Element) || e.target.closest('input,textarea,select,[contenteditable=true]')) return;
       if(e.key==='Tab') {
         const buttons = [...(stage.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])];
         const first = buttons[0], last = buttons.at(-1);
@@ -231,7 +232,9 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   };
   const toggleFullscreen=async()=>{
     try {
-      if(!document.fullscreenElement){await (stage.current?.closest<HTMLElement>('.chronicles-viewport') ?? stage.current)?.requestFullscreen();setFull(true);}
+      // Reader and memorization sheets are siblings of the game viewport.
+      // Keep them in the native fullscreen tree so their existing UI stays visible.
+      if(!document.fullscreenElement){await document.documentElement.requestFullscreen();setFull(true);}
       else {await document.exitFullscreen();setFull(false);}
     }catch { setFull(false); }
   };

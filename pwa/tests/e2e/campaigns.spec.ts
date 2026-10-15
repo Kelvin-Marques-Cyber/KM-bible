@@ -593,3 +593,40 @@ test("consultar a passagem no desafio retorna à escolha sem abrir pausa", async
   await expect(page.getByRole("dialog", { name: "Conclusão da aventura", exact: true })).toBeVisible();
   await expect.poll(async () => (await readSave(page))?.episodes.creation.phase).toBe("complete");
 });
+
+test("tela cheia nativa preserva leitor e foco nas camadas do jogo", async ({ browser, baseURL }) => {
+  // Native fullscreen is exercised in desktop Chromium rather than emulated mobile.
+  const context = await browser.newContext({ baseURL, viewport: { width: 1440, height: 900 }, isMobile: false, hasTouch: false, serviceWorkers: "allow" });
+  const page = await context.newPage();
+  try {
+    await finishOnboarding(page);
+    await waitForVerses(page);
+    await openCampaigns(page);
+    await page.getByRole("navigation", { name: "Menu principal do jogo" }).getByRole("button", { name: "Configurações", exact: true }).click();
+    const fullscreenAvailable = await page.evaluate(() => document.fullscreenEnabled && typeof document.documentElement.requestFullscreen === "function");
+    await page.getByRole("button", { name: "Tela cheia", exact: true }).click();
+    if (fullscreenAvailable)
+      await expect.poll(() => page.evaluate(() => document.fullscreenElement === document.documentElement)).toBe(true);
+    await page.getByRole("button", { name: "Voltar ao menu", exact: true }).click();
+    await startFirstAdventure(page);
+    await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+    await page.getByRole("button", { name: "Abrir diário de missões", exact: true }).click();
+    const journal = page.getByRole("dialog", { name: "Diário da jornada", exact: true });
+    await journal.getByRole("button", { name: "Ler Gênesis 1:1–31", exact: true }).click();
+    const reader = page.getByRole("dialog").last();
+    await expect(reader.getByText("1:31", { exact: true })).toBeVisible();
+    if (fullscreenAvailable)
+      expect(await page.evaluate(() => document.fullscreenElement === document.documentElement)).toBe(true);
+    await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
+    await expect(journal).toBeVisible();
+    await expect.poll(() => journal.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await journal.getByRole("button", { name: "Fechar diário de missões", exact: true }).click();
+    await expect(page.getByRole("application", { name: /RPG pixel art/ })).toBeFocused();
+    if (fullscreenAvailable) {
+      await page.evaluate(() => document.exitFullscreen());
+      await expect.poll(() => page.evaluate(() => document.fullscreenElement === null)).toBe(true);
+    }
+  } finally {
+    await context.close();
+  }
+});

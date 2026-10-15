@@ -11,6 +11,7 @@ import type { Ref } from '../lib/domain';
 import { createCard, showPassage } from './open';
 import { message } from '../components/ui';
 import '../games/chronicles/pilot.css';
+import { useGameSheetAccess } from '../games/chronicles/useGameSheetAccess';
 
 type Panel = 'play' | 'journal' | 'inventory' | 'codex' | 'map' | 'pause' | 'settings' | 'restart';
 const idle = { dx: 0, dy: 0, run: false };
@@ -35,6 +36,7 @@ function Portrait({ dialogue }: { dialogue: Dialogue }) {
 export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games', slot = 1 }: { onBack: () => void; backLabel?: string; slot?: SaveSlot }) {
   useApp();
   const externalOpen = sheets.length > 0;
+  useGameSheetAccess(sheets.length);
   const [game, setGame] = useState<GameState | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
@@ -128,6 +130,7 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games', 
     const target = event.target as HTMLElement;
     if (target.matches('input, textarea, select, [contenteditable="true"]')) return;
     const key = event.key.toLowerCase();
+    if (key === 'escape' && event.repeat) return;
     if (key === 'escape') { event.preventDefault(); event.stopPropagation(); setTouch(idle); setPanel(previous => previous === 'play' ? 'pause' : 'play'); return; }
     if (game && shortcuts[key] && !event.repeat) { event.preventDefault(); event.stopPropagation(); openPanel(shortcuts[key]); return; }
     if (key === 'tab') {
