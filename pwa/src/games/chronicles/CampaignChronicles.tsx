@@ -509,7 +509,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           </section>
         ) : episode && game ? (
           <>
-            <div className="ca-episode-header">
+            <div className="ca-game-layout">
+              <section className="ca-stage" aria-label="Cenário da aventura">
+                <div className="ca-episode-header">
+              <button className="ca-button ca-quit" onClick={() => {void flush();onBack();}}><ArrowLeft size={15}/> Ferramentas e Games</button>
               <button className="ca-button" onClick={select}>
                 <ArrowLeft size={16} />
                 Mapa de aventuras
@@ -558,8 +561,6 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 {music ? "Som ligado" : "Ativar som"}
               </button>
             </div>
-            <div className="ca-game-layout">
-              <section className="ca-stage" aria-label="Cenário da aventura">
                 <div
                   className={"ca-canvas ca-scene-enter" + ((intro || restart || paused || game.dialogue !== null || ((game.phase === "trial" || game.phase === "complete") && !codex)) ? " ca-has-dialog" : "")}
                   key={episode.id}
