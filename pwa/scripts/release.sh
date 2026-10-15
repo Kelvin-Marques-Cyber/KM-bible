@@ -26,10 +26,14 @@ try:
         data = json.loads((aug / f"{n}.json").read_text(encoding="utf-8"))
         if data.get("book") != n or len(data.get("chapters", [])) != expected:
             raise ValueError(f"Livro {n} de Agostinho incompleto")
-    if not any(apol.glob("*.md")) or not (apol / "presbyterian.md").is_file():
-        raise ValueError("Dossies de apologetica ausentes")
-    if len((apol / "presbyterian.md").read_text(encoding="utf-8")) < 3000:
-        raise ValueError("Dossie presbiteriano incompleto")
+    profiles = json.loads((root / "assets/content/apologetica-editorial.json").read_text(encoding="utf-8"))["profiles"]
+    if len(profiles) != 30:
+        raise ValueError("Perfil editorial incompleto")
+    for target, profile in profiles.items():
+        dossier = (apol / f"{target}.md")
+        body = dossier.read_text(encoding="utf-8")
+        if len(body) < 7000 or not all(axis in body for axis in profile["axes"]):
+            raise ValueError(f"Dossie {target} antigo ou incompleto")
     print("no")
 except (OSError, ValueError, KeyError, TypeError):
     print("yes")
