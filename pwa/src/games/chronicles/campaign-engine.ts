@@ -98,6 +98,8 @@ export function validJourney(value:unknown):value is JourneyState {
   if(s.dialogue!==null&&(!Number.isInteger(s.dialogue)||!s.visited.includes(s.dialogue)))return false;
   if(s.phase!=='explore'&&s.visited.length!==3)return false;
   if(s.phase!=='explore'&&s.dialogue!==null)return false;
+  if(s.phase==='explore'&&s.visited.length===3&&s.dialogue===null)return false;
+  if(s.phase==='complete'&&s.attempts<1)return false;
   if(!Number.isSafeInteger(s.attempts)||s.attempts<0||s.attempts>100000||
      !Number.isSafeInteger(s.steps)||s.steps<0||s.steps>100000000)return false;
   if(s.introduced!==undefined&&typeof s.introduced!=='boolean')return false;
@@ -128,4 +130,9 @@ export function progressWithJourney(progress:CampaignProgress,state:JourneyState
 export function beginOrResume(progress:CampaignProgress,id:string):JourneyState {
   if(!byId.has(id))throw new Error('Capítulo desconhecido.');
   return progress.episodes[id]??newJourney(id);
+}
+
+export function nextJourneyEpisode(id: string): ChronicleEpisode | undefined {
+  const index = CAMPAIGN_EPISODES.findIndex(episode => episode.id === id);
+  return index < 0 ? undefined : CAMPAIGN_EPISODES[index + 1];
 }

@@ -62,3 +62,12 @@ Também verificar visualmente no celular o WebGL 3D, o fallback sem WebGL, a rot
 - Interface distingue aventuras compactas de campanha ampliada.
 - Validação desta etapa: `npm run typecheck` aprovado; 25 testes aprovados nos quatro arquivos da interface, piloto e Ferramentas e Games, após geração obrigatória do catálogo/fontes. E2E completo ainda pendente.
 - Próximos arquivos: `campaign-persistence.ts` (backup e recuperação), `CampaignCanvas.tsx` (arte, desempenho e ciclo de vida), testes de todos os 36 fluxos. Nenhuma publicação autorizada ou efetuada.
+
+## Etapa: retomada, backup e verificação das 36 histórias
+
+- Integração inicial enviada em `22edbf5` (o envio usa a conexão autenticada do GitHub quando o Git local não dispõe de credenciais).
+- Checkpoints imediatos em descobertas, introdução, diálogos, respostas e conclusão; debounce de movimento e intervalo de 5 s; pausa, saída e aba oculta também salvam.
+- Gravações sequenciais e snapshots, backup transacional do último save válido, recuperação explícita, exportação e cópia preservada antes de reiniciar save danificado. Nenhuma chave do piloto, Mezuzá ou cartões é reutilizada.
+- 47 testes de motor/persistência cobrem os 36 trajetos reais, investigações, erros/acertos, conclusão, próximo capítulo, leitura e escrita de todos os estados, corrupção, backup e compatibilidade com saves anteriores; os quatro testes de interface também passam (51 no conjunto).
+- Referências e intervalos confrontados com contagens do catálogo bíblico real. Respostas corretas distribuídas nas três posições. Ajustados: provisões da arca no intervalo citado; palavra da aliança no Sinai; contexto da ceia e da fornalha; crucificação/sepultamento no capítulo da ressurreição. Testemunha do prólogo de Noé é um leitor, sem sobrevivente extra inventado.
+- Build de produção compilado; E2E completo e validação seca permanecem pendentes. Próxima etapa: `campaign-renderer.ts`, `CampaignCanvas.tsx`, retratos e áudio opcional, seguidos de testes de navegador.

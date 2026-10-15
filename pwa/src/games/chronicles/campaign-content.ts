@@ -81,11 +81,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem é apresentado como autor da criação?",
       "choices": [
+        "Os primeiros reis",
         "O Senhor Deus",
-        "O acaso como pessoa",
-        "Os primeiros reis"
+        "O acaso como pessoa"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Gênesis começa atribuindo a Deus os céus e a terra."
     },
     "ending": "A história da Bíblia se inicia com a criação, não com um herói humano. O relato culmina na dignidade da vida humana."
@@ -121,11 +121,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que sucede à desobediência no relato?",
       "choices": [
-        "Ruptura e saída do jardim",
         "Construção do templo",
-        "Conquista de Jericó"
+        "Conquista de Jericó",
+        "Ruptura e saída do jardim"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "O capítulo descreve vergonha, consequências e expulsão do jardim."
     },
     "ending": "A narrativa mostra como a transgressão atinge relações, trabalho e vida. Não reescreva suas consequências."
@@ -142,7 +142,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "label": "Gênesis 6:13–22"
     },
     "setting": "flood",
-    "hero": "Uma ajudante anônima (ficção)",
+    "hero": "Leitor do relato de Noé",
     "intro": "Nuvens escuras e madeira empilhada cercam uma tarefa extraordinária. O foco está na ordem dada a Noé e na sua obediência.",
     "stations": [
       {
@@ -154,8 +154,8 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
         "discovery": "Noé recebe ordem de entrar com sua família e preservar seres vivos conforme a instrução."
       },
       {
-        "name": "As primeiras chuvas",
-        "discovery": "O dilúvio não é uma corrida de barcos: a narrativa trata de juízo e preservação."
+        "name": "As provisões",
+        "discovery": "Noé recebe a instrução de reunir alimento para sua família e para os animais (Gênesis 6:21)."
       }
     ],
     "trial": {
@@ -168,7 +168,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Gênesis 6 atribui a obra a Noé, que segue as instruções recebidas."
     },
-    "ending": "A aliança e a preservação atravessam o relato do dilúvio. As tarefas auxiliares do cenário são ficção."
+    "ending": "Noé cumpre o que lhe foi ordenado. A continuação de Gênesis narra o dilúvio, a preservação de sua família e a aliança."
   },
   {
     "id": "babel",
@@ -201,11 +201,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Qual era um objetivo dos construtores?",
       "choices": [
+        "Reconstruir o templo",
         "Fazer um nome para si",
-        "Atravessar o mar Vermelho",
-        "Reconstruir o templo"
+        "Atravessar o mar Vermelho"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Gênesis 11 relata o desejo de construir cidade e torre para não serem dispersos."
     },
     "ending": "A tentativa de exaltação coletiva termina na dispersão; os personagens secundários são narrativos."
@@ -241,11 +241,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Que promessa acompanha o chamado de Abrão?",
       "choices": [
-        "Ser bênção para famílias da terra",
         "Fundar Roma",
-        "Ser faraó do Egito"
+        "Ser faraó do Egito",
+        "Ser bênção para famílias da terra"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Gênesis 12 liga a chamada de Abrão a uma promessa de bênção abrangente."
     },
     "ending": "O caminho continua apesar das incertezas; não se presume que os auxiliares fictícios tenham ouvido o chamado."
@@ -321,11 +321,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem encontra a criança entre os juncos?",
       "choices": [
+        "Uma sacerdotisa de Baal",
         "A filha do faraó",
-        "A rainha Ester",
-        "Uma sacerdotisa de Baal"
+        "A rainha Ester"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Êxodo 2 descreve a descoberta por uma filha do faraó."
     },
     "ending": "A libertação começa em ações de proteção e coragem, antes das grandes manifestações públicas."
@@ -361,11 +361,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que chama atenção de Moisés?",
       "choices": [
-        "Uma sarça em chamas que não se consome",
         "Um navio no deserto",
-        "Uma escada de pedra"
+        "Uma escada de pedra",
+        "Uma sarça em chamas que não se consome"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "A sarça ardente marca o encontro de Moisés com a vocação descrita em Êxodo 3."
     },
     "ending": "A narrativa não apresenta a sarça como objeto mágico controlável pelo jogador."
@@ -441,11 +441,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem conduz o povo na travessia narrada?",
       "choices": [
+        "Saul",
         "Moisés",
-        "Josué como rei",
-        "Saul"
+        "Josué como rei"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Êxodo 14 apresenta Moisés e a intervenção do Senhor diante do mar."
     },
     "ending": "O livramento não é uma habilidade adquirida, mas ação divina na narrativa bíblica."
@@ -470,7 +470,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
         "discovery": "Trovões, relâmpagos, som de trombeta e fumaça acompanham o cenário narrado."
       },
       {
-        "name": "As tábuas",
+        "name": "A palavra da aliança",
         "discovery": "Os mandamentos começam recordando o Senhor que tirou Israel do Egito."
       },
       {
@@ -481,11 +481,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Com que declaração o Decálogo começa?",
       "choices": [
-        "Deus tirou Israel do Egito",
         "Jerusalém já era capital",
-        "Salomão construiu o templo"
+        "Salomão construiu o templo",
+        "Deus tirou Israel do Egito"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Êxodo 20 inicia com a lembrança da libertação do Egito."
     },
     "ending": "A obediência responde ao Deus da aliança, não a uma pontuação produzida por desafios."
@@ -561,11 +561,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem decide permanecer com Noemi?",
       "choices": [
+        "Débora",
         "Rute",
-        "Orfa",
-        "Débora"
+        "Orfa"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Rute 1 descreve o compromisso de Rute com Noemi."
     },
     "ending": "O foco é a fidelidade em meio à vulnerabilidade, não uma idealização da pobreza."
@@ -601,11 +601,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem ajuda Samuel a reconhecer o chamado?",
       "choices": [
-        "Eli",
         "Natã",
-        "Gamaliel"
+        "Gamaliel",
+        "Eli"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Eli instrui Samuel sobre como responder ao Senhor."
     },
     "ending": "Não atribua novas palavras reveladas ao ajudante fictício da exploração."
@@ -681,11 +681,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que Salomão pede principalmente?",
       "choices": [
+        "Riqueza acima de todos",
         "Um coração que saiba discernir",
-        "Vida interminável",
-        "Riqueza acima de todos"
+        "Vida interminável"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "1 Reis 3 relata que a súplica por sabedoria agrada ao Senhor."
     },
     "ending": "A sabedoria régia é apresentada como responsabilidade, e não como superpoder."
@@ -721,11 +721,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quantas pedras Elias utiliza no altar?",
       "choices": [
-        "Doze",
         "Três",
-        "Quarenta"
+        "Quarenta",
+        "Doze"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "1 Reis 18:31 informa que Elias tomou doze pedras."
     },
     "ending": "O monte é cenário de confronto de lealdades; a manifestação divina não é uma mecânica de magia."
@@ -766,7 +766,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
         "Davi"
       ],
       "correct": 0,
-      "explanation": "Isaías 6 apresenta a resposta do profeta: Eis-me aqui, envia-me a mim."
+      "explanation": "Isaías 6 apresenta o profeta dispondo-se a ser enviado pelo Senhor."
     },
     "ending": "A visão pertence ao relato profético; o jogador a observa como narrativa bíblica."
   },
@@ -801,11 +801,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que Daniel propõe comer durante a prova?",
       "choices": [
+        "Pães ázimos e vinho",
         "Legumes e água",
-        "Carne do sacrifício",
-        "Pães ázimos e vinho"
+        "Carne do sacrifício"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Daniel 1:12 registra o pedido de legumes e água."
     },
     "ending": "A identidade no exílio se expressa por decisão e fidelidade, não por superioridade cultural automática."
@@ -818,8 +818,8 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "reference": {
       "b": 27,
       "c": 3,
-      "v": 8,
-      "label": "Daniel 3:8–30"
+      "v": 1,
+      "label": "Daniel 3:1–30"
     },
     "setting": "city",
     "hero": "Um assistente da corte (ficção)",
@@ -841,11 +841,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quais três homens recusam adorar a imagem?",
       "choices": [
-        "Sadraque, Mesaque e Abede-Nego",
         "Pedro, Tiago e João",
-        "Corá, Datã e Abirão"
+        "Corá, Datã e Abirão",
+        "Sadraque, Mesaque e Abede-Nego"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Daniel 3 narra a recusa desses três jovens."
     },
     "ending": "A narrativa centra-se na fidelidade e no livramento; não faz da fornalha um espetáculo jogável."
@@ -921,11 +921,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que Ester solicita antes de ir ao rei?",
       "choices": [
+        "Uma nova torre",
         "Jejum",
-        "Uma corrida de cavalos",
-        "Uma nova torre"
+        "Uma corrida de cavalos"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Ester 4 registra o pedido de jejum por três dias."
     },
     "ending": "O foco está na responsabilidade de Ester e no risco real do ato."
@@ -961,11 +961,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Que três ações Esdras determina em seu coração?",
       "choices": [
-        "Buscar, cumprir e ensinar a Lei",
         "Comprar, vender e conquistar",
-        "Esquecer, fugir e esconder"
+        "Esquecer, fugir e esconder",
+        "Buscar, cumprir e ensinar a Lei"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Esdras 7:10 apresenta busca, prática e ensino da Lei."
     },
     "ending": "O jogo usa leitura e interpretação como desafios, sem inventar conteúdos secretos."
@@ -1041,11 +1041,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Onde o menino Jesus é colocado?",
       "choices": [
+        "No templo de Jerusalém",
         "Numa manjedoura",
-        "Num trono de ouro",
-        "No templo de Jerusalém"
+        "Num trono de ouro"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Lucas 2:7 descreve a manjedoura."
     },
     "ending": "A narrativa distingue os dados do Evangelho das cenografias imaginativas posteriores."
@@ -1081,11 +1081,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem batiza Jesus?",
       "choices": [
-        "João Batista",
         "Pedro",
-        "Nicodemos"
+        "Nicodemos",
+        "João Batista"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Mateus 3 apresenta João batizando Jesus."
     },
     "ending": "O jogo não oferece recriação sacramental; apresenta o testemunho da passagem."
@@ -1161,11 +1161,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que acontece após Jesus repreender o vento?",
       "choices": [
+        "Um templo surge",
         "Grande bonança",
-        "O barco desaparece",
-        "Um templo surge"
+        "O barco desaparece"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Marcos 4:39 descreve que o vento cessou e houve grande bonança."
     },
     "ending": "A história é sobre Jesus, não sobre uma técnica humana de controlar o clima."
@@ -1178,8 +1178,8 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "reference": {
       "b": 42,
       "c": 22,
-      "v": 14,
-      "label": "Lucas 22:14–23"
+      "v": 7,
+      "label": "Lucas 22:7–23"
     },
     "setting": "upper",
     "hero": "Leitor da narrativa",
@@ -1201,11 +1201,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "A que aliança Jesus associa o cálice?",
       "choices": [
-        "À nova aliança",
         "À aliança com Noé apenas",
-        "À construção de Babel"
+        "À construção de Babel",
+        "À nova aliança"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Lucas 22:20 relaciona o cálice à nova aliança."
     },
     "ending": "A ceia é apresentada como ensinamento de Jesus; não é substituída por rituais digitais."
@@ -1223,11 +1223,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     },
     "setting": "garden",
     "hero": "Leitor do testemunho pascal",
-    "intro": "Maria Madalena chega ao sepulcro e encontra a pedra retirada. O texto acompanha o encontro que transforma seu luto.",
+    "intro": "Após a crucificação e a morte de Jesus (João 19:16–30), seu corpo é sepultado. No primeiro dia da semana, Maria Madalena encontra a pedra retirada. O relato acompanha o encontro com Jesus ressuscitado, que transforma seu luto.",
     "stations": [
       {
         "name": "O sepulcro",
-        "discovery": "Maria observa que a pedra foi removida da entrada."
+        "discovery": "Jesus morreu na cruz e foi sepultado (João 19:30–42). Ao chegar ao sepulcro, Maria observa que a pedra foi removida da entrada (João 20:1)."
       },
       {
         "name": "O jardim",
@@ -1281,11 +1281,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Por que a multidão se admira?",
       "choices": [
+        "As moedas mudaram de valor",
         "Ouvem em suas próprias línguas",
-        "O templo desapareceu",
-        "As moedas mudaram de valor"
+        "O templo desapareceu"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Atos 2 apresenta a audição da mensagem em diferentes línguas."
     },
     "ending": "Pentecostes é testemunho da ação do Espírito, não um sistema de poderes do RPG."
@@ -1321,11 +1321,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "O que Estêvão pede em oração por seus agressores?",
       "choices": [
-        "Que a culpa não lhes seja imputada",
         "Que recebam um trono",
-        "Que destruam a cidade"
+        "Que destruam a cidade",
+        "Que a culpa não lhes seja imputada"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Atos 7:60 registra a oração de Estêvão por seus ofensores."
     },
     "ending": "O episódio evita transformar o martírio em espetáculo ou pontuação."
@@ -1401,11 +1401,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Quem é recebido na casa de Cornélio para anunciar a mensagem?",
       "choices": [
+        "Salomão",
         "Pedro",
-        "Moisés",
-        "Salomão"
+        "Moisés"
       ],
-      "correct": 0,
+      "correct": 1,
       "explanation": "Atos 10 relata a ida de Pedro até Cornélio."
     },
     "ending": "O encontro ajuda a compreender a ampliação da comunidade cristã sem apagar o contexto judaico de Pedro."
@@ -1441,11 +1441,11 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
     "trial": {
       "prompt": "Qual era a ocupação de Lídia?",
       "choices": [
-        "Vendedora de púrpura",
         "Pescadora de Cafarnaum",
-        "Soldado romano"
+        "Soldado romano",
+        "Vendedora de púrpura"
       ],
-      "correct": 0,
+      "correct": 2,
       "explanation": "Atos 16:14 identifica Lídia como vendedora de púrpura."
     },
     "ending": "O diálogo oferece contexto de hospitalidade e fé, sem criar palavras atribuídas a Paulo."

@@ -8,7 +8,7 @@ import { createCard, showPassage } from '../../screens/open';
 import CampaignCanvas from './CampaignCanvas';
 import { CAMPAIGN_EPISODES, CAMPAIGN_SAGAS, type ChronicleEpisode } from './campaign-content';
 import { answerJourney, beginOrResume, closeJourneyDialogue, emptyProgress, interactJourney, moveJourney, nearestStation, newJourney, progressWithJourney, type CampaignProgress, type JourneyState } from './campaign-engine';
-import { loadCampaign, saveCampaign } from './campaign-persistence';
+import { CampaignSaveError, exportCampaignArchive, loadCampaign, preserveAndRestartCampaign, recoverCampaign, saveCampaign } from './campaign-persistence';
 import './campaign.css';
 
 const Pilot = lazy(() => import('../../screens/Chronicles'));
@@ -21,6 +21,9 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [progress, setProgress] = useState<CampaignProgress>(emptyProgress);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
+  const [recoverable, setRecoverable] = useState(false);
+  const [recoveryBusy, setRecoveryBusy] = useState(false);
+  const [confirmRecoveryReset, setConfirmRecoveryReset] = useState(false);
   const [saved, setSaved] = useState('');
   const [saga, setSaga] = useState(0);
   const [pilot, setPilot] = useState(false);
@@ -32,6 +35,8 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [busyMemory, setBusyMemory] = useState(false);
   const latest = useRef(progress);
   const ready = useRef(false);
+  const lastSaved = useRef<CampaignProgress | null>(null);
+  const saving = useRef<Promise<void> | null>(null);
   const mounted = useRef(false);
   const memoryLock = useRef(false);
   const scene = useRef<HTMLDivElement>(null);
@@ -42,10 +47,13 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const intro = game?.introduced === false;
 
   const flush = useCallback(async () => {
-    if (!ready.current) return;
+    if (!ready.current || latest.current === lastSaved.current) return;
+    const snapshot = latest.current;
+    if (saving.current) { await saving.current; if (snapshot === lastSaved.current) return; }
     try {
-      await saveCampaign(latest.current);
-      if (mounted.current) setSaved('Progresso salvo neste aparelho');
+      const task = saveCampaign(snapshot); saving.current = task.catch(() => {});
+      await task; lastSaved.current = snapshot;
+      if (mounted.current) { setSaved('Progresso salvo neste aparelho'); setError(''); }
     } catch {
       if (mounted.current) { setSaved('Falha ao salvar'); setError('Não foi possível salvar. Mantenha esta sessão aberta e tente salvar novamente.'); }
     }
@@ -55,12 +63,14 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     let cancelled = false;
     void loadCampaign().then(value => {
       if (cancelled) return;
-      latest.current = value; setProgress(value);
+      latest.current = value; lastSaved.current = value; setProgress(value);
       setSaga(value.selectedSaga ?? 0); ready.current = true;
-    }).catch(e => { if (!cancelled) setError(e instanceof Error ? e.message : String(e)); })
+    }).catch(e => { if (!cancelled) { setError(e instanceof Error ? e.message : String(e)); setRecoverable(e instanceof CampaignSaveError && e.recoverable); } })
       .finally(() => { if (!cancelled) setLoaded(true); });
     return () => { cancelled = true; mounted.current = false; void flush(); };
   }, [flush]);
+  const checkpoint = game ? `${game.episodeId}:${game.visited.join(',')}:${game.phase}:${game.dialogue}:${game.attempts}:${game.introduced}` : 'map';
+  useEffect(() => { if (loaded && ready.current) void flush(); }, [checkpoint, loaded, flush]);
   useEffect(() => {
     if (!loaded || !ready.current) return;
     const timer = setTimeout(() => void flush(), 450);
@@ -108,6 +118,26 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     } catch { message('A passagem precisa estar disponível na Biblioteca. Baixe o livro correspondente e tente novamente.'); }
     finally { memoryLock.current = false; if (mounted.current) setBusyMemory(false); }
   };
+  const recover = async (reset = false) => {
+    if (recoveryBusy) return;
+    setRecoveryBusy(true);
+    try {
+      const next = reset ? await preserveAndRestartCampaign() : await recoverCampaign();
+      latest.current = next; setProgress(next); setSaga(next.selectedSaga ?? 0);
+      ready.current = true; setError(''); setRecoverable(false); setConfirmRecoveryReset(false);
+      setSaved(reset ? 'Cópia anterior preservada; nova jornada criada' : 'Cópia de segurança recuperada');
+    } catch(e) { setError(e instanceof Error ? e.message : String(e)); }
+    finally { if (mounted.current) setRecoveryBusy(false); }
+  };
+  const exportSave = async () => {
+    try {
+      if (ready.current) await flush();
+      const archive = await exportCampaignArchive();
+      const url = URL.createObjectURL(new Blob([archive], {type:'application/json'}));
+      const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'cronicas-da-alianca-aventuras.json'; anchor.click();
+      setTimeout(() => URL.revokeObjectURL(url),1000);
+    } catch { message('Não foi possível exportar o progresso deste aparelho.'); }
+  };
   if (!loaded) return <Spinner />;
   if (pilot) return <Suspense fallback={<Spinner />}><Pilot onBack={() => setPilot(false)} backLabel="Mapa de aventuras" /></Suspense>;
   const near = game ? nearestStation(game) : null;
@@ -116,7 +146,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   return <div className="ca-root scroll-area h-full"><main className="ca-shell">
     <header className="ca-header"><button className="ca-button" onClick={() => { void flush(); onBack(); }}><ArrowLeft size={16} />Ferramentas e Games</button><div><span className="ca-eyebrow">KM-BIBLE · RPG BÍBLICO 2D</span><h2>Crônicas da Aliança</h2></div><div className="ca-total"><strong>{progress.completed.length}/36</strong><span>aventuras concluídas</span></div></header>
     {error && <div role="alert" className="ca-error">{error}{ready.current && <button className="ca-button" onClick={() => void flush()}>Tentar salvar novamente</button>}</div>}
-    {!ready.current ? <p>O save anterior foi preservado. Reabra a área para tentar carregar novamente.</p> : episode && game ? <>
+    {!ready.current ? <section className="ca-codex"><p>O save anterior foi preservado. Você pode exportar uma cópia antes de recuperar ou recomeçar.</p><div className="ca-actions">{recoverable && <button className="ca-button ca-primary" disabled={recoveryBusy} onClick={() => void recover()}>Recuperar cópia de segurança</button>}<button className="ca-button" onClick={() => void exportSave()}>Exportar progresso</button><button className="ca-button" onClick={() => setConfirmRecoveryReset(true)}>Preservar cópia e recomeçar</button></div>{confirmRecoveryReset && <div><p>O progresso atual será arquivado neste aparelho e as 36 aventuras serão reiniciadas. O piloto e os outros jogos continuam preservados.</p><div className="ca-actions"><button className="ca-button" disabled={recoveryBusy} onClick={() => void recover(true)}>Confirmar nova jornada</button><button className="ca-button" onClick={() => setConfirmRecoveryReset(false)}>Cancelar</button></div></div>}</section> : episode && game ? <>
       <div className="ca-episode-header"><button className="ca-button" onClick={select}><ArrowLeft size={16} />Mapa de aventuras</button><div><span className="ca-eyebrow">{CAMPAIGN_SAGAS[episode.saga].title} · {episode.number}/36</span><h3>{episode.title}</h3></div><button className="ca-button" aria-pressed={codex} onClick={() => { setTouch(idle); setCodex(!codex); }}><ScrollText size={16} />Códice {game.visited.length}/3</button><button className="ca-button" onClick={() => { setPaused(!paused); setTouch(idle); void flush(); focusScene(); }}>{paused ? <Play size={16} /> : <Pause size={16} />}{paused ? 'Continuar exploração' : 'Pausar'}</button></div>
       <div className="ca-game-layout">
         <section className="ca-stage" aria-label="Cenário da aventura">
@@ -140,7 +170,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
       <button className="ca-pilot" onClick={() => { void flush(); setPilot(true); }}><span className="ca-pilot-icon">✦</span><div><span className="ca-eyebrow">EPISÓDIO ORIGINAL AMPLIADO · 1 SAMUEL 16–17</span><h3>O Vale e a Coragem</h3><p>Uma campanha mais longa com três mapas, vizinhos, missões, escolhas e inventário. Save independente.</p></div><ChevronRight size={24} /></button>
       <section aria-label="Selecionar saga" className="ca-sagas">{CAMPAIGN_SAGAS.map((item,index) => { const done = progress.completed.filter(id => CAMPAIGN_EPISODES.find(e => e.id === id)?.saga === index).length; return <button key={item.id} style={{'--saga-color':item.color} as React.CSSProperties} className="ca-saga" aria-pressed={saga===index} onClick={() => { setSaga(index); const next = {...latest.current,selectedSaga:index}; latest.current = next; setProgress(next); }}><span className="ca-saga-number">{String(index+1).padStart(2,'0')}</span><div><h3>{item.title}</h3><p>{item.caption}</p><progress value={done} max={6} aria-label={'Progresso de '+item.title} /><span>{done}/6 concluídas</span></div></button>; })}</section>
       <section className="ca-chapters" aria-label={'Capítulos de '+CAMPAIGN_SAGAS[saga].title}><div className="ca-chapter-heading"><div><span className="ca-eyebrow">SAGA {saga+1}</span><h3>{CAMPAIGN_SAGAS[saga].title}</h3></div><p>Todos os capítulos estão disponíveis.</p></div><div className="ca-chapter-grid">{CAMPAIGN_EPISODES.filter(e => e.saga === saga).map(e => { const state=progress.episodes[e.id]; return <button className="ca-chapter" key={e.id} onClick={() => begin(e.id)} aria-label={(state ? 'Continuar ' : 'Explorar ')+e.title}><span className="ca-chapter-top"><span>CAPÍTULO {String(e.number).padStart(2,'0')}</span>{state?.phase === 'complete' && <Check size={18} />}</span><h4>{e.title}</h4><p>{e.reference.label}</p><span className="ca-chapter-bottom">{state?.phase === 'complete' ? 'Revisitar história' : state ? 'Continuar · '+state.visited.length+'/3 descobertas' : 'Iniciar aventura'}<ChevronRight size={16} /></span></button>; })}</div></section>
-      <p className="ca-footnote">Escritura e ficção complementar: a narrativa não altera acontecimentos bíblicos nem oferece milagres como poderes. Cenários e textos autorais ficam disponíveis offline com a instalação da PWA; o texto de cada tradução deve ser baixado na Biblioteca.</p>
+      <button className="ca-button" onClick={() => void exportSave()}>Exportar progresso das aventuras</button><p className="ca-footnote">Escritura e ficção complementar: a narrativa não altera acontecimentos bíblicos nem oferece milagres como poderes. Cenários e textos autorais ficam disponíveis offline com a instalação da PWA; o texto de cada tradução deve ser baixado na Biblioteca.</p>
     </>}
   </main></div>;
 }

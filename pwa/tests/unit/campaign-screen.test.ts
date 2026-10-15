@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import CampaignChronicles from '../../src/games/chronicles/CampaignChronicles';
 import { emptyProgress, newJourney, progressWithJourney } from '../../src/games/chronicles/campaign-engine';
 const spies=vi.hoisted(()=>({load:vi.fn(),save:vi.fn(),verse:vi.fn(),card:vi.fn(),passage:vi.fn(),message:vi.fn()}));
-vi.mock('../../src/games/chronicles/campaign-persistence',()=>({loadCampaign:spies.load,saveCampaign:spies.save}));
+vi.mock('../../src/games/chronicles/campaign-persistence',()=>({loadCampaign:spies.load,saveCampaign:spies.save,CampaignSaveError:class extends Error{},exportCampaignArchive:vi.fn(),recoverCampaign:vi.fn(),preserveAndRestartCampaign:vi.fn()}));
 vi.mock('../../src/games/chronicles/CampaignCanvas',()=>({default:()=>createElement('canvas',{'aria-label':'Cenário pixel art'})}));
 vi.mock('../../src/lib/app',()=>({app:{translation:'BLN4'}}));
 vi.mock('../../src/lib/content',()=>({verse:spies.verse}));
@@ -20,7 +20,7 @@ describe('36 aventuras: interface central',()=>{
     await render();expect(host.querySelectorAll('.ca-saga')).toHaveLength(6);expect(host.querySelectorAll('.ca-chapter')).toHaveLength(6);expect(host.textContent).toContain('0/36');expect(host.textContent).toContain('O Vale e a Coragem');
     const titles=new Set<string>();for(const saga of host.querySelectorAll<HTMLButtonElement>('.ca-saga')){act(()=>saga.click());for(const chapter of host.querySelectorAll('.ca-chapter h4'))titles.add(chapter.textContent!);}expect(titles.size).toBe(36);
     click('Explorar A Cidade da Esperança');expect(host.querySelector('[role=dialog]')?.getAttribute('aria-label')).toBe('Introdução da aventura');click('Iniciar exploração');expect(host.querySelector('[role=dialog]')).toBeNull();expect(host.querySelector('canvas')).not.toBeNull();
-    click('Mapa de aventuras');expect(host.querySelectorAll('.ca-saga')).toHaveLength(6);
+    await act(async()=>{click('Mapa de aventuras');});expect(host.querySelectorAll('.ca-saga')).toHaveLength(6);
   });
   it('retoma capítulo, posição e diálogo já salvo sem reapresentar a introdução',async()=>{
     const journey={...newJourney('creation'),introduced:true,x:5,y:6,visited:[0],dialogue:0};spies.load.mockResolvedValue({...progressWithJourney(emptyProgress(),journey),activeEpisodeId:'creation'});
