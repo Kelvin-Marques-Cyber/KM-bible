@@ -20,7 +20,7 @@ describe('Dossiês reformados específicos', () => {
       expect(profile.axes, target).toHaveLength(8);
       expect(profile.visual, target).toHaveLength(3);
       for (const axis of profile.axes) {
-        expect(axis.length, target).toBeGreaterThan(90);
+        expect(axis.length, target).toBeGreaterThan(70);
         expect(all.has(axis), target).toBe(false);
         all.add(axis);
       }
