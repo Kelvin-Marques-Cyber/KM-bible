@@ -17,6 +17,9 @@ const spies = vi.hoisted(() => ({
   message: vi.fn(),
   recover: vi.fn(),
   restart: vi.fn(),
+  slots: vi.fn(),
+  activate: vi.fn(),
+  overwrite: vi.fn(),
 }));
 vi.mock("../../src/games/chronicles/campaign-persistence", () => ({
   loadCampaign: spies.load,
@@ -25,6 +28,12 @@ vi.mock("../../src/games/chronicles/campaign-persistence", () => ({
   exportCampaignArchive: vi.fn(),
   recoverCampaign: spies.recover,
   preserveAndRestartCampaign: spies.restart,
+}));
+vi.mock("../../src/games/chronicles/save-slots", () => ({
+  readSaveSlots: spies.slots,
+  activateSaveSlot: spies.activate,
+  overwriteSaveSlot: spies.overwrite,
+  exportSaveSlots: vi.fn(),
 }));
 vi.mock("../../src/games/chronicles/CampaignCanvas", () => ({
   default: (props: {
@@ -59,6 +68,9 @@ beforeEach(() => {
   // O teste é de navegação/estado, não de pixels.
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
   spies.load.mockResolvedValue(emptyProgress());
+  spies.slots.mockResolvedValue({ active: 1, slots: [1,2,3].map(id => ({id,status:"empty",completed:0,chapter:"Nova jornada",kind:"campaign",hasPilot:false})) });
+  spies.activate.mockResolvedValue(undefined);
+  spies.overwrite.mockResolvedValue(undefined);
   spies.save.mockResolvedValue(undefined);
   spies.verse.mockResolvedValue({
     text: "No princípio criou Deus os céus e a terra.",
@@ -91,7 +103,7 @@ describe("36 aventuras: interface central", () => {
     await render();
     expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
     expect(host.querySelector(".gf-chapter-pin")).toBeNull();
-    click("Nova jornada");
+    click("Aventuras");
     expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
     click("Escolher saga Origens e Promessa");
     expect(host.querySelectorAll(".gf-chapter-pin")).toHaveLength(6);
@@ -113,7 +125,7 @@ describe("36 aventuras: interface central", () => {
   });
   it("exibe menu de pausa no próprio cenário e retorna à exploração", async () => {
     await render();
-    click("Nova jornada");
+    click("Aventuras");
     click("Escolher saga Origens e Promessa");
     click("Entrar na aventura");
     click("Iniciar exploração");
@@ -128,7 +140,7 @@ describe("36 aventuras: interface central", () => {
     expect(host.textContent).toContain("0/36");
     expect(host.textContent).toContain("O Vale e a Coragem");
     expect(host.querySelectorAll(".gf-chapter-pin")).toHaveLength(0);
-    click("Nova jornada");
+    click("Aventuras");
     expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
     const titles = new Set<string>();
     for (let i=0; i<6; i++) {
@@ -170,7 +182,8 @@ describe("36 aventuras: interface central", () => {
     await render();
     expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
     expect(host.querySelector('[role=dialog]')).toBeNull();
-    click("Continuar aventura");
+    click("Continuar");
+    await act(async () => { click("Selecionar save 1"); });
     expect(host.querySelector("[role=dialog]")?.textContent).toContain(
       "O firmamento",
     );
@@ -198,7 +211,8 @@ describe("36 aventuras: interface central", () => {
       activeEpisodeId: "creation",
     });
     await render();
-    click("Continuar aventura");
+    click("Continuar");
+    await act(async () => { click("Selecionar save 1"); });
     // O botão faz parte do diário recolhível; primeiro abra-o, como um jogador.
     click("Abrir diário de missões");
     expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
@@ -225,7 +239,7 @@ describe("36 aventuras: interface central", () => {
   });
   it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
     await render();
-    click("Nova jornada");
+    click("Aventuras");
     click("Escolher saga Origens e Promessa");
     click("Entrar na aventura");
     await act(async () => {
@@ -270,7 +284,10 @@ describe("36 aventuras: interface central", () => {
       click("Recuperar cópia de segurança");
     });
     expect(spies.recover).toHaveBeenCalledTimes(1);
-    click("Continuar aventura");
+    click("Aventuras");
+    click("Escolher saga Origens e Promessa");
+    click("Continuar O Jardim e a Escolha");
+    click("Continuar capítulo");
     expect(host.textContent).toContain("O Jardim e a Escolha");
     expect(host.querySelector('[role="alert"]')).toBeNull();
   });

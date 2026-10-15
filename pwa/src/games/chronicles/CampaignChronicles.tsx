@@ -49,12 +49,13 @@ import {
 } from "./campaign-engine";
 import {
   CampaignSaveError,
-  exportCampaignArchive,
   loadCampaign,
   preserveAndRestartCampaign,
   recoverCampaign,
   saveCampaign,
 } from "./campaign-persistence";
+import { activateSaveSlot, exportSaveSlots, overwriteSaveSlot, readSaveSlots, type SaveSlotSummary } from "./save-slots";
+import { SAVE_SLOTS, type SaveSlot } from "./save-slot-key";
 import "./campaign.css";
 
 const Pilot = lazy(() => import("../../screens/Chronicles"));
@@ -64,6 +65,12 @@ const idle = { dx: 0, dy: 0, run: false };
 export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [progress, setProgress] = useState<CampaignProgress>(emptyProgress);
   const [loaded, setLoaded] = useState(false);
+  const [slot, setSlot] = useState<SaveSlot>(1);
+  const [slots, setSlots] = useState<SaveSlotSummary[]>([]);
+  const [slotBusy, setSlotBusy] = useState(false);
+  const [recoveryMenu, setRecoveryMenu] = useState(false);
+  const slotRef = useRef<SaveSlot>(1);
+  const slotLock = useRef(false);
   const [error, setError] = useState("");
   const [recoverable, setRecoverable] = useState(false);
   const [recoveryBusy, setRecoveryBusy] = useState(false);
@@ -98,10 +105,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const intro = game?.introduced === false;
   useEffect(() => {
     audio.current?.setActive(
-      music && !hidden && !paused && !intro && !codex && !journalOpen && !pilot && !!episode,
+      music && !hidden && !pilot && (!inAdventure || !paused && !intro && !codex && !journalOpen),
       episode?.saga ?? 0,
     );
-  }, [music, hidden, paused, intro, codex, journalOpen, pilot, episode]);
+  }, [music, hidden, paused, intro, codex, journalOpen, pilot, episode, inAdventure]);
   useEffect(() => {
     const before = previousSound.current;
     if (music && game && before?.episodeId === game.episodeId) {
@@ -148,14 +155,15 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   };
 
   const flush = useCallback(async () => {
-    if (!ready.current || latest.current === lastSaved.current) return;
+    if (!ready.current || latest.current === lastSaved.current) return true;
     const snapshot = latest.current;
+    const saveSlot = slotRef.current;
     if (saving.current) {
       await saving.current;
-      if (snapshot === lastSaved.current) return;
+      if (snapshot === lastSaved.current) return true;
     }
     try {
-      const task = saveCampaign(snapshot);
+      const task = saveCampaign(snapshot, saveSlot);
       saving.current = task.catch(() => {});
       await task;
       lastSaved.current = snapshot;
@@ -163,6 +171,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
         setSaved("Progresso salvo neste aparelho");
         setError("");
       }
+      return true;
     } catch {
       if (mounted.current) {
         setSaved("Falha ao salvar");
@@ -170,13 +179,21 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           "Não foi possível salvar. Mantenha esta sessão aberta e tente salvar novamente.",
         );
       }
+      return false;
     }
   }, []);
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
-    void loadCampaign()
+    void readSaveSlots().then(async catalog => {
+      if (cancelled) return null;
+      slotRef.current = catalog.active;
+      setSlot(catalog.active);
+      setSlots(catalog.slots);
+      return loadCampaign(catalog.active);
+    })
       .then((value) => {
+        if (!value) return;
         if (cancelled) return;
         latest.current = value;
         lastSaved.current = value;
@@ -275,7 +292,9 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setJournalOpen(false);
     setRestart(false);
     setLanding("title");
+    setSaga(next.selectedSaga);
     setInAdventure(true);
+    void activateSaveSlot(slotRef.current, "campaign").catch(() => setError("Não foi possível guardar o espaço ativo. Exporte seu save antes de sair."));
     setTouch(idle);
     focusScene();
   };
@@ -286,7 +305,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setCodex(false);
     setJournalOpen(false);
     setTouch(idle);
-    void flush();
+    void flush().then(() => readSaveSlots()).then(catalog => { if (mounted.current) setSlots(catalog.slots); }).catch(() => {});
   };
   const openRef = (e: ChronicleEpisode) => {
     setPaused(true);
@@ -325,8 +344,8 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setRecoveryBusy(true);
     try {
       const next = reset
-        ? await preserveAndRestartCampaign()
-        : await recoverCampaign();
+        ? await preserveAndRestartCampaign(slotRef.current)
+        : await recoverCampaign(slotRef.current);
       latest.current = next;
       setProgress(next);
       setSaga(next.selectedSaga ?? 0);
@@ -348,9 +367,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const exportSave = async () => {
     try {
       if (ready.current) await flush();
-      const archive = await exportCampaignArchive(
-        ready.current ? latest.current : undefined,
-      );
+      const archive = await exportSaveSlots(ready.current ? { slot: slotRef.current, state: latest.current } : undefined);
       const url = URL.createObjectURL(
         new Blob([archive], { type: "application/json" }),
       );
@@ -363,11 +380,75 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
       message("Não foi possível exportar o progresso deste aparelho.");
     }
   };
+  const chooseSlot = async (id: SaveSlot, overwrite: boolean, resume: boolean): Promise<boolean> => {
+    if (slotLock.current) return false;
+    slotLock.current = true;
+    setSlotBusy(true);
+    if (!await flush()) {
+      slotLock.current = false;
+      setSlotBusy(false);
+      return false;
+    }
+    ready.current = false;
+    slotRef.current = id;
+    setSlot(id);
+    setError("");
+    try {
+      if (overwrite) await overwriteSaveSlot(id);
+      const value = await loadCampaign(id);
+      if (!mounted.current) return false;
+      latest.current = value;
+      lastSaved.current = value;
+      setProgress(value);
+      setSaga(value.selectedSaga ?? 0);
+      await activateSaveSlot(id);
+      const catalog = await readSaveSlots();
+      setSlots(catalog.slots);
+      ready.current = true;
+      setRecoveryMenu(false);
+      setSaved("");
+      setPaused(false);
+      setCodex(false);
+      setJournalOpen(false);
+      setTouch(idle);
+      const summary = catalog.slots.find(s => s.id === id);
+      if (resume && summary?.kind === "pilot") {
+        setInAdventure(false);
+        setPilot(true);
+      } else if (resume) {
+        const episodeId = value.activeEpisodeId ?? Object.values(value.episodes).at(-1)?.episodeId;
+        if (episodeId) begin(episodeId);
+      } else {
+        setInAdventure(false);
+        setLanding("world");
+      }
+      return true;
+    } catch (e) {
+      setError(e instanceof Error ? e.message : String(e));
+      setRecoverable(e instanceof CampaignSaveError && e.recoverable);
+      return false;
+    } finally {
+      slotLock.current = false;
+      if (mounted.current) setSlotBusy(false);
+    }
+  };
+  const openPilot = () => {
+    setTouch(idle);
+    void flush();
+    void activateSaveSlot(slotRef.current, "pilot").catch(() => {});
+    setPilot(true);
+  };
+  const visibleSlots = SAVE_SLOTS.map(id => {
+    const stored = slots.find(s => s.id === id);
+    if (id !== slot || !ready.current) return stored ?? { id, status: "empty", completed: 0, chapter: "Nova jornada", kind: "campaign", hasPilot: false } as SaveSlotSummary;
+    const current = CAMPAIGN_EPISODES.find(e => e.id === progress.activeEpisodeId);
+    return { ...stored, id, status: stored?.status === "damaged" ? "damaged" : stored?.hasPilot || Object.keys(progress.episodes).length ? "saved" : "empty", completed: progress.completed.length, episodeId: current?.id, saga: current?.saga, chapter: stored?.kind === "pilot" ? "O Vale e a Coragem" : current?.title ?? stored?.chapter ?? "Nova jornada", kind: stored?.kind ?? "campaign", hasPilot: stored?.hasPilot ?? false } as SaveSlotSummary;
+  });
   if (!loaded) return <Spinner />;
   if (pilot)
     return (
       <Suspense fallback={<Spinner />}>
-        <Pilot onBack={() => setPilot(false)} backLabel="Mapa de aventuras" />
+        <Pilot slot={slot} onBack={() => { setPilot(false); setInAdventure(false); setLanding("world"); void readSaveSlots().then(catalog => setSlots(catalog.slots)); }} backLabel="Mapa de aventuras" />
       </Suspense>
     );
   const near = game ? nearestStation(game) : null;
@@ -406,7 +487,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     <div
       className={"ca-root h-full" + (inAdventure && episode && game ? " ca-playing" : " ca-front-active")}
       onKeyDown={(event) => {
-        if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+        if (!inAdventure || event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
         if (game?.phase !== "explore" || game.dialogue !== null || intro || restart) return;
         const key = event.key.toLowerCase();
         if (key === "escape") {
@@ -456,7 +537,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
             )}
           </div>
         )}
-        {!ready.current ? (
+        {!ready.current && !slotBusy && !recoveryMenu ? (
           <section className="ca-codex">
             <p>
               O save anterior foi preservado. Você pode exportar uma cópia antes
@@ -475,6 +556,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
               <button className="ca-button" onClick={() => void exportSave()}>
                 Exportar progresso
               </button>
+              <button className="ca-button" onClick={() => setRecoveryMenu(true)}>
+                Escolher outro save
+              </button>
+              <button className="ca-button" onClick={onBack}>Voltar para Ferramentas e Games</button>
               <button
                 className="ca-button"
                 onClick={() => setConfirmRecoveryReset(true)}
@@ -912,6 +997,14 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
         ) : (
           <GameFront
             progress={progress}
+            slots={visibleSlots}
+            activeSlot={slot}
+            slotBusy={slotBusy}
+            onChooseSlot={chooseSlot}
+            sound={music}
+            onSound={() => void toggleAudio()}
+            onReference={openRef}
+            onMemorize={(e) => void memorize(e)}
             saga={saga}
             initialScreen={landing}
             onSaga={(index) => {
@@ -921,7 +1014,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
               setProgress(next);
             }}
             onBegin={(id) => begin(id)}
-            onPilot={() => { void flush(); setPilot(true); }}
+            onPilot={openPilot}
             onBack={() => { void flush(); onBack(); }}
             onExport={() => void exportSave()}
           />

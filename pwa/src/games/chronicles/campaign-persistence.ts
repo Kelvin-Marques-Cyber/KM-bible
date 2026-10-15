@@ -1,4 +1,5 @@
 import { get, requestValue, write } from "../../lib/db";
+import { slotKey, type SaveSlot } from "./save-slot-key";
 import {
   emptyProgress,
   validCampaignProgress,
@@ -25,22 +26,24 @@ export class CampaignSaveError extends Error {
   }
 }
 
-export async function loadCampaign(): Promise<CampaignProgress> {
+export async function loadCampaign(slot: SaveSlot = 1): Promise<CampaignProgress> {
+  const key = slotKey(CAMPAIGN_SAVE_KEY, slot), backupKey = key + ":backup";
   const [current, backup] = await Promise.all([
-    get("meta", CAMPAIGN_SAVE_KEY),
-    get("meta", CAMPAIGN_BACKUP_KEY),
+    get("meta", key),
+    get("meta", backupKey),
   ]);
-  if (validEnvelope(current, CAMPAIGN_SAVE_KEY)) return current.state;
+  if (validEnvelope(current, key)) return current.state;
   if (!current && !backup) return emptyProgress();
   throw new CampaignSaveError(
     "O progresso das aventuras está danificado ou é de outra versão. Nenhum dado foi apagado.",
-    validEnvelope(backup, CAMPAIGN_BACKUP_KEY),
+    validEnvelope(backup, backupKey),
   );
 }
 
 // Serialize writes and snapshot before any await: checkpoints cannot overtake discoveries.
 let pending: Promise<void> = Promise.resolve();
-export function saveCampaign(state: CampaignProgress): Promise<void> {
+export function saveCampaign(state: CampaignProgress, slot: SaveSlot = 1): Promise<void> {
+  const key = slotKey(CAMPAIGN_SAVE_KEY, slot), backupKey = key + ":backup";
   if (!validCampaignProgress(state))
     return Promise.reject(
       new CampaignSaveError(
@@ -51,16 +54,16 @@ export function saveCampaign(state: CampaignProgress): Promise<void> {
   const task = pending.then(() =>
     write(["meta"], async (tx) => {
       const store = tx.objectStore("meta");
-      const previous = await requestValue(store.get(CAMPAIGN_SAVE_KEY));
-      if (previous && !validEnvelope(previous, CAMPAIGN_SAVE_KEY)) {
+      const previous = await requestValue(store.get(key));
+      if (previous && !validEnvelope(previous, key)) {
         throw new CampaignSaveError(
           "O save anterior está danificado. Recupere ou preserve uma cópia antes de recomeçar.",
         );
       }
-      if (validEnvelope(previous, CAMPAIGN_SAVE_KEY))
-        store.put({ ...previous, key: CAMPAIGN_BACKUP_KEY });
+      if (validEnvelope(previous, key))
+        store.put({ ...previous, key: backupKey });
       store.put({
-        key: CAMPAIGN_SAVE_KEY,
+        key,
         state: snapshot,
         savedAt: new Date().toISOString(),
       } satisfies Envelope);
@@ -71,58 +74,62 @@ export function saveCampaign(state: CampaignProgress): Promise<void> {
 }
 
 /** Explicit recovery keeps the damaged envelope in a separate forensic slot. */
-export async function recoverCampaign(): Promise<CampaignProgress> {
+export async function recoverCampaign(slot: SaveSlot = 1): Promise<CampaignProgress> {
+  const key = slotKey(CAMPAIGN_SAVE_KEY, slot), backupKey = key + ":backup", damagedKey = key + ":preserved";
   await pending;
   let recovered = emptyProgress();
   await write(["meta"], async (tx) => {
     const store = tx.objectStore("meta");
-    const previous = await requestValue(store.get(CAMPAIGN_SAVE_KEY));
-    const backup = await requestValue(store.get(CAMPAIGN_BACKUP_KEY));
-    if (!validEnvelope(backup, CAMPAIGN_BACKUP_KEY))
+    const previous = await requestValue(store.get(key));
+    const backup = await requestValue(store.get(backupKey));
+    if (!validEnvelope(backup, backupKey))
       throw new CampaignSaveError(
         "Não há cópia de segurança válida para recuperar.",
       );
     recovered = backup.state;
     if (previous)
       store.put({
-        key: CAMPAIGN_DAMAGED_KEY,
+        key: damagedKey,
         envelope: previous,
         preservedAt: new Date().toISOString(),
       });
-    store.put({ ...backup, key: CAMPAIGN_SAVE_KEY });
+    store.put({ ...backup, key });
   });
   return recovered;
 }
 
 /** Only called after the player confirms; no other game's key is touched. */
-export async function preserveAndRestartCampaign(): Promise<CampaignProgress> {
+export async function preserveAndRestartCampaign(slot: SaveSlot = 1): Promise<CampaignProgress> {
+  const key = slotKey(CAMPAIGN_SAVE_KEY, slot), backupKey = key + ":backup", damagedKey = key + ":preserved";
   await pending;
   const state = emptyProgress();
   await write(["meta"], async (tx) => {
     const store = tx.objectStore("meta");
-    const current = await requestValue(store.get(CAMPAIGN_SAVE_KEY));
-    const backup = await requestValue(store.get(CAMPAIGN_BACKUP_KEY));
+    const current = await requestValue(store.get(key));
+    const backup = await requestValue(store.get(backupKey));
     store.put({
-      key: CAMPAIGN_DAMAGED_KEY,
+      key: damagedKey,
       envelope: current,
       backup,
       preservedAt: new Date().toISOString(),
     });
     store.put({
-      key: CAMPAIGN_SAVE_KEY,
+      key,
       state,
       savedAt: new Date().toISOString(),
     } satisfies Envelope);
-    store.delete(CAMPAIGN_BACKUP_KEY);
+    store.delete(backupKey);
   });
   return state;
 }
 
 export async function exportCampaignArchive(
   session?: CampaignProgress,
+  slot: SaveSlot = 1,
 ): Promise<string> {
   await pending;
-  const keys = [CAMPAIGN_SAVE_KEY, CAMPAIGN_BACKUP_KEY, CAMPAIGN_DAMAGED_KEY];
+  const key = slotKey(CAMPAIGN_SAVE_KEY, slot);
+  const keys = [key, key + ":backup", key + ":preserved"];
   const entries = await Promise.all(keys.map((key) => get("meta", key)));
   return JSON.stringify(
     { format: "km-bible-chronicles", version: 1, entries, session:validCampaignProgress(session)?session:undefined },
@@ -130,3 +137,5 @@ export async function exportCampaignArchive(
     2,
   );
 }
+
+export const waitForCampaignWrites = () => pending;

@@ -2,10 +2,12 @@ import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { ArrowLeft, BookOpen, Check, ChevronRight, Compass, Gamepad2, Map, Play, Settings, Volume2, VolumeX } from 'lucide-react';
 import { CAMPAIGN_EPISODES, CAMPAIGN_SAGAS, type ChronicleEpisode } from './campaign-content';
 import type { CampaignProgress } from './campaign-engine';
-import { CampaignAudio } from './campaign-audio';
+import SaveSlots from './SaveSlots';
+import type { SaveSlot } from './save-slot-key';
+import type { SaveSlotSummary } from './save-slots';
 import './game-front.css';
 
-type Screen = 'title' | 'world' | 'chapters' | 'settings' | 'chronicle';
+type Screen = 'title' | 'world' | 'chapters' | 'settings' | 'chronicle' | 'saves';
 type Props = {
   progress: CampaignProgress;
   saga: number;
@@ -15,12 +17,20 @@ type Props = {
   onBack: () => void;
   onExport: () => void;
   initialScreen?: 'title' | 'world';
+  slots: SaveSlotSummary[];
+  activeSlot: SaveSlot;
+  slotBusy: boolean;
+  onChooseSlot: (slot: SaveSlot, overwrite: boolean, resume: boolean) => Promise<boolean>;
+  sound: boolean;
+  onSound: () => void;
+  onReference: (episode: ChronicleEpisode) => void;
+  onMemorize: (episode: ChronicleEpisode) => void;
 };
 const REGION_POSITIONS = [[21, 34], [45, 21], [72, 32], [80, 67], [45, 78], [16, 69]] as const;
 const CHAPTER_POSITIONS = [[16, 29], [36, 18], [66, 22], [80, 50], [60, 73], [28, 74]] as const;
 
 /** Pixel-art painted behind menus; no external art, font, music or sprite downloads. */
-function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?: number }) {
+export function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?: number }) {
   const node = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = node.current;
@@ -154,25 +164,12 @@ function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?:
   return <canvas ref={node} width={480} height={270} className="gf-pixel-background" aria-hidden="true"/>;
 }
 
-export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,onExport,initialScreen='title'}:Props) {
+export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,onExport,initialScreen='title',slots,activeSlot,slotBusy,onChooseSlot,sound,onSound,onReference,onMemorize}:Props) {
   const [screen,setScreen] = useState<Screen>(initialScreen);
   const [chapter,setChapter] = useState(0);
-  const [sound,setSound] = useState(false);
+  const [saveMode,setSaveMode] = useState<'new' | 'continue'>('continue');
   const [full,setFull] = useState(false);
-  const audio = useRef<CampaignAudio | null>(null);
-  useEffect(()=>()=>{audio.current?.close();audio.current=null;},[]);
-  useEffect(()=>{audio.current?.setActive(sound && !document.hidden,saga);},[sound,saga]);
-  useEffect(()=>{
-    const visibility=()=>audio.current?.setActive(sound && !document.hidden,saga);
-    document.addEventListener('visibilitychange',visibility);
-    return ()=>document.removeEventListener('visibilitychange',visibility);
-  },[sound,saga]);
-  const toggleSound = async()=>{
-    if(sound){audio.current?.close();audio.current=null;setSound(false);return;}
-    const player=new CampaignAudio();
-    if(await player.enable()){audio.current=player;setSound(true);player.setActive(true,saga);}
-    else player.close();
-  };
+  const [codexId,setCodexId] = useState<string | null>(null);
   const stage=useRef<HTMLDivElement>(null);
   const chapters=useMemo(()=>CAMPAIGN_EPISODES.filter(e=>e.saga===saga),[saga]);
   const current = chapters[chapter] ?? chapters[0];
@@ -180,17 +177,24 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const fallback = Object.values(progress.episodes).reverse().find(x=>x.phase!=='complete');
   const toContinue = known?.episodeId ?? fallback?.episodeId ?? null;
   const completed=progress.completed.length;
+  const discoveries = CAMPAIGN_EPISODES.filter(e => progress.episodes[e.id]?.visited.length);
+  const codexEpisode = discoveries.find(e => e.id === codexId) ?? discoveries[0];
+  const openSaves = (mode: 'new' | 'continue') => { setSaveMode(mode); setScreen('saves'); };
+  useEffect(() => { const change = () => setFull(!!document.fullscreenElement); document.addEventListener('fullscreenchange', change); return () => document.removeEventListener('fullscreenchange', change); }, []);
+  useEffect(() => { const target = stage.current?.querySelector<HTMLButtonElement>('[data-primary-menu]'); target?.focus({preventScroll:true}); }, [screen]);
   const selectSaga=(n:number)=>{onSaga(n);setChapter(0);setScreen('chapters');};
   const openChapter=(e:ChronicleEpisode)=>onBegin(e.id);
   useEffect(()=>{
     const key=(e:KeyboardEvent)=>{
       if(document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) return;
       if(e.key==='Escape'){
+        e.preventDefault();e.stopPropagation();
         if(screen==='chapters')setScreen('world');
         else if(screen!=='title')setScreen('title');
         return;
       }
       if(screen==='chapters'){
+        if(document.activeElement instanceof HTMLButtonElement && e.key==='Enter') return;
         if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();setChapter(p=>(p+5)%6);}
         else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();setChapter(p=>(p+1)%6);}
         else if(e.key==='Enter' && document.activeElement===stage.current){e.preventDefault();openChapter(current);}
@@ -201,7 +205,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   },[screen,current]);
   const toggleFullscreen=async()=>{
     try {
-      if(!document.fullscreenElement){await stage.current?.requestFullscreen();setFull(true);}
+      if(!document.fullscreenElement){await (stage.current?.closest<HTMLElement>('.chronicles-viewport') ?? stage.current)?.requestFullscreen();setFull(true);}
       else {await document.exitFullscreen();setFull(false);}
     }catch { setFull(false); }
   };
@@ -220,16 +224,24 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       <h2>Crônicas <span>da Aliança</span></h2>
       <p className="gf-subtitle">Uma aventura bíblica em pixel art · de Gênesis a Apocalipse</p>
       <nav aria-label="Menu principal do jogo" className="gf-main-menu">
-        {toContinue && <button className="gf-menu-action gf-menu-primary" onClick={()=>onBegin(toContinue)}><Play size={19}/> Continuar aventura <ChevronRight size={17}/></button>}
-        <button className={'gf-menu-action'+(!toContinue?' gf-menu-primary':'')} onClick={()=>setScreen('world')}><Compass size={18}/> {toContinue?'Escolher aventura':'Nova jornada'} <ChevronRight size={17}/></button>
-        <button className="gf-menu-action" onClick={onPilot}><Gamepad2 size={18}/> O Vale e a Coragem <ChevronRight size={17}/></button>
-        <button className="gf-menu-action" onClick={()=>setScreen('chronicle')}><BookOpen size={18}/> Códice da jornada <ChevronRight size={17}/></button>
-        <button className="gf-menu-action" onClick={()=>setScreen('settings')}><Settings size={18}/> Opções <ChevronRight size={17}/></button>
+        <button className="gf-menu-action gf-menu-primary" data-primary-menu disabled={!toContinue && !slots.some(s => s.status !== 'empty')} onClick={()=>openSaves('continue')}><Play size={19}/> Continuar <ChevronRight size={17}/></button>
+        <button className="gf-menu-action" onClick={()=>openSaves('new')}><BookOpen size={18}/> Novo jogo <ChevronRight size={17}/></button>
+        <button className="gf-menu-action" onClick={()=>setScreen('world')}><Compass size={18}/> Aventuras <ChevronRight size={17}/></button>
+        <button className="gf-menu-action" onClick={()=>setScreen('chronicle')}><BookOpen size={18}/> Códice <ChevronRight size={17}/></button>
+        <button className="gf-menu-action" onClick={()=>setScreen('settings')}><Settings size={18}/> Configurações <ChevronRight size={17}/></button>
+        <button className="gf-menu-action" onClick={onBack}><ArrowLeft size={18}/> Voltar <ChevronRight size={17}/></button>
       </nav>
+      <button className="gf-pilot-entry" onClick={onPilot}><Gamepad2 size={16}/><span>O Vale e a Coragem<small>Campanha original ampliada</small></span><ChevronRight size={16}/></button>
       <div className="gf-title-foot">WASD / SETAS PARA EXPLORAR <span>✧</span> SAVE AUTOMÁTICO</div>
     </div>}
 
-    {screen==='world' && <div className="gf-map-layer">
+    {screen==='saves' && <SaveSlots mode={saveMode} slots={slots} busy={slotBusy} onBack={()=>setScreen('title')} onChoose={async (id, overwrite, resume) => {
+      const opened = await onChooseSlot(id, overwrite, resume);
+      if (opened && !resume) setScreen('world');
+      return opened;
+    }}/>}
+
+    {screen==='world'  && <div className="gf-map-layer">
       <div className="gf-screen-heading">
         <button className="gf-back" onClick={()=>setScreen('title')}><ArrowLeft size={17}/> Menu principal</button>
         <span>ATLAS DA ALIANÇA</span>
@@ -282,15 +294,17 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       </div>
     </div>}
 
-    {screen==='chronicle'&&<div className="gf-overlay-screen">
-      <button className="gf-back" onClick={()=>setScreen('title')}><ArrowLeft size={17}/> Voltar ao menu</button>
-      <BookOpen size={34} className="gf-large-symbol"/>
-      <h2>O Livro da Jornada</h2>
-      <p>Seus testemunhos e escolhas ficam guardados neste aparelho.</p>
-      <div className="gf-codex-stats"><strong>{completed}<small>/ 36</small></strong><span>capítulos concluídos</span></div>
-      <button className="gf-menu-action gf-menu-primary" onClick={()=>setScreen('world')}><Map size={18}/> Visitar o atlas <ChevronRight size={18}/></button>
-      <button className="gf-menu-action" onClick={onExport}><BookOpen size={18}/> Exportar progresso <ChevronRight size={18}/></button>
-    </div>}
+    {screen==='chronicle'&&<section className="gf-codex-book" aria-label="Códice da jornada">
+      <div className="gf-book-heading"><button className="gf-back" onClick={()=>setScreen('title')}><ArrowLeft size={17}/> Voltar ao menu</button><span>ESPAÇO {activeSlot} · {completed}/36</span><h2>Códice da jornada</h2></div>
+      {codexEpisode ? <div className="gf-book-pages">
+        <nav aria-label="Testemunhos registrados">{discoveries.map(e => <button key={e.id} aria-current={e.id===codexEpisode.id?'page':undefined} onClick={()=>setCodexId(e.id)}><span>{String(e.number).padStart(2,'0')}</span>{e.title}</button>)}</nav>
+        <article><span className="gf-kicker">{codexEpisode.reference.label}</span><h3>{codexEpisode.title}</h3>{progress.episodes[codexEpisode.id].visited.map(i => <section key={i}><h4>{codexEpisode.stations[i].name}</h4><p>{codexEpisode.stations[i].discovery}</p></section>)}
+          <button className="gf-menu-action" onClick={()=>onReference(codexEpisode)}><BookOpen size={17}/> Ler passagem</button>
+          <button className="gf-menu-action" onClick={()=>onMemorize(codexEpisode)}>Criar cartão de memorização</button>
+        </article>
+      </div> : <div className="gf-book-empty"><BookOpen size={40}/><h3>As primeiras páginas esperam por você</h3><p>Investigue lugares no cenário para registrar seus testemunhos neste livro.</p><button className="gf-menu-action gf-menu-primary" onClick={()=>setScreen('world')}>Abrir o atlas <ChevronRight size={17}/></button></div>}
+      <button className="gf-export" onClick={onExport}>Exportar saves e cópias de segurança</button>
+    </section>}
 
     {screen==='settings'&&<div className="gf-overlay-screen">
       <button className="gf-back" onClick={()=>setScreen('title')}><ArrowLeft size={17}/> Voltar ao menu</button>
@@ -298,8 +312,8 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       <h2>Opções do jogo</h2>
       <p>Os capítulos continuam salvos automaticamente neste dispositivo.</p>
       <button className="gf-menu-action" onClick={()=>void toggleFullscreen()}><Gamepad2 size={18}/>{full?'Sair da tela cheia':'Tela cheia'}<ChevronRight size={18}/></button>
-      <button className="gf-menu-action" onClick={()=>void toggleSound()} aria-pressed={sound}>{sound?<Volume2 size={18}/>:<VolumeX size={18}/>} {sound?'Música ambiente: ligada':'Música ambiente: desligada'}<ChevronRight size={18}/></button>
-      <small className="gf-settings-note">Música original sintetizada, sem arquivos externos. A trilha do capítulo é controlada durante a aventura.</small>
+      <button className="gf-menu-action" onClick={onSound} aria-pressed={sound}>{sound?<Volume2 size={18}/>:<VolumeX size={18}/>} {sound?'Som e trilha: ligados':'Som e trilha: desligados'}<ChevronRight size={18}/></button>
+      <small className="gf-settings-note">Música original sintetizada, sem arquivos externos. A preferência acompanha esta sessão e pode ser alterada no menu de pausa. Atalhos: Esc pausa · J missões · I inventário · M mapa · C códice.</small>
     </div>}
   </div>;
 }

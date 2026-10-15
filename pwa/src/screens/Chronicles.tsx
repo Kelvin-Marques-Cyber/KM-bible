@@ -4,6 +4,7 @@ import { createPortal } from 'react-dom';
 import ChroniclesCanvas from '../games/chronicles/ChroniclesCanvas';
 import { activeObjective, BIBLE_REFERENCES, chooseDialogue, CODEX_ENTRIES, createGame, getMap, getQuestJournal, interact, INVENTORY_ITEMS, SAGAS, stepMovement, type GameState } from '../games/chronicles/engine';
 import { loadGame, saveGame } from '../games/chronicles/persistence';
+import type { SaveSlot } from '../games/chronicles/save-slot-key';
 import { app } from '../lib/app';
 import { verse } from '../lib/content';
 import type { Ref } from '../lib/domain';
@@ -16,7 +17,7 @@ const emptyInput = { dx: 0, dy: 0, run: false };
 const reference = (r: (typeof BIBLE_REFERENCES)[number]): Ref => ({ book: r.b, chapter: r.c, verse: r.v });
 
 /** Episode UI only: movement, narrative and rendering remain independent modules. */
-export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }: { onBack: () => void; backLabel?: string }) {
+export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games', slot = 1 }: { onBack: () => void; backLabel?: string; slot?: SaveSlot }) {
   const [game, setGame] = useState<GameState | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
@@ -34,14 +35,14 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
   const audio = useRef<AudioContext | null>(null);
   useEffect(() => {
     let mounted = true;
-    loadGame().then(value => { if (mounted) setGame(value); }).catch(e => { if (mounted) setError(String(e instanceof Error ? e.message : e)); }).finally(() => { if (mounted) setLoaded(true); });
-    return () => { mounted = false; if (latest.current) void saveGame(latest.current).catch(() => {}); };
+    loadGame(slot).then(value => { if (mounted) setGame(value); }).catch(e => { if (mounted) setError(String(e instanceof Error ? e.message : e)); }).finally(() => { if (mounted) setLoaded(true); });
+    return () => { mounted = false; if (latest.current) void saveGame(latest.current, slot).catch(() => {}); };
   }, []);
   useEffect(() => {
     if (!game || !loaded) return;
     setSaved('Salvando…');
     const timer = setTimeout(() => {
-      void saveGame(game).then(() => setSaved('Progresso salvo neste aparelho')).catch(() => { setSaved('Não foi possível salvar'); setError('O armazenamento está indisponível. Continue nesta sessão ou exporte o save antes de sair.'); });
+      void saveGame(game, slot).then(() => setSaved('Progresso salvo neste aparelho')).catch(() => { setSaved('Não foi possível salvar'); setError('O armazenamento está indisponível. Continue nesta sessão ou exporte o save antes de sair.'); });
     }, 400);
     return () => clearTimeout(timer);
   }, [game, loaded]);
@@ -53,7 +54,7 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
     const timer = setInterval(() => {
       const current = latest.current;
       if (!current) return;
-      void saveGame(current).then(() => setSaved('Progresso salvo neste aparelho')).catch(() => {
+      void saveGame(current, slot).then(() => setSaved('Progresso salvo neste aparelho')).catch(() => {
         setSaved('Não foi possível salvar');
         setError('O armazenamento está indisponível. Continue nesta sessão ou exporte o save antes de sair.');
       });
@@ -63,7 +64,7 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
 
   useEffect(() => {
     const stop = () => setTouch(emptyInput);
-    const visibility = () => { setHidden(document.hidden); stop(); if (document.hidden && latest.current) void saveGame(latest.current).catch(() => {}); };
+    const visibility = () => { setHidden(document.hidden); stop(); if (document.hidden && latest.current) void saveGame(latest.current, slot).catch(() => {}); };
     window.addEventListener('pointerup', stop); window.addEventListener('pointercancel', stop); window.addEventListener('blur', stop);
     document.addEventListener('visibilitychange', visibility);
     return () => { window.removeEventListener('pointerup', stop); window.removeEventListener('pointercancel', stop); window.removeEventListener('blur', stop); document.removeEventListener('visibilitychange', visibility); };

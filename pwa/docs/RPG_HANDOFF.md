@@ -6,6 +6,10 @@
 - O atlas preserva o ponteiro do último capítulo, sem apagar a retomada ao navegar.
 - A experiência ocupa o viewport da PWA e mantém o leitor/cartões em camadas superiores.
 - TypeScript e os oito testes de interface conferidos nesta etapa; a validação completa será repetida ao concluir slots e overlays.
+- Três slots independentes foram adicionados para aventuras e piloto. O espaço 1 conserva as chaves v1 originais; os demais usam sufixos de slot.
+- Novo jogo possui confirmação para sobrescrever; ambos os envelopes são arquivados atomicamente antes de reiniciar o espaço escolhido.
+- O menu oferece Continuar, Novo jogo, Aventuras, Códice, Configurações e Voltar. O códice mostra testemunhos reais do slot.
+- Typecheck e 65 testes de motor/persistência/interface aprovados nesta etapa.
 - Não há build Android nesta refatoração. A release online anterior é independente desta UX em andamento.
 
 ## Escopo e base
@@ -81,9 +85,7 @@ contra esta versão atualizada na sessão conectada ao GitHub. O resultado
 `KM_DRY_RUN=1 bash scripts/release.sh` em ambiente preparado. Corrija
 erros encontrados, sem diminuir a suíte. **Não publicar automaticamente.**
 
-O estado de persistência continua em um save por campanha; três slots
-independentes não estão implementados. Não anunciar este recurso como
-concluído.
+Estado daquela etapa: havia um único save por campanha. A continuação descrita no início deste documento acrescenta três slots com compatibilidade das chaves originais.
 
 ## O que está implementado
 
