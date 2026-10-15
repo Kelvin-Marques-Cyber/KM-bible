@@ -20,6 +20,7 @@ import {
   Table2,
 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import ApologeticsVisual from '../components/ApologeticsVisual';
 import { Markdown } from '../components/Markdown';
 import {
   Action,
@@ -553,6 +554,7 @@ export function StudyPage({ study, apologetic: initialMode }: { study: Study; ap
       <h3 className="mt-5 text-[17px] font-semibold leading-snug">
         {modeLabel} · {traditionTitle(study.target)}
       </h3>
+      <ApologeticsVisual target={study.target} />
       <div className="mt-2.5">
         {apologetic ? (
           <Markdown text={study.exposition} className={STUDY_TEXT} />
@@ -906,6 +908,7 @@ export function ReligionCoursePage({ target, apologetic = false }: { target: str
   return (
     <div className="mx-auto max-w-3xl p-[18px]">
       <h3 className="text-[21px] font-semibold leading-snug">{traditionTitles[target] ?? target}</h3>
+      <ApologeticsVisual target={target} />
       <p className="mt-1 text-[15px]">
         {tr(
           'Acervo progressivo: cada assunto oferece exposição, referências, resposta reformada e exame de objeções. A cobertura é limitada aos estudos registrados, com revisão especializada pendente.',
