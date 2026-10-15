@@ -1,4 +1,4 @@
-import { BookOpen, Brain, Download, Globe, Library, NotebookPen, Search, SlidersHorizontal, WifiOff, X } from 'lucide-react';
+import { BookOpen, Download, Gamepad2, Globe, Library, NotebookPen, Search, SlidersHorizontal, WifiOff, X } from 'lucide-react';
 import { lazy, Suspense, useEffect } from 'react';
 import fontInfo from './generated/fonts.json';
 import { app, changeArea, closeSheet, isFullscreen, isStudy, set, sheets, step, useApp } from './lib/app';
@@ -16,7 +16,7 @@ import { choosePassage, openDevotionals, openSearch, openSettings } from './scre
 const ExplorePage = lazy(() => import('./screens/Explore'));
 const LibraryPage = lazy(() => import('./screens/Library'));
 const NotesPage = lazy(() => import('./screens/Notes'));
-const MemoryPage = lazy(() => import('./screens/Memory'));
+const ToolsAndGames = lazy(() => import('./screens/ToolsAndGames'));
 const Onboarding = lazy(() => import('./screens/Onboarding'));
 
 const areas = [
@@ -24,7 +24,7 @@ const areas = [
   { key: 'explore', icon: Globe },
   { key: 'library', icon: Library },
   { key: 'studies', icon: NotebookPen },
-  { key: 'memory', icon: Brain },
+  { key: 'memory', icon: Gamepad2 },
 ] as const;
 
 function useTheme() {
@@ -139,7 +139,7 @@ export function App({ storageWarning }: { storageWarning: string | null }) {
     );
   }
 
-  const page = [<ReaderPage key="r" />, <ExplorePage key="e" />, <LibraryPage key="l" />, <NotesPage key="n" />, <MemoryPage key="m" />][app.area];
+  const page = [<ReaderPage key="r" />, <ExplorePage key="e" />, <LibraryPage key="l" />, <NotesPage key="n" />, <ToolsAndGames key="m" />][app.area];
   return (
     <div className="flex h-full flex-col font-ui" style={{ paddingTop: full ? 'var(--safe-top)' : undefined }}>
       {!full && (
