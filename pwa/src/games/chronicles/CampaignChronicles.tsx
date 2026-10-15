@@ -406,20 +406,22 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     <div
       className={"ca-root scroll-area h-full" + (episode && game ? " ca-playing" : " ca-front-active")}
       onKeyDown={(event) => {
-        if (
-          event.key === "Escape" &&
-          game?.phase === "explore" &&
-          game.dialogue === null &&
-          !intro &&
-          !restart
-        ) {
-          event.stopPropagation();
+        if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
+        if (game?.phase !== "explore" || game.dialogue !== null || intro || restart) return;
+        const key = event.key.toLowerCase();
+        if (key === "escape") {
+          event.preventDefault();event.stopPropagation();
           setTouch(idle);
           if (codex) setCodex(false);
           else if (journalOpen) setJournalOpen(false);
-          else setPaused((value) => !value);
+          else setPaused(value => !value);
           void flush();
           focusScene();
+        } else if (key === "j" || key === "c") {
+          event.preventDefault();event.stopPropagation();setTouch(idle);
+          if (key === "j") {setCodex(false);setJournalOpen(value => !value);}
+          else {setJournalOpen(false);setCodex(value => !value);}
+          void flush();
         }
       }}
     >
@@ -584,18 +586,26 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                     {episode.reference.label}
                     <span>{game.visited.length} de 3 testemunhos</span>
                   </div>
-                  {paused && !intro && (
-                    <div className="ca-pause">
-                      Jornada pausada
-                      <button
-                        className="ca-button ca-primary"
-                        onClick={() => {
-                          setPaused(false);
-                          focusScene();
-                        }}
-                      >
-                        Retomar jornada
-                      </button>
+                  {paused && !intro && game.phase === "explore" && (
+                    <div className="ca-pause" role="dialog" aria-modal="false" aria-label="Menu de pausa">
+                      <span className="ca-pause-icon" aria-hidden="true">✦</span>
+                      <strong>Jornada pausada</strong>
+                      <p>Seu progresso está salvo neste aparelho</p>
+                      <div className="ca-pause-actions">
+                        <button className="ca-button ca-primary" onClick={() => {setPaused(false);focusScene();}}>
+                          <Play size={17}/> Retomar jornada
+                        </button>
+                        <button className="ca-button" onClick={() => {setCodex(false);setJournalOpen(true);}}>
+                          <Compass size={17}/> Missões e testemunhos
+                        </button>
+                        <button className="ca-button" onClick={() => {setJournalOpen(false);setCodex(true);}}>
+                          <ScrollText size={17}/> Abrir códice
+                        </button>
+                        <button className="ca-button" onClick={() => {void flush();select();}}>
+                          <ArrowLeft size={17}/> Voltar ao atlas
+                        </button>
+                      </div>
+                      <small>ESC · Pausar/continuar &nbsp; J · Missões &nbsp; C · Códice</small>
                     </div>
                   )}
                 </div>
