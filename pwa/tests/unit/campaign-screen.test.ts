@@ -90,11 +90,11 @@ describe("36 aventuras: interface central", () => {
   it("mostra o RPG primeiro, usa conversa dentro do cenário e abre o diário apenas sob demanda", async () => {
     await render();
     expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
-    expect(host.querySelector(".ca-chapter")).toBeNull();
+    expect(host.querySelector(".gf-chapter-pin")).toBeNull();
     click("Nova jornada");
-    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
+    expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
     click("Escolher saga Origens e Promessa");
-    expect(host.querySelectorAll(".ca-chapter")).toHaveLength(6);
+    expect(host.querySelectorAll(".gf-chapter-pin")).toHaveLength(6);
     click("Entrar na aventura");
     expect(host.querySelector(".ca-playing")).not.toBeNull();
     expect(host.querySelector(".ca-journal")).toBeNull();
@@ -115,15 +115,15 @@ describe("36 aventuras: interface central", () => {
     await render();
     expect(host.textContent).toContain("0/36");
     expect(host.textContent).toContain("O Vale e a Coragem");
-    expect(host.querySelectorAll(".ca-chapter")).toHaveLength(0);
+    expect(host.querySelectorAll(".gf-chapter-pin")).toHaveLength(0);
     click("Nova jornada");
-    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
+    expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
     const titles = new Set<string>();
     for (let i=0; i<6; i++) {
-      const region=host.querySelectorAll<HTMLButtonElement>(".ca-saga")[i];
+      const region=host.querySelectorAll<HTMLButtonElement>(".gf-region-pin")[i];
       act(() => region.click());
-      expect(host.querySelectorAll(".ca-chapter")).toHaveLength(6);
-      for (const chapter of host.querySelectorAll(".ca-chapter small"))
+      expect(host.querySelectorAll(".gf-chapter-pin")).toHaveLength(6);
+      for (const chapter of host.querySelectorAll(".gf-chapter-pin small"))
         titles.add(chapter.textContent!);
       click("Atlas das sagas");
     }
@@ -140,7 +140,7 @@ describe("36 aventuras: interface central", () => {
     await act(async () => {
       click("Mapa de aventuras");
     });
-    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
+    expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
   });
   it("retoma capítulo, posição e diálogo já salvo sem reapresentar a introdução", async () => {
     const journey = {
@@ -204,7 +204,7 @@ describe("36 aventuras: interface central", () => {
     expect(host.querySelector("[role=alert]")?.textContent).toContain(
       "Nenhum dado foi apagado",
     );
-    expect(host.querySelector(".ca-chapter")).toBeNull();
+    expect(host.querySelector(".gf-chapter-pin")).toBeNull();
     expect(spies.save).not.toHaveBeenCalled();
   });
   it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
