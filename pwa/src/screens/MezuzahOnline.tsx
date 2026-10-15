@@ -64,7 +64,11 @@ export default function MezuzahOnline({onBack}:{onBack:()=>void}){
     ws.onmessage=event=>{
       let data:Record<string,unknown>;
       try{data=JSON.parse(String(event.data)) as Record<string,unknown>;}catch{return;}
-      if(data.type==='error'){setError(String(data.message||'Erro no servidor.'));return;}
+      if(data.type==='error'){
+        setError(String(data.message||'Erro no servidor.'));
+        if(!identity){setStatus('idle');ws.close();}
+        return;
+      }
       if(data.type==='welcome'&&typeof data.id==='string'&&typeof data.token==='string'&&typeof data.code==='string'){
         const value={id:data.id,token:data.token,code:data.code};
         setIdentity(value);
