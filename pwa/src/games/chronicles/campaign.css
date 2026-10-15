@@ -1283,3 +1283,49 @@
   max-width:680px;
   margin:70px auto 0;
 }
+
+
+/* The pause menu belongs to the game, not a browser-style modal. */
+.ca-playing .ca-pause {
+  z-index:17;
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  text-align:center;
+  background:linear-gradient(180deg,#08171bdc,#0a1c1be5);
+  backdrop-filter:blur(3px);
+  color:#f5e1b4;
+  padding:14px;
+}
+.ca-playing .ca-pause-icon {font-size:33px;color:#ebc789;line-height:1;filter:drop-shadow(0 0 8px #f3d296);}
+.ca-playing .ca-pause strong {font:800 clamp(23px,4vw,39px)/1.2 Georgia,serif;text-shadow:0 4px 9px #000d;}
+.ca-playing .ca-pause p {font:500 12px/1.5 ui-sans-serif,system-ui,sans-serif;color:#cfd4b7;}
+.ca-playing .ca-pause small {font:600 10px/1.4 ui-sans-serif,system-ui,sans-serif;color:#e6d3ac;letter-spacing:.02em;}
+.ca-playing .ca-pause-actions {display:grid;gap:8px;max-width:360px;width:100%;margin:12px 0;}
+.ca-playing .ca-pause-actions .ca-button {
+  justify-content:flex-start;
+  min-height:44px;
+  width:100%;
+  padding:10px 15px;
+  border-radius:6px;
+  border:2px solid #e6cd9a88;
+  background:#183532;
+  color:#f6e3ba;
+  box-shadow:0 5px 14px #0007;
+  font:700 13px ui-sans-serif,system-ui,sans-serif;
+}
+.ca-playing .ca-pause-actions .ca-primary {
+  background:#e4c487!important;
+  border-color:#ffebba!important;
+  color:#1b2d24!important;
+}
+.ca-playing .ca-pause-actions .ca-button:hover {filter:brightness(1.13);}
+@media(max-width:700px){
+  .ca-playing .ca-pause-actions {margin:5px 0;max-width:290px;gap:5px;}
+  .ca-playing .ca-pause-actions .ca-button {min-height:40px;padding:8px 12px;}
+  .ca-playing .ca-pause small {font-size:9px;}
+}
