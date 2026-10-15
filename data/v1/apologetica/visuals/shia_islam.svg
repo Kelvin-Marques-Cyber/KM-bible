@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Santuário xiita</title><desc id="desc">Ilustração editorial, não fotografia. Santuário de cúpula e arcos em contexto islâmico xiita, ilustração editorial</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#17364a"/><stop offset="1" stop-color="#8fb8b1"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8cba2"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e8cba2" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#17364a" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#17364a" opacity=".7"/><path d="M304 302h592v124H304z" fill="#17364a"/><path d="M416 297a184 174 0 0 1 368 0Z" fill="#e8cba2"/><path d="M597 121v-30" stroke="#17364a" stroke-width="11"/><path d="M218 130h60v295h-60zM208 128h80l-40-90Z" fill="#17364a"/><path d="M922 130h60v295h-60zM912 128h80l-40-90Z" fill="#17364a"/><path d="M370 420v-100a32 32 0 0 1 64 0v100Z" fill="#e8cba2"/><path d="M500 420v-100a32 32 0 0 1 64 0v100Z" fill="#e8cba2"/><path d="M630 420v-100a32 32 0 0 1 64 0v100Z" fill="#e8cba2"/><path d="M760 420v-100a32 32 0 0 1 64 0v100Z" fill="#e8cba2"/></g>
+<path d="M62 535H1138" stroke="#17364a" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#17364a" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#17364a">Santuário xiita</text>
+</svg>

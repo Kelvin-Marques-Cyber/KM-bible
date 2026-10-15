@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Sinagoga e rolos da Torá</title><desc id="desc">Ilustração editorial, não fotografia. Arco de sinagoga e rolos da Torá, ilustração editorial</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3d3144"/><stop offset="1" stop-color="#a8a0c3"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e2c7a4"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e2c7a4" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#3d3144" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#3d3144" opacity=".7"/><path d="M260 265h680v165H260z" fill="#3d3144"/><path d="M245 265l355-135 355 135Z" fill="#e2c7a4"/><path d="M340 406V318a26 26 0 0 1 52 0v88Z" fill="#e2c7a4"/><path d="M462 406V318a26 26 0 0 1 52 0v88Z" fill="#e2c7a4"/><path d="M684 406V318a26 26 0 0 1 52 0v88Z" fill="#e2c7a4"/><path d="M810 406V318a26 26 0 0 1 52 0v88Z" fill="#e2c7a4"/><circle cx="600" cy="220" r="42" fill="#f2e6cf" opacity=".76"/></g>
+<path d="M62 535H1138" stroke="#3d3144" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#3d3144" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#3d3144">Sinagoga e rolos da Torá</text>
+</svg>

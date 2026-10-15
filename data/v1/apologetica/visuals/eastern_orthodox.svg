@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Igreja ortodoxa e ícone</title><desc id="desc">Ilustração editorial, não fotografia. Cúpulas e iconóstase na tradição cristã oriental, representação editorial</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#243a34"/><stop offset="1" stop-color="#a9b28c"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e1ceaf"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e1ceaf" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#243a34" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#243a34" opacity=".7"/><path d="M315 294h570v132H315z" fill="#243a34"/><path d="M320 295Q296 258 390 182Q484 258 460 295Z" fill="#e1ceaf"/><path d="M390 157v-45m-14 14h28" stroke="#243a34" stroke-width="10"/><path d="M530 295Q506 258 600 123Q694 258 670 295Z" fill="#e1ceaf"/><path d="M600 98v-45m-14 14h28" stroke="#243a34" stroke-width="10"/><path d="M740 295Q716 258 810 182Q904 258 880 295Z" fill="#e1ceaf"/><path d="M810 157v-45m-14 14h28" stroke="#243a34" stroke-width="10"/><rect x="360" y="253" width="32" height="170" rx="4" fill="#e1ceaf"/><path d="M354 253h44v12h-44zM352 405h48v15h-48z" fill="#243a34"/><rect x="480" y="253" width="32" height="170" rx="4" fill="#e1ceaf"/><path d="M474 253h44v12h-44zM472 405h48v15h-48z" fill="#243a34"/><rect x="690" y="253" width="32" height="170" rx="4" fill="#e1ceaf"/><path d="M684 253h44v12h-44zM682 405h48v15h-48z" fill="#243a34"/><rect x="810" y="253" width="32" height="170" rx="4" fill="#e1ceaf"/><path d="M804 253h44v12h-44zM802 405h48v15h-48z" fill="#243a34"/></g>
+<path d="M62 535H1138" stroke="#243a34" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#243a34" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#243a34">Igreja ortodoxa e ícone</text>
+</svg>

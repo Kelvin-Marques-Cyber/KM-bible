@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Biblioteca e debate humanista</title><desc id="desc">Ilustração editorial, não fotografia. Biblioteca e esfera de debate público, composição editorial</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#3d3144"/><stop offset="1" stop-color="#a8a0c3"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e2c7a4"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e2c7a4" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#3d3144" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#3d3144" opacity=".7"/><rect x="290" y="225" width="60" height="195" rx="5" fill="#3d3144"/><rect x="360" y="200" width="66" height="220" rx="5" fill="#e2c7a4"/><rect x="438" y="236" width="75" height="184" rx="5" fill="#3d3144"/><rect x="525" y="160" width="64" height="260" rx="5" fill="#e2c7a4"/><rect x="602" y="210" width="85" height="210" rx="5" fill="#3d3144"/><rect x="699" y="186" width="61" height="234" rx="5" fill="#e2c7a4"/><rect x="776" y="236" width="68" height="184" rx="5" fill="#3d3144"/><path d="M260 420h650v24H260Z" fill="#3d3144"/></g>
+<path d="M62 535H1138" stroke="#3d3144" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#3d3144" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#3d3144">Biblioteca e debate humanista</text>
+</svg>

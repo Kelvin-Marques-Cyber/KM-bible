@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Capela metodista</title><desc id="desc">Ilustração editorial, não fotografia. Capela histórica metodista com janelas alongadas, ilustração editorial</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#293d4e"/><stop offset="1" stop-color="#b4bbc4"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e6d4ad"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e6d4ad" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#293d4e" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#293d4e" opacity=".7"/><path d="M310 145h115v280H310Z" fill="#e6d4ad"/><path d="M300 150l68-86 68 86Z" fill="#293d4e"/><path d="M400 275h480v150H400Z" fill="#293d4e"/><path d="M380 279l260-130 260 130Z" fill="#e6d4ad"/><path d="M510 400v-91a25 25 0 0 1 50 0v91Z" fill="#e6d4ad"/><path d="M635 400v-91a25 25 0 0 1 50 0v91Z" fill="#e6d4ad"/><path d="M760 400v-91a25 25 0 0 1 50 0v91Z" fill="#e6d4ad"/><path d="M364 63v-42m-15 14h30" stroke="#e6d4ad" stroke-width="11"/></g>
+<path d="M62 535H1138" stroke="#293d4e" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#293d4e" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#293d4e">Capela metodista</text>
+</svg>

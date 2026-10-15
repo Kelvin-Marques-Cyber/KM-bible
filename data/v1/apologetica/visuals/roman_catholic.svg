@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+<title id="title">Basílica de São Pedro</title><desc id="desc">Ilustração editorial, não fotografia. Fachada e cúpula de uma basílica católica, em ilustração arquitetônica</desc>
+<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#17364a"/><stop offset="1" stop-color="#8fb8b1"/></linearGradient>
+<linearGradient id="ground" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#e8cba2"/><stop offset="1" stop-color="#d5b58b"/></linearGradient></defs>
+<rect width="1200" height="675" fill="url(#sky)"/>
+<circle cx="980" cy="115" r="95" fill="#e8cba2" opacity=".13"/>
+<path d="M0 420Q250 345 490 418T1200 396V675H0Z" fill="url(#ground)"/>
+<path d="M0 472Q350 442 590 476T1200 450" fill="none" stroke="#17364a" stroke-width="8" opacity=".23"/>
+<g transform="translate(0 17)" opacity=".98"><path d="M138 423H1062V452H138Z" fill="#17364a" opacity=".7"/><path d="M300 250h600v175H300z" fill="#17364a"/><path d="M480 241a120 120 0 0 1 240 0Z" fill="#e8cba2"/><rect x="584" y="140" width="32" height="96" fill="#e8cba2"/><path d="M400 248l200-96 200 96Z" fill="#e8cba2" stroke="#17364a" stroke-width="10"/><rect x="347" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M341 253h44v12h-44zM339 405h48v15h-48z" fill="#17364a"/><rect x="448" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M442 253h44v12h-44zM440 405h48v15h-48z" fill="#17364a"/><rect x="550" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M544 253h44v12h-44zM542 405h48v15h-48z" fill="#17364a"/><rect x="651" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M645 253h44v12h-44zM643 405h48v15h-48z" fill="#17364a"/><rect x="752" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M746 253h44v12h-44zM744 405h48v15h-48z" fill="#17364a"/><rect x="843" y="253" width="32" height="170" rx="4" fill="#e8cba2"/><path d="M837 253h44v12h-44zM835 405h48v15h-48z" fill="#17364a"/></g>
+<path d="M62 535H1138" stroke="#17364a" opacity=".3" stroke-width="2"/>
+<text x="75" y="583" font-size="23" font-family="serif" fill="#17364a" letter-spacing="2">BÍBLIA REFORMADA · ATLAS DE TRADIÇÕES</text>
+<text x="75" y="627" font-size="36" font-family="serif" fill="#17364a">Basílica de São Pedro</text>
+</svg>
