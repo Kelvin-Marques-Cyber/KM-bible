@@ -55,6 +55,7 @@ export default function MezuzahOnline({onBack}:{onBack:()=>void}){
     let ws:WebSocket;
     try{ws=new WebSocket(target);}catch{setStatus('disconnected');setError('Endereço de servidor inválido.');return;}
     socket.current=ws;
+    let authenticated=false;
     ws.onopen=()=>{
       const action=operation==='resume'&&saved.current?
         {type:'resume',code:saved.current.code,token:saved.current.token}:
@@ -66,10 +67,11 @@ export default function MezuzahOnline({onBack}:{onBack:()=>void}){
       try{data=JSON.parse(String(event.data)) as Record<string,unknown>;}catch{return;}
       if(data.type==='error'){
         setError(String(data.message||'Erro no servidor.'));
-        if(!identity){setStatus('idle');ws.close();}
+        if(!authenticated){setStatus('idle');ws.close();}
         return;
       }
       if(data.type==='welcome'&&typeof data.id==='string'&&typeof data.token==='string'&&typeof data.code==='string'){
+        authenticated=true;
         const value={id:data.id,token:data.token,code:data.code};
         setIdentity(value);
         saved.current={url:target,code:value.code,token:value.token};
