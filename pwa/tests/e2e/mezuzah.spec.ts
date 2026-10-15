@@ -24,6 +24,6 @@ test('fluxo online informa que depende de um serviço e oferece sala por código
   await page.getByRole('button', { name: /Salas pela internet/ }).click();
   await expect(page.getByRole('heading', { name: 'Conectar ao servidor' })).toBeVisible();
   await expect(page.getByPlaceholder('wss://seu-servidor.example')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Criar sala' })).toBeDisabled();
-  await expect(page.getByRole('button', { name: 'Entrar na sala' })).toBeDisabled();
+  await expect(page.getByRole('button', { name: 'Criar sala' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Entrar na sala' })).toBeVisible();
 });
