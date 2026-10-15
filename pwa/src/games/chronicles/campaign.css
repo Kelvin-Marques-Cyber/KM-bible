@@ -1210,3 +1210,45 @@
 @media(prefers-reduced-motion:reduce){
   .chron-pilot .chron-pilot-controls button:active{transform:none;}
 }
+
+
+/* Menus do piloto como inventário/diário de RPG, não páginas HTML abaixo do jogo. */
+.chron-pilot section[aria-label="Diário de missões"],
+.chron-pilot section[aria-label="Bolsa de Neri"],
+.chron-pilot section[aria-label="Códice dos Testemunhos"],
+.chron-pilot section[aria-label="Mapa do episódio"] {
+  position: fixed;
+  z-index: 28;
+  right: max(10px, env(safe-area-inset-right));
+  top: max(12px, env(safe-area-inset-top));
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(560px, calc(100vw - 20px));
+  max-height: calc(100dvh - 24px);
+  overflow-y: auto;
+  margin: 0;
+  padding: 18px;
+  border: 2px solid #d9bd83ad;
+  border-radius: 12px;
+  background: linear-gradient(155deg,#1a3432fb,#132527fc);
+  box-shadow: -16px 10px 65px #000d;
+  scrollbar-width: thin;
+  scrollbar-color: #cbaa77 #183231;
+}
+.chron-pilot section[aria-label="Diário de missões"] > .grid,
+.chron-pilot section[aria-label="Bolsa de Neri"] > .grid,
+.chron-pilot section[aria-label="Códice dos Testemunhos"] > .grid,
+.chron-pilot section[aria-label="Mapa do episódio"] > .grid {
+  grid-template-columns: minmax(0,1fr) !important;
+}
+@media (max-width: 700px) {
+  .chron-pilot section[aria-label="Diário de missões"],
+  .chron-pilot section[aria-label="Bolsa de Neri"],
+  .chron-pilot section[aria-label="Códice dos Testemunhos"],
+  .chron-pilot section[aria-label="Mapa do episódio"] {
+    top: max(8px, env(safe-area-inset-top));
+    bottom: max(8px, env(safe-area-inset-bottom));
+    right: 6px;
+    width: calc(100vw - 12px);
+    max-height: calc(100dvh - 16px);
+  }
+}
