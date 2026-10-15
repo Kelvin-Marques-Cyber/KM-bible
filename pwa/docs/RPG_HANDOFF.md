@@ -48,6 +48,11 @@ essas entregas.
   O prólogo da criação e o jardim não recebem testemunhas humanas
   fictícias. O movimento reduzido mantém posições imóveis. O motor e os
   envelopes de save permanecem intocados.
+- `CampaignCanvas.tsx`: ao abrir pausa, códice ou diálogos, congela o
+  relógio visual e limita o redesenho do cenário a aproximadamente 1 FPS,
+  reduzindo consumo de bateria no celular. A simulação já estava suspensa
+  durante os menus; `tests/unit/campaign-canvas.test.ts` verifica também
+  que o tempo da animação fica congelado.
 - `tests/unit/campaign-ambient.test.ts`: garante ausência de habitantes
   inventados nos prólogos, população restrita a lugares plausíveis,
   posições determinísticas e limite de cinco atores por capítulo.
