@@ -1,0 +1,45 @@
+name: Crônicas da Aliança — validar PWA
+
+on:
+  push:
+    branches: [flutter-web-fiel]
+    paths:
+      - 'pwa/src/**'
+      - 'pwa/tests/**'
+      - 'pwa/package.json'
+      - 'pwa/package-lock.json'
+      - 'pwa/vite.config.ts'
+      - '.github/workflows/cronicas-pwa.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cronicas-pwa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  frontend:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    defaults:
+      run:
+        working-directory: pwa
+    steps:
+      - name: Conferir fontes
+        uses: actions/checkout@v4
+      - name: Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: pwa/package-lock.json
+      - name: Instalar dependências determinísticas
+        run: npm ci --no-audit --no-fund
+      - name: Validar TypeScript
+        run: npx tsc --noEmit
+      - name: Executar testes unitários completos
+        run: npx vitest run
+      - name: Compilar aplicação de produção sem publicar
+        run: npm run build:app
