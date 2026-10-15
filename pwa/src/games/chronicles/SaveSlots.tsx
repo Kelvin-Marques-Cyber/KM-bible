@@ -1,5 +1,5 @@
 import { ArrowLeft, BookOpen, ChevronRight } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CAMPAIGN_SAGAS } from './campaign-content';
 import { SAVE_SLOTS, type SaveSlot } from './save-slot-key';
 import type { SaveSlotSummary } from './save-slots';
@@ -14,16 +14,40 @@ type Props = {
 export default function SaveSlots({ mode, slots, busy, onBack, onChoose }: Props) {
   const [confirm, setConfirm] = useState<SaveSlot | null>(null);
   const [error, setError] = useState('');
+  const screen = useRef<HTMLElement>(null);
+  const choosing = useRef(false);
+  const previousConfirmation = useRef<SaveSlot | null>(null);
+  useEffect(() => {
+    const before = previousConfirmation.current;
+    const target = confirm
+      ? screen.current?.querySelector<HTMLButtonElement>('.gf-save-confirm button:last-child')
+      : before ? screen.current?.querySelector<HTMLButtonElement>(`[aria-label="Selecionar save ${before}"]`)
+        : screen.current?.querySelector<HTMLButtonElement>('.gf-save-book:not(:disabled)');
+    target?.focus({preventScroll:true});
+    previousConfirmation.current = confirm;
+  }, [confirm]);
   const choose = async (id: SaveSlot, overwrite = false) => {
-    if (busy) return;
+    if (busy || choosing.current) return;
+    choosing.current = true;
     setError('');
     try {
       if (!await onChoose(id, overwrite, mode === 'continue')) setError('Não foi possível abrir este save. Seus dados foram preservados.');
     } catch {
       setError('Não foi possível abrir o armazenamento. Tente novamente.');
-    }
+    } finally { choosing.current = false; }
   };
-  return <section className="gf-save-screen" aria-label="Espaços de save">
+  return <section ref={screen} className="gf-save-screen" aria-label="Espaços de save" onKeyDown={event => {
+    if (!confirm) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();event.stopPropagation();
+      if (!busy) setConfirm(null);
+    } else if (event.key === 'Tab') {
+      const buttons = [...(screen.current?.querySelectorAll<HTMLButtonElement>('.gf-save-confirm button:not(:disabled)') ?? [])];
+      const first = buttons[0], last = buttons.at(-1);
+      if (event.shiftKey && document.activeElement === first) {event.preventDefault();last?.focus();}
+      else if (!event.shiftKey && document.activeElement === last) {event.preventDefault();first?.focus();}
+    }
+  }}>
     <button className="gf-back" disabled={busy} onClick={confirm ? () => setConfirm(null) : onBack}><ArrowLeft size={17}/>{confirm ? 'Cancelar sobrescrita' : 'Menu principal'}</button>
     <span className="gf-kicker">O LIVRO DA SUA JORNADA</span>
     <h2>{mode === 'new' ? 'Novo jogo' : 'Continuar jornada'}</h2>

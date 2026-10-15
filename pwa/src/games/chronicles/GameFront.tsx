@@ -30,7 +30,7 @@ const REGION_POSITIONS = [[21, 34], [45, 21], [72, 32], [80, 67], [45, 78], [16,
 const CHAPTER_POSITIONS = [[16, 29], [36, 18], [66, 22], [80, 50], [60, 73], [28, 74]] as const;
 
 /** Pixel-art painted behind menus; no external art, font, music or sprite downloads. */
-export function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?: number }) {
+export function GameFrontBackdrop({ mode, seed = 0, chapters = false }: { mode: 'title' | 'atlas'; seed?: number; chapters?: boolean }) {
   const node = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
     const canvas = node.current;
@@ -39,7 +39,8 @@ export function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas';
     if (!ctx) return;
     const W = 480, H = 270;
     let frame = 0, alive = true, last = -100, hidden = document.hidden;
-    const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+    const preference = window.matchMedia?.('(prefers-reduced-motion: reduce)');
+    let reduceMotion = preference?.matches ?? false;
     const random = (n: number) => {
       let a = Math.imul(n + seed * 3217 + 713, 1597334677);
       a ^= a >>> 13;
@@ -136,7 +137,7 @@ export function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas';
             box(x - 1, y, 3, 5, '#584c36'); box(x - 5, y - 7, 11, 9, i % 2 ? '#1d4237' : '#285047');
           }
         }
-        const pins = REGION_POSITIONS.map(([x,y])=>[x*4.8,y*2.7]);
+        const pins = (chapters ? CHAPTER_POSITIONS : REGION_POSITIONS).map(([x,y])=>[x*4.8,y*2.7]);
         ctx.strokeStyle = '#d8bc80aa';ctx.lineWidth = 2;ctx.setLineDash([5, 5]);
         ctx.beginPath();pins.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.stroke();ctx.setLineDash([]);
         pins.forEach(([x,y],i)=>{
@@ -152,15 +153,23 @@ export function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas';
       }
     };
     const tick = (time: number) => {
-      if (!alive) return;
-      if (!hidden && time - last > (reduceMotion ? 1000 : 55)) { paint(reduceMotion ? 0 : time);last = time; }
+      if (!alive || hidden || reduceMotion) return;
+      if (time - last > 55) { paint(time);last = time; }
       frame = requestAnimationFrame(tick);
     };
-    const visibility = () => {hidden = document.hidden;last = -100;};
+    const schedule = () => {
+      cancelAnimationFrame(frame);
+      last = -100;
+      paint(0);
+      if (!hidden && !reduceMotion) frame = requestAnimationFrame(tick);
+    };
+    const visibility = () => {hidden = document.hidden;schedule();};
+    const motion = (event: MediaQueryListEvent) => {reduceMotion = event.matches;schedule();};
     document.addEventListener('visibilitychange',visibility);
-    paint(0);frame = requestAnimationFrame(tick);
-    return () => {alive = false;cancelAnimationFrame(frame);document.removeEventListener('visibilitychange',visibility);};
-  }, [mode,seed]);
+    preference?.addEventListener('change',motion);
+    schedule();
+    return () => {alive = false;cancelAnimationFrame(frame);document.removeEventListener('visibilitychange',visibility);preference?.removeEventListener('change',motion);};
+  }, [mode,seed,chapters]);
   return <canvas ref={node} width={480} height={270} className="gf-pixel-background" aria-hidden="true"/>;
 }
 
@@ -181,44 +190,55 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const codexEpisode = discoveries.find(e => e.id === codexId) ?? discoveries[0];
   const openSaves = (mode: 'new' | 'continue') => { setSaveMode(mode); setScreen('saves'); };
   useEffect(() => { const change = () => setFull(!!document.fullscreenElement); document.addEventListener('fullscreenchange', change); return () => document.removeEventListener('fullscreenchange', change); }, []);
-  useEffect(() => { const target = stage.current?.querySelector<HTMLButtonElement>('[data-primary-menu]'); target?.focus({preventScroll:true}); }, [screen]);
+  useEffect(() => {
+    const target = stage.current?.querySelector<HTMLButtonElement>('[data-primary-menu]:not(:disabled), [data-screen-focus], .gf-main-menu button:not(:disabled), .gf-screen-heading button, .gf-save-screen button, .gf-book-heading button, .gf-overlay-screen button');
+    target?.focus({preventScroll:true});
+  }, [screen]);
   const selectSaga=(n:number)=>{onSaga(n);setChapter(0);setScreen('chapters');};
   const openChapter=(e:ChronicleEpisode)=>onBegin(e.id);
-  useEffect(()=>{
-    const key=(e:KeyboardEvent)=>{
-      if(document.activeElement instanceof HTMLInputElement || document.activeElement instanceof HTMLTextAreaElement) return;
+  const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if(e.altKey || e.ctrlKey || e.metaKey || !(e.target instanceof Element) || e.target.closest('input,textarea,select,[contenteditable=true]')) return;
       if(e.key==='Escape'){
+        // The confirmation owns Escape so it cancels without leaving the save screen.
+        if (e.target.closest('[role=alertdialog]')) return;
         e.preventDefault();e.stopPropagation();
         if(screen==='chapters')setScreen('world');
         else if(screen!=='title')setScreen('title');
         return;
       }
-      if(screen==='chapters'){
-        if(document.activeElement instanceof HTMLButtonElement && e.key==='Enter') return;
-        if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();setChapter(p=>(p+5)%6);}
-        else if(e.key==='ArrowRight'||e.key==='ArrowDown'){e.preventDefault();setChapter(p=>(p+1)%6);}
-        else if(e.key==='Enter' && document.activeElement===stage.current){e.preventDefault();openChapter(current);}
+      if(screen==='title' && ['ArrowDown','ArrowUp','Home','End'].includes(e.key)) {
+        e.preventDefault();e.stopPropagation();
+        const buttons = [...(stage.current?.querySelectorAll<HTMLButtonElement>('.gf-main-menu button:not(:disabled)') ?? [])];
+        const index = buttons.indexOf(document.activeElement as HTMLButtonElement);
+        const next = e.key==='Home' ? 0 : e.key==='End' ? buttons.length-1 : (index + (e.key==='ArrowUp' ? -1 : 1) + buttons.length) % buttons.length;
+        buttons[next]?.focus({preventScroll:true});
       }
-    };
-    window.addEventListener('keydown',key);
-    return ()=>window.removeEventListener('keydown',key);
-  },[screen,current]);
+      if(screen==='chapters'){
+        if(e.key==='ArrowLeft'||e.key==='ArrowUp'||e.key==='ArrowRight'||e.key==='ArrowDown') {
+          e.preventDefault();e.stopPropagation();
+          const next = (chapter + (e.key==='ArrowLeft'||e.key==='ArrowUp' ? 5 : 1)) % 6;
+          setChapter(next);
+          stage.current?.querySelectorAll<HTMLButtonElement>('.gf-chapter-pin')[next]?.focus({preventScroll:true});
+        }
+      }
+  };
   const toggleFullscreen=async()=>{
     try {
       if(!document.fullscreenElement){await (stage.current?.closest<HTMLElement>('.chronicles-viewport') ?? stage.current)?.requestFullscreen();setFull(true);}
       else {await document.exitFullscreen();setFull(false);}
     }catch { setFull(false); }
   };
-  return <div className="gf-root" ref={stage} data-screen={screen}>
+  return <div className="gf-root" ref={stage} data-screen={screen} onKeyDown={handleKey}>
     <GameFrontBackdrop mode={screen==='title'||screen==='settings'?'title':'atlas'} seed={saga}/>
     <div className="gf-grain" aria-hidden="true"/>
     <div className="gf-topbar">
       <span className="gf-top-brand"><Gamepad2 size={17}/> KM-BIBLE <span>·</span> CRÔNICAS DA ALIANÇA</span>
       <span className="gf-progress"><span className="gf-progress-icon">✦</span> {completed}/36 <span className="gf-progress-word">capítulos</span></span>
+      <button type="button" className="gf-mini gf-sound" aria-label={sound?'Desligar música ambiente':'Ligar música ambiente'} aria-pressed={sound} onClick={onSound}>{sound?<Volume2 size={17}/>:<VolumeX size={17}/>}</button>
       <button type="button" className="gf-mini" onClick={onBack} aria-label="Voltar para Ferramentas e Games"><ArrowLeft size={17}/> <span>Sair</span></button>
     </div>
 
-    {screen==='title' && <div className="gf-title">
+    {screen==='title' && <div className="gf-title gf-screen-enter">
       <div className="gf-title-emblem" aria-hidden="true">✦</div>
       <span className="gf-kicker">UMA JORNADA ENTRE TESTEMUNHOS</span>
       <h2>Crônicas <span>da Aliança</span></h2>
@@ -241,7 +261,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       return opened;
     }}/>}
 
-    {screen==='world'  && <div className="gf-map-layer">
+    {screen==='world'  && <div className="gf-map-layer gf-screen-enter">
       <div className="gf-screen-heading">
         <button className="gf-back" onClick={()=>setScreen('title')}><ArrowLeft size={17}/> Menu principal</button>
         <span>ATLAS DA ALIANÇA</span>
@@ -249,6 +269,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
         <p>Seis regiões. Trinta e seis testemunhos.</p>
       </div>
       <div className="gf-region-map" aria-label="Mapa das seis sagas">
+        <GameFrontBackdrop mode="atlas" seed={saga}/>
         {CAMPAIGN_SAGAS.map((e,i)=>{
           const done=progress.completed.filter(id=>CAMPAIGN_EPISODES.some(c=>c.id===id&&c.saga===i)).length;
           return <button type="button" key={e.id} className="gf-region-pin"
@@ -262,7 +283,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       <div className="gf-map-foot"><Map size={16}/> Selecione uma região no mapa para explorar os capítulos</div>
     </div>}
 
-    {screen==='chapters' && <div className="gf-map-layer gf-chapter-layer">
+    {screen==='chapters' && <div className="gf-map-layer gf-chapter-layer gf-screen-enter">
       <div className="gf-screen-heading">
         <button className="gf-back" onClick={()=>setScreen('world')}><ArrowLeft size={17}/> Atlas das sagas</button>
         <span>SAGA {saga+1} DE 6</span>
@@ -270,6 +291,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
         <p>{CAMPAIGN_SAGAS[saga].caption}</p>
       </div>
       <div className="gf-region-map gf-chapter-map" aria-label={'Capítulos de '+CAMPAIGN_SAGAS[saga].title}>
+        <GameFrontBackdrop mode="atlas" seed={saga} chapters/>
         {chapters.map((e,i)=><button key={e.id} type="button"
           className={'gf-chapter-pin'+(i===chapter?' gf-selected':'')}
           aria-label={(progress.episodes[e.id]?'Continuar ':'Explorar ')+e.title}
