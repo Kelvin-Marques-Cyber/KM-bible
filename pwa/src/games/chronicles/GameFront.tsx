@@ -178,7 +178,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const [screen,setScreen] = useState<Screen>(initialScreen);
   const [chapter,setChapter] = useState(0);
   const [saveMode,setSaveMode] = useState<'new' | 'continue'>('continue');
-  const [full,setFull] = useState(false);
+  const [full,setFull] = useState(() => !!document.fullscreenElement);
   const [codexId,setCodexId] = useState<string | null>(null);
   const stage=useRef<HTMLDivElement>(null);
   const chapters=useMemo(()=>CAMPAIGN_EPISODES.filter(e=>e.saga===saga),[saga]);

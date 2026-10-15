@@ -219,11 +219,13 @@ test("piloto usa I/J/M/C e pausa sobre o mundo, sem mover Neri nos menus", async
   await codex.getByRole("button", { name: "1 Samuel 17:17–22", exact: true }).click();
   const reader = page.getByRole("dialog").last();
   await expect(reader).toContainText("Samuel");
+  await expect.poll(() => reader.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
   await expect.poll(() => codex.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await codex.getByRole("button", { name: "Memorizar passagem", exact: true }).first().click();
   const create = page.locator("form").last();
   await expect(create).toBeVisible();
+  await expect.poll(() => page.getByRole("dialog").last().evaluate(element => element.contains(document.activeElement))).toBe(true);
   await create.getByRole("button", { name: /salvar|criar/i }).click();
   await expect.poll(() => codex.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await page.keyboard.press("Escape");

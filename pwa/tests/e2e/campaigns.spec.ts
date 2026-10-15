@@ -347,11 +347,10 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
   await page
     .getByRole("button", { name: "Ler Gênesis 1:1–31", exact: true })
     .click();
-  await expect(page.locator("[role=dialog]").last()).toContainText("Gênesis");
-  await page
-    .getByRole("button", { name: /fechar|voltar/i })
-    .last()
-    .click();
+  const reader = page.getByRole("dialog").last();
+  await expect(reader).toContainText("Gênesis");
+  await expect.poll(() => reader.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
   await expect.poll(() => journal.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await page
     .getByRole("button", { name: "Criar cartão de memorização", exact: true })
@@ -359,6 +358,7 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
   await expect(page.locator("textarea")).toHaveCount(0);
   const create = page.locator("form").last();
   await expect(create).toContainText(/princípio|princípio|beginning/i);
+  await expect.poll(() => page.getByRole("dialog").last().evaluate(element => element.contains(document.activeElement))).toBe(true);
   await create.getByRole("button", { name: /salvar|criar/i }).click();
   await expect.poll(() => journal.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await leaveCampaign(page);
@@ -615,6 +615,15 @@ test("tela cheia nativa preserva leitor e foco nas camadas do jogo", async ({ br
     await journal.getByRole("button", { name: "Ler Gênesis 1:1–31", exact: true }).click();
     const reader = page.getByRole("dialog").last();
     await expect(reader.getByText("1:31", { exact: true })).toBeVisible();
+    await expect.poll(() => reader.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    for (let step = 0; step < 6; step++) {
+      await page.keyboard.press("Tab");
+      expect(await reader.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    }
+    for (let step = 0; step < 6; step++) {
+      await page.keyboard.press("Shift+Tab");
+      expect(await reader.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    }
     if (fullscreenAvailable)
       expect(await page.evaluate(() => document.fullscreenElement === document.documentElement)).toBe(true);
     await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
