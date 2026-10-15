@@ -117,7 +117,7 @@ export function OriginalPage({ reference }: { reference: Ref }) {
         </Card>
       )}
       {state.loading && <Spinner />}
-      {state.error && <ErrorBox error={state.error} onRetry={state.reload} />}
+      {state.error != null && <ErrorBox error={state.error} onRetry={state.reload} />}
       {!state.loading && !state.error && (
         editions.length === 0 ? <EmptyOriginal /> : (
           <>
@@ -334,7 +334,7 @@ export function LinguisticSearchPage() {
           <Progress value={status?.phase === 'index' ? status.value : status?.phase === 'occurrences' && status.total ? status.done / status.total : undefined} />
         </div>
       )}
-      {error && <ErrorBox error={error} onRetry={() => setRetry((n) => n + 1)} />}
+      {error != null && <ErrorBox error={error} onRetry={() => setRetry((n) => n + 1)} />}
       {!loading && !error && result && (
         <div className="mt-5">
           <p role="status" className="text-sm font-medium">
