@@ -83,6 +83,25 @@ function click(text: string) {
   act(() => b!.click());
 }
 describe("36 aventuras: interface central", () => {
+  it("mostra o RPG primeiro, usa conversa dentro do cenário e abre o diário apenas sob demanda", async () => {
+    await render();
+    const first = host.querySelector<HTMLButtonElement>(".ca-chapter")!;
+    act(() => first.click());
+    expect(host.querySelector(".ca-playing")).not.toBeNull();
+    expect(host.querySelector(".ca-journal")).toBeNull();
+    expect(host.querySelector(".ca-canvas [role=dialog]")?.getAttribute("aria-label")).toBe("Introdução da aventura");
+    expect(host.querySelector(".ca-canvas.ca-has-dialog")).not.toBeNull();
+    click("Iniciar exploração");
+    expect(host.querySelector(".ca-canvas [role=dialog]")).toBeNull();
+    click("Abrir diário de missões");
+    expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
+    click("Fechar diário de missões");
+    expect(host.querySelector(".ca-journal")).toBeNull();
+    click("Códice 0/3");
+    expect(host.querySelector('[aria-label="Códice de descobertas"]')).not.toBeNull();
+    click("Voltar ao cenário");
+    expect(host.querySelector('[aria-label="Códice de descobertas"]')).toBeNull();
+  });
   it("oferece seis sagas, seis capítulos por saga e o piloto independente", async () => {
     await render();
     expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
