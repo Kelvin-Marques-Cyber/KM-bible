@@ -611,7 +611,12 @@ export class ChroniclesRenderer {
           const facing: Facing = distance < 2.5 ? (Math.abs(player.x - actor.x) > Math.abs(player.y - actor.y)
             ? player.x > actor.x ? 'right' : 'left'
             : player.y > actor.y ? 'down' : 'up') : (seed > 0.65 ? 'left' : seed > 0.35 ? 'down' : 'right');
-          drawPerson(ctx, actor.x * TILE, actor.y * TILE, reducedMotion ? 0 : time, facing, false, actor.palette || 'earth', false, seed);
+          // Moradores alternam trabalho/caminhada curta e repouso perto da
+          // própria posição. A âncora de interação e colisão não se move,
+          // para preservar as missões e o salvamento do episódio.
+          const routine = !reducedMotion && distance >= 2.5 && (Math.floor(time / 4 + seed * 7) % 4 === 1);
+          const shift = routine ? Math.sin(time * 1.6 + seed * 10) * 2 : 0;
+          drawPerson(ctx, actor.x * TILE + shift, actor.y * TILE, reducedMotion ? 0 : time, facing, routine, actor.palette || 'earth', false, seed);
         } else drawObject(ctx, actor, reducedMotion ? 0 : time);
       } });
     }
