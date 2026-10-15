@@ -34,7 +34,9 @@ export default function CampaignCanvas(props: Props) {
       previous = 0,
       drawAt = -100,
       wasPaused = false,
-      wasFocused = false;
+      wasFocused = false,
+      frozenAt = 0,
+      lastDrawnState: JourneyState | null = null;
     const clear = () => {
       keys.clear();
       previous = 0;
@@ -78,6 +80,8 @@ export default function CampaignCanvas(props: Props) {
         paused = p.paused || document.hidden,
         focused = document.activeElement === el;
       if ((paused && !wasPaused) || (!focused && wasFocused)) clear();
+      if (paused && !wasPaused) frozenAt = now;
+      if (!paused) frozenAt = 0;
       wasPaused = paused;
       wasFocused = focused;
       const dt = previous ? Math.min((now - previous) / 1000, 0.05) : 0;
@@ -94,8 +98,14 @@ export default function CampaignCanvas(props: Props) {
         if ((dx || dy) && dt > 0)
           p.onMove(dx, dy, dt, keys.has("shift") || p.input.run);
       }
-      if (!document.hidden && now - drawAt >= 33.3) {
-        renderer.draw(ctx, p.episode, p.game, now, !!media?.matches);
+      // On pause/menus the world becomes still: avoid redrawing at 30 FPS
+      // behind a dialogue, which drains battery on installed mobile PWAs.
+      const needsPaint =
+        !paused ? now - drawAt >= 33.3 :
+          lastDrawnState !== p.game || now - drawAt >= 1000;
+      if (!document.hidden && needsPaint) {
+        renderer.draw(ctx, p.episode, p.game, paused ? frozenAt : now, !!media?.matches);
+        lastDrawnState = p.game;
         drawAt = now;
       }
       frame.current = requestAnimationFrame(tick);
