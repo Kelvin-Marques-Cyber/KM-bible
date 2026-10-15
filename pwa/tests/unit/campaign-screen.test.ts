@@ -111,6 +111,18 @@ describe("36 aventuras: interface central", () => {
     click("Voltar ao cenário");
     expect(host.querySelector('[aria-label="Códice de descobertas"]')).toBeNull();
   });
+  it("exibe menu de pausa no próprio cenário e retorna à exploração", async () => {
+    await render();
+    click("Nova jornada");
+    click("Escolher saga Origens e Promessa");
+    click("Entrar na aventura");
+    click("Iniciar exploração");
+    click("Pausar");
+    expect(host.querySelector('[aria-label="Menu de pausa"]')).not.toBeNull();
+    expect(host.querySelector('.ca-canvas.ca-has-dialog')).not.toBeNull();
+    click("Retomar jornada");
+    expect(host.querySelector('[aria-label="Menu de pausa"]')).toBeNull();
+  });
   it("oferece seis sagas, seis capítulos por saga e o piloto independente", async () => {
     await render();
     expect(host.textContent).toContain("0/36");
