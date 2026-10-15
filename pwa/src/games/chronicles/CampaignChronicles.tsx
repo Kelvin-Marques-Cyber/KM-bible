@@ -19,6 +19,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { message, Spinner } from "../../components/ui";
 import { app } from "../../lib/app";
 import { verse } from "../../lib/content";
@@ -73,6 +74,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(document.hidden);
   const [codex, setCodex] = useState(false);
+  const [journalOpen, setJournalOpen] = useState(false);
   const [restart, setRestart] = useState(false);
   const [touch, setTouch] = useState(idle);
   const [music, setMusic] = useState(false);
@@ -94,10 +96,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const intro = game?.introduced === false;
   useEffect(() => {
     audio.current?.setActive(
-      music && !hidden && !paused && !intro && !codex && !pilot && !!episode,
+      music && !hidden && !paused && !intro && !codex && !journalOpen && !pilot && !!episode,
       episode?.saga ?? 0,
     );
-  }, [music, hidden, paused, intro, codex, pilot, episode]);
+  }, [music, hidden, paused, intro, codex, journalOpen, pilot, episode]);
   useEffect(() => {
     const before = previousSound.current;
     if (music && game && before?.episodeId === game.episodeId) {
@@ -268,6 +270,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setProgress(next);
     setPaused(false);
     setCodex(false);
+    setJournalOpen(false);
     setRestart(false);
     setTouch(idle);
     focusScene();
@@ -278,6 +281,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setProgress(next);
     setPaused(false);
     setCodex(false);
+    setJournalOpen(false);
     setTouch(idle);
     void flush();
   };
@@ -397,7 +401,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   );
   return (
     <div
-      className="ca-root scroll-area h-full"
+      className={"ca-root scroll-area h-full" + (episode && game ? " ca-playing" : "")}
       onKeyDown={(event) => {
         if (
           event.key === "Escape" &&
@@ -409,6 +413,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           event.stopPropagation();
           setTouch(idle);
           if (codex) setCodex(false);
+          else if (journalOpen) setJournalOpen(false);
           else setPaused((value) => !value);
           void flush();
           focusScene();
@@ -516,10 +521,16 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 onClick={() => {
                   setTouch(idle);
                   setCodex(!codex);
+                  setJournalOpen(false);
                 }}
               >
                 <ScrollText size={16} />
                 Códice {game.visited.length}/3
+              </button>
+              <button type="button" className="ca-button" aria-label="Abrir diário de missões"
+                aria-pressed={journalOpen}
+                onClick={() => { setTouch(idle); setJournalOpen(!journalOpen); setCodex(false); }}>
+                <Compass size={16} /> Missões
               </button>
               <button
                 className="ca-button"
@@ -556,6 +567,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                       paused ||
                       hidden ||
                       codex ||
+                      journalOpen ||
                       intro ||
                       restart ||
                       game.dialogue !== null ||
@@ -606,6 +618,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                           paused ||
                           intro ||
                           codex ||
+                          journalOpen ||
                           restart ||
                           game.dialogue !== null ||
                           game.phase !== "explore"
@@ -636,6 +649,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                       paused ||
                       intro ||
                       codex ||
+                      journalOpen ||
                       game.phase !== "explore" ||
                       game.dialogue !== null
                     }
@@ -649,7 +663,8 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   {game.feedback}
                 </p>
               </section>
-              <aside className="ca-journal">
+              {journalOpen && <aside className="ca-journal" aria-label="Diário da jornada">
+                <button type="button" className="ca-button ca-journal-close" onClick={() => { setJournalOpen(false); focusScene(); }} aria-label="Fechar diário de missões">✕ Fechar diário</button>
                 <div className="ca-witness">
                   <CampaignPortrait episode={episode} />
                   <p>
@@ -699,7 +714,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 <p className="ca-save" aria-live="polite">
                   {saved || "Salvamento automático ativo"}
                 </p>
-              </aside>
+              </aside>}
             </div>
             {codex && (
               <section className="ca-codex" aria-label="Códice de descobertas">
@@ -1046,10 +1061,12 @@ function JourneyDialog({
   episode: ChronicleEpisode;
 }) {
   const panel = useRef<HTMLDivElement>(null);
+  const [sceneHost, setSceneHost] = useState<HTMLElement | null>(null);
   useEffect(() => {
+    setSceneHost(document.querySelector<HTMLElement>(".ca-scene-enter"));
     panel.current?.focus({ preventScroll: true });
-  }, []);
-  return (
+  }, [episode.id]);
+  const dialog = (
     <div className="ca-modal-backdrop">
       <div
         className="ca-dialog"
@@ -1088,4 +1105,5 @@ function JourneyDialog({
       </div>
     </div>
   );
+  return sceneHost ? createPortal(dialog, sceneHost) : dialog;
 }
