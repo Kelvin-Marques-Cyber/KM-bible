@@ -5,7 +5,7 @@ import {
 } from "../../src/games/chronicles/campaign-content";
 import { finishOnboarding, waitForVerses } from "./helpers";
 
-async function openCampaigns(page: Page) {
+async function openCampaigns(page: Page, recovery = false) {
   await page
     .getByRole("button", { name: "Ferramentas e Games", exact: true })
     .first()
@@ -13,41 +13,54 @@ async function openCampaigns(page: Page) {
   await page
     .getByRole("button", { name: /RPG bíblico 2D.*Crônicas da Aliança/ })
     .click();
-  await expect(
+  if (recovery) await expect(page.getByRole("alert")).toContainText("Nenhum dado foi apagado");
+  else await expect(
     page.getByRole("heading", { name: "Crônicas da Aliança", exact: true }),
   ).toBeVisible();
 }
-async function startFirstAdventure(page: Page) {
-  // The RPG opens at its own title screen, not a website card grid.
-  const newJourney = page.getByRole("button", { name: "Nova jornada", exact: true });
-  const choose = page.getByRole("button", { name: "Escolher aventura", exact: true });
-  if (await newJourney.count()) await newJourney.click();
-  else await choose.click();
+async function startFirstAdventure(page: Page, slot = 1) {
+  // Enter a real save book before opening the campaign atlas.
+  await page.getByRole("button", { name: "Novo jogo", exact: true }).click();
+  await expect(page.getByRole("region", { name: "Espaços de save" })).toBeVisible();
+  await expect(page.getByRole("button", { name: /^Selecionar save [123]$/ })).toHaveCount(3);
+  await page.getByRole("button", { name: `Selecionar save ${slot}`, exact: true }).click();
   await page.getByRole("button", { name: "Escolher saga Origens e Promessa", exact: true }).click();
   await page.getByRole("button", { name: "Entrar na aventura", exact: true }).click();
 }
-async function readSave(page: Page): Promise<any> {
+async function continueAdventure(page: Page, slot = 1) {
+  await expect(page.getByRole("navigation", { name: "Menu principal do jogo" })).toBeVisible();
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  await page.getByRole("button", { name: `Selecionar save ${slot}`, exact: true }).click();
+}
+async function returnToTitle(page: Page) {
+  // Close a currently open book before requesting the pause menu.
+  for (let attempt = 0; attempt < 4; attempt++) {
+    if (await page.getByRole("dialog", { name: "Menu de pausa", exact: true }).isVisible()) break;
+    await page.keyboard.press("Escape");
+  }
+  await page.getByRole("dialog", { name: "Menu de pausa", exact: true })
+    .getByRole("button", { name: "Tela de título", exact: true }).click();
+  await expect(page.getByRole("navigation", { name: "Menu principal do jogo" })).toBeVisible();
+}
+async function leaveCampaign(page: Page) {
+  await returnToTitle(page);
+  await page.getByRole("button", { name: "Voltar para Ferramentas e Games", exact: true }).click();
+}
+async function readSave(page: Page, slot = 1): Promise<any> {
   return page.evaluate(
-    () =>
+    (id) =>
       new Promise((resolve) => {
         const request = indexedDB.open("km-bible");
         request.onerror = () => resolve(null);
         request.onsuccess = () => {
           const db = request.result;
-          const read = db
-            .transaction("meta", "readonly")
-            .objectStore("meta")
-            .get("chronicles:campaigns:v1");
-          read.onsuccess = () => {
-            resolve(read.result?.state ?? null);
-            db.close();
-          };
-          read.onerror = () => {
-            resolve(null);
-            db.close();
-          };
+          const key = "chronicles:campaigns:v1" + (id === 1 ? "" : `:slot:${id}`);
+          const read = db.transaction("meta", "readonly").objectStore("meta").get(key);
+          read.onsuccess = () => { resolve(read.result?.state ?? null); db.close(); };
+          read.onerror = () => { resolve(null); db.close(); };
         };
       }),
+    slot,
   );
 }
 async function moveAxis(page: Page, axis: "x" | "y", target: number) {
@@ -173,6 +186,7 @@ test("todas as 36 aventuras: teclado real, três descobertas, erro/acerto, avan�
           .last()
           .click();
         await expect(challenge).toBeVisible();
+        await expect(page.getByRole("dialog", { name: "Menu de pausa", exact: true })).toHaveCount(0);
       }
       const wrong = (episode.trial.correct + 1) % 3;
       await challenge
@@ -189,7 +203,7 @@ test("todas as 36 aventuras: teclado real, três descobertas, erro/acerto, avan�
         .getByRole("button", { name: "Rever descobertas", exact: true })
         .click();
       await expect(
-        page.getByRole("region", {
+        page.getByRole("dialog", {
           name: "Códice de descobertas",
           exact: true,
         }),
@@ -293,6 +307,8 @@ test("save exato, diálogo aberto, pausa, controles móveis e retomada após fec
   const save = await readSave(page);
   await page.reload();
   await openCampaigns(page);
+  await expect(page.getByRole("application", { name: /RPG pixel art/ })).toHaveCount(0);
+  await continueAdventure(page);
   await expect(
     page.getByRole("dialog", { name: "Testemunho descoberto", exact: true }),
   ).toBeVisible();
@@ -302,11 +318,9 @@ test("save exato, diálogo aberto, pausa, controles móveis e retomada após fec
   await page
     .getByRole("button", { name: "Registrar e continuar", exact: true })
     .click();
-  await page
-    .getByRole("button", { name: "Ferramentas e Games", exact: true })
-    .first()
-    .click();
+  await leaveCampaign(page);
   await openCampaignsFromHome(page);
+  await continueAdventure(page);
   await expect(canvas).toBeVisible();
   await expect(
     page.getByRole("button", { name: "Códice 1/3", exact: true }),
@@ -329,6 +343,7 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
     .getByRole("button", { name: "Iniciar exploração", exact: true })
     .click();
   await page.getByRole("button", { name: "Abrir diário de missões", exact: true }).click();
+  const journal = page.getByRole("dialog", { name: "Diário da jornada", exact: true });
   await page
     .getByRole("button", { name: "Ler Gênesis 1:1–31", exact: true })
     .click();
@@ -337,6 +352,7 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
     .getByRole("button", { name: /fechar|voltar/i })
     .last()
     .click();
+  await expect.poll(() => journal.evaluate(element => element.contains(document.activeElement))).toBe(true);
   await page
     .getByRole("button", { name: "Criar cartão de memorização", exact: true })
     .click();
@@ -344,10 +360,8 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
   const create = page.locator("form").last();
   await expect(create).toContainText(/princípio|princípio|beginning/i);
   await create.getByRole("button", { name: /salvar|criar/i }).click();
-  await page
-    .getByRole("button", { name: "Ferramentas e Games", exact: true })
-    .first()
-    .click();
+  await expect.poll(() => journal.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  await leaveCampaign(page);
   await page
     .getByRole("button", { name: /^Memorização.*Abrir meus cartões/ })
     .click();
@@ -396,7 +410,7 @@ test("save danificado oferece recuperação sem apagar a cópia anterior", async
   );
   expect(backup).toBeTruthy();
   await page.reload();
-  await openCampaigns(page);
+  await openCampaigns(page, true);
   await expect(page.getByRole("alert")).toContainText(
     "Nenhum dado foi apagado",
   );
@@ -422,4 +436,160 @@ test("save danificado oferece recuperação sem apagar a cópia anterior", async
       }),
   );
   expect(preserved).toEqual({ version: 99 });
+});
+
+test("título, três saves independentes e sobrescrita com cópia preservada", async ({ page }) => {
+  await finishOnboarding(page);
+  await openCampaigns(page);
+  const menu = page.getByRole("navigation", { name: "Menu principal do jogo" });
+  for (const name of ["Continuar", "Novo jogo", "Aventuras", "Códice", "Configurações", "Voltar"])
+    await expect(menu.getByRole("button", { name, exact: true })).toBeVisible();
+  await expect(menu.getByRole("button", { name: "Continuar", exact: true })).toBeDisabled();
+  await expect(page.getByRole("application", { name: /RPG pixel art/ })).toHaveCount(0);
+
+  await startFirstAdventure(page);
+  await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+  await moveAxis(page, "x", 19);
+  await returnToTitle(page);
+  await expect.poll(async () => (await readSave(page))?.episodes.creation.x ?? 0).toBeGreaterThan(18);
+  const first = await readSave(page);
+  expect(first.episodes.creation.x).toBeGreaterThan(18);
+
+  await page.getByRole("button", { name: "Novo jogo", exact: true }).click();
+  await page.getByRole("button", { name: "Selecionar save 1", exact: true }).click();
+  const confirmation = page.getByRole("alertdialog", { name: "Confirmar sobrescrita do save" });
+  await expect(confirmation).toBeVisible();
+  await confirmation.getByRole("button", { name: "Manter meu save", exact: true }).click();
+  expect(await readSave(page)).toEqual(first);
+  await page.getByRole("button", { name: "Selecionar save 2", exact: true }).click();
+  await page.getByRole("button", { name: `Escolher saga ${CAMPAIGN_SAGAS[1].title}`, exact: true }).click();
+  await page.getByRole("button", { name: "Entrar na aventura", exact: true }).click();
+  await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+  await returnToTitle(page);
+  await expect.poll(async () => (await readSave(page, 2))?.activeEpisodeId).toBe(CAMPAIGN_EPISODES[6].id);
+  const second = await readSave(page, 2);
+  expect(second.activeEpisodeId).toBe(CAMPAIGN_EPISODES[6].id);
+  expect(await readSave(page)).toEqual(first);
+  expect(await readSave(page, 3)).toBeNull();
+
+  await menu.getByRole("button", { name: "Continuar", exact: true }).click();
+  const firstBook = page.getByRole("button", { name: "Selecionar save 1", exact: true });
+  await expect(firstBook).toContainText(CAMPAIGN_EPISODES[0].title);
+  await expect(firstBook).toContainText(CAMPAIGN_SAGAS[0].title);
+  await expect(firstBook).toContainText("0/36");
+  await expect(firstBook.locator("time")).toHaveAttribute("datetime", /\d{4}-\d{2}-\d{2}T/);
+  await expect(page.getByRole("button", { name: "Selecionar save 3", exact: true })).toBeDisabled();
+  await firstBook.click();
+  const canvas = page.getByRole("application", { name: /RPG pixel art/ });
+  await expect(canvas).toHaveAttribute("data-player-x", first.episodes.creation.x.toFixed(3));
+  await returnToTitle(page);
+
+  await menu.getByRole("button", { name: "Novo jogo", exact: true }).click();
+  await page.getByRole("button", { name: "Selecionar save 1", exact: true }).click();
+  await confirmation.getByRole("button", { name: "Confirmar sobrescrita", exact: true }).click();
+  await expect(page.getByRole("button", { name: `Escolher saga ${CAMPAIGN_SAGAS[0].title}`, exact: true })).toBeVisible();
+  expect((await readSave(page)).episodes).toEqual({});
+  expect(await readSave(page, 2)).toEqual(second);
+  const archived = await page.evaluate(() => new Promise<any[]>((resolve, reject) => {
+    const request = indexedDB.open("km-bible");
+    request.onerror = () => reject(request.error);
+    request.onsuccess = () => {
+      const db = request.result;
+      const read = db.transaction("meta", "readonly").objectStore("meta").getAll();
+      read.onsuccess = () => { db.close(); resolve(read.result.filter(item => String(item.key).startsWith("chronicles:slots:v1:archive:1:"))); };
+      read.onerror = () => { db.close(); reject(read.error); };
+    };
+  }));
+  expect(archived).toHaveLength(1);
+  expect(archived[0].entries.find((entry: any) => entry?.key === "chronicles:campaigns:v1").state).toEqual(first);
+});
+
+test("atalhos abrem overlays exclusivos, suspendem movimento e devolvem foco ao cenário", async ({ page }) => {
+  await finishOnboarding(page);
+  await openCampaigns(page);
+  await startFirstAdventure(page);
+  await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+  const canvas = page.getByRole("application", { name: /RPG pixel art/ });
+  const position = await canvas.getAttribute("data-player-x");
+  await canvas.focus();
+  for (const [key, name] of [["i", "Inventário da jornada"], ["j", "Diário da jornada"], ["m", "Mapa da aventura"], ["c", "Códice de descobertas"], ["Escape", "Menu de pausa"]]) {
+    await page.keyboard.press(key);
+    const overlay = page.getByRole("dialog", { name, exact: true });
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toHaveAttribute("aria-modal", "true");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await overlay.getByRole("button").last().focus();
+    await page.keyboard.press("Tab");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await overlay.getByRole("button").first().focus();
+    await page.keyboard.press("Shift+Tab");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await page.keyboard.down("d");
+    await page.waitForTimeout(180);
+    await page.keyboard.up("d");
+    await expect(canvas).toHaveAttribute("data-player-x", position!);
+    await page.keyboard.press("Escape");
+    await expect(overlay).toHaveCount(0);
+    await expect(canvas).toBeFocused();
+  }
+  await page.keyboard.press("i");
+  await page.keyboard.press("j");
+  await expect(page.getByRole("dialog", { name: "Inventário da jornada" })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Diário da jornada" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("Escape");
+  await page.getByRole("dialog", { name: "Menu de pausa" })
+    .getByRole("button", { name: "Voltar ao atlas", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^Escolher saga / })).toHaveCount(6);
+  expect((await readSave(page)).activeEpisodeId).toBe("creation");
+});
+
+for (const viewport of [{ name: "retrato", width: 390, height: 844 }, { name: "paisagem", width: 844, height: 390 }, { name: "desktop", width: 1440, height: 900 }]) {
+  test(`título, atlas e menus permanecem dentro da tela em ${viewport.name}`, async ({ page }) => {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await finishOnboarding(page);
+    await openCampaigns(page);
+    const stage = page.locator(".chronicles-viewport");
+    const bounds = await stage.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.x).toBeGreaterThanOrEqual(-1);
+    expect(bounds!.y).toBeGreaterThanOrEqual(-1);
+    expect(bounds!.width).toBeLessThanOrEqual(viewport.width + 1);
+    expect(bounds!.height).toBeLessThanOrEqual(viewport.height + 1);
+    await startFirstAdventure(page, 3);
+    await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+    await page.getByRole("button", { name: "Abrir diário de missões", exact: true }).click();
+    const journal = page.getByRole("dialog", { name: "Diário da jornada", exact: true });
+    await expect(journal).toBeVisible();
+    const bookBounds = await journal.boundingBox();
+    expect(bookBounds!.x).toBeGreaterThanOrEqual(-1);
+    expect(bookBounds!.y).toBeGreaterThanOrEqual(-1);
+    expect(bookBounds!.x + bookBounds!.width).toBeLessThanOrEqual(viewport.width + 1);
+    expect(bookBounds!.y + bookBounds!.height).toBeLessThanOrEqual(viewport.height + 1);
+    await journal.getByRole("button", { name: "Fechar diário de missões", exact: true }).click();
+    await expect(page.getByRole("application", { name: /RPG pixel art/ })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  });
+}
+
+
+test("consultar a passagem no desafio retorna à escolha sem abrir pausa", async ({ page }) => {
+  await finishOnboarding(page);
+  await waitForVerses(page);
+  await openCampaigns(page);
+  await startFirstAdventure(page);
+  await page.getByRole("button", { name: "Iniciar exploração", exact: true }).click();
+  for (let index = 0; index < 3; index++) await visit(page, index);
+  const challenge = page.getByRole("dialog", { name: "Desafio de conhecimento bíblico", exact: true });
+  await challenge.getByRole("button", { name: "Consultar passagem", exact: true }).click();
+  const reader = page.getByRole("dialog").last();
+  await expect(reader.getByText("1:31", { exact: true })).toBeVisible();
+  await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
+  await expect(challenge).toBeVisible();
+  await expect(page.getByRole("dialog", { name: "Menu de pausa", exact: true })).toHaveCount(0);
+  await expect.poll(() => challenge.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  const episode = CAMPAIGN_EPISODES[0];
+  await challenge.getByRole("button", { name: `${String.fromCharCode(65 + episode.trial.correct)}. ${episode.trial.choices[episode.trial.correct]}`, exact: true }).click();
+  await expect(page.getByRole("dialog", { name: "Conclusão da aventura", exact: true })).toBeVisible();
+  await expect.poll(async () => (await readSave(page))?.episodes.creation.phase).toBe("complete");
 });

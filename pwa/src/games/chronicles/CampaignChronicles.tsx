@@ -30,7 +30,7 @@ import { verse } from "../../lib/content";
 import { createCard, showPassage } from "../../screens/open";
 import CampaignCanvas from "./CampaignCanvas";
 import ChroniclesBoot from "./ChroniclesBoot";
-import GameFront from "./GameFront";
+import GameFront, { GameFrontBackdrop } from "./GameFront";
 import CampaignPortrait from "./CampaignPortrait";
 import { CampaignAudio } from "./campaign-audio";
 import { episodePassage, memoryReference } from "./campaign-bible";
@@ -579,7 +579,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           </div>
         )}
         {!ready.current && !slotBusy && !recoveryMenu ? (
-          <section className="ca-codex">
+          <section className="ca-recovery-scene" aria-label="Recuperação da jornada">
+          <GameFrontBackdrop mode="title" />
+          <div className="ca-recovery-heading"><span className="ca-eyebrow">O LIVRO DA SUA JORNADA</span><h2>Crônicas da Aliança</h2></div>
+          <section className="ca-codex ca-recovery-menu" aria-label="Recuperar progresso">
             <p>
               O save anterior foi preservado. Você pode exportar uma cópia antes
               de recuperar ou recomeçar.
@@ -632,6 +635,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 </div>
               </div>
             )}
+          </section>
           </section>
         ) : inAdventure && episode && game ? (
           <>

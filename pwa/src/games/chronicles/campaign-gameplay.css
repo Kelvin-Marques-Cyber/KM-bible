@@ -102,3 +102,14 @@
  .ca-playing .ca-dpad {grid-template-columns:repeat(3,40px);grid-template-rows:repeat(2,40px);}
 }
 @media(prefers-reduced-motion:reduce) { .ca-playing .ca-menu-backdrop,.ca-playing .ca-dialog-arrow {animation:none;} }
+
+/* A damaged save is handled in a game window over the title world. */
+.ca-front-active .ca-recovery-scene{position:relative;isolation:isolate;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;height:100%;padding:80px 18px 20px;overflow:auto;}
+.ca-recovery-scene>.gf-pixel-background{z-index:-1;filter:brightness(.4);}
+.ca-recovery-heading{text-align:center;color:#e6cb97;text-shadow:0 3px 9px #00191b;}
+.ca-recovery-heading h2{font:700 clamp(30px,5vw,52px)/1.2 Georgia,serif;margin-top:7px;}
+.ca-front-active .ca-recovery-menu{position:relative;inset:auto;width:min(640px,100%);max-height:65%;margin:0;padding:25px;border:2px solid #d3b77e;border-radius:6px;background:#162e2bf5;box-shadow:0 15px 60px #021519aa;overflow:auto;}
+.ca-recovery-menu p{font-size:13px;line-height:1.7;color:#dfddc3;}
+.ca-recovery-menu .ca-actions{display:grid;margin-top:20px;gap:10px;}
+.ca-front-active .ca-recovery-menu .ca-button{width:100%;justify-content:center;min-height:44px;}
+@media(max-height:480px) and (orientation:landscape){.ca-front-active .ca-recovery-scene{padding-top:70px;gap:8px;}.ca-recovery-heading h2{font-size:26px;}.ca-front-active .ca-recovery-menu{max-height:68%;padding:15px;}.ca-recovery-menu .ca-actions{grid-template-columns:1fr 1fr;gap:7px;margin-top:12px;}}

@@ -34,7 +34,7 @@ async function savedEpisode(page: Page): Promise<SavedEpisode | null> {
   );
 }
 
-async function openEpisode(page: Page) {
+async function openEpisode(page: Page, resume = false) {
   await page
     .getByRole("button", { name: "Ferramentas e Games", exact: true })
     .click();
@@ -44,9 +44,11 @@ async function openEpisode(page: Page) {
   await expect(
     page.getByRole("heading", { name: "Crônicas da Aliança", exact: true }),
   ).toBeVisible();
-  await page
-    .getByRole("button", { name: "O Vale e a Coragem", exact: true })
-    .click();
+  await expect(page.getByRole("navigation", { name: "Menu principal do jogo" })).toBeVisible();
+  if (resume) {
+    await page.getByRole("button", { name: "Continuar", exact: true }).click();
+    await page.getByRole("button", { name: "Selecionar save 1", exact: true }).click();
+  } else await page.getByRole("button", { name: /^O Vale e a Coragem/ }).click();
 }
 
 test("piloto renderiza, conversa, pausa, salva e retoma offline sem afetar Memorização", async ({
@@ -121,11 +123,11 @@ test("piloto renderiza, conversa, pausa, salva e retoma offline sem afetar Memor
 
   await page.getByRole("button", { name: "Inventário", exact: true }).click();
   await expect(
-    page.getByRole("region", { name: "Bolsa de Neri" }),
+    page.getByRole("dialog", { name: "Bolsa de Neri" }),
   ).toContainText("Mapa do caminho");
-  await page.getByRole("button", { name: "Códice", exact: true }).click();
+  await page.keyboard.press("c");
   await expect(
-    page.getByRole("region", { name: "Códice dos Testemunhos" }),
+    page.getByRole("dialog", { name: "Códice dos Testemunhos" }),
   ).toContainText("Ficção complementar");
   await expect
     .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller))
@@ -133,15 +135,15 @@ test("piloto renderiza, conversa, pausa, salva e retoma offline sem afetar Memor
 
   await context.setOffline(true);
   await page.reload();
-  await openEpisode(page);
+  await openEpisode(page, true);
   await expect(
     page.getByRole("button", { name: "Começar episódio", exact: true }),
   ).toHaveCount(0);
   await expect(canvas).toBeVisible();
   expect((await savedEpisode(page))?.flags).toContain("mission-accepted");
-  await page
-    .getByRole("button", { name: "Mapa de aventuras", exact: true })
-    .click();
+  await page.keyboard.press("Escape");
+  await page.getByRole("dialog", { name: "Menu de pausa", exact: true })
+    .getByRole("button", { name: "Mapa de aventuras", exact: true }).click();
   await page
     .getByRole("button", { name: "Voltar para Ferramentas e Games", exact: true })
     .click();
@@ -181,4 +183,58 @@ test("controle por toque desloca Neri e solta a direção ao finalizar o gesto",
   const afterRelease = (await savedEpisode(page))!.x;
   await page.waitForTimeout(500);
   expect((await savedEpisode(page))!.x).toBe(afterRelease);
+});
+
+test("piloto usa I/J/M/C e pausa sobre o mundo, sem mover Neri nos menus", async ({ page }) => {
+  await finishOnboarding(page);
+  await openEpisode(page);
+  await page.getByRole("button", { name: "Começar episódio", exact: true }).click();
+  await page.getByRole("button", { name: "Continuar", exact: true }).click();
+  const canvas = page.getByRole("application", { name: /Crônicas da Aliança — Povoado das oliveiras/ });
+  await canvas.focus();
+  await expect.poll(async () => (await savedEpisode(page))?.x ?? null).toBe(6.5);
+  const before = await savedEpisode(page);
+  for (const [key, label] of [["i", "Bolsa de Neri"], ["j", "Diário de missões"], ["m", "Mapa do episódio"], ["c", "Códice dos Testemunhos"], ["Escape", "Menu de pausa"]]) {
+    await page.keyboard.press(key);
+    const overlay = page.getByRole("dialog", { name: label, exact: true });
+    await expect(overlay).toBeVisible();
+    await expect(overlay).toHaveAttribute("aria-modal", "true");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await overlay.getByRole("button").last().focus();
+    await page.keyboard.press("Tab");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await overlay.getByRole("button").first().focus();
+    await page.keyboard.press("Shift+Tab");
+    expect(await overlay.evaluate(element => element.contains(document.activeElement))).toBe(true);
+    await page.keyboard.down("d");
+    await page.waitForTimeout(180);
+    await page.keyboard.up("d");
+    expect((await savedEpisode(page))?.x).toBe(before?.x);
+    await page.keyboard.press("Escape");
+    await expect(overlay).toHaveCount(0);
+    await expect(canvas).toBeFocused();
+  }
+  await page.keyboard.press("c");
+  const codex = page.getByRole("dialog", { name: "Códice dos Testemunhos", exact: true });
+  await codex.getByRole("button", { name: "1 Samuel 17:17–22", exact: true }).click();
+  const reader = page.getByRole("dialog").last();
+  await expect(reader).toContainText("Samuel");
+  await reader.getByRole("button", { name: "Fechar", exact: true }).last().click();
+  await expect.poll(() => codex.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  await codex.getByRole("button", { name: "Memorizar passagem", exact: true }).first().click();
+  const create = page.locator("form").last();
+  await expect(create).toBeVisible();
+  await create.getByRole("button", { name: /salvar|criar/i }).click();
+  await expect.poll(() => codex.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("i");
+  await page.keyboard.press("m");
+  await expect(page.getByRole("dialog", { name: "Bolsa de Neri" })).toHaveCount(0);
+  await expect(page.getByRole("dialog", { name: "Mapa do episódio" })).toBeVisible();
+  await page.keyboard.press("Escape");
+  await page.keyboard.press("Escape");
+  await page.getByRole("dialog", { name: "Menu de pausa" })
+    .getByRole("button", { name: "Mapa de aventuras", exact: true }).click();
+  await expect(page.getByRole("button", { name: /^Escolher saga / })).toHaveCount(6);
+  expect((await savedEpisode(page))?.x).toBe(before?.x);
 });
