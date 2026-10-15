@@ -55,6 +55,9 @@ let host: HTMLDivElement, root: Root;
 beforeEach(() => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   vi.clearAllMocks();
+  // A abertura usa Canvas 2D real em produção; jsdom não implementa getContext.
+  // O teste é de navegação/estado, não de pixels.
+  vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
   spies.load.mockResolvedValue(emptyProgress());
   spies.save.mockResolvedValue(undefined);
   spies.verse.mockResolvedValue({
@@ -67,6 +70,7 @@ beforeEach(() => {
 afterEach(() => {
   act(() => root.unmount());
   host.remove();
+  vi.restoreAllMocks();
   vi.useRealTimers();
 });
 async function render() {
