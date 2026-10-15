@@ -36,6 +36,38 @@ A arte e o áudio são originais, gerados localmente. Não há cópia de assets,
 
 O manual para o jogador está em `RPG_GUIDE.md`.
 
+## Continuação após os commits de 15/10 — mundo vivo e verificação
+
+O trabalho novo do usuário já incluía a abertura em tela inteira, três saves, HUD,
+menus, diálogos e refatoração do piloto. Esta continuação **não reescreveu**
+essas entregas.
+
+- `campaign-ambient.ts` e `campaign-renderer.ts`: população ambiental
+  discreta em povoados/cidades/templos e animais nos cenários pastorais.
+  São **silhuetas decorativas que andam**, não NPCs com missões próprias.
+  O prólogo da criação e o jardim não recebem testemunhas humanas
+  fictícias. O movimento reduzido mantém posições imóveis. O motor e os
+  envelopes de save permanecem intocados.
+- `tests/unit/campaign-ambient.test.ts`: garante ausência de habitantes
+  inventados nos prólogos, população restrita a lugares plausíveis,
+  posições determinísticas e limite de cinco atores por capítulo.
+- `.github/workflows/cronicas-pwa.yml`: workflow de verificação da
+  **PWA somente** (Node 22, tipos, unitários e build sem publicar).
+  A primeira execução automática em `1843a12` terminou com falha
+  **antes de provisionar runner**, sem etapas executadas e com
+  0 ms faturáveis; portanto **não houve resultado de testes**.
+  Foi alterado para execução manual, para não gerar checks vermelhos
+  em cada commit enquanto o runner não estiver disponível.
+- Validação real ainda depende de `npx tsc --noEmit`, `npx vitest run`,
+  `npx playwright test` e `KM_DRY_RUN=1 bash scripts/release.sh`
+  no ambiente com dependências e acervo do projeto.
+
+**Limitações remanescentes:** as 36 aventuras compactas têm três pontos
+de investigação e desafio cada uma, não 36 campanhas tão profundas quanto
+o piloto. Os moradores acrescentados nesta etapa são ambientais, sem
+diálogo individual, rotina persistida ou inteligência de NPC.
+Nenhum commit desta continuação publicou em `gh-pages`.
+
 ## Persistência e compatibilidade
 
 - O espaço 1 mantém `chronicles:campaigns:v1` e `chronicles:vale-coragem:v1` no object store `meta` do IndexedDB `km-bible`.
