@@ -48,6 +48,10 @@ essas entregas.
   O prólogo da criação e o jardim não recebem testemunhas humanas
   fictícias. O movimento reduzido mantém posições imóveis. O motor e os
   envelopes de save permanecem intocados.
+- `renderer.ts` (piloto ampliado): moradores existentes alternam
+  gestos e deslocamentos visuais curtos, sem mudar a posição usada para
+  colisão, conversa, missões ou save. O modo de movimento reduzido
+  continua eliminando essas animações.
 - `CampaignCanvas.tsx`: ao abrir pausa, códice ou diálogos, congela o
   relógio visual e limita o redesenho do cenário a aproximadamente 1 FPS,
   reduzindo consumo de bateria no celular. A simulação já estava suspensa
