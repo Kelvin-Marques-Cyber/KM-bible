@@ -239,7 +239,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       <div className="gf-region-map" aria-label="Mapa das seis sagas">
         {CAMPAIGN_SAGAS.map((e,i)=>{
           const done=progress.completed.filter(id=>CAMPAIGN_EPISODES.some(c=>c.id===id&&c.saga===i)).length;
-          return <button type="button" key={e.id} className="gf-region-pin ca-saga"
+          return <button type="button" key={e.id} className="gf-region-pin"
             style={{'--pin-x':REGION_POSITIONS[i][0]+'%','--pin-y':REGION_POSITIONS[i][1]+'%','--region-color':e.color} as CSSProperties}
             aria-label={'Escolher saga '+e.title} onClick={()=>selectSaga(i)}>
             <span className="gf-map-marker">{i+1}</span>
@@ -259,7 +259,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
       </div>
       <div className="gf-region-map gf-chapter-map" aria-label={'Capítulos de '+CAMPAIGN_SAGAS[saga].title}>
         {chapters.map((e,i)=><button key={e.id} type="button"
-          className={'gf-chapter-pin ca-chapter'+(i===chapter?' gf-selected':'')}
+          className={'gf-chapter-pin'+(i===chapter?' gf-selected':'')}
           aria-label={(progress.episodes[e.id]?'Continuar ':'Explorar ')+e.title}
           style={{'--pin-x':CHAPTER_POSITIONS[i][0]+'%','--pin-y':CHAPTER_POSITIONS[i][1]+'%'} as CSSProperties}
           onClick={()=>setChapter(i)}>
