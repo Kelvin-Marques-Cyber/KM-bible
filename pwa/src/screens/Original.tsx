@@ -1,8 +1,8 @@
 // Idiomas originais: interlinear por versículo, léxico Strong e pesquisa
 // linguística. Todo o acervo é local ao PWA; sem serviços de IA ou traduções inventadas.
 import {
-  ArrowRight, BookOpen, BookText, Copy, Hash, Info, Languages, Library,
-  NotebookPen, Search, ScrollText,
+  ArrowRight, BookOpen, BookText, Copy, Info, Languages, Library,
+  NotebookPen, Search,
 } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { app, useApp } from '../lib/app';
@@ -23,7 +23,6 @@ import {
 } from '../components/ui';
 import { openLexeme, openLibrary, openLinguistics, openNewNote, showPassage } from './open';
 
-const formatError = (error: unknown) => error instanceof Error ? error.message : String(error);
 const originalDirection = (book: number): 'rtl' | 'ltr' => book <= 39 ? 'rtl' : 'ltr';
 
 const lexiconHelp = () => tr(
@@ -275,6 +274,7 @@ export function LinguisticSearchPage() {
   const [error, setError] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
   const [limit, setLimit] = useState(35);
+  const [retry, setRetry] = useState(0);
 
   useEffect(() => {
     retainIndex();
@@ -297,7 +297,7 @@ export function LinguisticSearchPage() {
       (reason) => { if (active) { setError(reason); setLoading(false); } },
     );
     return () => { active = false; };
-  }, [mode, debounced]);
+  }, [mode, debounced, retry]);
 
   return (
     <div className="mx-auto max-w-3xl p-4 pb-8 sm:p-5">
@@ -334,7 +334,7 @@ export function LinguisticSearchPage() {
           <Progress value={status?.phase === 'index' ? status.value : status?.phase === 'occurrences' && status.total ? status.done / status.total : undefined} />
         </div>
       )}
-      {error && <ErrorBox error={error} onRetry={() => setQuery((q) => q + ' ' .trim())} />}
+      {error && <ErrorBox error={error} onRetry={() => setRetry((n) => n + 1)} />}
       {!loading && !error && result && (
         <div className="mt-5">
           <p role="status" className="text-sm font-medium">
