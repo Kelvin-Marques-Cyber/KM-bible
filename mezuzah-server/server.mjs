@@ -127,7 +127,12 @@ wss.on('connection',ws=>{
     member.socket=null;member.awaySince=Date.now();room.updated=Date.now();
     if(!room.game){
       room.members=room.members.filter(m=>m!==member);
-      if(room.hostId===member.id)room.hostId=room.members[0]?.id??null;
+      const host=room.members.find(m=>m.id===room.hostId)??room.members[0];
+      // Reatribuir assentos ANTES do começo da partida: o motor de jogo
+      // sempre usa p0, p1, p2, p3 na ordem atual do lobby.
+      room.members.forEach((m,i)=>{m.id='p'+i;});
+      room.hostId=host?.id??null;
+      for(const m of room.members)send(m.socket,{type:'welcome',code:room.code,token:m.token,id:m.id});
       if(room.members.length===0)rooms.delete(room.code);
     }
     if(rooms.has(room.code))broadcast(room);
