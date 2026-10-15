@@ -33,7 +33,7 @@ describe('Idioma original: normalização e análise morfológica', () => {
     const found = await rankKeys(keys, foldOriginal('λόγος'), 4);
     expect(found.total).toBe(2);
     expect(found.indices).toEqual([1, 3]);
-    expect(indexKey('lexemes', ['G3056', 'λόγος', 'logos', 'palavra'])).toContain('λογος');
+    expect(indexKey('lexemes', ['G3056', 'λόγος', 'logos', 'palavra'])).toContain(foldOriginal('λόγος'));
   });
 
   it('prioriza códigos morfológicos exatos antes dos parciais', () => {
