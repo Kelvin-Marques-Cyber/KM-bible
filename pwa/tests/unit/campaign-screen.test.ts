@@ -85,8 +85,13 @@ function click(text: string) {
 describe("36 aventuras: interface central", () => {
   it("mostra o RPG primeiro, usa conversa dentro do cenário e abre o diário apenas sob demanda", async () => {
     await render();
-    const first = host.querySelector<HTMLButtonElement>(".ca-chapter")!;
-    act(() => first.click());
+    expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
+    expect(host.querySelector(".ca-chapter")).toBeNull();
+    click("Nova jornada");
+    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
+    click("Escolher saga Origens e Promessa");
+    expect(host.querySelectorAll(".ca-chapter")).toHaveLength(6);
+    click("Entrar na aventura");
     expect(host.querySelector(".ca-playing")).not.toBeNull();
     expect(host.querySelector(".ca-journal")).toBeNull();
     expect(host.querySelector(".ca-canvas [role=dialog]")?.getAttribute("aria-label")).toBe("Introdução da aventura");
@@ -104,18 +109,24 @@ describe("36 aventuras: interface central", () => {
   });
   it("oferece seis sagas, seis capítulos por saga e o piloto independente", async () => {
     await render();
-    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
-    expect(host.querySelectorAll(".ca-chapter")).toHaveLength(6);
     expect(host.textContent).toContain("0/36");
     expect(host.textContent).toContain("O Vale e a Coragem");
+    expect(host.querySelectorAll(".ca-chapter")).toHaveLength(0);
+    click("Nova jornada");
+    expect(host.querySelectorAll(".ca-saga")).toHaveLength(6);
     const titles = new Set<string>();
-    for (const saga of host.querySelectorAll<HTMLButtonElement>(".ca-saga")) {
-      act(() => saga.click());
-      for (const chapter of host.querySelectorAll(".ca-chapter h4"))
+    for (let i=0; i<6; i++) {
+      const region=host.querySelectorAll<HTMLButtonElement>(".ca-saga")[i];
+      act(() => region.click());
+      expect(host.querySelectorAll(".ca-chapter")).toHaveLength(6);
+      for (const chapter of host.querySelectorAll(".ca-chapter small"))
         titles.add(chapter.textContent!);
+      click("Atlas das sagas");
     }
     expect(titles.size).toBe(36);
+    click("Escolher saga Testemunhas e Esperança");
     click("Explorar A Cidade da Esperança");
+    click("Entrar na aventura");
     expect(
       host.querySelector("[role=dialog]")?.getAttribute("aria-label"),
     ).toBe("Introdução da aventura");
@@ -195,7 +206,9 @@ describe("36 aventuras: interface central", () => {
   it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
     await render();
     await act(async () => {
-      click("Explorar O Primeiro Alvorecer");
+      click("Nova jornada");
+      click("Escolher saga Origens e Promessa");
+      click("Entrar na aventura");
     });
     await act(async () => {
       click("Iniciar exploração");
