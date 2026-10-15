@@ -19,6 +19,67 @@ VISUALS = [
     ("#293d4e", "#e6d4ad", "#b4bbc4"),
 ]
 
+# Fotografias documentais com licença verificada no Wikimedia Commons.
+# Não são incluídas no pacote offline: o SVG original é a alternativa local.
+PHOTO_SOURCES = {
+    "roman_catholic": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Basilique-Saint-Pierre-Vatican.jpg?width=960",
+        "alt": "Fachada da Basílica de São Pedro, Vaticano.",
+        "caption": "Basílica de São Pedro, Vaticano",
+        "credit": "Rundvald, 2008 · domínio público" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Basilique-Saint-Pierre-Vatican.jpg",
+    },
+    "eastern_orthodox": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Orthodox%20Cathedral%20Tirana.jpg?width=960",
+        "alt": "Catedral ortodoxa da Ressurreição em Tirana, Albânia.",
+        "caption": "Catedral ortodoxa de Tirana",
+        "credit": "Albinfo, 2012 · CC0" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Orthodox%20Cathedral%20Tirana.jpg",
+    },
+    "islam": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Sultan%20Ahmed%20Mosque%20Front%20Fa%C3%A7ade%20and%20Southern%20Minaret%2C%202024.jpg?width=960",
+        "alt": "Fachada e minarete da Mesquita do Sultão Ahmed em Istambul.",
+        "caption": "Mesquita do Sultão Ahmed, Istambul",
+        "credit": "Julian Lupyan, 2024 · CC0" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Sultan%20Ahmed%20Mosque%20Front%20Fa%C3%A7ade%20and%20Southern%20Minaret%2C%202024.jpg",
+    },
+    "judaism": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Dalston%20Synagogue%20Exterior.jpg?width=960",
+        "alt": "Fachada da histórica Sinagoga Dalston, Londres.",
+        "caption": "Antiga sinagoga Dalston, Londres",
+        "credit": "Newmanthfc, 2025 · CC0" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Dalston%20Synagogue%20Exterior.jpg",
+    },
+    "hinduism_vedanta": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Hindu%20Temple%20Singapore.jpg?width=960",
+        "alt": "Templo hindu em Singapura, fotografia documental.",
+        "caption": "Templo hindu em Singapura",
+        "credit": "ProjectManhattan, 2013 · CC0" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Hindu%20Temple%20Singapore.jpg",
+    },
+    "buddhism_mahayana": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Buddhist%20Temple%20(15406375986).jpg?width=960",
+        "alt": "Templo budista fotografado na Ásia.",
+        "caption": "Templo budista, fotografia documental",
+        "credit": "Gary Lee Todd, 2014 · CC0" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Buddhist%20Temple%20(15406375986).jpg",
+    },
+    "shinto": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Torii%20at%20Tosho-gu%20Shrine%20ca.%201910.jpg?width=960",
+        "alt": "Portão torii do santuário Toshogu por volta de 1910.",
+        "caption": "Torii no santuário Tōshō-gū, ca. 1910",
+        "credit": "Autor não identificado, ca. 1910 · domínio público" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Torii%20at%20Tosho-gu%20Shrine%20ca.%201910.jpg",
+    },
+    "sikhism": {
+        "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Photograph%20of%20the%20Golden%20Temple%20in%20Amritsar%2C%20Punjab%2C%20by%20Felice%20Beato%2C%20circa%20October%201859.jpg?width=960",
+        "alt": "Templo Dourado em Amritsar, fotografia histórica de 1859.",
+        "caption": "Templo Dourado, Amritsar, 1859",
+        "credit": "Felice Beato, 1859 · domínio público" + " · Wikimedia Commons",
+        "source": "https://commons.wikimedia.org/wiki/File:Photograph%20of%20the%20Golden%20Temple%20in%20Amritsar%2C%20Punjab%2C%20by%20Felice%20Beato%2C%20circa%20October%201859.jpg",
+    },
+}
+
 
 def architecture(kind: str, ink: str, gold: str) -> str:
     base = f'<path d="M138 423H1062V452H138Z" fill="{ink}" opacity=".7"/>'
