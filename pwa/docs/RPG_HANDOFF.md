@@ -6,6 +6,33 @@ Trabalho iniciado a partir de `290285d86d49ed0f535edb18ee12c506524d7f80`, na bra
 
 Somente a PWA React/TypeScript/Vite foi alterada. Android não foi alterado, compilado ou publicado. A publicação da PWA permanece sem autorização e não deve ser executada por esta tarefa.
 
+## Atualização de interface — jogo em primeiro plano
+
+A pedido do usuário, os blocos HTML de página inteira que interrompiam o RPG
+foram substituídos por uma apresentação mais imersiva (apenas PWA, sem mudar
+as regras nem os saves):
+
+- 36 aventuras: Canvas ocupa a área principal, diário lateral fica oculto até
+  selecionar **Missões**, controles de toque viraram HUD flutuante, feedback
+  surge no canto e os diálogos são portais React ancorados dentro do cenário,
+  em caixas inferiores com rolagem acessível.
+- O códice é um painel lateral de jogo, não um documento comprido abaixo do
+  palco. Botões de fechar/restaurar e Escape mantidos.
+- Piloto ampliado: diálogo também foi ancorado ao cenário; navegação, direção e
+  interação foram sobrepostas ao mundo. Inventário, missão, mapa e códice
+  agora abrem como painéis de jogo com botão explícito **Voltar ao jogo**.
+- Testes unitários de interface foram acrescentados/ajustados sem remover os
+  anteriores.
+- Arquivos afetados: `CampaignChronicles.tsx`, `campaign.css`,
+  `screens/Chronicles.tsx` e as respectivas suítes de teste.
+
+**Estado da validação:** a suíte de 425 unitários / 18 E2E documentada abaixo
+corresponde à release **anterior** a esta atualização da interface. As novas
+alterações ainda não foram testadas nesta sessão, não foram publicadas no
+`gh-pages` e exigem `npx tsc --noEmit`, `npx vitest run`,
+`npx playwright test` e inspeção visual em celular e desktop antes de
+publicação. Não substituir a versão online até essa conferência.
+
 ## O que está implementado
 
 - **Seis sagas / 36 aventuras compactas**, cada uma com introdução, cenário 2D explorável, movimentação real, colisões, três investigações que exigem proximidade, códice, desafio com novas tentativas, explicação, conclusão e avanço ao próximo capítulo.
