@@ -174,8 +174,17 @@ export function intersectAll(lists: ArrayLike<number>[]): Uint32Array {
   return out;
 }
 
-/** Fragmento de um termo nos índices: fnv1a dos 2 primeiros caracteres (build_data.py). */
-export const shardOf = (token: string, shards: number) => fnv1a(token.slice(0, 2)) % shards;
+/**
+ * Fragmento de um termo nos índices: fnv1a (unidades UTF-16) dos 2 primeiros
+ * caracteres, como shard_of() de build_data.py. token[:2] do Python conta pontos
+ * de código: letras fora do BMP (pares substitutos) também caem no mesmo fragmento.
+ */
+export function shardOf(token: string, shards: number): number {
+  const head = token.slice(0, 2);
+  const code = head.charCodeAt(0);
+  const astral = (code >= 0xd800 && code <= 0xdbff) || (head.length === 2 && head.charCodeAt(1) >= 0xd800 && head.charCodeAt(1) <= 0xdbff);
+  return fnv1a(astral ? Array.from(token.slice(0, 4)).slice(0, 2).join('') : head) % shards;
+}
 
 // ------------------------------------------------------- índice de termos
 /** Índice invertido compacto (CSR): termos ordenados + postagens contíguas. */
@@ -251,10 +260,15 @@ export class TokenIndex {
    * suggestion() do original: uma única palavra com 4+ letras; candidatos que
    * começam pelas mesmas 2 letras; a melhor distância de edição precisa ser
    * <= 2 e diferente da própria consulta (palavra existente → sem sugestão).
+   * Empates: o termo mais frequente.
    */
   suggest(text: string): string | null {
     const q = fold(text);
     if (q.length < 4 || /\s/.test(q)) return null;
+    // Com o prefixo (palavra ainda sendo digitada), "princip" já encontra "principio":
+    // não há o que corrigir.
+    const [plo, phi] = this.prefixRange(q);
+    if (plo < phi) return null;
     const [lo, hi] = this.prefixRange(q.slice(0, 2));
     let best: string | null = null;
     let bestDistance = Infinity;

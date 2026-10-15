@@ -117,6 +117,11 @@ export function ConfessionsPage() {
   const [code, setCode] = useState('WCF');
   const [search, setSearch] = useState('');
   const query = useDebounced(search, 250);
+  const list = useRef<HTMLDivElement>(null);
+  // Outra coleção ou outra busca: a lista recomeça do topo.
+  useEffect(() => {
+    if (list.current) list.current.scrollTop = 0;
+  }, [code, query]);
   return (
     <div className="flex h-full min-h-0 flex-col">
       <div className="mx-auto w-full max-w-3xl shrink-0 px-4 pb-2 pt-4">
@@ -142,7 +147,7 @@ export function ConfessionsPage() {
         </Wrap>
         <SearchField label={t('search')} value={search} onChange={setSearch} />
       </div>
-      <div className="scroll-area min-h-0 flex-1">
+      <div ref={list} className="scroll-area min-h-0 flex-1">
         {code === 'AUG' ? <AugustineIndex key="AUG" query={query} /> : <ConfessionList key={code} code={code} query={query} />}
       </div>
     </div>
@@ -337,7 +342,8 @@ function AugustineIndex({ query }: { query: string }) {
   }
   if (manifest.data === undefined) return <Spinner />;
   const total = counts.reduce((a, b) => a + b, 0);
-  const searchingTitles = !!q && counts.some((_, i) => (book === 0 || book === i + 1) && titles[i + 1] === 'loading');
+  // Busca ativa e algum livro do recorte ainda sem títulos (nem lidos, nem com falha).
+  const searchingTitles = !!q && counts.some((_, i) => (book === 0 || book === i + 1) && !Array.isArray(titles[i + 1]) && titles[i + 1] !== 'error');
   const chapterMatches = rows.reduce((n, r) => n + (r.kind === 'chapter' ? 1 : 0), 0);
 
   return (

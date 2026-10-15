@@ -7,7 +7,7 @@
 import { catalog, dataBase, packUrl } from './catalog';
 import { installed, module, modules, userModule, userModuleList } from './content';
 import { get, isMemoryOnly } from './db';
-import { keyToRef, refId, refLabel, tokenize } from './domain';
+import { fromId, keyToRef, refId, refKey, refLabel, tokenize } from './domain';
 import { lang, t, tr } from './i18n';
 import { notes } from './store';
 import {
@@ -79,6 +79,24 @@ const MODULE_SOURCES = new Set(['bible', 'notes', 'topic', 'lexicon', 'studies']
 export function sourceLabel(hit: SearchHit): string {
   if (MODULE_SOURCES.has(hit.category)) return hit.source;
   return module(hit.source)?.title ?? hit.source;
+}
+
+const REF_ONLY = /^[\d:\s·—–-]+$/;
+
+/**
+ * Título exibido. Vários comentários do acervo têm como título só os
+ * identificadores internos ("40:1:22 · 40:1:22"): mostramos a referência legível.
+ */
+export function hitTitle(hit: SearchHit, language: string = lang()): string {
+  const title = hit.title.trim();
+  if (hit.category !== 'commentary' || (title && !REF_ONLY.test(title))) return title || hit.id;
+  const ids = (title.match(/\d+:\d+:\d+/g) ?? []).map(fromId);
+  const start = fromId(hit.reference) ?? ids[0] ?? null;
+  if (!start) return title || hit.id;
+  const label = refLabel(start, language);
+  const end = ids.length > 1 ? ids[ids.length - 1] : null;
+  if (!end || end.book !== start.book || refKey(end) <= refKey(start)) return label;
+  return end.chapter === start.chapter ? `${label}–${end.verse}` : `${label}–${end.chapter}:${end.verse}`;
 }
 
 // ------------------------------------------------- worker (singleton)
@@ -188,11 +206,15 @@ function runFallback(id: number, message: Outgoing, listener: Listener): void {
   })();
 }
 
+const usesImported = (body: OutgoingBody) =>
+  body.type === 'warm' ? body.bible.kind === 'user' : body.request.user.length > 0 || body.request.bible?.kind === 'user';
+
 function dispatch(body: OutgoingBody, listener: Listener): () => void {
   const id = ++nextId;
   const message = { ...body, id } as Outgoing;
-  // Banco só em memória (navegação privada): o worker não enxerga os módulos importados.
-  const w = isMemoryOnly() ? null : getWorker();
+  // Banco só em memória (navegação privada): o worker não enxerga os módulos
+  // importados; só essas consultas ficam na thread principal.
+  const w = isMemoryOnly() && usesImported(body) ? null : getWorker();
   if (w) {
     pending.set(id, { message, listener });
     w.postMessage(message);

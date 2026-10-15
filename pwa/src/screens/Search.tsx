@@ -7,6 +7,7 @@ import {
   BookOpen,
   Box,
   CloudOff,
+  Download,
   FileText,
   GraduationCap,
   History,
@@ -22,7 +23,7 @@ import {
   TriangleAlert,
   X,
 } from 'lucide-react';
-import { memo, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent } from 'react';
+import { memo, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from 'react';
 import { app, useApp } from '../lib/app';
 import { allStudies, document as loadDocument, loadModels } from '../lib/content';
 import { fold, fromId, parseRef, refLabel, type Ref } from '../lib/domain';
@@ -30,6 +31,7 @@ import { lang, t, tr } from '../lib/i18n';
 import {
   categoryLabel,
   highlightParts,
+  hitTitle,
   releaseSearch,
   retainSearch,
   sourceLabel,
@@ -93,11 +95,13 @@ const ResultRow = memo(function ResultRow({
   hit,
   query,
   busy,
+  language,
   onOpen,
 }: {
   hit: SearchHit;
   query: Query;
   busy: boolean;
+  language: string;
   onOpen: (hit: SearchHit) => void;
 }) {
   const Icon = iconFor(hit.category);
@@ -117,7 +121,7 @@ const ResultRow = memo(function ResultRow({
       )}
       <span className="min-w-0 flex-1 [overflow-wrap:anywhere]">
         <span className="block text-[15.5px] font-medium leading-snug" style={clamp(2)}>
-          <Highlighted text={hit.title || hit.id} query={query} />
+          <Highlighted text={hitTitle(hit, language)} query={query} />
         </span>
         <span className="mt-0.5 block truncate text-xs text-muted">
           {[categoryLabel(hit.category), source].filter(Boolean).join(' · ')}
@@ -132,7 +136,7 @@ const ResultRow = memo(function ResultRow({
   );
 });
 
-function Notice({ icon: IconComponent, children, action }: { icon: Icon; children: React.ReactNode; action?: React.ReactNode }) {
+function Notice({ icon: IconComponent, children, action }: { icon: Icon; children: ReactNode; action?: ReactNode }) {
   return (
     <div className="mx-1 my-1.5 rounded-xl bg-secondary-container/70 px-3 py-2.5 text-sm">
       <p className="flex items-start gap-2">
@@ -154,6 +158,7 @@ type Row =
   | { kind: 'empty'; key: string }
   | { kind: 'hit'; key: string; hit: SearchHit };
 
+const FOCUSABLE = 'button[data-result], button[data-reference]';
 const estimate = (row: Row | undefined) => (row?.kind === 'hit' ? 104 : row?.kind === 'ref' ? 52 : 88);
 
 // ------------------------------------------------------------------- tela
@@ -162,10 +167,10 @@ export default function SearchPage() {
   const translation = app.translation;
   const language = lang();
   const [text, setText] = useState('');
-  const [immediate, setImmediate] = useState<string | null>(null);
+  const [submitted, setSubmitted] = useState<string | null>(null);
   const debounced = useDebounced(text, 250);
   // Campo vazio limpa na hora; Enter e a sugestão pesquisam sem esperar o debounce.
-  const query = text.trim() === '' ? '' : immediate === text ? text : debounced;
+  const query = text.trim() === '' ? '' : submitted === text ? text : debounced;
   const [filter, setFilter] = useState('');
   const [deepFor, setDeepFor] = useState<string | null>(null);
   const [retry, setRetry] = useState(0);
@@ -224,7 +229,8 @@ export default function SearchPage() {
     if (shown.offline) out.push({ kind: 'offline', key: 'offline' });
     if (shown.bible && shown.bible.missing > 0)
       out.push({ kind: 'bible', key: 'bible', missing: shown.bible.missing, total: shown.bible.total, translation: shown.bible.translation });
-    if (shown.partial && !deep) out.push({ kind: 'partial', key: 'partial' });
+    // Sem conexão, "pesquisar em todo o acervo" não ajudaria: basta o aviso offline.
+    if (shown.partial && !deep && !shown.offline) out.push({ kind: 'partial', key: 'partial' });
     if (shown.errors.length > 0 && !shown.failed) out.push({ kind: 'errors', key: 'errors', errors: shown.errors });
     for (const hit of hits) if (!filter || hit.category === filter) out.push({ kind: 'hit', key: hit.key, hit });
     if (!shown.loading && !shown.failed && !stale && !out.some((r) => r.kind === 'hit')) out.push({ kind: 'empty', key: 'empty' });
@@ -247,13 +253,13 @@ export default function SearchPage() {
 
   const choose = useCallback((value: string) => {
     setText(value);
-    setImmediate(value);
+    setSubmitted(value);
     input.current?.focus();
   }, []);
 
   const clear = () => {
     setText('');
-    setImmediate(null);
+    setSubmitted(null);
     setFilter('');
     input.current?.focus();
   };
@@ -261,9 +267,9 @@ export default function SearchPage() {
   const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       event.preventDefault();
-      setImmediate(text);
+      setSubmitted(text);
     } else if (event.key === 'ArrowDown') {
-      const first = scroller.current?.querySelector<HTMLElement>('button[data-result], button[data-reference]');
+      const first = scroller.current?.querySelector<HTMLElement>(FOCUSABLE);
       if (first) {
         event.preventDefault();
         first.focus();
@@ -275,6 +281,18 @@ export default function SearchPage() {
       event.nativeEvent.stopImmediatePropagation?.();
       clear();
     }
+  };
+
+  /** Setas para cima/baixo percorrem os resultados; acima do primeiro, volta ao campo. */
+  const onListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    const focusable = [...(scroller.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? [])];
+    const index = focusable.indexOf(document.activeElement as HTMLElement);
+    if (index < 0) return;
+    event.preventDefault();
+    const next = index + (event.key === 'ArrowDown' ? 1 : -1);
+    if (next < 0) input.current?.focus();
+    else focusable[Math.min(next, focusable.length - 1)]?.focus();
   };
 
   /** Abre o resultado como o open() do original; ignora toques antigos e telas já fechadas. */
@@ -345,6 +363,10 @@ export default function SearchPage() {
   const loading = !!query && (!current || current.loading);
   const suggestion = current?.suggestion && current.suggestion !== fold(query) ? current.suggestion : null;
   const resultCount = current ? current.hits.length : 0;
+  const countLabel =
+    resultCount === 1
+      ? tr('1 resultado', '1 result', '1 resultado')
+      : tr(`${resultCount} resultados`, `${resultCount} results`, `${resultCount} resultados`);
   const items = virtual.getVirtualItems();
   const highlightQuery = shown?.query;
 
@@ -369,7 +391,7 @@ export default function SearchPage() {
           <Notice
             icon={CloudOff}
             action={
-              <Button variant="text" icon={CloudOff} className="px-3" onClick={() => openOffline()}>
+              <Button variant="text" icon={Download} className="px-3" onClick={() => openOffline()}>
                 {t('offlinePacks')}
               </Button>
             }
@@ -421,7 +443,7 @@ export default function SearchPage() {
       case 'empty':
         return <p className="px-6 py-8 text-center text-[15px] text-muted">{t('empty')}</p>;
       case 'hit':
-        return <ResultRow hit={row.hit} query={highlightQuery!} busy={opening === row.hit.key} onOpen={open} />;
+        return <ResultRow hit={row.hit} query={highlightQuery!} busy={opening === row.hit.key} language={language} onOpen={open} />;
     }
   };
 
@@ -437,7 +459,7 @@ export default function SearchPage() {
             autoFocus
             onChange={(e) => {
               setText(e.target.value);
-              setImmediate(null);
+              setSubmitted(null);
             }}
             onKeyDown={onKeyDown}
             aria-label={t('search')}
@@ -469,7 +491,7 @@ export default function SearchPage() {
           </div>
         )}
         {suggestion && (
-          <Button variant="text" icon={SpellCheck} className="-ml-2 mt-1 px-3" onClick={() => choose(suggestion)}>
+          <Button variant="text" icon={SpellCheck} className="-ml-2 mt-1 max-w-full px-3 text-left [overflow-wrap:anywhere]" onClick={() => choose(suggestion)}>
             {t('search')}: {suggestion}
           </Button>
         )}
@@ -484,10 +506,14 @@ export default function SearchPage() {
               {tr('Pesquisando…', 'Searching…', 'Buscando…')}
             </span>
           ) : current && current.hits.length > 0 ? (
-            <span>{tr(`${resultCount} resultados`, `${resultCount} results`, `${resultCount} resultados`)}</span>
+            <span>{countLabel}</span>
           ) : null}
         </div>
-        {progress && <Progress value={progress.total ? progress.done / progress.total : undefined} />}
+        {progress && (
+          <div aria-hidden="true">
+            <Progress value={progress.total ? progress.done / progress.total : undefined} />
+          </div>
+        )}
         {/* Anúncios curtos para leitores de tela (sem repetir cada passo do progresso). */}
         <p className="sr-only" role="status" aria-live="polite">
           {progress
@@ -496,7 +522,7 @@ export default function SearchPage() {
               ? tr('Pesquisando…', 'Searching…', 'Buscando…')
               : current
                 ? current.hits.length > 0
-                  ? tr(`${resultCount} resultados`, `${resultCount} results`, `${resultCount} resultados`)
+                  ? countLabel
                   : t('empty')
                 : ''}
         </p>
@@ -506,7 +532,17 @@ export default function SearchPage() {
         className={cx('scroll-area min-h-0 flex-1 border-t border-outline/30 transition-opacity', stale && 'opacity-70')}
         aria-busy={loading || undefined}
       >
+        {!query && (
+          <p className="mx-auto max-w-3xl px-6 py-8 text-center text-[15px] text-muted">
+            {tr(
+              'Pesquise na Bíblia, temas, confissões, estudos, léxico, comentários e anotações, ou digite uma referência (ex.: João 3:16).',
+              'Search the Bible, topics, confessions, studies, lexicon, commentaries and notes, or type a reference (e.g. John 3:16).',
+              'Busque en la Biblia, temas, confesiones, estudios, léxico, comentarios y notas, o escriba una referencia (ej.: Juan 3:16).',
+            )}
+          </p>
+        )}
         <ul
+          onKeyDown={onListKeyDown}
           aria-label={tr('Resultados da pesquisa', 'Search results', 'Resultados de la búsqueda')}
           className="relative mx-auto w-full max-w-3xl px-2"
           style={{ height: virtual.getTotalSize() + 24 }}
