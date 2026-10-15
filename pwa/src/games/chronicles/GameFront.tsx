@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, BookOpen, Check, ChevronRight, Compass, Gamepad2, Map, Pause, Play, Settings, Volume2, VolumeX } from 'lucide-react';
+import { ArrowLeft, BookOpen, Check, ChevronRight, Compass, Gamepad2, Map, Play, Settings, Volume2, VolumeX } from 'lucide-react';
 import { CAMPAIGN_EPISODES, CAMPAIGN_SAGAS, type ChronicleEpisode } from './campaign-content';
 import type { CampaignProgress } from './campaign-engine';
 import './game-front.css';
@@ -13,6 +13,7 @@ type Props = {
   onPilot: () => void;
   onBack: () => void;
   onExport: () => void;
+  initialScreen?: 'title' | 'world';
 };
 const REGION_POSITIONS = [[21, 34], [45, 21], [72, 32], [80, 67], [45, 78], [16, 69]] as const;
 const CHAPTER_POSITIONS = [[16, 29], [36, 18], [66, 22], [80, 50], [60, 73], [28, 74]] as const;
@@ -151,8 +152,8 @@ function GameFrontBackdrop({ mode, seed = 0 }: { mode: 'title' | 'atlas'; seed?:
   return <canvas ref={node} width={480} height={270} className="gf-pixel-background" aria-hidden="true"/>;
 }
 
-export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,onExport}:Props) {
-  const [screen,setScreen] = useState<Screen>('title');
+export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,onExport,initialScreen='title'}:Props) {
+  const [screen,setScreen] = useState<Screen>(initialScreen);
   const [chapter,setChapter] = useState(0);
   const [sound,setSound] = useState(false);
   const [full,setFull] = useState(false);
