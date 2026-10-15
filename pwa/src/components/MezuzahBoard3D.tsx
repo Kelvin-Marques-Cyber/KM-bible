@@ -282,11 +282,11 @@ export default function MezuzahBoard3D({ game }: {game: GameState}) {
   const state=useRef(game),previous=useRef(game.players.map(p=>p.position));
   const since=useRef(performance.now());
   const [fallback,setFallback]=useState(false);
-  state.current=game;
   useEffect(()=>{
-    const now=performance.now();
-    previous.current=game.players.map((p,i)=>state.current.players[i]?.position===p.position?p.position:previous.current[i]??p.position);
-    since.current=now;
+    const old=state.current;
+    previous.current=game.players.map((p,i)=>old.players[i]?.position ?? p.position);
+    state.current=game;
+    since.current=performance.now();
   },[game]);
   useEffect(()=>{
     if(!canvas.current)return;
