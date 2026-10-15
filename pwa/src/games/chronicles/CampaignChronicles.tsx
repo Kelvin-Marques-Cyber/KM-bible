@@ -71,6 +71,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [saved, setSaved] = useState("");
   const [saga, setSaga] = useState(0);
   const [pilot, setPilot] = useState(false);
+  const [inAdventure, setInAdventure] = useState(false);
   const [landing, setLanding] = useState<"title" | "world">("title");
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(document.hidden);
@@ -274,14 +275,13 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setJournalOpen(false);
     setRestart(false);
     setLanding("title");
+    setInAdventure(true);
     setTouch(idle);
     focusScene();
   };
   const select = () => {
     setLanding("world");
-    const next = { ...latest.current, activeEpisodeId: null };
-    latest.current = next;
-    setProgress(next);
+    setInAdventure(false);
     setPaused(false);
     setCodex(false);
     setJournalOpen(false);
@@ -404,7 +404,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   );
   return (
     <div
-      className={"ca-root scroll-area h-full" + (episode && game ? " ca-playing" : " ca-front-active")}
+      className={"ca-root h-full" + (inAdventure && episode && game ? " ca-playing" : " ca-front-active")}
       onKeyDown={(event) => {
         if (event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
         if (game?.phase !== "explore" || game.dialogue !== null || intro || restart) return;
@@ -426,7 +426,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
       }}
     >
       <main className="ca-shell">
-        {(episode && game) && <header className="ca-header">
+        {(inAdventure && episode && game) && <header className="ca-header">
           <button
             className="ca-button"
             onClick={() => {
@@ -507,7 +507,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
               </div>
             )}
           </section>
-        ) : episode && game ? (
+        ) : inAdventure && episode && game ? (
           <>
             <div className="ca-game-layout">
               <section className="ca-stage" aria-label="Cenário da aventura">

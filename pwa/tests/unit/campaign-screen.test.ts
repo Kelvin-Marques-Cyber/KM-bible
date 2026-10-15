@@ -168,6 +168,9 @@ describe("36 aventuras: interface central", () => {
       activeEpisodeId: "creation",
     });
     await render();
+    expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
+    expect(host.querySelector('[role=dialog]')).toBeNull();
+    click("Continuar aventura");
     expect(host.querySelector("[role=dialog]")?.textContent).toContain(
       "O firmamento",
     );
@@ -195,6 +198,7 @@ describe("36 aventuras: interface central", () => {
       activeEpisodeId: "creation",
     });
     await render();
+    click("Continuar aventura");
     // O botão faz parte do diário recolhível; primeiro abra-o, como um jogador.
     click("Abrir diário de missões");
     expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
@@ -221,11 +225,9 @@ describe("36 aventuras: interface central", () => {
   });
   it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
     await render();
-    await act(async () => {
-      click("Nova jornada");
-      click("Escolher saga Origens e Promessa");
-      click("Entrar na aventura");
-    });
+    click("Nova jornada");
+    click("Escolher saga Origens e Promessa");
+    click("Entrar na aventura");
     await act(async () => {
       click("Iniciar exploração");
     });
@@ -268,6 +270,7 @@ describe("36 aventuras: interface central", () => {
       click("Recuperar cópia de segurança");
     });
     expect(spies.recover).toHaveBeenCalledTimes(1);
+    click("Continuar aventura");
     expect(host.textContent).toContain("O Jardim e a Escolha");
     expect(host.querySelector('[role="alert"]')).toBeNull();
   });

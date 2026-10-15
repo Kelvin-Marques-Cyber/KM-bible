@@ -1,11 +1,20 @@
 /* Full-game front end. Not a document/dashboard.
    All controls remain semantic HTML for keyboard, touch and screen readers,
    but are overlaid on an animated pixel world with game-like spatial UI. */
+.chronicles-viewport {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  height: 100dvh;
+  overflow: hidden;
+  background: #102225;
+  isolation: isolate;
+}
 .gf-root {
   position:relative;
   isolation:isolate;
   height:100%;
-  min-height:560px;
+  min-height:0;
   width:100%;
   overflow:hidden;
   color:#fff0cd;
@@ -351,7 +360,7 @@
 .gf-settings-note {display:block;margin-top:12px;color:#e4d6b4; font:500 11px ui-sans-serif,system-ui,sans-serif;}
 @keyframes gf-shine{50%{filter:drop-shadow(0 0 25px #fff1bd);transform:scale(1.08)}}
 @media(max-width:700px){
- .gf-root {min-height:500px;}
+ .gf-root {min-height:0;}
  .gf-topbar {min-height:47px;padding:6px 8px;gap:7px;}
  .gf-top-brand {font-size:9px;gap:5px;letter-spacing:0;}
  .gf-progress-word {display:none;}

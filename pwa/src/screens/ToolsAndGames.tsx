@@ -22,7 +22,7 @@ export default function ToolsAndGames() {
   );
   if(tab==='mezuzah')return <Suspense fallback={<Spinner/>}><Mezuzah onBack={()=>setTab('home')}/></Suspense>;
   if(tab==='online')return <Suspense fallback={<Spinner/>}><Online onBack={()=>setTab('home')}/></Suspense>;
-  if(tab==='chronicles')return <Suspense fallback={<Spinner/>}><Chronicles onBack={()=>setTab('home')}/></Suspense>;
+  if(tab==='chronicles')return <div className="chronicles-viewport" aria-label="Crônicas da Aliança"><Suspense fallback={<Spinner/>}><Chronicles onBack={()=>setTab('home')}/></Suspense></div>;
   return (
     <div className="scroll-area h-full">
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">

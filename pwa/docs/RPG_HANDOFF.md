@@ -1,5 +1,13 @@
 # Crônicas da Aliança — estado e continuidade
 
+## Refatoração imersiva — continuação a partir de `5b3171a`
+
+- A abertura passa sempre pela tela de título, mesmo com capítulo ativo; retomar é uma ação explícita.
+- O atlas preserva o ponteiro do último capítulo, sem apagar a retomada ao navegar.
+- A experiência ocupa o viewport da PWA e mantém o leitor/cartões em camadas superiores.
+- TypeScript e os oito testes de interface conferidos nesta etapa; a validação completa será repetida ao concluir slots e overlays.
+- Não há build Android nesta refatoração. A release online anterior é independente desta UX em andamento.
+
 ## Escopo e base
 
 Trabalho iniciado a partir de `290285d86d49ed0f535edb18ee12c506524d7f80`, na branch obrigatória `flutter-web-fiel` de `Kelvin-Marques-Cyber/KM-bible`.
