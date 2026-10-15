@@ -5,6 +5,7 @@ import {
   type JourneyState,
 } from "./campaign-engine";
 import type { ChronicleEpisode } from "./campaign-content";
+import { ambientActors, type AmbientActor } from "./campaign-ambient";
 
 export const SCENE_WIDTH = 480,
   SCENE_HEIGHT = 270;
@@ -545,6 +546,33 @@ function sprite(
   rect(c, x + 6, y - 12, 3, 2, "#d1ac73");
 }
 
+/** Low-cost animated crowd and flock silhouettes. Decorative only; they
+ * neither speak scripture nor participate in the chapter's three objectives. */
+function ambientSprite(c: CanvasRenderingContext2D, a: AmbientActor) {
+  const x = Math.round(a.x), y = Math.round(a.y);
+  rect(c, x - 8, y - 1, 17, 3, "#12292944");
+  if (a.kind === "sheep") {
+    const step = a.step === 1 || a.step === 3 ? 1 : 0;
+    rect(c, x - 8, y - 6 + step, 3, 7, "#53473b");
+    rect(c, x + 3, y - 6 - step, 3, 7, "#53473b");
+    rect(c, x - 12, y - 18, 21, 12, "#eee0c0");
+    rect(c, x - 9, y - 22, 14, 8, "#fff1d5");
+    rect(c, x + (a.facing > 0 ? 5 : -11), y - 16, 7, 8, "#927c63");
+    rect(c, x + (a.facing > 0 ? 9 : -8), y - 13, 2, 2, "#273531");
+    return;
+  }
+  const stride = [0, 1, 0, -1][a.step];
+  rect(c, x - 5, y - 5 + stride, 4, 6, "#4f4639");
+  rect(c, x + 2, y - 5 - stride, 4, 6, "#4f4639");
+  poly(c, [x - 6,y - 20,x + 5,y - 20,x + 8,y - 6,x - 7,y - 6], a.costume);
+  rect(c, x - 7, y - 18, 3, 9, "#bb9473");
+  rect(c, x + 6, y - 18, 3, 9, "#bb9473");
+  rect(c, x - 5, y - 30, 11, 11, "#cfad89");
+  rect(c, x - 6, y - 31, 13, 4, "#514238");
+  rect(c, x + (a.facing > 0 ? 2 : -3), y - 25, 2, 2, "#2d3738");
+  rect(c, x - 6, y - 20, 12, 3, "#dac08e");
+}
+
 type Layer = { y: number; draw: () => void };
 export class CampaignRenderer {
   private background: HTMLCanvasElement | null = null;
@@ -696,6 +724,10 @@ export class CampaignRenderer {
         });
     for (let i = 0; i < 3; i++)
       layers.push({ y: STATIONS[i].y * Y, draw: () => fixture(c, e, i, p) });
+    // Three background villagers in populated settings, animals in pastoral
+    // settings. Positions are animation-only: no additional save writes.
+    for (const actor of ambientActors(e, t, reduced))
+      layers.push({ y: actor.y, draw: () => ambientSprite(c, actor) });
     layers.push({
       y: g.y * Y,
       draw: () =>
