@@ -1,12 +1,15 @@
 import { act, createElement } from 'react';
 import { createRoot, type Root } from 'react-dom/client';
-import { afterEach, beforeAll, describe, expect, it } from 'vitest';
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { t } from '../../src/lib/i18n';
 import ToolsAndGames from '../../src/screens/ToolsAndGames';
 
 beforeAll(() => { (globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT=true; });
+// jsdom não implementa WebGL. Simular ausência de suporte e validar o
+// fallback 2D sem gerar erros falsos de HTMLCanvasElement.getContext.
+beforeEach(() => { vi.spyOn(HTMLCanvasElement.prototype, 'getContext').mockReturnValue(null); });
 let host:HTMLDivElement|null=null,root:Root|null=null;
-afterEach(()=>{act(()=>root?.unmount());host?.remove();host=null;root=null;});
+afterEach(()=>{act(()=>root?.unmount());host?.remove();host=null;root=null;vi.restoreAllMocks();});
 const click=(text:string)=>{
   const el=[...host!.querySelectorAll('button')].find(b=>b.textContent?.includes(text));
   expect(el,'Botão '+text+' deve existir').toBeDefined();
@@ -33,6 +36,7 @@ describe('Ferramentas e Games',()=>{
     expect(host.textContent).toContain('Memorização');
     click('Jogar agora');
     await until(()=>!!host!.querySelector('select#mezuzah-players'));
+    await until(()=>!!host!.querySelector('[aria-label="Tabuleiro acessível em duas dimensões"]'));
     expect(host.textContent).toContain('Nova partida');
     click('Iniciar jornada');
     await until(()=>host!.textContent!.includes('Lançar dado'));
