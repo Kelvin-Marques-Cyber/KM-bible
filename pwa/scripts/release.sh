@@ -11,7 +11,7 @@ SITE="${KM_SITE:-https://kelvin-marques-cyber.github.io/KM-bible/}"
 # Os JSONs finais de Agostinho e da apologetica expandida sao gerados e ignorados
 # no Git: uma copia nova, ou um build antigo, pode ter catalogo parcial mesmo
 # contendo public/data/v1/catalog.json. Nao confie na existencia do catalogo.
-echo "==> 1/8 Verificando as fontes do acervo"
+echo "==> 1/9 Verificando as fontes do acervo"
 needs_content="$(python3 - "$REPO" <<'PY'
 import json, sys
 from pathlib import Path
@@ -50,7 +50,7 @@ if [[ "$needs_content" == "yes" ]]; then
   (cd "$REPO" && python3 scripts/prepare_app_content.py)
 fi
 
-echo "==> 2/8 Gerando dados completos e fontes"
+echo "==> 2/9 Gerando dados completos e fontes"
 # SEMPRE regenerar para sincronizar o catalogo incorporado no JS com os arquivos
 # de public/data/v1. Catalogo antigo podia ter agostinho=null, embora o PDF
 # estivesse no repositorio, provocando 5 falhas falsas na suite.
