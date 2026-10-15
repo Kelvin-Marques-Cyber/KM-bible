@@ -51,7 +51,7 @@ for profile in expanded["profiles"]:
     assert len(axes) == 8 and len(set(axes)) == 8, f"Eixos repetidos: {ident}"
     for axis in axes:
         assert axis in reformed_text, f"Eixo específico omitido: {ident}"
-    assert reformed_text.count("\\n## ") >= 10, f"Seções confessionais incompletas: {ident}"
+    assert reformed_text.count("\n## ") >= 10, f"Seções confessionais incompletas: {ident}"
     fingerprint = hashlib.sha256(reformed_text.encode()).hexdigest()
     assert fingerprint not in fingerprints, f"Dossiê duplicado: {ident}"
     fingerprints.add(fingerprint)
