@@ -88,7 +88,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Gênesis começa atribuindo a Deus os céus e a terra."
     },
-    "ending": "A história da Bíblia se inicia com a criação, não com um herói humano. O relato culmina na dignidade da vida humana."
+    "ending": "Os céus e a terra recebem forma e vida. A humanidade é apresentada como imagem de Deus, chamada a cuidar da criação. Antes de qualquer conquista humana, há a bondade do Criador."
   },
   {
     "id": "garden",
@@ -128,7 +128,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "O capítulo descreve vergonha, consequências e expulsão do jardim."
     },
-    "ending": "A narrativa mostra como a transgressão atinge relações, trabalho e vida. Não reescreva suas consequências."
+    "ending": "O caminho do jardim fica para trás. A vergonha e a ruptura alcançam o trabalho, a vida e os relacionamentos; ainda assim, Gênesis prossegue anunciando a história de Deus com a humanidade."
   },
   {
     "id": "ark",
@@ -168,7 +168,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Gênesis 6 atribui a obra a Noé, que segue as instruções recebidas."
     },
-    "ending": "Noé cumpre o que lhe foi ordenado. A continuação de Gênesis narra o dilúvio, a preservação de sua família e a aliança."
+    "ending": "Noé faz conforme a ordem recebida. A madeira preparada, o abrigo e as provisões apontam para a preservação em meio ao juízo. A continuação de Gênesis narrará o dilúvio e a aliança."
   },
   {
     "id": "babel",
@@ -208,7 +208,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Gênesis 11 relata o desejo de construir cidade e torre para não serem dispersos."
     },
-    "ending": "A tentativa de exaltação coletiva termina na dispersão; os personagens secundários são narrativos."
+    "ending": "Os tijolos permanecem, mas a cidade perde a unidade que seus construtores desejavam garantir. A dispersão atravessa a terra; fazer um nome para si não assegurou o futuro que planejavam."
   },
   {
     "id": "abram",
@@ -248,7 +248,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Gênesis 12 liga a chamada de Abrão a uma promessa de bênção abrangente."
     },
-    "ending": "O caminho continua apesar das incertezas; não se presume que os auxiliares fictícios tenham ouvido o chamado."
+    "ending": "Abrão atravessa a terra e ergue um altar. A promessa ainda não se tornou posse, mas já orienta seus passos. A bênção anunciada alcança um horizonte maior que a própria caravana."
   },
   {
     "id": "joseph",
@@ -288,7 +288,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "José atribui a Deus a interpretação e recomenda planejamento durante a abundância."
     },
-    "ending": "A providência aparece numa história de adversidades reais. A atividade do escriba no cenário é inventada."
+    "ending": "A prisão fica para trás, e José assume uma responsabilidade diante da fome que se aproxima. A interpretação recebida de Deus conduz ao cuidado com as provisões e com as vidas que delas dependerão."
   },
   {
     "id": "moses",
@@ -328,7 +328,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Êxodo 2 descreve a descoberta por uma filha do faraó."
     },
-    "ending": "A libertação começa em ações de proteção e coragem, antes das grandes manifestações públicas."
+    "ending": "O menino é retirado das águas e acolhido pela filha do faraó. O cuidado de sua mãe e a vigilância de sua irmã atravessam a ameaça do decreto. Moisés cresce dentro da história da libertação que ainda virá."
   },
   {
     "id": "bush",
@@ -368,7 +368,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "A sarça ardente marca o encontro de Moisés com a vocação descrita em Êxodo 3."
     },
-    "ending": "A narrativa não apresenta a sarça como objeto mágico controlável pelo jogador."
+    "ending": "A missão de Moisés aponta novamente para o Egito e para o sofrimento de Israel. A chama que não consome marca um chamado recebido, não uma força que o homem conquistou para si."
   },
   {
     "id": "passover",
@@ -408,7 +408,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Êxodo 12 menciona pães ázimos e ervas amargas na refeição pascal."
     },
-    "ending": "A Páscoa é um memorial instituído no contexto da libertação; o jogo não simula nem substitui rito religioso."
+    "ending": "A refeição é preparada com a partida em vista. Pães sem fermento e ervas amargas guardam a memória desta noite. O povo é chamado a transmitir às próximas gerações o significado da Páscoa."
   },
   {
     "id": "sea",
@@ -448,7 +448,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Êxodo 14 apresenta Moisés e a intervenção do Senhor diante do mar."
     },
-    "ending": "O livramento não é uma habilidade adquirida, mas ação divina na narrativa bíblica."
+    "ending": "Israel atravessa em terra seca. O medo que cercava o acampamento dá lugar ao reconhecimento do livramento do Senhor. A jornada continua para além daquela margem."
   },
   {
     "id": "sinai",
@@ -488,7 +488,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Êxodo 20 inicia com a lembrança da libertação do Egito."
     },
-    "ending": "A obediência responde ao Deus da aliança, não a uma pontuação produzida por desafios."
+    "ending": "Ao pé do monte, a liberdade recebe o horizonte da aliança. A lembrança da saída do Egito acompanha os mandamentos, que tratam da relação com Deus e do cuidado com o próximo."
   },
   {
     "id": "jericho",
@@ -528,7 +528,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Josué 6 apresenta Josué na liderança do povo diante de Jericó."
     },
-    "ending": "A conquista é narrada em seu contexto histórico-teológico, sem transformar sofrimento em recompensa lúdica."
+    "ending": "As muralhas caem, e o relato também registra a preservação de Raabe e de sua família. A história segue com a seriedade de seus acontecimentos, sem apagar o sofrimento que a conquista envolve."
   },
   {
     "id": "ruth",
@@ -568,7 +568,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Rute 1 descreve o compromisso de Rute com Noemi."
     },
-    "ending": "O foco é a fidelidade em meio à vulnerabilidade, não uma idealização da pobreza."
+    "ending": "Rute chega a Belém com Noemi no começo da colheita da cevada. A perda ainda pesa sobre as duas, mas a permanência de Rute junto da sogra abre um caminho de lealdade e esperança."
   },
   {
     "id": "samuel",
@@ -608,7 +608,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Eli instrui Samuel sobre como responder ao Senhor."
     },
-    "ending": "Não atribua novas palavras reveladas ao ajudante fictício da exploração."
+    "ending": "Samuel volta a repousar depois do encontro narrado. Pela manhã, precisa transmitir a Eli uma palavra difícil. Sua vocação cresce em escuta e responsabilidade diante do Senhor."
   },
   {
     "id": "david",
@@ -648,7 +648,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Davi confronta o filisteu confiando no Senhor."
     },
-    "ending": "Este capítulo possui também um episódio de exploração ampliada disponível como piloto separado."
+    "ending": "Davi enfrenta o filisteu, e a coragem do jovem permanece ligada à confiança no Senhor. O vale guarda o desfecho narrado em 1 Samuel. A versão ampliada deste episódio continua disponível no mapa de aventuras."
   },
   {
     "id": "solomon",
@@ -688,7 +688,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "1 Reis 3 relata que a súplica por sabedoria agrada ao Senhor."
     },
-    "ending": "A sabedoria régia é apresentada como responsabilidade, e não como superpoder."
+    "ending": "O pedido de discernimento agrada ao Senhor. Salomão desperta e retorna a Jerusalém; diante dele permanece a responsabilidade de governar e julgar o povo com sabedoria."
   },
   {
     "id": "elijah",
@@ -728,7 +728,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "1 Reis 18:31 informa que Elias tomou doze pedras."
     },
-    "ending": "O monte é cenário de confronto de lealdades; a manifestação divina não é uma mecânica de magia."
+    "ending": "O altar restaurado e as doze pedras recordam a identidade de Israel. Após a oração de Elias, o povo reconhece o Senhor. O confronto do Carmelo expõe a quem pertence sua lealdade."
   },
   {
     "id": "isaiah",
@@ -768,7 +768,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Isaías 6 apresenta o profeta dispondo-se a ser enviado pelo Senhor."
     },
-    "ending": "A visão pertence ao relato profético; o jogador a observa como narrativa bíblica."
+    "ending": "A purificação precede o envio. Isaías ouve uma missão que inclui resistência e incompreensão; sua disposição não transforma o caminho profético numa tarefa fácil."
   },
   {
     "id": "daniel",
@@ -808,7 +808,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Daniel 1:12 registra o pedido de legumes e água."
     },
-    "ending": "A identidade no exílio se expressa por decisão e fidelidade, não por superioridade cultural automática."
+    "ending": "A prova chega ao fim e os jovens são examinados. O relato atribui a Deus conhecimento e inteligência. A vida na Babilônia prossegue, exigindo fidelidade em decisões concretas."
   },
   {
     "id": "furnace",
@@ -848,7 +848,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Daniel 3 narra a recusa desses três jovens."
     },
-    "ending": "A narrativa centra-se na fidelidade e no livramento; não faz da fornalha um espetáculo jogável."
+    "ending": "Os três homens saem da fornalha, e o relato descreve que o fogo não lhes causara dano. Sua recusa de adorar a imagem havia sido afirmada mesmo diante da possibilidade de não serem livrados."
   },
   {
     "id": "lions",
@@ -888,7 +888,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Daniel 6:10 afirma que Daniel orava três vezes ao dia."
     },
-    "ending": "A fidelidade é exercida mesmo sob ameaça; a proteção divina não pode ser adquirida por pontos."
+    "ending": "Ao amanhecer, o rei encontra Daniel vivo. O relato atribui sua preservação ao anjo enviado por Deus. A janela de oração permanece como sinal de uma fidelidade anterior ao livramento."
   },
   {
     "id": "esther",
@@ -928,7 +928,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Ester 4 registra o pedido de jejum por três dias."
     },
-    "ending": "O foco está na responsabilidade de Ester e no risco real do ato."
+    "ending": "O jejum é solicitado, e Ester se dispõe a comparecer diante do rei. Ela ainda enfrentará o risco do encontro. A história avança por uma decisão de responsabilidade para com seu povo."
   },
   {
     "id": "ezra",
@@ -968,7 +968,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Esdras 7:10 apresenta busca, prática e ensino da Lei."
     },
-    "ending": "O jogo usa leitura e interpretação como desafios, sem inventar conteúdos secretos."
+    "ending": "O coração de Esdras se volta à busca, à prática e ao ensino da Lei. O retorno a Jerusalém inclui mais que o deslocamento de pessoas: envolve aprender a viver segundo o que foi recebido."
   },
   {
     "id": "nehemiah",
@@ -1008,7 +1008,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Neemias 6:15 informa a conclusão do muro em cinquenta e dois dias."
     },
-    "ending": "A conclusão não ignora riscos políticos e sociais da reconstrução."
+    "ending": "O muro é concluído em cinquenta e dois dias. As tentativas de intimidação não interrompem a obra, e o relato reconhece o auxílio de Deus em sua realização."
   },
   {
     "id": "birth",
@@ -1048,7 +1048,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Lucas 2:7 descreve a manjedoura."
     },
-    "ending": "A narrativa distingue os dados do Evangelho das cenografias imaginativas posteriores."
+    "ending": "Os pastores encontram Maria, José e o menino deitado na manjedoura. Depois retornam glorificando a Deus pelo que ouviram e viram. Maria guarda esses acontecimentos e os considera em seu coração."
   },
   {
     "id": "baptism",
@@ -1088,7 +1088,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Mateus 3 apresenta João batizando Jesus."
     },
-    "ending": "O jogo não oferece recriação sacramental; apresenta o testemunho da passagem."
+    "ending": "Jesus sai da água, o Espírito desce como pomba e o Evangelho registra a voz dos céus. O testemunho aponta para sua identidade e prepara o leitor para o ministério que se segue."
   },
   {
     "id": "samaritan",
@@ -1128,7 +1128,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Lucas 10 identifica o samaritano como aquele que usou de misericórdia."
     },
-    "ending": "O jogo representa uma parábola, não um registro de uma viagem histórica específica."
+    "ending": "A pergunta sobre quem é o próximo encontra uma resposta em misericórdia praticada. Na parábola, o cuidado alcança o ferido à beira do caminho. O ensino de Jesus chama à mesma disposição de socorrer."
   },
   {
     "id": "storm",
@@ -1168,7 +1168,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Marcos 4:39 descreve que o vento cessou e houve grande bonança."
     },
-    "ending": "A história é sobre Jesus, não sobre uma técnica humana de controlar o clima."
+    "ending": "O vento cessa e há grande bonança. O temor dos discípulos dá lugar a uma pergunta sobre quem é Jesus, a quem até o vento e o mar obedecem. A travessia revela mais que a fragilidade do barco."
   },
   {
     "id": "supper",
@@ -1208,7 +1208,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Lucas 22:20 relaciona o cálice à nova aliança."
     },
-    "ending": "A ceia é apresentada como ensinamento de Jesus; não é substituída por rituais digitais."
+    "ending": "O pão e o cálice apontam para a entrega de Jesus e para a nova aliança. À mesa, a alegria da comunhão convive com a gravidade do anúncio da traição e da paixão que se aproxima."
   },
   {
     "id": "resurrection",
@@ -1248,7 +1248,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "João 20 apresenta Maria Madalena diante de Jesus ressuscitado."
     },
-    "ending": "A ressurreição permanece acontecimento central do testemunho cristão, não uma recompensa do jogador."
+    "ending": "A morte e o sepultamento não encerram o testemunho. Maria Madalena reconhece Jesus ressuscitado e anuncia aos discípulos o que viu. O luto encontra o acontecimento central da esperança cristã."
   },
   {
     "id": "pentecost",
@@ -1288,7 +1288,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Atos 2 apresenta a audição da mensagem em diferentes línguas."
     },
-    "ending": "Pentecostes é testemunho da ação do Espírito, não um sistema de poderes do RPG."
+    "ending": "Peregrinos de diversas nações ouvem em suas próprias línguas. Entre admiração e perguntas, o testemunho apostólico começa a alcançar a multidão reunida em Jerusalém."
   },
   {
     "id": "stephen",
@@ -1328,7 +1328,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Atos 7:60 registra a oração de Estêvão por seus ofensores."
     },
-    "ending": "O episódio evita transformar o martírio em espetáculo ou pontuação."
+    "ending": "Estêvão morre depois de orar por seus agressores. Seu testemunho é guardado com a gravidade de uma vida entregue, sem converter a violência sofrida em conquista ou espetáculo."
   },
   {
     "id": "damascus",
@@ -1368,7 +1368,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Atos 9 identifica Ananias como aquele que foi enviado a Saulo."
     },
-    "ending": "A conversão de Saulo pertence à narrativa apostólica; o personagem fictício não causa a visão."
+    "ending": "Saulo é conduzido a Damasco sem enxergar. Ananias o visita; o relato prossegue com sua recuperação da vista e seu batismo. Aquele que perseguia o Caminho começa uma nova trajetória."
   },
   {
     "id": "cornelius",
@@ -1408,7 +1408,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 1,
       "explanation": "Atos 10 relata a ida de Pedro até Cornélio."
     },
-    "ending": "O encontro ajuda a compreender a ampliação da comunidade cristã sem apagar o contexto judaico de Pedro."
+    "ending": "A casa reunida ouve o anúncio de Jesus. Atos relata a vinda do Espírito sobre os ouvintes e seu batismo. A mensagem alcança os gentios, surpreendendo os que acompanharam Pedro."
   },
   {
     "id": "philippi",
@@ -1448,7 +1448,7 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 2,
       "explanation": "Atos 16:14 identifica Lídia como vendedora de púrpura."
     },
-    "ending": "O diálogo oferece contexto de hospitalidade e fé, sem criar palavras atribuídas a Paulo."
+    "ending": "O Senhor abre o coração de Lídia para atender à mensagem de Paulo. Após seu batismo e o de sua casa, ela acolhe os viajantes. A hospitalidade acompanha os primeiros passos da comunidade em Filipos."
   },
   {
     "id": "newjerusalem",
@@ -1488,6 +1488,6 @@ export const CAMPAIGN_EPISODES: ChronicleEpisode[] = [
       "correct": 0,
       "explanation": "Apocalipse 21:4 anuncia o fim da morte e do pranto."
     },
-    "ending": "O encerramento conduz o jogador à esperança escatológica, sem inventar uma cronologia além da visão."
+    "ending": "A visão termina voltada para a presença de Deus, a santa cidade e o fim da morte e do pranto. A esperança não depende das conquistas do viajante: repousa na promessa anunciada a João."
   }
 ];

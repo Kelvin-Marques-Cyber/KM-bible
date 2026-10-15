@@ -71,3 +71,15 @@ Também verificar visualmente no celular o WebGL 3D, o fallback sem WebGL, a rot
 - 47 testes de motor/persistência cobrem os 36 trajetos reais, investigações, erros/acertos, conclusão, próximo capítulo, leitura e escrita de todos os estados, corrupção, backup e compatibilidade com saves anteriores; os quatro testes de interface também passam (51 no conjunto).
 - Referências e intervalos confrontados com contagens do catálogo bíblico real. Respostas corretas distribuídas nas três posições. Ajustados: provisões da arca no intervalo citado; palavra da aliança no Sinai; contexto da ceia e da fornalha; crucificação/sepultamento no capítulo da ressurreição. Testemunha do prólogo de Noé é um leitor, sem sobrevivente extra inventado.
 - Build de produção compilado; E2E completo e validação seca permanecem pendentes. Próxima etapa: `campaign-renderer.ts`, `CampaignCanvas.tsx`, retratos e áudio opcional, seguidos de testes de navegador.
+
+## Etapa: arte original, áudio e leitura integrada
+
+- `b55c56f` contém os 36 percursos e a proteção de saves no GitHub.
+- Renderizador separado em `campaign-renderer.ts`: cenário estático em cache, camadas ordenadas por profundidade, 13 paletas, chão/texturas por ambiente, marcos distintos, água e partículas animadas, sombra, luz, caminhada em quatro poses e retratos pixelados originais.
+- Prólogos e visões usam uma lanterna de leitura, sem inserir testemunhas humanas antes da criação ou dentro da visão. Cenários de criação/jardim não exibem construções humanas. Representações são ilustrativas, não reconstruções arqueológicas.
+- Canvas limita pintura a 30 fps, cancela frames com aba oculta, respeita redução de movimento e limpa teclas na pausa/perda de foco. Prévia decorativa não captura teclado.
+- Música ambiente e sinais de descoberta/acerto/erro são sintetizados, originais e desligados por padrão. Contexto de áudio só nasce por gesto do usuário, suspende na pausa e libera recursos na saída.
+- Leitor abre o intervalo completo indicado, preservando um versículo específico para o cartão. João 19:16–42 também pode ser aberto no capítulo da ressurreição.
+- As 36 conclusões foram reescritas como encerramentos narrativos, mantendo as advertências de ficção no lugar apropriado da interface.
+- Verificações: typecheck e build aprovados; 57 testes de campanhas aprovados, incluindo teclado/foco, toque, pausa/visibilidade, áudio e intervalo bíblico. Inspeção visual da seleção e do cenário desktop realizada. Os E2E específicos e a suíte completa estão na etapa seguinte.
+- Bundle do módulo de campanhas nesta build: aproximadamente 84 KB (30 KB gzip), sem imagens ou áudio baixados durante o jogo.
