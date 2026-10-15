@@ -1,15 +1,9 @@
 name: Crônicas da Aliança — validar PWA
 
+# Acionamento manual: a primeira execução automática falhou antes de receber
+# runner (0 ms faturáveis, nenhuma etapa iniciada). Evitar checks vermelhos
+# em cada commit até o runner de GitHub Actions estar disponível.
 on:
-  push:
-    branches: [flutter-web-fiel]
-    paths:
-      - 'pwa/src/**'
-      - 'pwa/tests/**'
-      - 'pwa/package.json'
-      - 'pwa/package-lock.json'
-      - 'pwa/vite.config.ts'
-      - '.github/workflows/cronicas-pwa.yml'
   workflow_dispatch:
 
 permissions:
