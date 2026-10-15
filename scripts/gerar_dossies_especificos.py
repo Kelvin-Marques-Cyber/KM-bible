@@ -39,6 +39,19 @@ TOPICS = (
      "1 Coríntios 15:12-22; Hebreus 9:27"),
 )
 
+# Cada capítulo termina com uma investigação própria, sem reciclar a mesma
+# pergunta nos oito assuntos e nas 30 tradições.
+DEBATE_QUESTIONS = (
+    "Qual documento ou acontecimento mostra que esta continuidade histórica é real, e que rupturas precisam ser admitidas? A resposta reformada não pode saltar da antiguidade para a verdade sem examinar o argumento.",
+    "Como se decide entre duas interpretações contrárias da mesma fonte? Explicite quem tem autoridade para rever a leitura dominante, e por quais critérios o erro poderia ser reconhecido.",
+    "Que sentido preciso tem o conceito de Deus, fundamento ou realidade que está sendo confrontado? Apresente a melhor definição do interlocutor antes de testar a afirmação cristã sobre o Criador e o Filho.",
+    "O que cada antropologia consegue explicar sobre dignidade, responsabilidade, sofrimento e culpa? Evite usar o mesmo termo para diagnósticos que têm causas e consequências distintas.",
+    "Qual problema a salvação ou libertação pretende resolver, por qual meio e com qual finalidade? Compare a identidade e a obra de Jesus antes de discutir boas obras, graça ou disciplina.",
+    "O que os participantes afirmam estar fazendo em seu próprio rito? Depois da descrição, pergunte quais ações a leitura reformada considera autorizadas e por quais textos bíblicos.",
+    "Uma convergência ética resolve a divergência de fundamento? Separe ações concretas, razões públicas e confissões de fé; trate as virtudes do interlocutor com a mesma seriedade das próprias.",
+    "Quais afirmações sobre morte e futuro são históricas, filosóficas ou revelacionais? Compare a ressurreição de Jesus e a continuidade da pessoa, sem presumir que todas as tradições ensinem o mesmo destino.",
+)
+
 
 def read_json(filename: Path):
     return json.loads(filename.read_text(encoding="utf-8"))
@@ -176,10 +189,7 @@ def main() -> None:
             if citation:
                 chapters.extend(["**Fontes e documentos que contextualizam a discussão:**", "", citation, ""])
             chapters.extend([
-                f"**Pergunta para debate:** se a posição for interpretada nos termos "
-                f"apresentados neste capítulo, que evidência textual e histórica seria "
-                f"suficiente para sustentar — ou corrigir — a divergência entre ela e "
-                f"a leitura presbiteriana em {topic.replace('_', ' ')}?",
+                "**Pergunta para debate:** " + DEBATE_QUESTIONS[i],
                 "",
             ])
         chapters.extend([
