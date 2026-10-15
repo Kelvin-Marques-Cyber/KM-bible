@@ -38,6 +38,16 @@ export interface SearchPack extends PackInfo {
   records: number;
   chunk: number;
 }
+export interface ApologeticsVisualInfo {
+  path: string;
+  title: string;
+  alt: string;
+  caption: string;
+  credit: string;
+  kind: string;
+  photo?: { src: string; alt: string; caption: string; credit: string; source: string };
+}
+
 export interface Catalog {
   format: number;
   generated: string;
@@ -53,7 +63,7 @@ export interface Catalog {
   bookIntros: Record<string, [string, string, string][]>;
   misc: PackInfo;
   agostinho: PackInfo | null;
-  apologetica: (PackInfo & { targets: string[] }) | null;
+  apologetica: (PackInfo & { targets: string[]; visuals?: Record<string, ApologeticsVisualInfo> }) | null;
   models3d: PackInfo & { sizes: Record<string, number> };
   search: { general: SearchPack; commentary: SearchPack };
   repairs: Record<string, number>;
