@@ -4,7 +4,7 @@ import { finishOnboarding } from './helpers';
 test('Ferramentas e Games preserva a memorização e abre o Mezuzá 3D local', async ({ page }) => {
   await finishOnboarding(page);
   await page.getByRole('button', { name: 'Ferramentas e Games' }).click();
-  await expect(page.getByRole('heading', { name: 'Ferramentas e Games' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Ferramentas e Games', level: 2 })).toBeVisible();
   await expect(page.getByRole('heading', { name: 'Memorização' })).toBeVisible();
   await page.getByRole('button', { name: /Mezuzá 3D/ }).click();
   await expect(page.getByRole('heading', { name: 'Nova partida' })).toBeVisible();
