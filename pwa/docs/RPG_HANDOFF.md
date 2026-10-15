@@ -60,19 +60,28 @@ A revisão editorial contextual corrigiu as provisões da arca no intervalo cita
 | `b55c56f` | Retomada, transações, backup/recuperação e 36 percursos testados |
 | `3982d63` | Cenários, sprites, retratos, áudio e integração com intervalo de leitura |
 | `33374aa` | E2E dos 36 capítulos, recuperação, leitor/cartões e manual de uso |
+| `1edbdb3` | Aproximação robusta do condutor E2E sob latência de captura |
 
 Quando o Git local não fornece credenciais de escrita, o envio usa a conexão autenticada do GitHub: blobs + árvore + commit + atualização fast-forward com `expected_sha`. A árvore é conferida contra o commit local; o checkout é sincronizado sem descartar alterações pendentes. Nunca usar force push.
 
-## Validação registrada
+## Validação final — 15/10/2026
 
-- Node `24.19.0` (atende à exigência de 22.18+ do servidor de salas).
-- Typecheck e build de produção aprovados.
-- Suíte completa da validação seca: **425 testes unitários aprovados** (33 arquivos), incluindo checkpoint contínuo, exportação, recuperação e reinício isolado.
-- Servidor de salas existente: **9 testes aprovados**, sem alterar seu motor/servidor/interface.
-- Cinco E2E específicos aprovados: movimento/pausa/diálogo/retomada, leitor e cartão na Memorização, recuperação de save danificado e os dois fluxos originais do piloto (incluindo offline e toque).
-- E2E de navegador: **36/36 aventuras percorridas offline**, usando teclado real, lendo os três testemunhos, errando/acertando, consultando o códice, concluindo e avançando. Resultado 1 teste aprovado em 5,2 minutos. Validação seca completa ainda pendente nesta etapa.
+O comando obrigatório `KM_DRY_RUN=1 bash scripts/release.sh` terminou com código zero. Resultado:
 
-Testes novos: `tests/unit/campaign-engine.test.ts`, `campaign-screen.test.ts`, `campaign-canvas.test.ts`, `tests/e2e/campaigns.spec.ts`. O E2E existente do piloto foi ajustado exclusivamente à nova entrada destacada e ao retorno pelo mapa.
+- **425 testes unitários aprovados**, em 33 arquivos; nenhum teste afrouxado, ignorado ou removido para obter aprovação.
+- **9 testes do servidor Mezuzá aprovados**, sem alterar seu código.
+- **18 testes E2E aprovados** (6.5m), incluindo os **36/36 capítulos completos offline**, duas equipes em sessões independentes nas salas reais, piloto, memorização, leitor, corrupção/recuperação, atualização, migração e progresso bíblico.
+- Typecheck, catálogo completo, build, service worker e árvore de publicação validados.
+- Inspeção visual desktop e celular concluída, incluindo cenário, controles, retrato e diálogo.
+- Build validado: `1.0.0-1edbdb3-20261015081221 · precache 83 arquivos (1383 KB) · sw 10e68bab0e1a · force=true`.
+- Árvore validada: 7431 arquivos, 929.0 MB; maior: assets/assets/content/portuguese.sqlite (18.4 MB).
+- **Nenhuma publicação foi efetuada.** O script confirmou `KM_DRY_RUN=1: todos os testes e a arvore passaram; nada publicado.`
+
+Os testes de campanhas somam 61 casos unitários: 49 de conteúdo/motor/persistência, seis da interface e seis de Canvas/áudio/leitura. O E2E longo percorre os 36 capítulos com teclas reais, exige proximidade, lê os testemunhos, testa erro/acerto e avanço e confere 36/36 após reabrir offline. Não injeta coordenadas nem desbloqueia capítulos por atalhos.
+
+A correção do condutor E2E foi motivada por um trace que mostrou centenas de milissegundos entre detectar a chegada e soltar a tecla. O teste agora faz aproximação em duas velocidades e corrige a posição com teclado, mantendo o alcance de 2,6 e exigindo proximidade antes de interagir. O teste inteiro passou novamente, incluindo o capítulo 20.
+
+Testes novos: `tests/unit/campaign-engine.test.ts`, `campaign-screen.test.ts`, `campaign-canvas.test.ts` e `tests/e2e/campaigns.spec.ts`. O E2E existente do piloto foi ajustado à entrada destacada e ao retorno pelo mapa. Os testes existentes também passaram.
 
 ## Comandos obrigatórios antes de publicar
 
@@ -83,10 +92,10 @@ KM_DRY_RUN=1 bash scripts/release.sh
 
 O script prepara o acervo local, gera catálogo/fontes, verifica tipos, roda toda a suíte unitária, instala/verifica o servidor do Mezuzá, compila, executa todos os E2E e valida a árvore do Pages. `KM_DRY_RUN=1` impede o envio da árvore de publicação. Não rodar sem essa variável enquanto não houver autorização explícita.
 
-## Próximos passos desta rodada
+## Estado final e continuidade
 
-1. A primeira validação seca passou tipos, 425 unitários, nove testes de servidor, build e 17 E2E. O percurso longo falhou por sobrepassar o marco no capítulo 20: o trace mostrou atraso de centenas de milissegundos entre detectar a chegada e soltar a tecla.
-2. O condutor do E2E agora faz aproximação em duas velocidades, corrige sobrepassagem com teclas reais e exige distância menor que 2,6 antes de investigar. O alcance e o motor do jogo não foram afrouxados. Os dois fluxos curtos de movimento/recuperação passaram com o novo condutor. Repetir a validação seca inteira.
-3. Registrar resultados finais, commit e envio. Não declarar publicação.
+Os fluxos obrigatórios das 36 aventuras compactas estão implementados e validados. Não há bug conhecido pendente nos fluxos exercitados. O piloto ampliado, Mezuzá e Memorização permanecem preservados; Android/iOS não tiveram alterações.
 
-As novas verificações pertencem a `tests/e2e/campaigns.spec.ts` e `tests/unit/campaign-screen.test.ts`; o estado funcional do produto está em `CampaignChronicles.tsx`. Não há necessidade de recomeçar o RPG.
+A publicação permanece aguardando autorização explícita do usuário. Os commits foram enviados à `flutter-web-fiel`; a árvore de `gh-pages` foi apenas montada e verificada localmente no modo seco.
+
+Para ampliar profundidade, missões ou mapas em uma próxima tarefa, os pontos de entrada são `CampaignChronicles.tsx`, `campaign-content.ts`, `campaign-engine.ts` e `campaign-renderer.ts`. Isso seria expansão das aventuras compactas, não correção de entrega anunciada como campanha longa. Não recomeçar nem substituir o piloto.
