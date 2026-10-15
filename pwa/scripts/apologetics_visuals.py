@@ -46,7 +46,7 @@ def architecture(kind: str, ink: str, gold: str) -> str:
             f'<path d="M416 297a184 174 0 0 1 368 0Z" fill="{gold}"/>'
             f'<path d="M597 121v-30" stroke="{ink}" stroke-width="11"/>'
             + ''.join(f'<path d="M{x} 130h60v295h-60zM{x-10} 128h80l-40-90Z" fill="{ink}"/>' for x in (218,922))
-            + ''.join(f'<path d="M{x} 420v-100a32 32 0 0 1 64 0v100Z" fill="{gold}"' for x in (370,500,630,760))
+            + ''.join(f'<path d="M{x} 420v-100a32 32 0 0 1 64 0v100Z" fill="{gold}"/>' for x in (370,500,630,760))
         )
     if kind in ("chapel", "cathedral", "hall"):
         tower = f'<path d="M310 145h115v280H310Z" fill="{gold}"/><path d="M300 150l68-86 68 86Z" fill="{ink}"/>'
