@@ -20,6 +20,7 @@ def main() -> None:
     run("prepare_optional_content.py")
     run("gerar_panorama_apologetica.py", "--preserve-existing")
     run("ampliar_apologetica.py")
+    run("gerar_dossies_especificos.py")
     run("verificar_apologetica.py")
     run("verificar_traducoes_calvino.py")
     run("preparar_calvino_por_livro.py")
