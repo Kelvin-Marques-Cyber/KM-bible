@@ -168,6 +168,9 @@ describe("36 aventuras: interface central", () => {
       activeEpisodeId: "creation",
     });
     await render();
+    // O botão faz parte do diário recolhível; primeiro abra-o, como um jogador.
+    click("Abrir diário de missões");
+    expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
     await act(async () => {
       click("Criar cartão de memorização");
       click("Criar cartão de memorização");
