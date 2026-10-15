@@ -17,6 +17,15 @@ async function openCampaigns(page: Page) {
     page.getByRole("heading", { name: "Crônicas da Aliança", exact: true }),
   ).toBeVisible();
 }
+async function startFirstAdventure(page: Page) {
+  // The RPG opens at its own title screen, not a website card grid.
+  const newJourney = page.getByRole("button", { name: "Nova jornada", exact: true });
+  const choose = page.getByRole("button", { name: "Escolher aventura", exact: true });
+  if (await newJourney.count()) await newJourney.click();
+  else await choose.click();
+  await page.getByRole("button", { name: "Escolher saga Origens e Promessa", exact: true }).click();
+  await page.getByRole("button", { name: "Entrar na aventura", exact: true }).click();
+}
 async function readSave(page: Page): Promise<any> {
   return page.evaluate(
     () =>
@@ -114,8 +123,7 @@ test("todas as 36 aventuras: teclado real, três descobertas, erro/acerto, avan�
   await finishOnboarding(page);
   await waitForVerses(page);
   await openCampaigns(page);
-  await expect(page.locator(".ca-saga")).toHaveCount(6);
-  await expect(page.locator(".ca-chapter")).toHaveCount(6);
+  await expect(page.getByRole("navigation", {name: "Menu principal do jogo"})).toBeVisible();
   // The SW precaches every JS journey, including chapters not opened yet.
   await expect
     .poll(() => page.evaluate(() => !!navigator.serviceWorker.controller))
@@ -123,9 +131,7 @@ test("todas as 36 aventuras: teclado real, três descobertas, erro/acerto, avan�
   await context.setOffline(true);
   await page.reload();
   await openCampaigns(page);
-  await page
-    .getByRole("button", { name: "Explorar O Primeiro Alvorecer", exact: true })
-    .click();
+  await startFirstAdventure(page);
   for (const episode of CAMPAIGN_EPISODES) {
     await test.step(`${episode.number}: ${episode.title}`, async () => {
       const intro = page.getByRole("dialog", {
@@ -226,17 +232,14 @@ test("todas as 36 aventuras: teclado real, três descobertas, erro/acerto, avan�
           .click();
     });
   }
-  await expect(page.locator(".ca-total strong")).toHaveText("36/36");
-  for (const saga of CAMPAIGN_SAGAS)
-    await expect(
-      page.getByRole("progressbar", {
-        name: "Progresso de " + saga.title,
-        exact: true,
-      }),
-    ).toHaveAttribute("value", "6");
+  await expect(page.locator(".gf-progress")).toContainText("36/36");
+  for (const saga of CAMPAIGN_SAGAS) {
+    const region = page.getByRole("button", { name: "Escolher saga " + saga.title, exact: true });
+    await expect(region).toContainText("6/6 testemunhos");
+  }
   await page.reload();
   await openCampaigns(page);
-  await expect(page.locator(".ca-total strong")).toHaveText("36/36");
+  await expect(page.locator(".gf-progress")).toContainText("36/36");
   expect(errors).toEqual([]);
 });
 
@@ -245,9 +248,7 @@ test("save exato, diálogo aberto, pausa, controles móveis e retomada após fec
 }) => {
   await finishOnboarding(page);
   await openCampaigns(page);
-  await page
-    .getByRole("button", { name: "Explorar O Primeiro Alvorecer", exact: true })
-    .click();
+  await startFirstAdventure(page);
   await page
     .getByRole("button", { name: "Iniciar exploração", exact: true })
     .click();
@@ -323,12 +324,11 @@ test("leitor e cartão usam a tradução instalada, com revisão preservada na M
   await finishOnboarding(page);
   // Onboarding may install another translation; find the actual selected label from the UI after opening the passage.
   await openCampaigns(page);
-  await page
-    .getByRole("button", { name: "Explorar O Primeiro Alvorecer", exact: true })
-    .click();
+  await startFirstAdventure(page);
   await page
     .getByRole("button", { name: "Iniciar exploração", exact: true })
     .click();
+  await page.getByRole("button", { name: "Abrir diário de missões", exact: true }).click();
   await page
     .getByRole("button", { name: "Ler Gênesis 1:1–31", exact: true })
     .click();
@@ -361,9 +361,7 @@ test("save danificado oferece recuperação sem apagar a cópia anterior", async
 }) => {
   await finishOnboarding(page);
   await openCampaigns(page);
-  await page
-    .getByRole("button", { name: "Explorar O Primeiro Alvorecer", exact: true })
-    .click();
+  await startFirstAdventure(page);
   await page
     .getByRole("button", { name: "Iniciar exploração", exact: true })
     .click();
