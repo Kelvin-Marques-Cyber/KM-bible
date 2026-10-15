@@ -25,6 +25,7 @@ import { app } from "../../lib/app";
 import { verse } from "../../lib/content";
 import { createCard, showPassage } from "../../screens/open";
 import CampaignCanvas from "./CampaignCanvas";
+import GameFront from "./GameFront";
 import CampaignPortrait from "./CampaignPortrait";
 import { CampaignAudio } from "./campaign-audio";
 import { episodePassage, memoryReference } from "./campaign-bible";
@@ -401,7 +402,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   );
   return (
     <div
-      className={"ca-root scroll-area h-full" + (episode && game ? " ca-playing" : "")}
+      className={"ca-root scroll-area h-full" + (episode && game ? " ca-playing" : " ca-front-active")}
       onKeyDown={(event) => {
         if (
           event.key === "Escape" &&
@@ -421,7 +422,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
       }}
     >
       <main className="ca-shell">
-        <header className="ca-header">
+        {(episode && game) && <header className="ca-header">
           <button
             className="ca-button"
             onClick={() => {
@@ -440,7 +441,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
             <strong>{progress.completed.length}/36</strong>
             <span>aventuras concluídas</span>
           </div>
-        </header>
+        </header>}
         {error && (
           <div role="alert" className="ca-error">
             {error}
@@ -896,153 +897,20 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
             )}
           </>
         ) : (
-          <>
-            <section className="ca-hero">
-              <div className="ca-hero-art" aria-hidden="true">
-                <CampaignCanvas
-                  episode={CAMPAIGN_EPISODES[saga * 6]}
-                  game={newJourney(CAMPAIGN_EPISODES[saga * 6].id)}
-                  paused
-                  decorative
-                  input={idle}
-                  onMove={noop}
-                  onInteract={noop}
-                />
-              </div>
-              <div className="ca-hero-copy">
-                <span className="ca-eyebrow">
-                  SEIS SAGAS · UMA HISTÓRIA DE ESPERANÇA
-                </span>
-                <h3>
-                  Entre caminhos,
-                  <br />
-                  guarde testemunhos.
-                </h3>
-                <p>
-                  36 aventuras compactas de exploração: caminhe, investigue e
-                  conheça a história bíblica. Cada capítulo reúne três
-                  descobertas e um desafio.
-                </p>
-                <span className="ca-offline">
-                  ✦ Teclado e toque · save automático · cenários offline
-                </span>
-              </div>
-            </section>
-            <button
-              className="ca-pilot"
-              onClick={() => {
-                void flush();
-                setPilot(true);
-              }}
-            >
-              <span className="ca-pilot-icon">✦</span>
-              <div>
-                <span className="ca-eyebrow">
-                  EPISÓDIO ORIGINAL AMPLIADO · 1 SAMUEL 16–17
-                </span>
-                <h3>O Vale e a Coragem</h3>
-                <p>
-                  Uma campanha mais longa com três mapas, vizinhos, missões,
-                  escolhas e inventário. Save independente.
-                </p>
-              </div>
-              <ChevronRight size={24} />
-            </button>
-            <section aria-label="Selecionar saga" className="ca-sagas">
-              {CAMPAIGN_SAGAS.map((item, index) => {
-                const done = progress.completed.filter(
-                  (id) =>
-                    CAMPAIGN_EPISODES.find((e) => e.id === id)?.saga === index,
-                ).length;
-                return (
-                  <button
-                    key={item.id}
-                    style={
-                      { "--saga-color": item.color } as React.CSSProperties
-                    }
-                    className="ca-saga"
-                    aria-pressed={saga === index}
-                    onClick={() => {
-                      setSaga(index);
-                      const next = { ...latest.current, selectedSaga: index };
-                      latest.current = next;
-                      setProgress(next);
-                    }}
-                  >
-                    <span className="ca-saga-number">
-                      {String(index + 1).padStart(2, "0")}
-                    </span>
-                    <div>
-                      <h3>{item.title}</h3>
-                      <p>{item.caption}</p>
-                      <progress
-                        value={done}
-                        max={6}
-                        aria-label={"Progresso de " + item.title}
-                      />
-                      <span>{done}/6 concluídas</span>
-                    </div>
-                  </button>
-                );
-              })}
-            </section>
-            <section
-              className="ca-chapters"
-              aria-label={"Capítulos de " + CAMPAIGN_SAGAS[saga].title}
-            >
-              <div className="ca-chapter-heading">
-                <div>
-                  <span className="ca-eyebrow">SAGA {saga + 1}</span>
-                  <h3>{CAMPAIGN_SAGAS[saga].title}</h3>
-                </div>
-                <p>Todos os capítulos estão disponíveis.</p>
-              </div>
-              <div className="ca-chapter-grid">
-                {CAMPAIGN_EPISODES.filter((e) => e.saga === saga).map((e) => {
-                  const state = progress.episodes[e.id];
-                  return (
-                    <button
-                      className="ca-chapter"
-                      key={e.id}
-                      onClick={() => begin(e.id)}
-                      aria-label={
-                        (state ? "Continuar " : "Explorar ") + e.title
-                      }
-                    >
-                      <span className="ca-chapter-top">
-                        <span>
-                          CAPÍTULO {String(e.number).padStart(2, "0")}
-                        </span>
-                        {state?.phase === "complete" && <Check size={18} />}
-                      </span>
-                      <h4>{e.title}</h4>
-                      <p>{e.reference.label}</p>
-                      <span className="ca-chapter-bottom">
-                        {state?.phase === "complete"
-                          ? "Revisitar história"
-                          : state
-                            ? "Continuar · " +
-                              state.visited.length +
-                              "/3 descobertas"
-                            : "Iniciar aventura"}
-                        <ChevronRight size={16} />
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-            </section>
-            <button className="ca-button" onClick={() => void exportSave()}>
-              Exportar progresso das aventuras
-            </button>
-            <p className="ca-footnote">
-              Escritura e ficção complementar: a narrativa não altera
-              acontecimentos bíblicos nem oferece milagres como poderes.
-              Cenários e textos autorais ficam disponíveis offline com a
-              instalação da PWA; o texto de cada tradução deve ser baixado na
-              Biblioteca.
-            </p>
-          </>
+          <GameFront
+            progress={progress}
+            saga={saga}
+            onSaga={(index) => {
+              setSaga(index);
+              const next = { ...latest.current, selectedSaga: index };
+              latest.current = next;
+              setProgress(next);
+            }}
+            onBegin={(id) => begin(id)}
+            onPilot={() => { void flush(); setPilot(true); }}
+            onBack={() => { void flush(); onBack(); }}
+            onExport={() => void exportSave()}
+          />
         )}
       </main>
     </div>
