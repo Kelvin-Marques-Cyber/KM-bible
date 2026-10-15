@@ -1,5 +1,5 @@
 // A nova quinta área preserva integralmente Memorização e acrescenta jogos.
-import { ArrowRight, BookOpen, Brain, Dices, Gamepad2, Sparkles, WifiOff } from 'lucide-react';
+import { ArrowRight, BookOpen, Brain, Gamepad2, Sparkles, WifiOff } from 'lucide-react';
 import { lazy, Suspense, useState } from 'react';
 import { Spinner } from '../components/ui';
 import { tr } from '../lib/i18n';
