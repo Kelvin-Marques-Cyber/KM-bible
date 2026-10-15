@@ -182,7 +182,7 @@ def architecture(kind: str, ink: str, gold: str) -> str:
         return base + (
             f'<path d="M220 305l380-190 380 190Z" fill="{gold}"/>'
             f'<path d="M278 306h644v122H278Z" fill="{ink}"/>'
-            + ''.join(f'<path d="M{x} 405v-55a26 26 0 0 1 52 0v55Z" fill="{gold}"' for x in (360,500,645,790))
+            + ''.join(f'<path d="M{x} 405v-55a26 26 0 0 1 52 0v55Z" fill="{gold}"/>' for x in (360,500,645,790))
         )
     return base
 
