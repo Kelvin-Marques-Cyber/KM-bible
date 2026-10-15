@@ -6,8 +6,9 @@ import { tr } from '../lib/i18n';
 
 const Memory = lazy(() => import('./Memory'));
 const Mezuzah = lazy(() => import('./Mezuzah'));
+const Online = lazy(() => import('./MezuzahOnline'));
 
-type Tab = 'home' | 'flashcards' | 'mezuzah';
+type Tab = 'home' | 'flashcards' | 'mezuzah' | 'online';
 export default function ToolsAndGames() {
   const [tab,setTab]=useState<Tab>('home');
   if(tab==='flashcards')return (
@@ -19,6 +20,7 @@ export default function ToolsAndGames() {
     </div>
   );
   if(tab==='mezuzah')return <Suspense fallback={<Spinner/>}><Mezuzah onBack={()=>setTab('home')}/></Suspense>;
+  if(tab==='online')return <Suspense fallback={<Spinner/>}><Online onBack={()=>setTab('home')}/></Suspense>;
   return (
     <div className="scroll-area h-full">
       <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6">
@@ -51,10 +53,10 @@ export default function ToolsAndGames() {
             <div className="flex items-center gap-2 font-semibold"><Gamepad2 size={20} className="text-primary"/> {tr('Jogo local','Local play','Juego local')}</div>
             <p className="mt-2 text-sm text-muted">{tr('A partida funciona sem rede para 2 a 4 jogadores no mesmo dispositivo.','Play offline with 2–4 players sharing one device.','Juegue sin conexión con 2–4 jugadores en un dispositivo.')}</p>
           </div>
-          <div className="rounded-2xl border border-outline/30 bg-surface p-4">
-            <div className="flex items-center gap-2 font-semibold"><WifiOff size={20} className="text-primary"/> {tr('Salas pela internet','Internet rooms','Salas por internet')}</div>
-            <p className="mt-2 text-sm text-muted">{tr('A conexão multiplayer necessita de um servidor para salas e sincronização. Não está ativa nesta publicação.','Multiplayer requires a room server and synchronization. It is not active in this release.','El multijugador requiere servidor y sincronización. No está activo en esta versión.')}</p>
-          </div>
+          <button type="button" onClick={()=>setTab('online')} className="rounded-2xl border border-outline/30 bg-surface p-4 text-left transition hover:bg-surface-high">
+            <div className="flex items-center gap-2 font-semibold"><WifiOff size={20} className="text-primary"/> {tr('Salas pela internet','Internet rooms','Salas por internet')} <ArrowRight size={17} className="ml-auto"/></div>
+            <p className="mt-2 text-sm text-muted">{tr('Criar sala ou entrar com código, após conectar um servidor de partidas. Turnos e dado validados pelo servidor.','Create or join a room after configuring a game server. Turns and dice are server-authoritative.','Cree o entre en salas tras configurar un servidor. Turnos y dados validados por el servidor.')}</p>
+          </button>
         </div>
         <p className="mt-5 flex items-center gap-2 text-xs text-muted"><BookOpen size={15}/>{tr('O jogo é uma criação educativa original, não uma representação de rito religioso.','This is an original educational game, not a depiction of a religious rite.','Este es un juego educativo original, no una representación ritual.')}</p>
       </div>
