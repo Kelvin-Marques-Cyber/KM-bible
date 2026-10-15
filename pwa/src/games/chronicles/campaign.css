@@ -819,3 +819,270 @@
     animation: none;
   }
 }
+
+
+/* ───────────────────────────────────────────────────────────────────────
+   RPG IMERSIVO · a área de jogo vem primeiro, painéis somente sob demanda.
+   Os elementos continuam DOM acessível, mas vivem como HUD/diálogo do jogo.
+   ─────────────────────────────────────────────────────────────────────── */
+.ca-playing .ca-shell {
+  max-width: 1720px;
+  padding: 8px clamp(8px, 1.25vw, 20px) 24px;
+}
+.ca-playing .ca-header {
+  gap: 10px;
+  padding: 4px 0;
+  margin-bottom: 7px;
+}
+.ca-playing .ca-header h2 {
+  font-size: clamp(18px, 2vw, 25px);
+  margin: 0;
+}
+.ca-playing .ca-header .ca-eyebrow { font-size: 8px; }
+.ca-playing .ca-total strong { font-size: 17px; }
+.ca-playing .ca-total span { font-size: 10px; }
+.ca-playing .ca-episode-header {
+  margin: 4px 0 10px;
+  gap: 8px;
+}
+.ca-playing .ca-episode-header h3 {
+  font-size: clamp(17px, 1.8vw, 23px);
+  margin-top: 0;
+}
+.ca-playing .ca-episode-header .ca-button {
+  padding: 7px 12px;
+  min-height: 40px;
+}
+.ca-playing .ca-episode-header > div {
+  min-width: 150px;
+}
+.ca-playing .ca-game-layout {
+  display: block;
+  position: relative;
+  margin: 0 auto;
+  width: min(100%, 1510px);
+}
+.ca-playing .ca-stage {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #d9bb827a;
+  background: radial-gradient(ellipse at 50% 45%, #486458 0%, #213b36 67%, #101c1f 100%);
+  box-shadow: 0 18px 80px #0008, inset 0 0 0 2px #091819;
+}
+.ca-playing .ca-canvas {
+  aspect-ratio: auto;
+  height: clamp(405px, 71dvh, 790px);
+  min-height: 405px;
+  isolation: isolate;
+  overflow: hidden;
+}
+.ca-playing .ca-canvas canvas {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 0;
+}
+.ca-playing .ca-world-label {
+  z-index: 3;
+  top: 10px;
+  left: 12px;
+  padding: 8px 12px;
+  font-size: 10px;
+  letter-spacing: .08em;
+  color: #ffe9b9;
+  background: #102426dc;
+  border: 1px solid #efd5a150;
+  border-left: 3px solid #e4bc77;
+  box-shadow: 0 5px 20px #0007;
+  border-radius: 4px;
+}
+.ca-playing .ca-feedback {
+  position: absolute;
+  z-index: 3;
+  top: 12px;
+  right: 12px;
+  max-width: min(380px, 49%);
+  min-height: 0;
+  margin: 0;
+  padding: 8px 12px;
+  border: 1px solid #e8cb9552;
+  border-radius: 6px;
+  background: #14292ee8;
+  color: #f4e7c9;
+  font-size: 12px;
+  line-height: 1.5;
+  pointer-events: none;
+  box-shadow: 0 5px 16px #0006;
+}
+.ca-playing .ca-controls {
+  z-index: 5;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 28px 20px 14px;
+  border: 0;
+  background: linear-gradient(transparent, #06171abc 54%, #06171ae8);
+  align-items: end;
+  pointer-events: none;
+}
+.ca-playing .ca-controls .ca-dpad,
+.ca-playing .ca-controls .ca-interact {
+  pointer-events: auto;
+}
+.ca-playing .ca-dpad {
+  gap: 4px;
+  grid-template-columns: repeat(3, 47px);
+  grid-template-rows: repeat(2, 47px);
+}
+.ca-playing .ca-direction {
+  border-radius: 10px;
+  border: 2px solid #e6cd9d94;
+  background: #152b2cc9;
+  color: #ffedc7;
+  font-weight: 800;
+  font-size: 22px;
+  box-shadow: 0 4px 10px #0009;
+  backdrop-filter: blur(5px);
+  transition: background .1s, transform .1s;
+}
+.ca-playing .ca-direction:active {
+  background: #e4ca8f;
+  color: #142821;
+  transform: scale(.94);
+}
+.ca-playing .ca-control-help { display: none; }
+.ca-playing .ca-interact {
+  background: #e0be82;
+  color: #173025;
+  font-weight: 800;
+  border: 2px solid #f7e2bb;
+  border-radius: 14px;
+  min-height: 55px;
+  max-width: 190px;
+  padding: 10px 18px;
+  box-shadow: 0 4px 20px #050f11a9;
+}
+.ca-playing .ca-journal {
+  position: absolute;
+  z-index: 11;
+  top: 12px;
+  right: 12px;
+  bottom: 12px;
+  width: min(350px, calc(100% - 24px));
+  padding: 18px;
+  overflow-y: auto;
+  border: 1px solid #e5ca91b0;
+  border-radius: 12px;
+  background: #17292af7;
+  box-shadow: -14px 10px 45px #061314c4;
+  backdrop-filter: blur(8px);
+  animation: ca-arrive .18s ease-out;
+}
+.ca-playing .ca-journal-close {
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 16px;
+  font-size: 12px;
+}
+.ca-playing .ca-journal h4 {font-size: 21px;margin-bottom: 17px;}
+.ca-playing .ca-journal ol {gap: 13px;}
+.ca-playing .ca-journal .ca-actions {margin-top: 18px;}
+.ca-playing .ca-journal .ca-save {margin-top: 10px;}
+
+/* Story text belongs to the playfield, presented like a game dialogue box. */
+.ca-playing .ca-modal-backdrop {
+  position: absolute;
+  z-index: 16;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0;
+  background: linear-gradient(180deg, #09171d10 20%, #071516cc 94%);
+  backdrop-filter: none;
+  pointer-events: none;
+}
+.ca-playing .ca-dialog {
+  width: min(100%, 1000px);
+  max-height: 58%;
+  overflow-y: auto;
+  pointer-events: auto;
+  border: 2px solid #e5c58c;
+  border-bottom: 0;
+  border-radius: 13px 13px 0 0;
+  background: linear-gradient(160deg,#182e32f9,#101f27fa);
+  padding: clamp(14px, 2.5vh, 26px) clamp(16px, 3vw, 30px);
+  box-shadow: 0 -12px 50px #020d11c9, inset 0 0 0 3px #263b3c;
+  scrollbar-width: thin;
+  scrollbar-color: #d7b980 #1c3133;
+}
+.ca-playing .ca-dialog-title {
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #d3af705e;
+}
+.ca-playing .ca-dialog-title h4 {font-size: clamp(18px, 2vw, 24px);}
+.ca-playing .ca-dialog-title .ca-portrait {width: 39px;height: 43px;}
+.ca-playing .ca-dialog h3 {font-size: clamp(19px, 2vw, 24px);margin: 7px 0;}
+.ca-playing .ca-dialog p {margin: 8px 0 12px;font-size: 13px;line-height: 1.6;}
+.ca-playing .ca-dialog .ca-fiction {padding: 10px;font-size: 11px;line-height: 1.5;}
+.ca-playing .ca-dialog .ca-actions {margin: 9px 0 3px;}
+.ca-playing .ca-dialog .ca-button {min-height: 42px;}
+.ca-playing .ca-answers {grid-template-columns: repeat(auto-fit,minmax(200px,1fr));gap: 7px;margin: 12px 0;}
+.ca-playing .ca-answers button {min-height: 44px;padding: 9px 12px;}
+
+/* Codex as an in-game side menu, not a long document below the playfield. */
+.ca-playing .ca-codex {
+  position: fixed;
+  z-index: 30;
+  top: max(12px, env(safe-area-inset-top));
+  right: 12px;
+  bottom: max(12px, env(safe-area-inset-bottom));
+  width: min(550px, calc(100vw - 24px));
+  overflow-y: auto;
+  padding: 18px;
+  margin: 0;
+  border: 1px solid #e3c58f;
+  border-radius: 14px;
+  background: #172a2af8;
+  box-shadow: -20px 0 70px #000b;
+}
+.ca-playing .ca-codex .ca-codex-grid {
+  grid-template-columns: 1fr;
+  gap: 9px;
+  margin: 12px 0;
+}
+.ca-playing .ca-codex article {padding: 13px;}
+.ca-playing .ca-codex article p {font-size: 13px;line-height: 1.6;}
+.ca-playing .ca-codex h4 {font-size: 18px;margin: 5px 0;}
+.ca-playing .ca-codex .ca-episode-header {align-items: center;}
+@media (max-width: 700px) {
+  .ca-playing .ca-shell {padding-inline: 6px;}
+  .ca-playing .ca-header {padding: 0 6px;margin-bottom: 5px;}
+  .ca-playing .ca-header > div:nth-child(2) {order: 0;flex-basis: auto;min-width: 0;}
+  .ca-playing .ca-header h2 {font-size: 18px;}
+  .ca-playing .ca-header .ca-eyebrow {display: none;}
+  .ca-playing .ca-total {margin-left: auto;}
+  .ca-playing .ca-episode-header {gap: 5px;flex-wrap: wrap;}
+  .ca-playing .ca-episode-header > div {order: -1;flex-basis: 100%;padding: 0 5px;}
+  .ca-playing .ca-episode-header .ca-button {min-height: 39px;font-size: 11px;padding: 6px 9px;}
+  .ca-playing .ca-canvas {min-height: 360px;height: clamp(360px, 65dvh, 580px);}
+  .ca-playing .ca-controls {padding: 20px 9px 9px;}
+  .ca-playing .ca-dpad {grid-template-columns:repeat(3,47px);grid-template-rows:repeat(2,47px);}
+  .ca-playing .ca-feedback {top: 43px;left: 6px;right: 6px;max-width: none;font-size: 11px;padding: 5px 8px;}
+  .ca-playing .ca-world-label {top: 5px;left: 5px;padding: 4px 7px;font-size: 9px;}
+  .ca-playing .ca-world-label span {display: inline;margin-left: 8px;}
+  .ca-playing .ca-interact {min-width: 122px;max-width: 155px;min-height: 48px;padding: 6px 9px;font-size: 12px;}
+  .ca-playing .ca-dialog {max-height: 60%;padding: 12px 13px 16px;}
+  .ca-playing .ca-dialog p {font-size: 12px;line-height: 1.5;}
+  .ca-playing .ca-dialog-title {gap: 9px;}
+  .ca-playing .ca-dialog-title h4 {font-size: 17px;}
+  .ca-playing .ca-answers {grid-template-columns: 1fr;}
+  .ca-playing .ca-journal {top: 6px;right: 6px;bottom: 6px;width:calc(100% - 12px);}
+}
+@media (prefers-reduced-motion: reduce) {
+  .ca-playing .ca-journal {animation: none;}
+  .ca-playing .ca-direction {transition: none;}
+}
