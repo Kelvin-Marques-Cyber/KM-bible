@@ -59,6 +59,7 @@ A revisão editorial contextual corrigiu as provisões da arca no intervalo cita
 | `22edbf5` | Integração das seis sagas e 36 aventuras; piloto separado |
 | `b55c56f` | Retomada, transações, backup/recuperação e 36 percursos testados |
 | `3982d63` | Cenários, sprites, retratos, áudio e integração com intervalo de leitura |
+| `33374aa` | E2E dos 36 capítulos, recuperação, leitor/cartões e manual de uso |
 
 Quando o Git local não fornece credenciais de escrita, o envio usa a conexão autenticada do GitHub: blobs + árvore + commit + atualização fast-forward com `expected_sha`. A árvore é conferida contra o commit local; o checkout é sincronizado sem descartar alterações pendentes. Nunca usar force push.
 
@@ -66,7 +67,7 @@ Quando o Git local não fornece credenciais de escrita, o envio usa a conexão a
 
 - Node `24.19.0` (atende à exigência de 22.18+ do servidor de salas).
 - Typecheck e build de produção aprovados.
-- Suíte completa inicial: **421 testes unitários aprovados** (33 arquivos). Testes adicionais de checkpoint contínuo, exportação e recuperação estão sendo incluídos na rodada final.
+- Suíte completa da validação seca: **425 testes unitários aprovados** (33 arquivos), incluindo checkpoint contínuo, exportação, recuperação e reinício isolado.
 - Servidor de salas existente: **9 testes aprovados**, sem alterar seu motor/servidor/interface.
 - Cinco E2E específicos aprovados: movimento/pausa/diálogo/retomada, leitor e cartão na Memorização, recuperação de save danificado e os dois fluxos originais do piloto (incluindo offline e toque).
 - E2E de navegador: **36/36 aventuras percorridas offline**, usando teclado real, lendo os três testemunhos, errando/acertando, consultando o códice, concluindo e avançando. Resultado 1 teste aprovado em 5,2 minutos. Validação seca completa ainda pendente nesta etapa.
@@ -84,8 +85,8 @@ O script prepara o acervo local, gera catálogo/fontes, verifica tipos, roda tod
 
 ## Próximos passos desta rodada
 
-1. Testes adicionais e percurso offline 36/36 concluídos; iniciar a validação seca completa.
-2. Executar e corrigir, se necessário, a validação seca completa.
-3. Registrar resultados, bugs reais remanescentes (se houver), commit e envio final. Não declarar publicação.
+1. A primeira validação seca passou tipos, 425 unitários, nove testes de servidor, build e 17 E2E. O percurso longo falhou por sobrepassar o marco no capítulo 20: o trace mostrou atraso de centenas de milissegundos entre detectar a chegada e soltar a tecla.
+2. O condutor do E2E agora faz aproximação em duas velocidades, corrige sobrepassagem com teclas reais e exige distância menor que 2,6 antes de investigar. O alcance e o motor do jogo não foram afrouxados. Os dois fluxos curtos de movimento/recuperação passaram com o novo condutor. Repetir a validação seca inteira.
+3. Registrar resultados finais, commit e envio. Não declarar publicação.
 
 As novas verificações pertencem a `tests/e2e/campaigns.spec.ts` e `tests/unit/campaign-screen.test.ts`; o estado funcional do produto está em `CampaignChronicles.tsx`. Não há necessidade de recomeçar o RPG.

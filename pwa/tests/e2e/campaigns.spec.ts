@@ -45,27 +45,39 @@ async function moveAxis(page: Page, axis: "x" | "y", target: number) {
   const canvas = page.getByRole("application", { name: /RPG pixel art/ });
   await canvas.focus();
   const attr = "data-player-" + axis;
-  const start = Number(await canvas.getAttribute(attr));
-  if (Math.abs(start - target) < 0.25) return;
-  const positive = target > start,
-    key = axis === "x" ? (positive ? "d" : "a") : positive ? "s" : "w";
-  await page.keyboard.down("Shift");
-  await page.keyboard.down(key);
-  try {
-    await expect
-      .poll(
-        async () => {
-          const value = Number(await canvas.getAttribute(attr));
-          return positive ? value >= target - 0.35 : value <= target + 0.35;
-        },
-        { timeout: 12000, intervals: [20, 35, 50] },
-      )
-      .toBe(true);
-  } finally {
-    await page.keyboard.up(key);
-    await page.keyboard.up("Shift");
+  // Trace/screenshot capture can delay key-up. Approach in two stages and
+  // correct overshoot with real keys instead of assuming a fixed event latency.
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const start = Number(await canvas.getAttribute(attr));
+    const delta = target - start;
+    if (Math.abs(delta) <= 0.65) return;
+    const positive = delta > 0,
+      run = Math.abs(delta) > 4;
+    const aim = run ? target - Math.sign(delta) * 2 : target;
+    const key = axis === "x" ? (positive ? "d" : "a") : positive ? "s" : "w";
+    if (run) await page.keyboard.down("Shift");
+    await page.keyboard.down(key);
+    try {
+      await expect
+        .poll(
+          async () => {
+            const value = Number(await canvas.getAttribute(attr));
+            return positive ? value >= aim - 0.25 : value <= aim + 0.25;
+          },
+          { timeout: 12000, intervals: [20, 35, 50] },
+        )
+        .toBe(true);
+    } finally {
+      await page.keyboard.up(key);
+      if (run) await page.keyboard.up("Shift");
+    }
   }
+  expect(
+    Math.abs(Number(await canvas.getAttribute(attr)) - target),
+    `Chegada ao eixo ${axis}=${target}`,
+  ).toBeLessThanOrEqual(0.65);
 }
+
 async function visit(page: Page, index: number) {
   const targets = [
     [5, 6],
@@ -74,6 +86,13 @@ async function visit(page: Page, index: number) {
   ];
   await moveAxis(page, "x", targets[index][0]);
   await moveAxis(page, "y", targets[index][1]);
+  const canvas = page.getByRole("application", { name: /RPG pixel art/ });
+  const x = Number(await canvas.getAttribute("data-player-x")),
+    y = Number(await canvas.getAttribute("data-player-y"));
+  expect(
+    Math.hypot(x - targets[index][0], y - targets[index][1]),
+    `Proximidade real ao marco ${index + 1}`,
+  ).toBeLessThan(2.6);
   await page.keyboard.press("e");
   const dialog = page.getByRole("dialog", {
     name: "Testemunho descoberto",
