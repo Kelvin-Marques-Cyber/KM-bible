@@ -177,13 +177,21 @@ export function App({ storageWarning }: { storageWarning: string | null }) {
                   <button
                     type="button"
                     aria-current={selected ? 'page' : undefined}
+                    aria-label={t(item.key)}
                     onClick={() => changeArea(index)}
                     className="flex w-full flex-col items-center gap-0.5 pb-2 pt-2.5 text-[12.5px]"
                   >
                     <span className={`flex h-8 w-16 items-center justify-center rounded-full transition ${selected ? 'bg-secondary-container' : ''}`}>
                       <Icon size={22} aria-hidden />
                     </span>
-                    <span className={selected ? 'font-semibold' : ''}>{t(item.key)}</span>
+                    <span className={`min-h-[2.1em] max-w-[90px] text-center leading-[1.05] ${selected ? 'font-semibold' : ''}`}>
+                      {item.key === 'memory' ? (
+                        <>
+                          <span className="sm:hidden">{tr('Ferramentas', 'Tools', 'Herramientas')}</span>
+                          <span className="hidden sm:inline">{t(item.key)}</span>
+                        </>
+                      ) : t(item.key)}
+                    </span>
                   </button>
                 </li>
               );
