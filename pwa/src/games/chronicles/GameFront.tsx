@@ -197,7 +197,14 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const selectSaga=(n:number)=>{onSaga(n);setChapter(0);setScreen('chapters');};
   const openChapter=(e:ChronicleEpisode)=>onBegin(e.id);
   const handleKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-      if(e.altKey || e.ctrlKey || e.metaKey || !(e.target instanceof Element) || e.target.closest('input,textarea,select,[contenteditable=true]')) return;
+      if(e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || !(e.target instanceof Element) || e.target.closest('input,textarea,select,[contenteditable=true]')) return;
+      if(e.key==='Tab') {
+        const buttons = [...(stage.current?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') ?? [])];
+        const first = buttons[0], last = buttons.at(-1);
+        if(e.shiftKey && document.activeElement===first) {e.preventDefault();last?.focus();}
+        else if(!e.shiftKey && document.activeElement===last) {e.preventDefault();first?.focus();}
+        return;
+      }
       if(e.key==='Escape'){
         // The confirmation owns Escape so it cancels without leaving the save screen.
         if (e.target.closest('[role=alertdialog]')) return;

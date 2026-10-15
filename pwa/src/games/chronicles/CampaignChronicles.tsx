@@ -1,6 +1,9 @@
 import {
   ArrowLeft,
   BookOpen,
+  Backpack,
+  Map,
+  X,
   Check,
   ChevronRight,
   Compass,
@@ -18,13 +21,15 @@ import {
   useEffect,
   useRef,
   useState,
+  type CSSProperties,
 } from "react";
 import { createPortal } from "react-dom";
-import { message, Spinner } from "../../components/ui";
-import { app } from "../../lib/app";
+import { message } from "../../components/ui";
+import { app, sheets, useApp } from "../../lib/app";
 import { verse } from "../../lib/content";
 import { createCard, showPassage } from "../../screens/open";
 import CampaignCanvas from "./CampaignCanvas";
+import ChroniclesBoot from "./ChroniclesBoot";
 import GameFront from "./GameFront";
 import CampaignPortrait from "./CampaignPortrait";
 import { CampaignAudio } from "./campaign-audio";
@@ -44,6 +49,9 @@ import {
   nearestStation,
   newJourney,
   progressWithJourney,
+  STATIONS,
+  WORLD_HEIGHT,
+  WORLD_WIDTH,
   type CampaignProgress,
   type JourneyState,
 } from "./campaign-engine";
@@ -57,12 +65,19 @@ import {
 import { activateSaveSlot, exportSaveSlots, overwriteSaveSlot, readSaveSlots, type SaveSlotSummary } from "./save-slots";
 import { SAVE_SLOTS, type SaveSlot } from "./save-slot-key";
 import "./campaign.css";
+import "./campaign-gameplay.css";
 
 const Pilot = lazy(() => import("../../screens/Chronicles"));
 const idle = { dx: 0, dy: 0, run: false };
+type JourneyMenu = "pause" | "journal" | "codex" | "inventory" | "map";
+const externalSheetOpen = () => Array.from(document.querySelectorAll('[role="dialog"][aria-modal="true"]')).some(dialog => !dialog.closest(".ca-root"));
 
 /** The compact journeys and the extended pilot deliberately keep separate saves. */
 export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
+  useApp();
+  const sheetOpen = sheets.length > 0;
+  const hadSheet = useRef(sheetOpen);
+  const sheetFocus = useRef<HTMLElement | null>(null);
   const [progress, setProgress] = useState<CampaignProgress>(emptyProgress);
   const [loaded, setLoaded] = useState(false);
   const [slot, setSlot] = useState<SaveSlot>(1);
@@ -80,10 +95,13 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [pilot, setPilot] = useState(false);
   const [inAdventure, setInAdventure] = useState(false);
   const [landing, setLanding] = useState<"title" | "world">("title");
-  const [paused, setPaused] = useState(false);
+  const [menu, setMenu] = useState<JourneyMenu | null>(null);
+  const paused = menu === "pause";
+  const codex = menu === "codex";
+  const journalOpen = menu === "journal";
+  const inventoryOpen = menu === "inventory";
+  const mapOpen = menu === "map";
   const [hidden, setHidden] = useState(document.hidden);
-  const [codex, setCodex] = useState(false);
-  const [journalOpen, setJournalOpen] = useState(false);
   const [restart, setRestart] = useState(false);
   const [touch, setTouch] = useState(idle);
   const [music, setMusic] = useState(false);
@@ -105,10 +123,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const intro = game?.introduced === false;
   useEffect(() => {
     audio.current?.setActive(
-      music && !hidden && !pilot && (!inAdventure || !paused && !intro && !codex && !journalOpen),
+      music && !hidden && !sheetOpen && !pilot && (!inAdventure || !menu && !intro),
       episode?.saga ?? 0,
     );
-  }, [music, hidden, paused, intro, codex, journalOpen, pilot, episode, inAdventure]);
+  }, [music, hidden, sheetOpen, menu, intro, pilot, episode, inAdventure]);
   useEffect(() => {
     const before = previousSound.current;
     if (music && game && before?.episodeId === game.episodeId) {
@@ -271,9 +289,38 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     [change],
   );
   const focusScene = () =>
-    requestAnimationFrame(() =>
-      scene.current?.querySelector("canvas")?.focus({ preventScroll: true }),
-    );
+    requestAnimationFrame(() => {
+      if (sheets.length || externalSheetOpen()) return;
+      const target = scene.current?.closest(".ca-stage")?.querySelector<HTMLElement>('[role="dialog"]') ?? scene.current?.querySelector("canvas");
+      target?.focus({ preventScroll: true });
+    });
+  const openMenu = (next: JourneyMenu | null) => {
+    setTouch(idle);
+    setMenu(next);
+    if (next === "pause") void flush();
+    if (!next) focusScene();
+  };
+  const toggleMenu = (next: JourneyMenu) => openMenu(menu === next ? null : next);
+  useEffect(() => {
+    const wasOpen = hadSheet.current;
+    hadSheet.current = sheetOpen;
+    if (sheetOpen) { setTouch(idle); return; }
+    if (!wasOpen) return;
+    const frame = requestAnimationFrame(() => {
+      if (sheets.length || externalSheetOpen()) return;
+      const previous = sheetFocus.current;
+      sheetFocus.current = null;
+      const target = previous?.isConnected && previous.closest(".ca-root") ? previous :
+        document.querySelector<HTMLElement>(".ca-playing .ca-game-menu, .ca-playing .ca-dialog") ?? scene.current?.querySelector("canvas") ?? document.querySelector<HTMLElement>(".ca-front-active button");
+      target?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [sheetOpen, inAdventure]);
+
+  const titleScreen = () => {
+    select();
+    setLanding("title");
+  };
   const interact = useCallback(
     () => change((g) => interactJourney(g)),
     [change],
@@ -287,9 +334,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     };
     latest.current = next;
     setProgress(next);
-    setPaused(false);
-    setCodex(false);
-    setJournalOpen(false);
+    setMenu(null);
     setRestart(false);
     setLanding("title");
     setSaga(next.selectedSaga);
@@ -301,24 +346,23 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const select = () => {
     setLanding("world");
     setInAdventure(false);
-    setPaused(false);
-    setCodex(false);
-    setJournalOpen(false);
+    setMenu(null);
     setTouch(idle);
     void flush().then(() => readSaveSlots()).then(catalog => { if (mounted.current) setSlots(catalog.slots); }).catch(() => {});
   };
   const openRef = (e: ChronicleEpisode) => {
-    setPaused(true);
+    setMenu(current => current ?? (inAdventure && game?.phase === "explore" && !intro && game.dialogue === null ? "pause" : null));
     setTouch(idle);
     void flush();
     const passage = episodePassage(e);
+    sheetFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
     showPassage(passage.start, { end: passage.end });
   };
   const memorize = async (e: ChronicleEpisode) => {
     if (memoryLock.current) return;
     memoryLock.current = true;
     setBusyMemory(true);
-    setPaused(true);
+    setMenu(current => current ?? (inAdventure && game?.phase === "explore" && !intro && game.dialogue === null ? "pause" : null));
     setTouch(idle);
     void flush();
     try {
@@ -329,6 +373,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
         );
         return;
       }
+      sheetFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       createCard(memoryReference(e), text.text);
     } catch {
       message(
@@ -407,9 +452,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
       ready.current = true;
       setRecoveryMenu(false);
       setSaved("");
-      setPaused(false);
-      setCodex(false);
-      setJournalOpen(false);
+      setMenu(null);
       setTouch(idle);
       const summary = catalog.slots.find(s => s.id === id);
       if (resume && summary?.kind === "pilot") {
@@ -444,10 +487,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     const current = CAMPAIGN_EPISODES.find(e => e.id === progress.activeEpisodeId);
     return { ...stored, id, status: stored?.status === "damaged" ? "damaged" : stored?.hasPilot || Object.keys(progress.episodes).length ? "saved" : "empty", completed: progress.completed.length, episodeId: current?.id, saga: current?.saga, chapter: stored?.kind === "pilot" ? "O Vale e a Coragem" : current?.title ?? stored?.chapter ?? "Nova jornada", kind: stored?.kind ?? "campaign", hasPilot: stored?.hasPilot ?? false } as SaveSlotSummary;
   });
-  if (!loaded) return <Spinner />;
+  if (!loaded) return <ChroniclesBoot />;
   if (pilot)
     return (
-      <Suspense fallback={<Spinner />}>
+      <Suspense fallback={<ChroniclesBoot />}>
         <Pilot slot={slot} onBack={() => { setPilot(false); setInAdventure(false); setLanding("world"); void readSaveSlots().then(catalog => setSlots(catalog.slots)); }} backLabel="Mapa de aventuras" />
       </Suspense>
     );
@@ -463,8 +506,10 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
         <button
           className="ca-button"
           onClick={() => {
-            setPaused(true);
+            setMenu(current => current ?? (inAdventure && game?.phase === "explore" && !intro && game.dialogue === null ? "pause" : null));
+            setTouch(idle);
             void flush();
+            sheetFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
             showPassage(
               { book: 43, chapter: 19, verse: 16 },
               { end: { book: 43, chapter: 19, verse: 42 } },
@@ -487,23 +532,19 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     <div
       className={"ca-root h-full" + (inAdventure && episode && game ? " ca-playing" : " ca-front-active")}
       onKeyDown={(event) => {
-        if (!inAdventure || event.altKey || event.ctrlKey || event.metaKey || event.target instanceof HTMLInputElement || event.target instanceof HTMLTextAreaElement) return;
-        if (game?.phase !== "explore" || game.dialogue !== null || intro || restart) return;
+        const target = event.target;
+        if (!inAdventure || sheetOpen || event.repeat || event.altKey || event.ctrlKey || event.metaKey ||
+          target instanceof HTMLElement && target.closest("input, textarea, select, [contenteditable=true]") || externalSheetOpen()) return;
         const key = event.key.toLowerCase();
-        if (key === "escape") {
-          event.preventDefault();event.stopPropagation();
-          setTouch(idle);
-          if (codex) setCodex(false);
-          else if (journalOpen) setJournalOpen(false);
-          else setPaused(value => !value);
-          void flush();
-          focusScene();
-        } else if (key === "j" || key === "c") {
-          event.preventDefault();event.stopPropagation();setTouch(idle);
-          if (key === "j") {setCodex(false);setJournalOpen(value => !value);}
-          else {setJournalOpen(false);setCodex(value => !value);}
-          void flush();
+        if (!["escape", "i", "j", "m", "c"].includes(key)) return;
+        event.preventDefault();
+        event.stopPropagation();
+        if (restart) {
+          if (key === "escape") { setRestart(false); openMenu("journal"); }
+          return;
         }
+        if (key === "escape") openMenu(menu ? null : "pause");
+        else toggleMenu(({ i: "inventory", j: "journal", m: "map", c: "codex" } as const)[key as "i" | "j" | "m" | "c"]);
       }}
     >
       <main className="ca-shell">
@@ -596,69 +637,32 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           <>
             <div className="ca-game-layout">
               <section className="ca-stage" aria-label="Cenário da aventura">
-                <div className="ca-episode-header">
-              <button className="ca-button ca-quit" onClick={() => {void flush();onBack();}}><ArrowLeft size={15}/> Ferramentas e Games</button>
-              <button className="ca-button" onClick={select}>
-                <ArrowLeft size={16} />
-                Mapa de aventuras
-              </button>
-              <div>
-                <span className="ca-eyebrow">
-                  {CAMPAIGN_SAGAS[episode.saga].title} · {episode.number}/36
-                </span>
-                <h3>{episode.title}</h3>
-              </div>
-              <button
-                className="ca-button"
-                aria-pressed={codex}
-                onClick={() => {
-                  setTouch(idle);
-                  setCodex(!codex);
-                  setJournalOpen(false);
-                }}
-              >
-                <ScrollText size={16} />
-                Códice {game.visited.length}/3
-              </button>
-              <button type="button" className="ca-button" aria-label="Abrir diário de missões"
-                aria-pressed={journalOpen}
-                onClick={() => { setTouch(idle); setJournalOpen(!journalOpen); setCodex(false); }}>
-                <Compass size={16} /> Missões
-              </button>
-              <button
-                className="ca-button"
-                onClick={() => {
-                  setPaused(!paused);
-                  setTouch(idle);
-                  void flush();
-                  focusScene();
-                }}
-              >
-                {paused ? <Play size={16} /> : <Pause size={16} />}
-                {paused ? "Continuar exploração" : "Pausar"}
-              </button>
-              <button
-                className="ca-button"
-                aria-pressed={music}
-                onClick={() => void toggleAudio()}
-              >
-                {music ? <Volume2 size={16} /> : <VolumeX size={16} />}
-                {music ? "Som ligado" : "Ativar som"}
-              </button>
-            </div>
+                <div className="ca-episode-header ca-hud" aria-label="HUD da aventura">
+                  <div className="ca-hud-chapter">
+                    <span className="ca-eyebrow">{CAMPAIGN_SAGAS[episode.saga].title} · {episode.number}/36</span>
+                    <h3>{episode.title}</h3>
+                  </div>
+                  <nav className="ca-hud-shortcuts" aria-label="Menus da aventura">
+                    <button className="ca-button" aria-label="Abrir inventário" title="Inventário (I)" aria-pressed={inventoryOpen} onClick={() => toggleMenu("inventory")}><Backpack size={17}/><span>Bolsa</span><kbd>I</kbd></button>
+                    <button className="ca-button" aria-label="Abrir diário de missões" title="Missões (J)" aria-pressed={journalOpen} onClick={() => toggleMenu("journal")}><Compass size={17}/><span>Missões</span><kbd>J</kbd></button>
+                    <button className="ca-button" aria-label="Abrir mapa da aventura" title="Mapa (M)" aria-pressed={mapOpen} onClick={() => toggleMenu("map")}><Map size={17}/><span>Mapa</span><kbd>M</kbd></button>
+                    <button className="ca-button" aria-label={`Códice ${game.visited.length}/3`} title="Códice (C)" aria-pressed={codex} onClick={() => toggleMenu("codex")}><ScrollText size={17}/><span>Códice {game.visited.length}/3</span><kbd>C</kbd></button>
+                    <button className="ca-button" aria-label={paused ? "Continuar exploração" : "Pausar"} title="Pausa (Esc)" aria-pressed={paused} onClick={() => toggleMenu("pause")}><Pause size={17}/><span>Pausa</span><kbd>Esc</kbd></button>
+                  </nav>
+                </div>
                 <div
-                  className={"ca-canvas ca-scene-enter" + ((intro || restart || paused || game.dialogue !== null || ((game.phase === "trial" || game.phase === "complete") && !codex)) ? " ca-has-dialog" : "")}
+                  className={"ca-canvas ca-scene-enter" + ((intro || restart || menu || game.dialogue !== null || game.phase !== "explore") ? " ca-has-dialog" : "")}
                   key={episode.id}
+                  style={{ "--ca-camera-x": `${game.x / WORLD_WIDTH * 100}%`, "--ca-camera-y": `${game.y / WORLD_HEIGHT * 100}%` } as CSSProperties}
                   ref={scene}
                 >
                   <CampaignCanvas
                     episode={episode}
                     game={game}
                     paused={
-                      paused ||
+                      !!menu ||
                       hidden ||
-                      codex ||
-                      journalOpen ||
+                      sheetOpen ||
                       intro ||
                       restart ||
                       game.dialogue !== null ||
@@ -668,31 +672,30 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                     onMove={move}
                     onInteract={interact}
                   />
-                  <div className="ca-world-label" aria-hidden="true">
-                    {episode.reference.label}
-                    <span>{game.visited.length} de 3 testemunhos</span>
+                  <div className="ca-world-label ca-mission-hud" aria-label="Missão atual">
+                    <strong>{game.phase === "complete" ? "Capítulo concluído" : game.phase === "trial" ? "Reúna o que aprendeu" : "Investigue os três testemunhos"}</strong>
+                    <span>{game.visited.length}/3 encontrados · {episode.reference.label}</span>
                   </div>
-                  {paused && !intro && game.phase === "explore" && (
-                    <div className="ca-pause" role="dialog" aria-modal="false" aria-label="Menu de pausa">
+                  <div className="ca-context-hint" aria-live="polite">
+                    {near !== null && !game.visited.includes(near) ? `${episode.stations[near].name} · E para investigar` : "WASD / setas para caminhar · Shift para correr"}
+                  </div>
+                  {paused && (
+                    <GameMenu className="ca-pause" label="Menu de pausa" onClose={() => openMenu(null)}>
                       <span className="ca-pause-icon" aria-hidden="true">✦</span>
                       <strong>Jornada pausada</strong>
-                      <p>Seu progresso está salvo neste aparelho</p>
+                      <p>{saved || "Salvamento automático neste aparelho"}</p>
                       <div className="ca-pause-actions">
-                        <button className="ca-button ca-primary" onClick={() => {setPaused(false);focusScene();}}>
-                          <Play size={17}/> Retomar jornada
-                        </button>
-                        <button className="ca-button" onClick={() => {setCodex(false);setJournalOpen(true);}}>
-                          <Compass size={17}/> Missões e testemunhos
-                        </button>
-                        <button className="ca-button" onClick={() => {setJournalOpen(false);setCodex(true);}}>
-                          <ScrollText size={17}/> Abrir códice
-                        </button>
-                        <button className="ca-button" onClick={() => {void flush();select();}}>
-                          <ArrowLeft size={17}/> Voltar ao atlas
-                        </button>
+                        <button className="ca-button ca-primary" onClick={() => openMenu(null)}><Play size={17}/> Retomar jornada</button>
+                        <button className="ca-button" onClick={() => openMenu("journal")}><Compass size={17}/> Missões e testemunhos</button>
+                        <button className="ca-button" onClick={() => openMenu("inventory")}><Backpack size={17}/> Abrir inventário</button>
+                        <button className="ca-button" onClick={() => openMenu("map")}><Map size={17}/> Mapa da aventura</button>
+                        <button className="ca-button" onClick={() => void toggleAudio()}>{music ? <Volume2 size={17}/> : <VolumeX size={17}/>} {music ? "Som ligado" : "Ativar som"}</button>
+                        <button className="ca-button" onClick={select}><ArrowLeft size={17}/> Voltar ao atlas</button>
+                        <button className="ca-button" onClick={titleScreen}>Tela de título</button>
+                        <button className="ca-button" onClick={() => { void flush(); onBack(); }}>Ferramentas e Games</button>
                       </div>
-                      <small>ESC · Pausar/continuar &nbsp; J · Missões &nbsp; C · Códice</small>
-                    </div>
+                      <small>ESC · Pausa &nbsp; I · Inventário &nbsp; J · Missões &nbsp; M · Mapa &nbsp; C · Códice</small>
+                    </GameMenu>
                   )}
                 </div>
                 <div className="ca-controls">
@@ -714,10 +717,9 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                         className={"ca-direction ca-" + label.toLowerCase()}
                         aria-label={"Caminhar para " + label.toLowerCase()}
                         disabled={
-                          paused ||
+                          !!menu ||
+                          sheetOpen ||
                           intro ||
-                          codex ||
-                          journalOpen ||
                           restart ||
                           game.dialogue !== null ||
                           game.phase !== "explore"
@@ -745,10 +747,9 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   <button
                     className="ca-button ca-primary ca-interact"
                     disabled={
-                      paused ||
+                      !!menu ||
+                      sheetOpen ||
                       intro ||
-                      codex ||
-                      journalOpen ||
                       game.phase !== "explore" ||
                       game.dialogue !== null
                     }
@@ -762,8 +763,8 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   {game.feedback}
                 </p>
               </section>
-              {journalOpen && <aside className="ca-journal" aria-label="Diário da jornada">
-                <button type="button" className="ca-button ca-journal-close" onClick={() => { setJournalOpen(false); focusScene(); }} aria-label="Fechar diário de missões">✕ Fechar diário</button>
+              {journalOpen && <GameMenu className="ca-journal" label="Diário da jornada" onClose={() => openMenu(null)}>
+                <button type="button" className="ca-button ca-journal-close" onClick={() => openMenu(null)} aria-label="Fechar diário de missões">✕ Fechar diário</button>
                 <div className="ca-witness">
                   <CampaignPortrait episode={episode} />
                   <p>
@@ -804,6 +805,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   className="ca-button ca-restart"
                   onClick={() => {
                     setRestart(true);
+                    setMenu(null);
                     setTouch(idle);
                   }}
                 >
@@ -813,17 +815,16 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 <p className="ca-save" aria-live="polite">
                   {saved || "Salvamento automático ativo"}
                 </p>
-              </aside>}
+              </GameMenu>}
             </div>
             {codex && (
-              <section className="ca-codex" aria-label="Códice de descobertas">
-                <div className="ca-episode-header">
+              <GameMenu className="ca-codex" label="Códice de descobertas" onClose={() => openMenu(null)}>
+                <div className="ca-menu-heading">
                   <h3>Códice de descobertas</h3>
                   <button
                     className="ca-button"
                     onClick={() => {
-                      setCodex(false);
-                      focusScene();
+                      openMenu(null);
                     }}
                   >
                     Voltar ao cenário
@@ -849,9 +850,39 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   </p>
                 )}
                 {refButtons}
-              </section>
+              </GameMenu>
             )}
-            {intro && !restart && (
+            {inventoryOpen && (
+              <GameMenu className="ca-inventory" label="Inventário da jornada" onClose={() => openMenu(null)}>
+                <MenuTitle title="Bolsa da jornada" subtitle={episode.hero} closeLabel="Fechar inventário" onClose={() => openMenu(null)}/>
+                <p className="ca-menu-note">Leve consigo os testemunhos encontrados neste capítulo.</p>
+                <div className="ca-inventory-slots">
+                  {episode.stations.map((station, i) => <div key={station.name} className={"ca-inventory-slot" + (game.visited.includes(i) ? " ca-collected" : "")}>
+                    <span aria-hidden="true">{game.visited.includes(i) ? "✦" : "·"}</span>
+                    <strong>{game.visited.includes(i) ? station.name : `Testemunho ${i + 1}`}</strong>
+                    <small>{game.visited.includes(i) ? "Guardado no códice" : "Ainda por descobrir"}</small>
+                  </div>)}
+                </div>
+                <button className="ca-button ca-primary" onClick={() => openMenu("codex")}><ScrollText size={17}/> Consultar testemunhos</button>
+                {refButtons}
+              </GameMenu>
+            )}
+            {mapOpen && (
+              <GameMenu className="ca-local-map" label="Mapa da aventura" onClose={() => openMenu(null)}>
+                <MenuTitle title="Mapa da aventura" subtitle={episode.title} closeLabel="Fechar mapa da aventura" onClose={() => openMenu(null)}/>
+                <div className="ca-map-terrain" role="img" aria-label={`Sua posição e os três testemunhos de ${episode.title}`}>
+                  <span className="ca-map-river" aria-hidden="true"/>
+                  {STATIONS.map((station, i) => <span key={i} className={"ca-map-marker" + (game.visited.includes(i) ? " ca-found" : "")} style={{left: `${station.x / WORLD_WIDTH * 100}%`, top: `${station.y / WORLD_HEIGHT * 100}%`}} title={episode.stations[i].name}>{game.visited.includes(i) ? "✓" : i + 1}</span>)}
+                  <span className="ca-map-player" style={{left: `${game.x / WORLD_WIDTH * 100}%`, top: `${game.y / WORLD_HEIGHT * 100}%`}} title="Você está aqui">◆</span>
+                  <span className="ca-map-compass" aria-hidden="true">N<br/>↑</span>
+                </div>
+                <p className="ca-map-legend">◆ Você &nbsp; 1–3 Testemunhos &nbsp; ✓ Investigado</p>
+                <ol className="ca-map-places">{episode.stations.map((station, i) => <li key={station.name}><span>{game.visited.includes(i) ? "✓" : i + 1}</span>{station.name}</li>)}</ol>
+                <button className="ca-button ca-primary" onClick={select}><Map size={17}/> Mapa de aventuras</button>
+                <button className="ca-button ca-map-resume" onClick={() => openMenu(null)}>Voltar ao cenário</button>
+              </GameMenu>
+            )}
+            {intro && !restart && !menu && (
               <JourneyDialog
                 episode={episode}
                 title="Antes de partir"
@@ -876,7 +907,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 </button>
               </JourneyDialog>
             )}
-            {!intro && !restart && game.dialogue !== null && (
+            {!intro && !restart && !menu && game.dialogue !== null && (
               <JourneyDialog
                 episode={episode}
                 title={episode.stations[game.dialogue].name}
@@ -897,7 +928,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 </button>
               </JourneyDialog>
             )}
-            {!intro && !restart && game.phase === "trial" && !codex && (
+            {!intro && !restart && game.phase === "trial" && !menu && (
               <JourneyDialog
                 episode={episode}
                 title="O desafio do capítulo"
@@ -917,7 +948,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 </div>
                 {game.attempts > 0 && <p role="status">{game.feedback}</p>}
                 <div className="ca-actions">
-                  <button className="ca-button" onClick={() => setCodex(true)}>
+                  <button className="ca-button" onClick={() => openMenu("codex")}>
                     Rever descobertas
                   </button>
                   <button
@@ -929,7 +960,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 </div>
               </JourneyDialog>
             )}
-            {!intro && !restart && game.phase === "complete" && !codex && (
+            {!intro && !restart && game.phase === "complete" && !menu && (
               <JourneyDialog
                 episode={episode}
                 title="Uma história guardada"
@@ -955,7 +986,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                   <button className="ca-button" onClick={select}>
                     Voltar ao mapa
                   </button>
-                  <button className="ca-button" onClick={() => setCodex(true)}>
+                  <button className="ca-button" onClick={() => openMenu("codex")}>
                     Rever descobertas
                   </button>
                 </div>
@@ -980,7 +1011,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
                 <div className="ca-actions">
                   <button
                     className="ca-button"
-                    onClick={() => setRestart(false)}
+                    onClick={() => { setRestart(false); openMenu("journal"); }}
                   >
                     Cancelar
                   </button>
@@ -1039,8 +1070,10 @@ function JourneyDialog({
   const [sceneHost, setSceneHost] = useState<HTMLElement | null>(null);
   useEffect(() => {
     setSceneHost(document.querySelector<HTMLElement>(".ca-scene-enter"));
-    panel.current?.focus({ preventScroll: true });
   }, [episode.id]);
+  useEffect(() => {
+    if (!externalSheetOpen()) panel.current?.focus({ preventScroll: true });
+  }, [sceneHost, episode.id, label]);
   const dialog = (
     <div className="ca-modal-backdrop">
       <div
@@ -1074,11 +1107,41 @@ function JourneyDialog({
       >
         <div className="ca-dialog-title">
           <CampaignPortrait episode={episode} />
-          <h4>{title}</h4>
+          <div><span className="ca-dialog-speaker">{episode.hero}</span><h4>{title}</h4></div>
+          <span className="ca-dialog-arrow" aria-hidden="true">▾</span>
         </div>
         {children}
       </div>
     </div>
   );
   return sceneHost ? createPortal(dialog, sceneHost) : dialog;
+}
+
+
+function MenuTitle({ title, subtitle, closeLabel, onClose }: { title: string; subtitle: string; closeLabel: string; onClose: () => void }) {
+  return <div className="ca-menu-heading"><div><span className="ca-eyebrow">{subtitle}</span><h3>{title}</h3></div><button className="ca-button" aria-label={closeLabel} onClick={onClose}><X size={18}/> Fechar</button></div>;
+}
+
+function GameMenu({ label, className, onClose, children }: { label: string; className: string; onClose: () => void; children: React.ReactNode }) {
+  const panel = useRef<HTMLDivElement>(null);
+  const [host, setHost] = useState<HTMLElement | null>(null);
+  useEffect(() => { setHost(document.querySelector<HTMLElement>(".ca-stage")); }, []);
+  useEffect(() => {
+    if (!externalSheetOpen()) panel.current?.focus({ preventScroll: true });
+  }, [host, label]);
+  const content = <div className="ca-menu-backdrop" onPointerDown={event => { if (event.target === event.currentTarget) onClose(); }}>
+    <div className={className + " ca-game-menu"} ref={panel} tabIndex={-1} role="dialog" aria-modal="true" aria-label={label} onKeyDown={event => {
+      if (event.key !== "Tab") return;
+      const targets = Array.from(panel.current?.querySelectorAll<HTMLElement>("button:not(:disabled), a[href], input:not(:disabled), select:not(:disabled), [tabindex='0']") ?? []);
+      const first = targets[0], last = targets[targets.length - 1];
+      if (!first) { event.preventDefault(); return; }
+      if (document.activeElement === panel.current || event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        (event.shiftKey ? last : first)?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    }}>{children}</div>
+  </div>;
+  return host ? createPortal(content, host) : content;
 }

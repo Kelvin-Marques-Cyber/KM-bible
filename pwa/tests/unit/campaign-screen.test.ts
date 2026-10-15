@@ -1,4 +1,4 @@
-import { act, createElement } from "react";
+import { act, createElement, useSyncExternalStore } from "react";
 import { createRoot, type Root } from "react-dom/client";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import CampaignChronicles from "../../src/games/chronicles/CampaignChronicles";
@@ -8,7 +8,9 @@ import {
   newJourney,
   progressWithJourney,
 } from "../../src/games/chronicles/campaign-engine";
+const sheetState = vi.hoisted(() => ({ sheets: [] as unknown[], revision: 0, listeners: new Set<() => void>() }));
 const spies = vi.hoisted(() => ({
+  canvas: vi.fn(),
   load: vi.fn(),
   save: vi.fn(),
   verse: vi.fn(),
@@ -38,19 +40,26 @@ vi.mock("../../src/games/chronicles/save-slots", () => ({
 vi.mock("../../src/games/chronicles/CampaignCanvas", () => ({
   default: (props: {
     onMove: (dx: number, dy: number, seconds: number, run: boolean) => void;
-  }) =>
-    createElement(
+    paused: boolean;
+  }) => {
+    spies.canvas(props);
+    return createElement(
       "div",
       {},
-      createElement("canvas", { "aria-label": "Cenário pixel art" }),
+      createElement("canvas", { "aria-label": "Cenário pixel art", tabIndex: 0 }),
       createElement(
         "button",
         { onClick: () => props.onMove(1, 0, 0.05, false) },
         "Simular movimento",
       ),
-    ),
+    );
+  },
 }));
-vi.mock("../../src/lib/app", () => ({ app: { translation: "BLN4" } }));
+vi.mock("../../src/lib/app", () => ({
+  app: { translation: "BLN4" },
+  sheets: sheetState.sheets,
+  useApp: () => useSyncExternalStore(listener => { sheetState.listeners.add(listener); return () => { sheetState.listeners.delete(listener); }; }, () => sheetState.revision),
+}));
 vi.mock("../../src/lib/content", () => ({ verse: spies.verse }));
 vi.mock("../../src/screens/open", () => ({
   createCard: spies.card,
@@ -64,6 +73,8 @@ let host: HTMLDivElement, root: Root;
 beforeEach(() => {
   Object.assign(globalThis, { IS_REACT_ACT_ENVIRONMENT: true });
   vi.clearAllMocks();
+  sheetState.sheets.length = 0;
+  sheetState.revision = 0;
   // A abertura usa Canvas 2D real em produção; jsdom não implementa getContext.
   // O teste é de navegação/estado, não de pixels.
   vi.spyOn(HTMLCanvasElement.prototype, "getContext").mockReturnValue(null);
@@ -98,7 +109,78 @@ function click(text: string) {
   expect(b, text).toBeDefined();
   act(() => b!.click());
 }
+function press(key: string, target: Element = document.activeElement ?? host) {
+  act(() => target.dispatchEvent(new KeyboardEvent("keydown", { key, bubbles: true, cancelable: true })));
+}
+function beginFirstChapter() {
+  click("Aventuras");
+  click("Escolher saga Origens e Promessa");
+  click("Entrar na aventura");
+  click("Iniciar exploração");
+}
 describe("36 aventuras: interface central", () => {
+  it("abre bolsa, diário, mapa e códice como menus exclusivos, pausa a exploração e retoma com Esc", async () => {
+    await render();
+    beginFirstChapter();
+    const canvas = host.querySelector("canvas")!;
+    for (const [key, label] of [["i", "Inventário da jornada"], ["j", "Diário da jornada"], ["m", "Mapa da aventura"], ["c", "Códice de descobertas"]]) {
+      press(key, canvas);
+      expect(host.querySelectorAll('[role="dialog"]')).toHaveLength(1);
+      const menu = host.querySelector<HTMLElement>(`[aria-label="${label}"]`)!;
+      expect(menu.getAttribute("aria-modal")).toBe("true");
+      expect(document.activeElement).toBe(menu);
+      expect(spies.canvas.mock.calls.at(-1)?.[0].paused).toBe(true);
+    }
+    press("Escape");
+    expect(host.querySelector('[role="dialog"]')).toBeNull();
+    expect(spies.canvas.mock.calls.at(-1)?.[0].paused).toBe(false);
+    press("Escape", canvas);
+    expect(host.querySelector('[aria-label="Menu de pausa"]')).not.toBeNull();
+    click("Tela de título");
+    expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
+  });
+  it("mantém atalhos fora de campos de edição e folhas do leitor, e prende Tab no menu", async () => {
+    await render();
+    beginFirstChapter();
+    const input = document.createElement("input");
+    host.querySelector(".ca-root")!.append(input);
+    press("j", input);
+    expect(host.querySelector('[role="dialog"]')).toBeNull();
+    input.remove();
+    const sheet = document.createElement("div");
+    sheet.setAttribute("role", "dialog");
+    sheet.setAttribute("aria-modal", "true");
+    document.body.append(sheet);
+    press("m", host.querySelector("canvas")!);
+    expect(host.querySelector('[role="dialog"]')).toBeNull();
+    sheet.remove();
+    press("i", host.querySelector("canvas")!);
+    const menu = host.querySelector('[aria-label="Inventário da jornada"]')!;
+    const buttons = menu.querySelectorAll("button");
+    act(() => buttons[buttons.length - 1].focus());
+    press("Tab");
+    expect(document.activeElement).toBe(buttons[0]);
+    act(() => buttons[0].focus());
+    act(() => buttons[0].dispatchEvent(new KeyboardEvent("keydown", { key: "Tab", shiftKey: true, bubbles: true, cancelable: true })));
+    expect(document.activeElement).toBe(buttons[buttons.length - 1]);
+  });
+
+  it("suspende o jogo com a folha bíblica aberta e devolve foco ao diário quando ela fecha", async () => {
+    await render();
+    beginFirstChapter();
+    click("Abrir diário de missões");
+    const trigger = Array.from(host.querySelectorAll("button")).find(button => button.textContent?.trim() === "Ler Gênesis 1:1–31")!;
+    act(() => trigger.focus());
+    click("Ler Gênesis 1:1–31");
+    act(() => { sheetState.sheets.push({}); sheetState.revision++; sheetState.listeners.forEach(listener => listener()); });
+    expect(spies.canvas.mock.calls.at(-1)?.[0].paused).toBe(true);
+    press("Escape", host.querySelector("canvas")!);
+    expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
+    act(() => { sheetState.sheets.length = 0; sheetState.revision++; sheetState.listeners.forEach(listener => listener()); });
+    await act(async () => { await new Promise(resolve => requestAnimationFrame(resolve)); });
+    expect(document.activeElement).toBe(trigger);
+    expect(host.querySelector('[aria-label="Diário da jornada"]')).not.toBeNull();
+  });
   it("mostra o RPG primeiro, usa conversa dentro do cenário e abre o diário apenas sob demanda", async () => {
     await render();
     expect(host.querySelector('[aria-label="Menu principal do jogo"]')).not.toBeNull();
@@ -161,9 +243,8 @@ describe("36 aventuras: interface central", () => {
     click("Iniciar exploração");
     expect(host.querySelector("[role=dialog]")).toBeNull();
     expect(host.querySelector("canvas")).not.toBeNull();
-    await act(async () => {
-      click("Mapa de aventuras");
-    });
+    press("m", host.querySelector("canvas")!);
+    await act(async () => { click("Mapa de aventuras"); });
     expect(host.querySelectorAll(".gf-region-pin")).toHaveLength(6);
   });
   it("retoma capítulo, posição e diálogo já salvo sem reapresentar a introdução", async () => {
@@ -238,6 +319,7 @@ describe("36 aventuras: interface central", () => {
     expect(spies.save).not.toHaveBeenCalled();
   });
   it("mantém checkpoint a cada cinco segundos durante movimento contínuo e salva ao ocultar", async () => {
+    vi.useFakeTimers();
     await render();
     click("Aventuras");
     click("Escolher saga Origens e Promessa");
@@ -249,7 +331,7 @@ describe("36 aventuras: interface central", () => {
     for (let i = 0; i < 52; i++)
       await act(async () => {
         click("Simular movimento");
-        await new Promise((resolve) => setTimeout(resolve, 100));
+        await vi.advanceTimersByTimeAsync(100);
       });
     expect(spies.save.mock.calls.length).toBeGreaterThan(before);
     const saved = spies.save.mock.calls.at(-1)![0];
