@@ -7,7 +7,7 @@ import { tr } from '../lib/i18n';
 const Memory = lazy(() => import('./Memory'));
 const Mezuzah = lazy(() => import('./MezuzahClassic'));
 const Online = lazy(() => import('./MezuzahClassicOnline'));
-const Chronicles = lazy(() => import('./Chronicles'));
+const Chronicles = lazy(() => import('../games/chronicles/CampaignChronicles'));
 
 type Tab = 'home' | 'flashcards' | 'mezuzah' | 'online' | 'chronicles';
 export default function ToolsAndGames() {
@@ -36,9 +36,9 @@ export default function ToolsAndGames() {
           )}</p>
         </div>
         <button type="button" onClick={()=>setTab('chronicles')} className="mb-5 block w-full overflow-hidden rounded-[25px] border border-[#adbb8b]/40 bg-gradient-to-br from-[#152b27] via-[#334a34] to-[#796647] p-6 text-left text-[#f3e8cd] shadow-xl transition hover:-translate-y-1 sm:p-8">
-          <span className="text-xs font-semibold uppercase tracking-[.22em] text-[#e7cb91]">RPG bíblico 2D · episódio piloto</span>
+          <span className="text-xs font-semibold uppercase tracking-[.22em] text-[#e7cb91]">RPG bíblico 2D · seis sagas · 36 aventuras</span>
           <h3 className="mt-3 font-reading text-4xl sm:text-5xl">Crônicas da Aliança</h3>
-          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#d8e4d1]">O Vale e a Coragem · 1 Samuel 16–17. Explore um povoado, ajude seus vizinhos e testemunhe uma história de coragem, com escolhas, missões e progresso salvo.</p>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-[#d8e4d1]">Explore 36 capítulos compactos da história bíblica, com cenários, descobertas e desafios. Inclui também o episódio original ampliado O Vale e a Coragem, com missões e inventário.</p>
           <span className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#e4c48b] px-5 py-3 text-sm font-semibold text-[#223328]">Explorar a aventura <ArrowRight size={17}/></span>
         </button>
         <div className="grid gap-4 md:grid-cols-[1.4fr_1fr]">

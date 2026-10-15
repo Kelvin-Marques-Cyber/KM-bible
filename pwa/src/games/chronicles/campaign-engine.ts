@@ -24,15 +24,16 @@ export type JourneyState = {
   attempts: number;
   feedback: string;
   steps: number;
+  introduced?: boolean;
 };
-export type CampaignProgress = { version: 1; episodes: Record<string, JourneyState>; completed: string[] };
+export type CampaignProgress = { version: 1; episodes: Record<string, JourneyState>; completed: string[]; activeEpisodeId?: string | null; selectedSaga?: number };
 const byId = new Map(CAMPAIGN_EPISODES.map(e => [e.id, e]));
 export const episodeById = (id: string): ChronicleEpisode | undefined => byId.get(id);
 export const emptyProgress = (): CampaignProgress => ({ version: 1, episodes: {}, completed: [] });
 export function newJourney(episodeId: string): JourneyState {
   if (!byId.has(episodeId)) throw new Error('Capítulo bíblico não encontrado.');
   return {version:1,episodeId,x:17,y:15,facing:'up',visited:[],phase:'explore',
-    dialogue:null,attempts:0,feedback:'Explore o cenário e investigue os três lugares marcados.',steps:0};
+    dialogue:null,introduced:false,attempts:0,feedback:'Explore o cenário e investigue os três lugares marcados.',steps:0};
 }
 function blocked(x: number,y: number): boolean {
   if (!Number.isFinite(x)||!Number.isFinite(y)||x<1.3||x>WORLD_WIDTH-1.3||y<2.6||y>WORLD_HEIGHT-1.3) return true;
@@ -99,6 +100,7 @@ export function validJourney(value:unknown):value is JourneyState {
   if(s.phase!=='explore'&&s.dialogue!==null)return false;
   if(!Number.isSafeInteger(s.attempts)||s.attempts<0||s.attempts>100000||
      !Number.isSafeInteger(s.steps)||s.steps<0||s.steps>100000000)return false;
+  if(s.introduced!==undefined&&typeof s.introduced!=='boolean')return false;
   if(typeof s.feedback!=='string'||s.feedback.length>450)return false;
   return true;
 }
@@ -109,6 +111,8 @@ export function validCampaignProgress(value: unknown):value is CampaignProgress 
      !Array.isArray(x.completed)||x.completed.length>36||
      new Set(x.completed).size!==x.completed.length||
      x.completed.some(id=>typeof id!=='string'||!byId.has(id)))return false;
+  if(x.activeEpisodeId!=null&&(!byId.has(x.activeEpisodeId)||!Object.hasOwn(x.episodes,x.activeEpisodeId)))return false;
+  if(x.selectedSaga!==undefined&&(!Number.isInteger(x.selectedSaga)||x.selectedSaga<0||x.selectedSaga>5))return false;
   const entries=Object.entries(x.episodes);
   if(entries.length>36)return false;
   if(entries.some(([id,v])=>!byId.has(id)||!validJourney(v)||v.episodeId!==id))return false;
@@ -119,7 +123,7 @@ export function progressWithJourney(progress:CampaignProgress,state:JourneyState
   if(!validJourney(state))throw new Error('Não é possível salvar capítulo inválido.');
   const episodes={...progress.episodes,[state.episodeId]:state};
   const completed=Object.keys(episodes).filter(id=>episodes[id].phase==='complete');
-  return {version:1,episodes,completed};
+  return {...progress,version:1,episodes,completed};
 }
 export function beginOrResume(progress:CampaignProgress,id:string):JourneyState {
   if(!byId.has(id))throw new Error('Capítulo desconhecido.');

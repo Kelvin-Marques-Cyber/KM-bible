@@ -139,7 +139,7 @@ export default function CampaignCanvas({episode,game,paused,input,onMove,onInter
      if(document.activeElement!==el)return;
      const k=event.key.toLowerCase();
      if(['arrowleft','arrowright','arrowup','arrowdown','w','a','s','d','e','enter',' ','shift'].includes(k))event.preventDefault();
-     if(k==='e'||k==='enter'){if(!event.repeat)props.current.onInteract();return;}
+     if(k==='e'||k==='enter'){if(!event.repeat&&!props.current.paused)props.current.onInteract();return;}
      keys.add(k);
    };
    const up=(event:KeyboardEvent)=>keys.delete(event.key.toLowerCase());

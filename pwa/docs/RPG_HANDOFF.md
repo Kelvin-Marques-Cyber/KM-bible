@@ -4,7 +4,7 @@
 
 - Repositório KM-bible, branch `flutter-web-fiel`; apenas PWA React/TypeScript/Vite. Não alterar nem compilar Android.
 - Primeiro episódio: **O Vale e a Coragem — 1 Samuel 16–17**, com testemunha fictícia, povoado, interior, acampamento, missões, escolhas, inventário, puzzle, encontro pacífico, conclusão canônica, save e leitor bíblico.
-- Seis sagas / cerca de 36 episódios constituem expansão planejada, não conteúdo entregue.
+- Seis sagas / 36 aventuras compactas têm conteúdo, motor e interface de exploração integrados. Não equivalem em profundidade ao piloto ampliado.
 - Sistemas e saves de Mezuzá e memorização permanecem independentes.
 
 ## Auditoria inicial
@@ -27,8 +27,8 @@ O usuário confirmou expressamente que o SOL acertou ao implementar a **adaptaç
 ## Entregas existentes na branch
 
 - **Piloto RPG:** `src/games/chronicles/engine.ts`, `content.ts`, `renderer.ts`, `ChroniclesCanvas.tsx`, `src/screens/Chronicles.tsx`, persistência `chronicles/persistence.ts`.
-- **Uma campanha disponível:** `O Vale e a Coragem`, com três mapas (povoado, casa e acampamento), missões principais/secundárias, diálogos, puzzle, resolução pacífica de conflito, narrativa canônica de 1 Samuel 16–17 e códice com referências e flashcards.
-- **Pixel art procedural:** Canvas 2D original, controles teclado/toque e efeitos de iluminação; acabamento comercial avançado e demais 35 episódios ainda não concluídos.
+- **Uma campanha ampliada disponível:** `O Vale e a Coragem`, com três mapas (povoado, casa e acampamento), missões principais/secundárias, diálogos, puzzle, resolução pacífica de conflito, narrativa canônica de 1 Samuel 16–17 e códice com referências e flashcards.
+- **Pixel art procedural:** Canvas 2D original, controles teclado/toque e efeitos de iluminação; 36 aventuras compactas adicionais têm cenários próprios e fluxo de três investigações + desafio. Polimento e validação completa em andamento.
 - **Mezuzá Clássico:** motor local e serviço de salas WebSocket separados, com interface e tabuleiro 3D, modo sem WebGL e testes unitários e E2E incluídos.
 - **Memorização:** permanece acessível e preservada na mesma área `Ferramentas e Games`.
 - O frontend PWA continua sem dependência de motor de jogo adicional.
@@ -52,3 +52,13 @@ A release agora possui **nove estágios**, incluindo `npm ci` isolado e `npm tes
 Também verificar visualmente no celular o WebGL 3D, o fallback sem WebGL, a rota dos três mapas, a retenção do save offline, e o ciclo multiplayer via WSS hospedado. O vídeo/inspeção do tabuleiro real e revisão pastoral das passagens não fazem parte da validação automatizada.
 
 **Não** declarar as seis sagas nem o servidor WSS público concluídos até sua implementação/hospedagem real.
+
+## Continuação a partir de 290285d8 — integração
+
+- `CampaignChronicles.tsx` criado e integrado ao menu, com seis sagas, seis capítulos por saga, introduções, movimentação, três investigações presenciais, códice, desafio, conclusão, avanço e reinício individual.
+- Piloto preservado em entrada destacada e com persistência independente. Mezuzá e Memorização não tiveram seus motores alterados.
+- Progresso v1 aceita campos opcionais de capítulo ativo, saga selecionada e introdução já lida; saves v1 anteriores continuam aceitos.
+- Leitor e criação de cartões reutilizam `showPassage`/`createCard`, carregando texto de `verse(app.translation, ...)`. Nenhuma avaliação SM-2 é feita pelo RPG.
+- Interface distingue aventuras compactas de campanha ampliada.
+- Validação desta etapa: `npm run typecheck` aprovado; 25 testes aprovados nos quatro arquivos da interface, piloto e Ferramentas e Games, após geração obrigatória do catálogo/fontes. E2E completo ainda pendente.
+- Próximos arquivos: `campaign-persistence.ts` (backup e recuperação), `CampaignCanvas.tsx` (arte, desempenho e ciclo de vida), testes de todos os 36 fluxos. Nenhuma publicação autorizada ou efetuada.

@@ -15,7 +15,7 @@ const emptyInput = { dx: 0, dy: 0, run: false };
 const reference = (r: (typeof BIBLE_REFERENCES)[number]): Ref => ({ book: r.b, chapter: r.c, verse: r.v });
 
 /** Episode UI only: movement, narrative and rendering remain independent modules. */
-export default function Chronicles({ onBack }: { onBack: () => void }) {
+export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }: { onBack: () => void; backLabel?: string }) {
   const [game, setGame] = useState<GameState | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState('');
@@ -111,7 +111,7 @@ export default function Chronicles({ onBack }: { onBack: () => void }) {
     <div className="scroll-area h-full bg-[#101b1a] text-[#f2e8ce]">
       <div className="mx-auto max-w-[1500px] px-3 py-4 sm:px-6">
         <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
-          <button type="button" className={button} onClick={onBack}><ArrowLeft size={17} /> Ferramentas e Games</button>
+          <button type="button" className={button} onClick={onBack}><ArrowLeft size={17} /> {backLabel}</button>
           <div className="text-right"><p className="text-[10px] tracking-[.28em] text-[#d7b77a]">UMA JORNADA ENTRE TESTEMUNHOS</p><h2 className="font-reading text-2xl sm:text-4xl">Crônicas da Aliança</h2></div>
         </header>
         {error && <p role="alert" className="mb-4 rounded-xl border border-[#e3a387]/40 bg-[#4c2b22] p-3 text-sm">{error}</p>}
