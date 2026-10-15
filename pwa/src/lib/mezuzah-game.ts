@@ -163,8 +163,14 @@ export function isGameState(value: unknown): value is GameState {
   return s.version === 1 && (s.status === 'playing' || s.status === 'finished') &&
     Array.isArray(s.players) && s.players.length >= 2 && s.players.length <= 4 &&
     Number.isInteger(s.turn) && s.turn >= 0 && s.turn < s.players.length &&
-    s.players.every(p => typeof p.name === 'string' && Number.isInteger(p.position) && p.position >= 0 && p.position <= LAST_SQUARE &&
-      typeof p.score === 'number' && p.score >= 0 && typeof p.color === 'string') &&
+    s.players.every(p => !!p && typeof p.id === 'string' && typeof p.name === 'string' &&
+      typeof p.color === 'string' && Number.isInteger(p.position) &&
+      p.position >= 0 && p.position <= LAST_SQUARE && Number.isFinite(p.score) && p.score >= 0) &&
     Number.isInteger(s.actions) && s.actions >= 0 &&
-    (!s.pending || (Number.isInteger(s.pending.question) && s.pending.question >= 0 && s.pending.question < QUESTIONS.length));
+    (s.roll === null || (Number.isInteger(s.roll) && s.roll >= 1 && s.roll <= 6)) &&
+    (s.winner === null || (typeof s.winner === 'string' && s.players.some(p => p.id === s.winner))) &&
+    typeof s.message === 'string' &&
+    (s.pending === null || (!!s.pending && Number.isInteger(s.pending.question) &&
+      s.pending.question >= 0 && s.pending.question < QUESTIONS.length &&
+      Number.isInteger(s.pending.square) && s.pending.square >= 0 && s.pending.square <= LAST_SQUARE));
 }
