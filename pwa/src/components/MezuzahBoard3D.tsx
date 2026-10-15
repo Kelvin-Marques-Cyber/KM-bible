@@ -4,7 +4,7 @@
  * iluminação de estúdio. A cena gira com mouse/toque e zoom com a roda.
  */
 import { useEffect, useRef, useState } from 'react';
-import { BOARD_SIZE, LAST_SQUARE, squareKind, squarePosition, type GameState } from '../lib/mezuzah-game';
+import { BOARD_SIZE, squareKind, squarePosition, type GameState } from '../lib/mezuzah-game';
 
 type VertexBuffer = number[];
 type Point = [number, number, number];
