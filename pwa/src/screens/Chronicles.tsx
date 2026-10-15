@@ -1,5 +1,6 @@
 import { ArrowLeft, Backpack, BookOpen, Compass, Flag, Map, Pause, Play, ScrollText, Volume2, VolumeX } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import ChroniclesCanvas from '../games/chronicles/ChroniclesCanvas';
 import { activeObjective, BIBLE_REFERENCES, chooseDialogue, CODEX_ENTRIES, createGame, getMap, getQuestJournal, interact, INVENTORY_ITEMS, SAGAS, stepMovement, type GameState } from '../games/chronicles/engine';
 import { loadGame, saveGame } from '../games/chronicles/persistence';
@@ -21,6 +22,7 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
   const [error, setError] = useState('');
   const [saved, setSaved] = useState('');
   const [panel, setPanel] = useState<Panel>('play');
+  const [sceneHost, setSceneHost] = useState<HTMLDivElement | null>(null);
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(document.hidden);
   const [restart, setRestart] = useState(false);
@@ -108,7 +110,7 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
   const world = getMap(game?.mapId ?? 'village');
   const locked = paused || hidden || panel !== 'play' || !!game?.dialogue;
   return (
-    <div className="scroll-area h-full bg-[#101b1a] text-[#f2e8ce]">
+    <div className="chron-pilot scroll-area h-full bg-[#101b1a] text-[#f2e8ce]">
       <div className="mx-auto max-w-[1500px] px-3 py-4 sm:px-6">
         <header className="mb-4 flex flex-wrap items-center justify-between gap-3">
           <button type="button" className={button} onClick={onBack}><ArrowLeft size={17} /> {backLabel}</button>
@@ -134,30 +136,30 @@ export default function Chronicles({ onBack, backLabel = 'Ferramentas e Games' }
               <button type="button" aria-pressed={paused} className={button} onClick={() => { setPaused(!paused); setTouch(emptyInput); }}>{paused ? <Play size={16} /> : <Pause size={16} />}{paused ? 'Continuar' : 'Pausar'}</button>
               <button type="button" aria-label={music ? 'Desligar trilha' : 'Ligar trilha'} aria-pressed={music} className={button} onClick={() => { if (typeof AudioContext === 'undefined') { message('Áudio não disponível neste navegador.'); return; } setMusic(!music); }}>{music ? <Volume2 size={17} /> : <VolumeX size={17} />}</button>
             </div>
-            <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_310px]">
-              <div className="min-w-0">
-                <div className="relative overflow-hidden rounded-2xl border border-[#c8af7e]/35 bg-[#233b2f] shadow-2xl">
-                  <div className="h-[46vh] min-h-[260px] sm:h-[58vh] sm:min-h-[360px]">
+            <div className="chron-pilot-layout grid gap-4 xl:grid-cols-[minmax(0,1fr)_310px]">
+              <div className="chron-pilot-stage min-w-0">
+                <div ref={setSceneHost} className="chron-pilot-viewport relative overflow-hidden rounded-2xl border border-[#c8af7e]/35 bg-[#233b2f] shadow-2xl">
+                  <div className="chron-pilot-view h-[46vh] min-h-[260px] sm:h-[58vh] sm:min-h-[360px]">
                     <ChroniclesCanvas world={world} player={game} onMove={move} onInteract={interactNow} paused={locked} touchInput={touch} />
                   </div>
                   <p className="absolute left-3 right-3 top-3 rounded-xl bg-[#10231b]/90 px-3 py-2 text-xs text-[#f0dbb0]"><Flag size={13} className="mr-2 inline" />{activeObjective(game)}</p>
                   {(paused || hidden) && !game.dialogue && <div className="absolute inset-0 grid place-items-center bg-[#0c1914]/70"><p className="rounded-xl border border-[#d9c293]/40 bg-[#1c3026] px-8 py-5 font-reading text-3xl">Jornada pausada</p></div>}
                 </div>
-                <nav aria-label="Diário da aventura" className="mt-3 flex flex-wrap gap-2">{([
+                <nav aria-label="Diário da aventura" className="chron-pilot-nav mt-3 flex flex-wrap gap-2">{([
                   ['play', Play, 'Explorar'], ['journal', ScrollText, 'Missões'], ['inventory', Backpack, 'Inventário'], ['codex', BookOpen, 'Códice'], ['map', Map, 'Mapa'],
                 ] as const).map(([id, Icon, label]) => <button type="button" key={id} className={button} aria-pressed={panel === id} onClick={() => { setPanel(id); setTouch(emptyInput); }}><Icon size={16} />{label}</button>)}</nav>
-                {panel === 'play' && !game.dialogue && <div className="mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#c8af7e]/20 bg-[#192a23] p-3">
+                {panel === 'play' && !game.dialogue && <div className="chron-pilot-controls mt-3 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#c8af7e]/20 bg-[#192a23] p-3">
                   <div className="grid grid-cols-3 gap-1" aria-label="Controles de movimento">{[{ label: 'Caminhar para cima', dx: 0, dy: -1, pos: 'col-start-2' }, { label: 'Caminhar para esquerda', dx: -1, dy: 0, pos: 'row-start-2' }, { label: 'Caminhar para baixo', dx: 0, dy: 1, pos: 'row-start-2' }, { label: 'Caminhar para direita', dx: 1, dy: 0, pos: 'row-start-2' }].map(({ label, dx, dy, pos }, i) => <button type="button" aria-label={label} key={label} disabled={paused} className={`${button} ${pos} w-12 touch-none select-none`} onPointerDown={event => { event.preventDefault(); event.currentTarget.setPointerCapture(event.pointerId); setTouch({ dx, dy, run: false }); }} onPointerUp={() => setTouch(emptyInput)} onPointerCancel={() => setTouch(emptyInput)} onContextMenu={event => event.preventDefault()}>{['↑', '←', '↓', '→'][i]}</button>)}</div>
                   <p className="max-w-[230px] text-xs leading-relaxed text-[#bacbb9]">No cenário: WASD ou setas para caminhar, Shift para correr e E ou Enter para interagir. Use as setas de toque no celular.</p>
                   <button type="button" className={`${button} !bg-[#d7b77b] !text-[#18291e]`} disabled={paused} onClick={interactNow}>Interagir <span className="rounded border border-black/20 px-1 text-xs">E</span></button>
                 </div>}
               </div>
-              <aside className="space-y-3">
-                {game.dialogue && <section role="dialog" aria-modal="false" aria-label={`Conversa com ${game.dialogue.speaker}`} className="rounded-2xl border border-[#d8b978]/50 bg-[#23352b] p-5 shadow-xl">
+              <aside className="chron-pilot-extras space-y-3">
+                {game.dialogue && sceneHost && createPortal(<section role="dialog" aria-modal="false" aria-label={`Conversa com ${game.dialogue.speaker}`} className="chron-pilot-dialog rounded-2xl border border-[#d8b978]/50 bg-[#23352b] p-5 shadow-xl">
                   <div className="mb-3 flex items-center gap-3"><span aria-hidden className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border-2 border-[#cfb680]/50 bg-[#74634b] font-reading text-2xl">{game.dialogue.speaker.slice(0, 1)}</span><div><p className="text-[10px] uppercase tracking-[.2em] text-[#cfb680]">{game.dialogue.kind === 'cutscene' ? 'Testemunho' : game.dialogue.kind === 'puzzle' ? 'Observe e decida' : 'Conversa'}</p><h3 className="font-reading text-xl">{game.dialogue.speaker}</h3></div></div>
                   <p className="whitespace-pre-line text-sm leading-relaxed text-[#e4e6d3]">{game.dialogue.text}</p>
                   <div className="mt-4 grid gap-2">{game.dialogue.choices.map(choice => <button type="button" className={`${button} !justify-start text-left`} key={choice.id} onClick={() => setGame(previous => previous ? chooseDialogue(previous, choice.id) : previous)}>{choice.label}</button>)}</div>
-                </section>}
+                </section>, sceneHost)}
                 {game.status === 'complete' && !game.dialogue && <section className="rounded-2xl border border-[#e3c488]/60 bg-[#344634] p-5"><Flag className="text-[#e3c488]" /><h3 className="mt-2 font-reading text-2xl">Episódio concluído</h3><p className="mt-2 text-sm leading-relaxed">Seu testemunho está guardado no códice. Esta é a campanha piloto; os próximos episódios ainda serão construídos.</p><button type="button" className={`${button} mt-3`} onClick={() => setPanel('codex')}>Consultar testemunhos</button></section>}
                 <section className="rounded-2xl border border-[#c8af7e]/20 bg-[#1d2d25] p-4"><p className="text-[10px] tracking-[.2em] text-[#bfa778]">PRÓXIMO PASSO</p><h3 className="mt-2 text-sm leading-relaxed">{activeObjective(game)}</h3><p role="status" className="mt-3 text-xs leading-relaxed text-[#b8cbb7]">{game.message}</p><p className="mt-3 border-t border-[#c8af7e]/15 pt-3 text-[11px] text-[#b8cbb7]">{saved}</p><button type="button" onClick={exportSave} className="mt-2 min-h-9 text-xs text-[#e4c68b] underline underline-offset-4">Exportar progresso</button></section>
                 <section className="rounded-2xl border border-[#c8af7e]/20 p-4 text-xs leading-relaxed text-[#b8cbb7]"><h3 className="font-semibold text-[#e0c690]">1 Samuel 16–17</h3><p className="mt-2">Personagens e tarefas de Neri são ficção complementar. O resultado bíblico permanece fixo. Revisão teológica humana ainda pendente.</p><button type="button" className="mt-3 min-h-9 underline underline-offset-4" onClick={() => setPanel('codex')}>Abrir Códice dos Testemunhos</button></section>
