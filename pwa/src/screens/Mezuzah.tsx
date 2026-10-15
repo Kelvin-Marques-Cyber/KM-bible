@@ -8,7 +8,6 @@ import {
   LAST_SQUARE, QUESTIONS, answerQuestion, isGameState, rollDie, secureDie,
   squareKind, startGame, type GameState,
 } from '../lib/mezuzah-game';
-import { tr } from '../lib/i18n';
 
 const STORAGE_KEY='km-mezuzah-v1';
 function restore(): GameState | null {
