@@ -602,7 +602,7 @@ def build() -> dict:
     apologetics = None
     base_dir = ASSETS / "apologetica"
     if base_dir.is_dir():
-        from apologetics_visuals import illustration
+        from apologetics_visuals import PHOTO_SOURCES, illustration
         editorial_path = CONTENT / "apologetica-editorial.json"
         editorial = json.loads(editorial_path.read_text(encoding="utf-8"))["profiles"]
         pack = Pack("apologetica")
@@ -637,16 +637,8 @@ def build() -> dict:
                 "credit": "Ilustração vetorial original · Bíblia Reformada",
                 "kind": kind,
             }
-            # Fotografia documental identificada, em domínio público, de fonte
-            # efetivamente verificada. Se offline, a arte local continua visível.
-            if target == "roman_catholic":
-                visuals[target]["photo"] = {
-                    "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Basilique-Saint-Pierre-Vatican.jpg?width=960",
-                    "alt": "Fachada da Basílica de São Pedro no Vaticano.",
-                    "caption": "Basílica de São Pedro, Vaticano · fotografia documental.",
-                    "credit": "Rundvald, 2008 · domínio público · Wikimedia Commons",
-                    "source": "https://commons.wikimedia.org/wiki/File:Basilique-Saint-Pierre-Vatican.jpg",
-                }
+            if target in PHOTO_SOURCES:
+                visuals[target]["photo"] = PHOTO_SOURCES[target]
             targets.append(target)
         if len(targets) != 30:
             raise SystemExit(f"Esperadas 30 tradições, encontradas {len(targets)}")
