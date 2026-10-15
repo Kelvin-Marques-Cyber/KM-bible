@@ -52,12 +52,12 @@ def architecture(kind: str, ink: str, gold: str) -> str:
         tower = f'<path d="M310 145h115v280H310Z" fill="{gold}"/><path d="M300 150l68-86 68 86Z" fill="{ink}"/>'
         church = f'<path d="M400 275h480v150H400Z" fill="{ink}"/><path d="M380 279l260-130 260 130Z" fill="{gold}"/>'
         crosses = f'<path d="M364 63v-42m-15 14h30" stroke="{gold}" stroke-width="11"/>' if kind != "hall" else ""
-        windows = ''.join(f'<path d="M{x} 400v-91a25 25 0 0 1 50 0v91Z" fill="{gold}"' for x in (510,635,760))
+        windows = ''.join(f'<path d="M{x} 400v-91a25 25 0 0 1 50 0v91Z" fill="{gold}"/>' for x in (510,635,760))
         return base + (tower + church + windows + crosses)
     if kind == "synagogue":
         return base + (
             f'<path d="M260 265h680v165H260z" fill="{ink}"/><path d="M245 265l355-135 355 135Z" fill="{gold}"/>'
-            + ''.join(f'<path d="M{x} 406V318a26 26 0 0 1 52 0v88Z" fill="{gold}"' for x in (340,462,684,810))
+            + ''.join(f'<path d="M{x} 406V318a26 26 0 0 1 52 0v88Z" fill="{gold}"/>' for x in (340,462,684,810))
             + '<circle cx="600" cy="220" r="42" fill="#f2e6cf" opacity=".76"/>'
         )
     if kind == "temple":
@@ -73,7 +73,7 @@ def architecture(kind: str, ink: str, gold: str) -> str:
                 f'<path d="M340 385a260 230 0 0 1 520 0Z" fill="{gold}"/>'
                 f'<path d="M486 160h228v42H486zM547 112h106v48H547z" fill="{ink}"/>'
                 f'<path d="M600 112V63" stroke="{gold}" stroke-width="11"/>'
-                + ''.join(f'<path d="M{x} 388h{w}v28h-{w}Z" fill="{ink}"' for x,w in ((280,640),(240,720)))
+                + ''.join(f'<path d="M{x} 388h{w}v28h-{w}Z" fill="{ink}"/>' for x,w in ((280,640),(240,720)))
             )
         return base + ''.join(
             f'<path d="M{x} {y}h{w}v{h}h-{w}Z" fill="{ink}"/>'
