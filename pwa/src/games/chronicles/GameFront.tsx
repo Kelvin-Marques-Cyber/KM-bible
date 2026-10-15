@@ -176,7 +176,7 @@ export default function GameFront({progress,saga,onSaga,onBegin,onPilot,onBack,o
   const stage=useRef<HTMLDivElement>(null);
   const chapters=useMemo(()=>CAMPAIGN_EPISODES.filter(e=>e.saga===saga),[saga]);
   const current = chapters[chapter] ?? chapters[0];
-  const known = progress.activeEpisodeId && progress.episodes[progress.activeEpisodeId];
+  const known = progress.activeEpisodeId ? progress.episodes[progress.activeEpisodeId] : undefined;
   const fallback = Object.values(progress.episodes).reverse().find(x=>x.phase!=='complete');
   const toContinue = known?.episodeId ?? fallback?.episodeId ?? null;
   const completed=progress.completed.length;
