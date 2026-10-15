@@ -82,6 +82,8 @@ describe('Crônicas da Aliança: tela e integração', () => {
     expect(host!.querySelector('canvas')?.getAttribute('aria-label')).toContain('Povoado das oliveiras');
     click('Missões');
     expect(host!.querySelector('[aria-label="Diário de missões"]')).not.toBeNull();
+    click('← Voltar ao jogo');
+    expect(host!.querySelector('[aria-label="Diário de missões"]')).toBeNull();
     click('Inventário');
     expect(host!.textContent).toContain('Sua bolsa está vazia');
     click('Mapa');
