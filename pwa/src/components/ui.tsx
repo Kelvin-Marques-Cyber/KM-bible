@@ -351,11 +351,21 @@ export function useAsync<T>(fn: () => Promise<T>, deps: unknown[]): AsyncState<T
   const latest = useRef(0);
   useEffect(() => {
     const run = ++latest.current;
+    let active = true;
     setState((s) => ({ ...s, loading: true, error: null }));
-    fn().then(
-      (data) => run === latest.current && setState({ data, error: null, loading: false }),
-      (error) => run === latest.current && setState({ data: undefined, error, loading: false }),
+    // A requisição pode terminar depois que a tela ou o ambiente de teste
+    // desmontar. Nunca atualizar React a partir de uma Promise obsoleta.
+    Promise.resolve().then(fn).then(
+      (data) => {
+        if (active && run === latest.current)
+          setState({ data, error: null, loading: false });
+      },
+      (error) => {
+        if (active && run === latest.current)
+          setState({ data: undefined, error, loading: false });
+      },
     );
+    return () => { active = false; };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, tick]);
   const reload = useCallback(() => setTick((n) => n + 1), []);
