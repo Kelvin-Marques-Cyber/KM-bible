@@ -561,7 +561,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
             <div className="ca-game-layout">
               <section className="ca-stage" aria-label="Cenário da aventura">
                 <div
-                  className={"ca-canvas ca-scene-enter" + ((intro || restart || game.dialogue !== null || ((game.phase === "trial" || game.phase === "complete") && !codex)) ? " ca-has-dialog" : "")}
+                  className={"ca-canvas ca-scene-enter" + ((intro || restart || paused || game.dialogue !== null || ((game.phase === "trial" || game.phase === "complete") && !codex)) ? " ca-has-dialog" : "")}
                   key={episode.id}
                   ref={scene}
                 >
