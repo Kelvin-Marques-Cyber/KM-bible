@@ -132,6 +132,19 @@ describe("Canvas das aventuras: entradas, foco e recursos", () => {
     expect(reset).toHaveBeenCalledTimes(1);
     expect(frames.size).toBe(0);
   });
+  it("congela animação e reduz redesenhos enquanto um menu está aberto", () => {
+    setup({ paused: true });
+    frame(100);
+    expect(draw).toHaveBeenCalledTimes(1);
+    frame(140);
+    frame(350);
+    frame(720);
+    expect(draw).toHaveBeenCalledTimes(1);
+    frame(1160);
+    expect(draw).toHaveBeenCalledTimes(2);
+    // A iluminação/NPC não continuam andando por trás do diálogo.
+    expect(draw.mock.calls[1][3]).toBe(draw.mock.calls[0][3]);
+  });
   it("prévia decorativa não captura teclado nem cria parada de foco", () => {
     const { canvas, props } = setup({ decorative: true });
     expect(canvas.tabIndex).toBe(-1);
