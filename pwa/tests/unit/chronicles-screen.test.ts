@@ -76,6 +76,7 @@ describe('Crônicas da Aliança: tela e integração', () => {
     expect(host!.textContent).toContain('Neri, seus vizinhos e as tarefas de apoio foram criados para o jogo');
     click('Começar episódio');
     expect(host!.querySelector('[role="dialog"]')?.textContent).toContain('testemunha fictícia');
+    expect(host!.querySelector('.chron-pilot-viewport [role="dialog"]')).not.toBeNull();
     click('Continuar');
     expect(host!.querySelector('[role="dialog"]')).toBeNull();
     expect(host!.querySelector('canvas')?.getAttribute('aria-label')).toContain('Povoado das oliveiras');
