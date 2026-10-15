@@ -59,7 +59,6 @@ import "./campaign.css";
 
 const Pilot = lazy(() => import("../../screens/Chronicles"));
 const idle = { dx: 0, dy: 0, run: false };
-const noop = () => {};
 
 /** The compact journeys and the extended pilot deliberately keep separate saves. */
 export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
@@ -72,6 +71,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
   const [saved, setSaved] = useState("");
   const [saga, setSaga] = useState(0);
   const [pilot, setPilot] = useState(false);
+  const [landing, setLanding] = useState<"title" | "world">("title");
   const [paused, setPaused] = useState(false);
   const [hidden, setHidden] = useState(document.hidden);
   const [codex, setCodex] = useState(false);
@@ -273,10 +273,12 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
     setCodex(false);
     setJournalOpen(false);
     setRestart(false);
+    setLanding("title");
     setTouch(idle);
     focusScene();
   };
   const select = () => {
+    setLanding("world");
     const next = { ...latest.current, activeEpisodeId: null };
     latest.current = next;
     setProgress(next);
@@ -900,6 +902,7 @@ export default function CampaignChronicles({ onBack }: { onBack: () => void }) {
           <GameFront
             progress={progress}
             saga={saga}
+            initialScreen={landing}
             onSaga={(index) => {
               setSaga(index);
               const next = { ...latest.current, selectedSaga: index };
