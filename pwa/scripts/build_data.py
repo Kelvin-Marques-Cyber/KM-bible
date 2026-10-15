@@ -26,6 +26,7 @@ import sys
 import time
 import unicodedata
 import zipfile
+from xml.etree import ElementTree
 from collections import defaultdict
 from pathlib import Path
 
@@ -624,7 +625,9 @@ def build() -> dict:
             if profile is None:
                 raise SystemExit(f"Perfil visual e editorial não definido: {target}")
             path = f"visuals/{target}.svg"
-            pack.put(path, illustration(target, profile))
+            svg = illustration(target, profile)
+            ElementTree.fromstring(svg)  # Falha cedo: nenhum SVG inválido vai para o site.
+            pack.put(path, svg)
             name, caption, kind = profile["visual"]
             visuals[target] = {
                 "path": path,
