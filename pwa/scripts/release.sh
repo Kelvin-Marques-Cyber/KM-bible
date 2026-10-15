@@ -74,11 +74,27 @@ for key in ("agostinho", "apologetica"):
 print("Acervo validado: Agostinho e apologetica disponiveis.")
 PY
 
-echo "==> 3/8 Tipos";         npx tsc --noEmit
-echo "==> 4/8 Unitarios";     npx vitest run
-echo "==> 5/8 Build";         npx vite build >/dev/null && node scripts/finalize_build.mjs
-echo "==> 6/8 Ponta a ponta"; npx playwright test
-echo "==> 7/8 Validar publicacao e enviar"
+echo "==> 3/9 Tipos";         npx tsc --noEmit
+echo "==> 4/9 Unitarios";     npx vitest run
+
+# As salas multiplayers são um serviço independente com package-lock próprio.
+# Os E2E de dois navegadores iniciam esse servidor localmente: sem instalar
+# a dependência 'ws' deste diretório o teste falha antes de abrir a PWA.
+echo "==> 5/9 Testes do servidor de salas"
+if ! node -e 'const [major,minor] = process.versions.node.split(".").map(Number); if (major < 22 || (major === 22 && minor < 18)) process.exit(1)' ; then
+  echo "O servidor Mezuzá Clássico precisa de Node 22.18 ou superior para ler TypeScript nativamente." >&2
+  echo "Versão encontrada: $(node --version). Atualize o Node antes de publicar." >&2
+  exit 2
+fi
+if [[ ! -f "$REPO/mezuzah-server/node_modules/ws/package.json" ]]; then
+  echo "==> Instalando ws de forma isolada, usando o lockfile do servidor"
+  npm ci --prefix "$REPO/mezuzah-server" --ignore-scripts --no-audit --no-fund
+fi
+(cd "$REPO/mezuzah-server" && npm test)
+
+echo "==> 6/9 Build";         npx vite build >/dev/null && node scripts/finalize_build.mjs
+echo "==> 7/9 Ponta a ponta"; npx playwright test
+echo "==> 8/9 Validar publicacao e enviar"
 KM_REMOVE_CODIGO_FONTE="${KM_REMOVE_CODIGO_FONTE:-1}" bash scripts/publish_gh_pages.sh
 if [[ "${KM_DRY_RUN:-0}" == "1" ]]; then
   echo "KM_DRY_RUN=1: todos os testes e a arvore passaram; nada publicado."
@@ -86,7 +102,7 @@ if [[ "${KM_DRY_RUN:-0}" == "1" ]]; then
 fi
 
 BUILD="$(python3 -c "import json;print(json.load(open('dist/app-version.json'))['build'])")"
-echo "==> 8/8 Conferindo o site (build $BUILD)"
+echo "==> 9/9 Conferindo o site (build $BUILD)"
 for _ in $(seq 1 45); do
   live="$(curl -fsS "${SITE}app-version.json?t=$(date +%s)" | python3 -c "import json,sys;print(json.load(sys.stdin)['build'])" 2>/dev/null || true)"
   if [[ "$live" == "$BUILD" ]]; then echo "No ar: $SITE (build $BUILD)"; exit 0; fi
