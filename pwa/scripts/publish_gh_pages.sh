@@ -137,7 +137,7 @@ if total > 1000 * 1000 * 1000:
     print("AVISO: site acima de 1 GB (KM_ALLOW_OVER_1GB=1)")
 PY
 
-COMMIT="$(git commit-tree "$TREE" -p "$BASE" -m "PWA Bíblia Reformada $BUILD
+COMMIT="$(git commit-tree "$TREE" -p "$BASE" -m "PWA Bíblia Lumen $BUILD
 
 Nova PWA (React/TypeScript) na raiz; versão Flutter clássica em classico.html.
 Atualização forçada via service worker; dados fragmentados em data/v1.")"

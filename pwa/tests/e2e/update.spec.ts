@@ -170,7 +170,7 @@ test('manifesto válido e ícones com os tamanhos declarados', async ({ request 
     display: string;
     icons: { src: string; sizes: string; purpose?: string }[];
   };
-  expect(manifest.name).toBe('Bíblia Reformada');
+  expect(manifest.name).toBe('Bíblia Lumen');
   expect(manifest.display).toBe('standalone');
   // Mesmo id da versão Flutter instalada (/KM-bible/): o Android atualiza o ícone existente.
   expect(new URL(manifest.id, new URL(manifest.start_url, server.url)).pathname).toBe('/KM-bible/');

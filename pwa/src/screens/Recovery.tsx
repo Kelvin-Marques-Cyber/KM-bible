@@ -54,9 +54,9 @@ export function Recovery({ onContinue }: { onContinue: () => void }) {
         </h1>
         <p className="mt-3 text-[15.5px] leading-relaxed">
           {tr(
-            'A Bíblia Reformada não conseguiu abrir nas últimas tentativas. Isso costuma acontecer quando uma atualização foi interrompida ou o navegador guardou arquivos antigos.',
-            'Bíblia Reformada could not open in the last attempts. This usually happens when an update was interrupted or the browser kept old files.',
-            'Bíblia Reformada no pudo abrirse en los últimos intentos. Suele ocurrir cuando una actualización se interrumpió o el navegador guardó archivos antiguos.',
+            'A Bíblia Lumen não conseguiu abrir nas últimas tentativas. Isso costuma acontecer quando uma atualização foi interrompida ou o navegador guardou arquivos antigos.',
+            'Bíblia Lumen could not open in the last attempts. This usually happens when an update was interrupted or the browser kept old files.',
+            'Bíblia Lumen no pudo abrirse en los últimos intentos. Suele ocurrir cuando una actualización se interrumpió o el navegador guardó archivos antiguos.',
           )}
         </p>
         <p className="mt-3 rounded-xl bg-secondary-container p-3 text-[15px] leading-relaxed">

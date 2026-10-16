@@ -840,7 +840,7 @@ export default function SettingsPage() {
         </Small>
       </Expandable>
       <div className="px-3 py-3">
-        <p className="text-[15.5px]">Bíblia Reformada</p>
+        <p className="text-[15.5px]">Bíblia Lumen</p>
         <p className="mt-0.5 whitespace-pre-line text-sm text-muted">
           {`Criado por Kelvin e Silva Marques\nEm presente dedicatória à Rebeca Teles\n${tr('Versão', 'Version', 'Versión')} ${APP_VERSION}`}
         </p>
