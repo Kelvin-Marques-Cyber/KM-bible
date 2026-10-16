@@ -273,7 +273,7 @@ function helpSections(standalone: boolean): Record<HelpId, { title: string; body
                 {tr('Role a lista e toque em', 'Scroll the list and tap', 'Desplace la lista y toque')} <B>{tr('Adicionar à Tela de Início', 'Add to Home Screen', 'Agregar a inicio')}</B>.
               </>,
               <>{tr('Toque em', 'Tap', 'Toque')} <B>{tr('Adicionar', 'Add', 'Agregar')}</B> {tr('(canto superior direito).', '(top right corner).', '(esquina superior derecha).')}</>,
-              <>{tr('Abra a Bíblia Reformada pelo novo ícone na Tela de Início.', 'Open Bíblia Reformada from the new Home Screen icon.', 'Abra Bíblia Reformada desde el nuevo icono de inicio.')}</>,
+              <>{tr('Abra a Bíblia Lumen pelo novo ícone na Tela de Início.', 'Open Bíblia Lumen from the new Home Screen icon.', 'Abra Bíblia Lumen desde el nuevo icono de inicio.')}</>,
             ]}
           />
           <p className="mt-3 text-[15px] leading-relaxed">
@@ -318,7 +318,7 @@ function helpSections(standalone: boolean): Record<HelpId, { title: string; body
               {tr('ou abra o menu', 'or open the menu', 'o abra el menú')} <B>⋮</B> / <B>…</B>.
             </>,
             <>
-              {tr('Escolha', 'Choose', 'Elija')} <B>{tr('Instalar Bíblia Reformada', 'Install Bíblia Reformada', 'Instalar Bíblia Reformada')}</B>{' '}
+              {tr('Escolha', 'Choose', 'Elija')} <B>{tr('Instalar Bíblia Lumen', 'Install Bíblia Lumen', 'Instalar Bíblia Lumen')}</B>{' '}
               {tr('(no Edge: Aplicativos → Instalar este site como aplicativo).', '(in Edge: Apps → Install this site as an app).', '(en Edge: Aplicaciones → Instalar este sitio como aplicación).')}
             </>,
             <>{tr('Confirme em', 'Confirm with', 'Confirme en')} <B>{tr('Instalar', 'Install', 'Instalar')}</B>.</>,

@@ -134,9 +134,9 @@ function LegacyNotice() {
       </h2>
       <p className="mt-1 text-[15px] leading-relaxed">
         {tr(
-          'Este navegador tem anotações, destaques e configurações da versão anterior da Bíblia Reformada. Importe-os para continuar de onde parou; a versão antiga não é apagada.',
-          'This browser has notes, highlights and settings from the previous version of Bíblia Reformada. Import them to continue where you left off; the old version is not erased.',
-          'Este navegador tiene notas, resaltados y configuración de la versión anterior de Bíblia Reformada. Impórtelos para continuar donde quedó; la versión anterior no se borra.',
+          'Este navegador tem anotações, destaques e configurações da versão anterior da Bíblia Lumen. Importe-os para continuar de onde parou; a versão antiga não é apagada.',
+          'This browser has notes, highlights and settings from the previous version of Bíblia Lumen. Import them to continue where you left off; the old version is not erased.',
+          'Este navegador tiene notas, resaltados y configuración de la versión anterior de Bíblia Lumen. Impórtelos para continuar donde quedó; la versión anterior no se borra.',
         )}
       </p>
       <Button className="mt-3" icon={state === 'running' ? LoaderCircle : ArchiveRestore} onClick={() => void migrate()} disabled={state === 'running'}>
@@ -154,7 +154,7 @@ function FirstSetup() {
   return (
     <div className="flex h-full flex-col bg-surface font-ui text-on-surface">
       <header className="border-b border-outline/40 px-5 py-3" style={{ paddingTop: 'calc(var(--safe-top) + 12px)' }}>
-        <h1 className="text-[21px]">Bíblia Reformada</h1>
+        <h1 className="text-[21px]">Bíblia Lumen</h1>
       </header>
       <main className="scroll-area min-h-0 flex-1" style={{ paddingBottom: 'var(--safe-bottom)' }}>
         <div className="mx-auto max-w-3xl space-y-6 p-6">
@@ -165,7 +165,7 @@ function FirstSetup() {
           <AppearanceSettings />
           <section aria-labelledby="km-restore-title" className="rounded-2xl bg-surface-low p-4 ring-1 ring-outline/30">
             <h2 id="km-restore-title" className="text-[17px] font-semibold">
-              {tr('Já usa a Bíblia Reformada?', 'Already use Bíblia Reformada?', '¿Ya usa Bíblia Reformada?')}
+              {tr('Já usa a Bíblia Lumen?', 'Already use Bíblia Lumen?', '¿Ya usa Bíblia Lumen?')}
             </h2>
             <p className="mt-1 text-[15px] text-muted">
               {tr(
