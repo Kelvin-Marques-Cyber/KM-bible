@@ -157,7 +157,7 @@ class BibleApp extends StatelessWidget {
       return AppScope(
         app: controller,
         child: MaterialApp(
-          title: 'Bíblia Reformada',
+          title: 'Bíblia Lumen',
           debugShowCheckedModeBanner: false,
           locale: Locale(controller.language),
           supportedLocales: const [Locale('pt'), Locale('en'), Locale('es')],
@@ -283,7 +283,7 @@ class FirstSetup extends StatelessWidget {
   Widget build(BuildContext context) {
     final a = context.app;
     return Scaffold(
-      appBar: AppBar(title: const Text('Bíblia Reformada')),
+      appBar: AppBar(title: const Text('Bíblia Lumen')),
       body: ListView(
         padding: const EdgeInsets.all(24),
         children: [

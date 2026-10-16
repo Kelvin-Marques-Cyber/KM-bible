@@ -1,4 +1,4 @@
-# Bíblia Reformada
+# Bíblia Lumen
 
 Criado por Kelvin e Silva Marques.
 

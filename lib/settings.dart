@@ -298,13 +298,13 @@ class _SettingsPageState extends State<SettingsPage> {
           Icons.policy_outlined,
           () => showLicensePage(
             context: context,
-            applicationName: 'Bíblia Reformada',
+            applicationName: 'Bíblia Lumen',
             applicationVersion: '0.3.8',
             applicationLegalese: 'Criado por Kelvin e Silva Marques',
           ),
         ),
         const ListTile(
-          title: Text('Bíblia Reformada'),
+          title: Text('Bíblia Lumen'),
           subtitle: Text(
             'Criado por Kelvin e Silva Marques\nEm presente dedicatória à Rebeca Teles\nVersão 0.3.8',
           ),
