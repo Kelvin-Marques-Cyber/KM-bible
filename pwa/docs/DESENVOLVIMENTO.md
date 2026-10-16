@@ -56,6 +56,35 @@ src/
 Os backups (.zip / .bibliaenc) usam o formato do APK: `data.json` + `notes/<caderno>/<id>.md` +
 `attachments/` + `manifest.json` com SHA-256, e AES-256-GCM + PBKDF2-SHA256 (210 000 iterações).
 
+## Primeiro build em um clone novo
+
+A PWA precisa de artefatos locais gerados que não são versionados: os 30
+dossiês de apologética (mínimo de 7.000 caracteres cada) e o texto estruturado
+de Agostinho (278 capítulos). Desde a Bíblia Lumen, `npm run build` valida e
+prepara esses dados automaticamente antes de compilar. Não exclua os
+conteúdos editoriais para contornar erros de preparação.
+
+Uma única vez, na raiz do clone:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r scripts/requirements-content.txt
+cd pwa
+npm ci
+npm run build
+```
+
+Em builds seguintes, se o acervo continuar completo, o pré-build não executa
+novamente o processamento de PDF nem os geradores editoriais. Para verificar a
+regra sem preparar o acervo real, execute
+`python3 -m unittest discover -s tests -p 'test_ensure_content.py'` dentro de
+`pwa`.
+
+**Importante:** execute npm sempre em `pwa/`, onde está o `package.json`.
+A versão antiga Flutter fica na raiz. Não rode `npm audit fix --force` como
+solução de compilação: ele pode atualizar dependências de forma incompatível.
+
 ## Comandos
 
 ```
