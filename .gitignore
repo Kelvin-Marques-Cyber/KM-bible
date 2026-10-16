@@ -38,3 +38,6 @@ assets/calvino-por-livro/*.json
 assets/content/*.sqlite-journal
 assets/content/*.sqlite-wal
 assets/content/*.sqlite-shm
+
+# Dependências Python locais do primeiro build PWA.
+.venv/
