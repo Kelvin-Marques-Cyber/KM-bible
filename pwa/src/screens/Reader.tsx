@@ -31,6 +31,7 @@ import {
   ScrollText,
 } from 'lucide-react';
 import { lazy, memo, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { app, fontSize, isFullscreen, isStudy, lineHeight, margins, navigate, rememberPosition, set, step, useApp } from '../lib/app';
 import { bibleBook, hasVerse, mapped, modules, toRows, type VerseRow, firstRefOfBook } from '../lib/content';
 import { bookNames, fromId, refId, refLabel, type Ref } from '../lib/domain';
@@ -180,12 +181,49 @@ const Verse = memo(function Verse({
   );
 });
 
+/**
+ * Posição do menu de versões calculada a partir do botão. O menu é renderizado
+ * em um portal no <body>: dentro da barra (overflow-x-auto) ele era recortado
+ * no desktop. No celular ocupa a largura da tela; no desktop, até 360 px,
+ * sempre dentro da janela e com altura limitada ao espaço disponível.
+ */
+export function versionMenuPosition(anchor: { left: number; bottom: number }, viewport: { width: number; height: number }) {
+  const margin = 8;
+  const width = viewport.width < 640 ? viewport.width - margin * 2 : Math.min(360, viewport.width - margin * 2);
+  const left = viewport.width < 640 ? margin : Math.min(Math.max(margin, anchor.left), viewport.width - width - margin);
+  const top = Math.min(anchor.bottom + 4, viewport.height - 160);
+  const maxHeight = Math.max(160, Math.min(viewport.height * 0.7, viewport.height - top - margin));
+  return { top, left, width, maxHeight };
+}
+
 function Toolbar() {
   const a = app;
   const study = isStudy();
   const full = isFullscreen();
-  const [menu, setMenu] = useState(false);
+  const [menu, setMenu] = useState<ReturnType<typeof versionMenuPosition> | null>(null);
+  const anchor = useRef<HTMLButtonElement>(null);
   const bibles = modules('bible', true);
+  const openMenu = () => {
+    const rect = anchor.current?.getBoundingClientRect();
+    if (!rect) return;
+    setMenu((current) => (current ? null : versionMenuPosition(rect, { width: window.innerWidth, height: window.innerHeight })));
+  };
+  useEffect(() => {
+    if (!menu) return;
+    const close = () => setMenu(null);
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        close();
+        anchor.current?.focus();
+      }
+    };
+    window.addEventListener('resize', close);
+    window.addEventListener('keydown', onKey);
+    return () => {
+      window.removeEventListener('resize', close);
+      window.removeEventListener('keydown', onKey);
+    };
+  }, [menu]);
   return (
     <div className="no-scrollbar flex shrink-0 items-center gap-0.5 overflow-x-auto px-1 py-0.5">
       <IconButton label={t('previous')} icon={ChevronLeft} onClick={() => stepChapter(-1)} />
@@ -198,41 +236,49 @@ function Toolbar() {
       <IconButton label={tr('Contexto, temas e teologia', 'Context, themes and theology', 'Contexto, temas y teología')} icon={ScrollText} onClick={() => openVerseStudy(a.passage)} />
       <div className="relative shrink-0">
         <button
+          ref={anchor}
           type="button"
           aria-haspopup="menu"
-          aria-expanded={menu}
+          aria-expanded={!!menu}
           title={t('translation')}
-          onClick={() => setMenu((v) => !v)}
+          onClick={openMenu}
           className="rounded-full px-3 py-2 text-[15px] font-semibold hover:bg-on-surface/10"
         >
           {a.translation}
         </button>
-        {menu && (
-          <>
-            <button type="button" aria-label={t('close')} className="fixed inset-0 z-30 cursor-default" onClick={() => setMenu(false)} />
-            <ul role="menu" className="fixed left-2 right-2 top-24 z-40 max-h-[60vh] overflow-y-auto rounded-2xl bg-surface-high p-1 shadow-xl ring-1 ring-outline/40 sm:absolute sm:left-0 sm:right-auto sm:top-full sm:w-80">
-              {bibles.map((m) => (
-                <li key={m.id}>
-                  <button
-                    type="button"
-                    role="menuitemradio"
-                    aria-checked={m.id === a.translation}
-                    className={`w-full rounded-xl px-3 py-2.5 text-left text-[15px] hover:bg-on-surface/5 ${m.id === a.translation ? 'font-semibold text-primary' : ''}`}
-                    onClick={() => {
-                      setMenu(false);
-                      changeTranslation(m.id);
-                    }}
-                  >
-                    {m.title}
-                    <span className="block text-xs text-muted">
-                      {m.id} · {m.language}
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </>
-        )}
+        {menu &&
+          createPortal(
+            <>
+              <button type="button" aria-label={t('close')} className="fixed inset-0 z-30 cursor-default" onClick={() => setMenu(null)} />
+              <ul
+                role="menu"
+                aria-label={t('translation')}
+                className="fixed z-40 overflow-y-auto overscroll-contain rounded-2xl bg-surface-high p-1 font-ui text-on-surface shadow-xl ring-1 ring-outline/40"
+                style={{ top: menu.top, left: menu.left, width: menu.width, maxHeight: menu.maxHeight }}
+              >
+                {bibles.map((m) => (
+                  <li key={m.id}>
+                    <button
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={m.id === a.translation}
+                      className={`w-full rounded-xl px-3 py-2.5 text-left text-[15px] [overflow-wrap:anywhere] hover:bg-on-surface/5 ${m.id === a.translation ? 'font-semibold text-primary' : ''}`}
+                      onClick={() => {
+                        setMenu(null);
+                        changeTranslation(m.id);
+                      }}
+                    >
+                      {m.title}
+                      <span className="block text-xs text-muted">
+                        {m.id} · {m.language}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>,
+            document.body,
+          )}
       </div>
       <IconButton label={t(study ? 'readingMode' : 'studyMode')} icon={study ? BookOpen : GraduationCap} active={study} onClick={() => set('study', !study)} />
       <IconButton label={t('fullscreen')} icon={full ? Minimize : Maximize} onClick={() => set('fullscreen', !full)} />
