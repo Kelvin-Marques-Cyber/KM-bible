@@ -173,18 +173,18 @@ export function App({ storageWarning }: { storageWarning: string | null }) {
               const Icon = item.icon;
               const selected = app.area === index;
               return (
-                <li key={item.key} className="flex-1">
+                <li key={item.key} className="min-w-0 flex-1">
                   <button
                     type="button"
                     aria-current={selected ? 'page' : undefined}
                     aria-label={t(item.key)}
                     onClick={() => changeArea(index)}
-                    className="flex w-full flex-col items-center gap-0.5 pb-2 pt-2.5 text-[12.5px]"
+                    className="flex w-full min-w-0 flex-col items-center gap-0.5 px-0.5 pb-2 pt-2.5 text-[12.5px] max-[359px]:text-[11px]"
                   >
-                    <span className={`flex h-8 w-16 items-center justify-center rounded-full transition ${selected ? 'bg-secondary-container' : ''}`}>
+                    <span className={`flex h-8 w-full max-w-16 items-center justify-center rounded-full transition ${selected ? 'bg-secondary-container' : ''}`}>
                       <Icon size={22} aria-hidden />
                     </span>
-                    <span className={`min-h-[2.1em] max-w-[90px] text-center leading-[1.05] ${selected ? 'font-semibold' : ''}`}>
+                    <span className={`min-h-[2.1em] w-full max-w-[90px] text-center leading-[1.05] [overflow-wrap:anywhere] ${selected ? 'font-semibold' : ''}`}>
                       {item.key === 'memory' ? (
                         <>
                           <span className="sm:hidden">{tr('Ferramentas', 'Tools', 'Herramientas')}</span>
